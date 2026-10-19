@@ -95,3 +95,13 @@ html .ctas > .ghost:hover,html .frow > .ghost:hover{border-color:#F2A541;color:#
 html[lang=he] .plans .plan .small,html[lang=he] .plans .plan .tagx,html[lang=he] .plans .plan .lbl{letter-spacing:.03em}
 @media (prefers-reduced-motion:reduce){html .plans > .plan{transition:none}html .plans > .plan:hover{transform:none}}
 """
+
+# Photos with a smaller WebP copy next to the JPEG (same name, .webp): the home and sales pages use the WebP.
+WEBP = ["1a2e3ed3f44db1f671babb09a599b29f", "8cb56471dbe5940badc7a93cad5c8bf1", "5275cc7bcd4fb7560d8f7163592e3122",
+        "d5f6d2a7c84cc3346ef45e4922528351", "ce73f34a054f9959d99fd850c1df9ce5", "6d84bcea4206fe4c622103d7d3aea920"]
+
+
+def use_webp(html):
+    for h in WEBP:
+        html = html.replace(f"{h}.jpg", f"{h}.webp")
+    return html

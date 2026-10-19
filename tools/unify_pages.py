@@ -3,7 +3,7 @@
 the comparison sliders. Page content and layout stay as Matan designed them. Safe to run again."""
 import re, sys, os
 sys.path.insert(0, os.path.dirname(__file__))
-from brand import gold, NAV_CSS, FONTS, BUNDLE_CSS
+from brand import gold, NAV_CSS, FONTS, BUNDLE_CSS, use_webp
 from sales_he import hebrew
 from img_loading import prioritize
 
@@ -49,6 +49,21 @@ WORDS = {
     "he": [(">לפני<", ">RAW<"), (">אחרי · פריסט MWP<", ">סופי · פריסט MWP<"), (">אחרי<", ">סופי · MWP Panel<"),
            (">לפני ואחרי<", ">מ-RAW לתמונה הסופית<"), (">לראות לפני ואחרי ←<", ">מ-RAW לתמונה הסופית ←<")],
 }
+
+def share_tags(s, url):
+    """Link previews (og/twitter) from the page's own final title and description, and the referrer policy."""
+    s = re.sub(r'<meta (?:property="og:[^"]*"|name="twitter:[^"]*"|name="referrer")[^>]*>\n?', '', s)
+    title = re.search(r"<title>([^<]*)</title>", s).group(1)
+    desc = re.search(r'<meta name="description" content="([^"]*)">', s).group(1)
+    tags = (f'<meta name="referrer" content="strict-origin-when-cross-origin">\n'
+            f'<meta property="og:type" content="website">\n<meta property="og:site_name" content="MWP">\n'
+            f'<meta property="og:title" content="{title}">\n<meta property="og:description" content="{desc}">\n'
+            f'<meta property="og:url" content="{url}">\n'
+            f'<meta property="og:image" content="https://shop.mw.photography/assets/img/share.jpg">\n'
+            f'<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+            f'<meta name="twitter:card" content="summary_large_image">')
+    return s.replace("</title>", "</title>\n" + tags, 1)
+
 
 # Search descriptions (from each page's own copy). The Hebrew pages get them in Hebrew from EXACT in tools/sales_he.py.
 DESC = {
@@ -142,6 +157,8 @@ for path, lang in PAGES.items():
         s = s.replace("</body>", SCRIPT + "\n</body>", 1)
     if lang == "he":   # every word in Hebrew, names too (tools/he_names.py, tools/sales_he.py)
         s = hebrew(s)
+    s = share_tags(s, f"https://shop.mw.photography/{folder}/{'he/' if lang == 'he' else ''}")
+    s = use_webp(s)
     open(path, "w", encoding="utf-8").write(s)
     if lang == "he":   # the Hebrew page at a clean address too: /presets/he/ (he.html keeps working)
         folder = path.split("/")[0]

@@ -19,7 +19,7 @@ ba_css += "\n@media (max-width:600px){.ba{aspect-ratio:4/5;border-radius:18px}.r
 IMG = "assets/pages/img/"
 import home_fx, home_story
 import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(__file__))
-from brand import NAV_CSS, FONTS
+from brand import NAV_CSS, FONTS, use_webp
 from landing_guard import LANDING_GUARD   # no flash before signed-in ambassadors are sent to My downloads
 CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F2A541" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>'
 EXT = '<svg class="ext" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>'
@@ -176,6 +176,12 @@ html = f'''<!doctype html>
 <meta property="og:title" content="MWP · Presets, guides and tools by Matan Wild">
 <meta property="og:description" content="Lightroom presets, a Photoshop plugin and editing guides from wildlife photographer Matan Wild. Instant download, secure checkout.">
 <link rel="canonical" href="https://shop.mw.photography/">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta property="og:url" content="https://shop.mw.photography/">
+<meta property="og:image" content="https://shop.mw.photography/assets/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{IMG}2dd3356528167ddf9a64c0c7301c8aa3.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -303,5 +309,5 @@ for a, b in GOLD:
     html = html.replace(a, b)
 from img_loading import prioritize   # hero photo first, the rest when it's near the screen
 html = prioritize(html, '<section class="st-hero"', "st-hero-img")
-open("index.html", "w", encoding="utf-8").write(html)
+open("index.html", "w", encoding="utf-8").write(use_webp(html))
 print("index.html written", len(html))
