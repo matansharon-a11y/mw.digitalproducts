@@ -704,6 +704,8 @@ const HE = {
   "Finish with the tools.": "מסיימים עם הכלים.",
   "MWP Field Guides teach what happens before the click: composition, colour, light and planning, in 4 PDF guides in English and Hebrew. The presets and the Panel carry it on into the edit, in the same look.": "מדריכי השטח של MWP מלמדים מה קורה לפני הקליק: קומפוזיציה, צבע, אור ותכנון, ב-4 מדריכי PDF בעברית ובאנגלית. הפריסטים והפאנל ממשיכים מאותה נקודה אל העריכה, באותו מראה.",
   "Edit in Lightroom": "עורכים בלייטרום",
+  "Learn it in the field": "לומדים בשטח",
+  "All 4 PDF guides, 137 lessons": "כל 4 מדריכי ה־PDF, ‏137 שיעורים",
   "Get the presets": "לפריסטים",
   "Presets + Field Guides": "פריסטים + מדריכי השטח",
   "Shoot it, then edit it": "מצלמים, ואז עורכים",
