@@ -62,14 +62,11 @@ home_css = """
 .band{position:relative;overflow:hidden;border:0;background:radial-gradient(50% 80% at 50% 0%,rgba(242,165,65,.11),rgba(242,165,65,0) 70%),radial-gradient(60% 110% at 0% 100%,rgba(16,66,58,.6),rgba(12,41,37,0) 70%),radial-gradient(60% 110% at 100% 100%,rgba(16,66,58,.6),rgba(12,41,37,0) 70%),#0A0908}
 .band::before,.band::after{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(242,165,65,0),rgba(242,165,65,.45),rgba(242,165,65,0));pointer-events:none}
 .band::before{top:0}.band::after{bottom:0;opacity:.5}
-.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;padding-top:96px;padding-bottom:96px;counter-reset:tr}
-.trust > div{position:relative;display:flex;flex-direction:column;gap:10px;padding:32px 28px 30px;border-radius:22px;overflow:hidden;counter-increment:tr;background:linear-gradient(180deg,rgba(254,251,241,.05),rgba(254,251,241,.012));border:1px solid rgba(254,251,241,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,background .45s}
-.trust > div::before{content:"0" counter(tr);position:absolute;top:16px;right:20px;font-size:64px;line-height:1;font-weight:600;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px rgba(254,251,241,.1);direction:ltr;pointer-events:none;transition:-webkit-text-stroke-color .45s}
-[dir="rtl"] .trust > div::before{right:auto;left:20px}
+.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;padding-top:96px;padding-bottom:96px}
+.trust > div{position:relative;display:flex;flex-direction:column;gap:10px;padding:32px 28px 30px;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,rgba(254,251,241,.05),rgba(254,251,241,.012));border:1px solid rgba(254,251,241,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,background .45s}
 .trust > div::after{content:"";position:absolute;left:24px;right:24px;top:0;height:1px;background:linear-gradient(90deg,rgba(242,165,65,0),rgba(242,165,65,.85),rgba(242,165,65,0));opacity:0;transition:opacity .45s}
 .trust > div:hover{transform:translateY(-6px);border-color:rgba(242,165,65,.28);background:linear-gradient(180deg,rgba(242,165,65,.08),rgba(254,251,241,.015))}
 .trust > div:hover::after{opacity:1}
-.trust > div:hover::before{-webkit-text-stroke-color:rgba(242,165,65,.35)}
 .trust .ti{display:flex;align-items:center;justify-content:center;width:56px;height:56px;margin-bottom:14px;border-radius:18px;color:#F2A541;background:linear-gradient(160deg,rgba(242,165,65,.2),rgba(242,165,65,.03));box-shadow:inset 0 0 0 1px rgba(242,165,65,.32),0 14px 34px -12px rgba(242,165,65,.5);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
 .trust > div:hover .ti{transform:scale(1.06);box-shadow:inset 0 0 0 1px rgba(242,165,65,.6),0 18px 44px -12px rgba(242,165,65,.7)}
 .trust strong{font-size:18px;font-weight:700;letter-spacing:-.01em;color:#FEFBF1}
@@ -118,37 +115,29 @@ home_css = """
 .mq-track{display:flex;width:max-content;animation:mq 48s linear infinite}
 .mq-set{display:flex;align-items:center;flex:none}
 @keyframes mq{to{transform:translateX(-50%)}}
-.mq-words{padding:80px 0 40px}
-.mq-words .mq-set span{padding-inline:28px;font-size:clamp(40px,5.6vw,88px);font-weight:600;letter-spacing:-.035em;line-height:1.1;white-space:nowrap}
-.mq-s{color:#FEFBF1}
-.mq-o{color:transparent;-webkit-text-stroke:1.4px rgba(242,165,65,.8)}
-.mq-star{flex:none;color:#F2A541;filter:drop-shadow(0 0 12px rgba(242,165,65,.6))}
 .mq-photos .mq-track{animation-duration:80s}
 .mq-photos:hover .mq-track{animation-play-state:paused}
-.mq-ph{flex:none;height:clamp(190px,21vw,300px);margin-right:16px;border-radius:18px;overflow:hidden;background:#141210;box-shadow:inset 0 0 0 1px rgba(254,251,241,.06)}
+.mq-ph{flex:none;height:clamp(150px,15vw,210px);margin-right:16px;border-radius:18px;overflow:hidden;background:#141210;box-shadow:inset 0 0 0 1px rgba(254,251,241,.06)}
 .mq-ph img{display:block;height:100%;width:auto;transition:transform 1s cubic-bezier(.2,.8,.2,1),filter .6s;filter:saturate(.9) brightness(.85)}
 .mq-ph:hover img{transform:scale(1.07);filter:saturate(1.05) brightness(1)}
-.band .trust{position:relative;z-index:1;margin-top:-84px;padding-top:0}
+.mq-photos{padding-top:72px}
+.band .trust{padding-top:40px;padding-bottom:80px}
 .trust > div{background:linear-gradient(180deg,rgba(30,26,22,.72),rgba(14,12,10,.86))!important;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
 .trust > div:hover{background:linear-gradient(180deg,rgba(52,38,22,.8),rgba(14,12,10,.88))!important}
-@media (max-width:600px){.mq-words{padding:56px 0 28px}.mq-words .mq-set span{padding-inline:18px}.mq-star{width:20px;height:20px}.mq-ph{margin-right:10px;border-radius:14px}.band .trust{margin-top:-48px}}
+@media (max-width:600px){.mq-photos{padding-top:48px}.mq-ph{margin-right:10px;border-radius:14px}.band .trust{padding-top:28px;padding-bottom:56px}}
 @media (prefers-reduced-motion:reduce){.mq-track{animation:none}.mq{overflow-x:auto}}
 @media (max-width:1100px){.trust{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding-top:72px;padding-bottom:72px}}
-@media (max-width:600px){.trust{grid-template-columns:minmax(0,1fr);gap:12px;padding-top:56px;padding-bottom:56px}.trust > div{display:grid;grid-template-columns:52px 1fr;column-gap:16px;row-gap:4px;padding:20px}.trust .ti{grid-row:span 2;width:52px;height:52px;margin:0}.trust > div::before{display:none}}
+@media (max-width:600px){.trust{grid-template-columns:minmax(0,1fr);gap:12px;padding-top:56px;padding-bottom:56px}.trust > div{display:grid;grid-template-columns:52px 1fr;column-gap:16px;row-gap:4px;padding:20px}.trust .ti{grid-row:span 2;width:52px;height:52px;margin:0}}
 @media (prefers-reduced-motion:reduce){.card,.card .ph img,.trust > div,.trust .ti{transition:none}}
 """
 
 STRIP = [("s01.jpg", 960), ("s02.jpg", 419), ("s03.jpg", 960), ("s04.jpg", 480), ("s05.jpg", 338), ("s06.jpg", 960),
          ("s07.jpg", 480), ("s08.jpg", 960), ("s09.jpg", 419), ("s10.jpg", 419), ("s11.jpg", 419)]   # Matan's edited photos, 600 px tall
-STAR = '<svg class="mq-star" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 1.5c.5 5.6 4.9 10 10.5 10.5-5.6.5-10 4.9-10.5 10.5C11.5 16.9 7.1 12.5 1.5 12 7.1 11.5 11.5 7.1 12 1.5Z" fill="currentColor"/></svg>'
 
 
 def marquee():
-    words = ["Instant download", "Secure checkout", "Free updates", "Real support"]
-    w = "".join(f'<span class="{"mq-o" if i % 2 else "mq-s"}">{t}</span>{STAR}' for i, t in enumerate(words))
     ph = "".join(f'<span class="mq-ph"><img src="{IMG}strip/{n}" alt="" width="{wd}" height="600" loading="lazy" decoding="async"></span>' for n, wd in STRIP)
-    return (f'<div class="mq mq-words" aria-hidden="true"><div class="mq-track"><div class="mq-set">{w}</div><div class="mq-set">{w}</div></div></div>\n'
-            f'<div class="mq mq-photos" aria-hidden="true"><div class="mq-track"><div class="mq-set">{ph}</div><div class="mq-set">{ph}</div></div></div>')
+    return f'<div class="mq mq-photos" aria-hidden="true"><div class="mq-track"><div class="mq-set">{ph}</div><div class="mq-set">{ph}</div></div></div>'
 
 
 def box(href, img, gk, ttl, sub, left, top, delay):
