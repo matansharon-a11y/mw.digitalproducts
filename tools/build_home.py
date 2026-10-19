@@ -77,7 +77,9 @@ home_css = """
 .faq details div{padding:0 0 26px;color:#CDD7DD;font-size:17px;line-height:1.7;max-width:680px}
 
 .about{border-top:1px solid rgba(156,177,194,.12)}
-.about-in{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:64px;align-items:center}
+.about-in{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.25fr) minmax(0,1fr);gap:56px;align-items:center}
+.about-ph{margin:0;aspect-ratio:4/5;border-radius:20px;overflow:hidden;border:1px solid rgba(254,251,241,.09)}
+.about-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
 .about .head{margin:0;max-width:none;text-align:start;align-items:flex-start}
 .about .head > *{text-align:start;margin-inline:0}
 .about .lead{margin-top:20px}
@@ -89,7 +91,7 @@ home_css = """
 .roles span{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#F2A541}
 [dir="rtl"] .roles span{letter-spacing:normal}
 .roles strong{font-size:20px;line-height:1.35;font-weight:700;color:#FEFBF1}
-@media (max-width:1100px){.about-in{grid-template-columns:minmax(0,1fr);gap:40px}}
+@media (max-width:1100px){.about-in{grid-template-columns:minmax(0,1fr);gap:40px}.about-ph{max-width:420px;aspect-ratio:1/1}}
 @media (max-width:1100px){.shop{grid-template-columns:minmax(0,1fr);max-width:560px;margin-inline:auto}.trust{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}.trust > div{padding:0 28px}.trust > div:nth-child(odd){padding-inline-start:0;border-inline-start:0}}
 @media (max-width:600px){.trust{grid-template-columns:minmax(0,1fr);padding-top:56px;padding-bottom:56px;row-gap:0}.trust > div,.trust > div:nth-child(odd){display:grid;grid-template-columns:52px 1fr;column-gap:16px;row-gap:4px;padding:20px 0;border:0;border-top:1px solid rgba(254,251,241,.08)}.trust > div:first-child{border-top:0}.trust .ti{grid-row:span 2;margin:0}.trust > div + div{border-inline-start:0}.navr a.nl.hide-sm{display:none}.card .act{flex-direction:column}}
 @media (prefers-reduced-motion:reduce){.card,.card .ph img{transition:none}}
@@ -215,6 +217,7 @@ html = f'''<!doctype html>
 <section class="sec about" id="about">
 <div class="wrap">
 <div class="about-in">
+<figure class="about-ph"><img src="{IMG}matan.jpg" alt="Matan Wild" width="1062" height="1066" loading="lazy" decoding="async"></figure>
 <div class="head">
 <p class="kick">About Matan</p>
 <h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
