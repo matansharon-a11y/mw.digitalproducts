@@ -588,6 +588,9 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-name{margin:10px 0 0;font-size:clamp(34px,3.7vw,58px);line-height:1;font-weight:400;letter-spacing:-.03em;color:#FEFBF1;white-space:nowrap}
 .st-name .grad{font-weight:600}
 .st-line{margin:22px 0 0;font-size:clamp(18px,1.5vw,22px);line-height:1.5;color:#CDD7DD;max-width:460px}
+.st-body{margin-top:14px;display:grid;gap:10px}
+.st-body p{margin:0;font-size:15px;line-height:1.6;color:#9CB1C2}
+.st-body .st-close-line{color:#FEFBF1;font-weight:600}
 .st-pts{list-style:none;margin:28px 0 0;padding:24px 0 0;border-top:1px solid rgba(254,251,241,.1);display:grid;gap:12px}
 .st-pts li{display:flex;gap:12px;align-items:flex-start;font-size:16px;color:#CDD7DD}
 .st-pts svg{flex:none;margin-top:4px}
@@ -604,6 +607,24 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-big .grad{font-weight:600}
 
 /* ---------- smaller screens: the story becomes a simple list ---------- */
+@media (min-width:901px){
+  .st-texts{display:grid;min-height:0;align-content:center}
+  .st-prog{grid-row:1;margin-bottom:30px}
+  .st-art{position:relative;inset:auto;top:auto;grid-area:2/1}
+  .st-pts{margin-top:22px;padding-top:18px;gap:10px}
+  .st-acts{margin-top:26px}
+}
+@media (min-width:901px) and (max-height:820px){
+  .st-side{padding-top:84px;padding-bottom:24px}
+  .st-prog{margin-bottom:18px}
+  .st-tag{display:none}
+  .st-name{font-size:clamp(30px,3vw,44px)}
+  .st-line{margin-top:14px;font-size:18px}
+  .st-body{gap:8px}
+  .st-body p{font-size:14px;line-height:1.55}
+  .st-pts{display:none}
+  .st-acts{margin-top:22px}
+}
 @media (max-width:900px){
   .st-track{height:auto}
   .st-sticky{position:static;height:auto;display:block;padding:40px 0 24px}
@@ -693,6 +714,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .about .head{margin:0;max-width:none;text-align:start;align-items:flex-start}
 .about .head > *{text-align:start;margin-inline:0}
 .about .lead{margin-top:20px}
+.about .lead + .lead{margin-top:14px}
 .about-go{display:inline-flex;align-items:center;gap:10px;margin-top:32px;text-decoration:none}
 [dir="rtl"] .about-go .ext{transform:scaleX(-1)}
 .roles{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
@@ -734,7 +756,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="wrap st-hero-in">
 <p class="kick st-in" style="--i:0">MWP · by Matan Wild</p>
 <h1 class="st-h1"><span class="st-l"><span style="--i:1">Editing tools</span></span> <span class="st-l"><span class="grad" style="--i:2">from the field.</span></span></h1>
-<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop plugin and field guides by Matan Wild, founder of MWP. Years of leading photography tours and editing alongside photographers of every level, distilled into one signature look: professional colour, natural tones, effortless to use.</p>
+<p class="lead st-in" style="--i:3">Signature looks, practical guides and professional tools from Matan Wild, shaped by years of shooting, teaching and leading photography tours.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Shop the collection</a></div>
 </div>
@@ -829,7 +851,8 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <p class="st-step"><span class="st-num">01</span><span>Shoot</span></p>
 <p class="st-tag">PDF field guides</p>
 <h3 class="st-name" data-no-i18n>MWP <span class="grad">Field Guides</span></h3>
-<p class="st-line">See the photo before you press the shutter.</p>
+<p class="st-line">Learn the process behind the shot</p>
+<div class="st-body"><p>Four comprehensive guides. Four essential photography subjects. One proven approach.</p><p>Explore Matan's workflow in the field, from how he approaches a scene and works with light to the decisions that shape the final image. Learn the techniques, thought processes and practical skills behind his photography, so you can apply them to your own work with confidence.</p></div>
 <ul class="st-pts"><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>4 PDF guides, 137 lessons</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Composition, colour, light and planning</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>English and Hebrew</span></li></ul>
 <div class="st-acts"><a class="btn" href="field-guides/">See the Field Guides <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
 <div class="st-mscene"><img class="st-mbg" src="assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122.jpg" alt="Mountains at dusk, photographed by Matan Wild" loading="lazy" style="object-position: 56% 55%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-shoot" data-i="0"><div class="bk-row"><div class="bk" style="--k:0">
@@ -861,7 +884,8 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <p class="st-step"><span class="st-num">02</span><span>Edit</span></p>
 <p class="st-tag">Lightroom presets</p>
 <h3 class="st-name" data-no-i18n>MWP <span class="grad">Presets</span></h3>
-<p class="st-line">The look behind every MWP frame.</p>
+<p class="st-line">Your signature look starts here</p>
+<div class="st-body"><p>Bring Matan Wild's distinctive visual style to your own photography and video with his signature presets and LUTs.</p><p>Refined through years of shooting, experimenting and teaching, these tools are designed to deliver beautiful colours, consistent results and creative looks without the guesswork. Spend less time tweaking settings and more time creating images that feel uniquely yours.</p></div>
 <ul class="st-pts"><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>50 Lightroom presets, 12 adaptive</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>50 mobile files and 33 LUTs</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Install guide for every program</span></li></ul>
 <div class="st-acts"><a class="btn" href="presets/">See MWP Presets <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
 <div class="st-mscene"><img class="st-mbg" src="assets/pages/img/8cb56471dbe5940badc7a93cad5c8bf1.jpg" alt="MWP Presets box" loading="lazy" style="object-position: 50% 12%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-edit" data-i="1">
@@ -891,7 +915,8 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <p class="st-step"><span class="st-num">03</span><span>Finish</span></p>
 <p class="st-tag">Photoshop plugin</p>
 <h3 class="st-name" data-no-i18n>MWP <span class="grad">Panel</span></h3>
-<p class="st-line">You were there. Now make the photo show it.</p>
+<p class="st-line">Everything you need. All in one place.</p>
+<div class="st-body"><p>Forget endless courses, scattered tutorials and expensive tools that are difficult to apply in practice. Stop piecing together a workflow from resources that don't work together.</p><p>Meet the all-in-one editing panel built to make professional editing simpler, faster and more intuitive.</p><p>From precise masking and advanced curves to powerful colour adjustments, creative looks and optimised export settings, everything you need is right at your fingertips.</p><p class="st-close-line">Less complexity. Less guesswork. More creative control. Everything you need to bring your vision to life.</p></div>
 <ul class="st-pts"><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>8 one-click effects</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>11 looks and 4 painted lights</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>User manual and install guide</span></li></ul>
 <div class="st-acts"><a class="btn" href="panel/">See MWP Panel <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
 <div class="st-mscene"><img class="st-mbg" src="assets/pages/img/866c1bdb5cf29c21c1a04f6fc87b03e9.jpg" alt="A tiger, photographed by Matan Wild" loading="lazy" style="object-position: 62% 38%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-finish" data-i="2">
@@ -971,7 +996,8 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="head">
 <p class="kick">About Matan</p>
 <h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
-<p class="lead">Matan Wild is a wildlife photographer, the owner of MW Photo Tours and the founder of The Wild Side of Photography magazine. Matan leads photography expeditions around the world and teaches photographers and content creators. The presets, the Panel and the Field Guides come from that same work, from the shot to the edit.</p>
+<p class="lead">Matan Wild is the founder and creator of a platform built around a community of photographers, real-world experience and a shared passion for creating better images.</p>
+<p class="lead">Years of shooting, teaching and leading photography tours have helped Matan develop a streamlined approach to photography and editing. Now, he's bringing that experience directly to you through his signature looks, practical guides and professional tools designed to simplify your workflow and help you achieve stunning, pro-grade results.</p>
 <a class="ghost about-go" href="https://mw.photography" rel="noopener">Visit mw.photography <svg class="ext" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
 </div>
 <ul class="roles">

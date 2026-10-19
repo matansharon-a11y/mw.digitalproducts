@@ -83,6 +83,7 @@ home_css = """
 .about .head{margin:0;max-width:none;text-align:start;align-items:flex-start}
 .about .head > *{text-align:start;margin-inline:0}
 .about .lead{margin-top:20px}
+.about .lead + .lead{margin-top:14px}
 .about-go{display:inline-flex;align-items:center;gap:10px;margin-top:32px;text-decoration:none}
 [dir="rtl"] .about-go .ext{transform:scaleX(-1)}
 .roles{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
@@ -221,7 +222,8 @@ html = f'''<!doctype html>
 <div class="head">
 <p class="kick">About Matan</p>
 <h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
-<p class="lead">Matan Wild is a wildlife photographer, the owner of MW Photo Tours and the founder of The Wild Side of Photography magazine. Matan leads photography expeditions around the world and teaches photographers and content creators. The presets, the Panel and the Field Guides come from that same work, from the shot to the edit.</p>
+<p class="lead">Matan Wild is the founder and creator of a platform built around a community of photographers, real-world experience and a shared passion for creating better images.</p>
+<p class="lead">Years of shooting, teaching and leading photography tours have helped Matan develop a streamlined approach to photography and editing. Now, he's bringing that experience directly to you through his signature looks, practical guides and professional tools designed to simplify your workflow and help you achieve stunning, pro-grade results.</p>
 <a class="ghost about-go" href="https://mw.photography" rel="noopener">Visit mw.photography {EXT}</a>
 </div>
 <ul class="roles">

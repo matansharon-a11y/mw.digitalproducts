@@ -10,17 +10,25 @@ ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="cur
 CHAPTERS = [
     dict(step="Shoot", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", href="field-guides/",
          img="5275cc7bcd4fb7560d8f7163592e3122.jpg", pos="56% 55%", alt="Mountains at dusk, photographed by Matan Wild",
-         line="See the photo before you press the shutter.",
+         title="Learn the process behind the shot",
+         body=["Four comprehensive guides. Four essential photography subjects. One proven approach.",
+               "Explore Matan's workflow in the field, from how he approaches a scene and works with light to the decisions that shape the final image. Learn the techniques, thought processes and practical skills behind his photography, so you can apply them to your own work with confidence."],
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English and Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Edit", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets box",
-         line="The look behind every MWP frame.",
+         title="Your signature look starts here",
+         body=["Bring Matan Wild's distinctive visual style to your own photography and video with his signature presets and LUTs.",
+               "Refined through years of shooting, experimenting and teaching, these tools are designed to deliver beautiful colours, consistent results and creative looks without the guesswork. Spend less time tweaking settings and more time creating images that feel uniquely yours."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files and 33 LUTs", "Install guide for every program"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
     dict(step="Finish", tag="Photoshop plugin", name="Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
-         line="You were there. Now make the photo show it.",
+         title="Everything you need. All in one place.",
+         body=["Forget endless courses, scattered tutorials and expensive tools that are difficult to apply in practice. Stop piecing together a workflow from resources that don't work together.",
+               "Meet the all-in-one editing panel built to make professional editing simpler, faster and more intuitive.",
+               "From precise masking and advanced curves to powerful colour adjustments, creative looks and optimised export settings, everything you need is right at your fingertips."],
+         close="Less complexity. Less guesswork. More creative control. Everything you need to bring your vision to life.",
          points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
          cta="See MWP Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
 ]
@@ -33,7 +41,7 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="wrap st-hero-in">
 <p class="kick st-in" style="--i:0">MWP · by Matan Wild</p>
 <h1 class="st-h1"><span class="st-l"><span style="--i:1">Editing tools</span></span> <span class="st-l"><span class="grad" style="--i:2">from the field.</span></span></h1>
-<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop plugin and field guides by Matan Wild, founder of MWP. Years of leading photography tours and editing alongside photographers of every level, distilled into one signature look: professional colour, natural tones, effortless to use.</p>
+<p class="lead st-in" style="--i:3">Signature looks, practical guides and professional tools from Matan Wild, shaped by years of shooting, teaching and leading photography tours.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Shop the collection</a></div>
 </div>
@@ -49,7 +57,8 @@ def _chapter_text(i, c):
 <p class="st-step"><span class="st-num">0{i + 1}</span><span>{c["step"]}</span></p>
 <p class="st-tag">{c["tag"]}</p>
 <h3 class="st-name" data-no-i18n>MWP <span class="grad">{c["name"]}</span></h3>
-<p class="st-line">{c["line"]}</p>
+<p class="st-line">{c["title"]}</p>
+<div class="st-body">{"".join(f"<p>{t}</p>" for t in c["body"])}{f'<p class="st-close-line">{c["close"]}</p>' if c.get("close") else ""}</div>
 <ul class="st-pts">{lis}</ul>
 <div class="st-acts"><a class="btn" href="{c["href"]}">{c["cta"]} {ARROW}</a></div>
 <div class="st-mscene"><img class="st-mbg" src="{IMG}{c["img"]}" alt="{c["alt"]}" loading="lazy" style="object-position: {c["pos"]}"><div class="st-mstage" aria-hidden="true" data-no-i18n>{SCENES[i]()}</div></div>
@@ -166,6 +175,9 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-name{margin:10px 0 0;font-size:clamp(34px,3.7vw,58px);line-height:1;font-weight:400;letter-spacing:-.03em;color:#FEFBF1;white-space:nowrap}
 .st-name .grad{font-weight:600}
 .st-line{margin:22px 0 0;font-size:clamp(18px,1.5vw,22px);line-height:1.5;color:#CDD7DD;max-width:460px}
+.st-body{margin-top:14px;display:grid;gap:10px}
+.st-body p{margin:0;font-size:15px;line-height:1.6;color:#9CB1C2}
+.st-body .st-close-line{color:#FEFBF1;font-weight:600}
 .st-pts{list-style:none;margin:28px 0 0;padding:24px 0 0;border-top:1px solid rgba(254,251,241,.1);display:grid;gap:12px}
 .st-pts li{display:flex;gap:12px;align-items:flex-start;font-size:16px;color:#CDD7DD}
 .st-pts svg{flex:none;margin-top:4px}
@@ -182,6 +194,24 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-big .grad{font-weight:600}
 
 /* ---------- smaller screens: the story becomes a simple list ---------- */
+@media (min-width:901px){
+  .st-texts{display:grid;min-height:0;align-content:center}
+  .st-prog{grid-row:1;margin-bottom:30px}
+  .st-art{position:relative;inset:auto;top:auto;grid-area:2/1}
+  .st-pts{margin-top:22px;padding-top:18px;gap:10px}
+  .st-acts{margin-top:26px}
+}
+@media (min-width:901px) and (max-height:820px){
+  .st-side{padding-top:84px;padding-bottom:24px}
+  .st-prog{margin-bottom:18px}
+  .st-tag{display:none}
+  .st-name{font-size:clamp(30px,3vw,44px)}
+  .st-line{margin-top:14px;font-size:18px}
+  .st-body{gap:8px}
+  .st-body p{font-size:14px;line-height:1.55}
+  .st-pts{display:none}
+  .st-acts{margin-top:22px}
+}
 @media (max-width:900px){
   .st-track{height:auto}
   .st-sticky{position:static;height:auto;display:block;padding:40px 0 24px}
