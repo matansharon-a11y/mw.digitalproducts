@@ -90,7 +90,9 @@ home_css = """
 .faq details[open] summary::after{content:"\\2212"}
 .faq details div{padding:0 0 26px;color:#CDD7DD;font-size:17px;line-height:1.7;max-width:680px}
 
-.about{border-top:1px solid rgba(156,177,194,.12)}
+#faq.sec{padding-bottom:56px}
+.about.sec{padding-top:40px}
+@media (max-width:600px){#faq.sec{padding-bottom:40px}.about.sec{padding-top:24px}}
 .about-card{position:relative;display:flex;flex-direction:column;min-height:640px;border-radius:28px;overflow:hidden;background:radial-gradient(90% 120% at 0% 0%,#1A1612 0%,#0F0D0B 60%);border:1px solid rgba(254,251,241,.08);box-shadow:0 40px 120px -40px rgba(0,0,0,.8)}
 .about-ph{position:absolute;inset-block:0;inset-inline-end:0;width:56%;margin:0}
 .about-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:45% 30%;-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.55) 22%,#000 48%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.55) 22%,#000 48%)}
