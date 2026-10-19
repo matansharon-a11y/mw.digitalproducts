@@ -11,24 +11,23 @@ CHAPTERS = [
     dict(step="Shoot", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", href="field-guides/",
          img="5275cc7bcd4fb7560d8f7163592e3122.jpg", pos="56% 55%", alt="Mountains at dusk, photographed by Matan Wild",
          title="Learn the process behind the shot",
-         body=["Four comprehensive guides. Four essential photography subjects. One proven approach.",
-               "Explore Matan's workflow in the field, from how he approaches a scene and works with light to the decisions that shape the final image. Learn the techniques, thought processes and practical skills behind his photography, so you can apply them to your own work with confidence."],
+         body=["Four in-depth guides. Four essential subjects. One proven approach.",
+               "Follow Matan's process in the field, from reading a scene and working with light to the decisions that shape the final image, and bring it into your own work."],
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English and Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Edit", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets box",
          title="Your signature look starts here",
-         body=["Bring Matan Wild's distinctive visual style to your own photography and video with his signature presets and LUTs.",
-               "Refined through years of shooting, experimenting and teaching, these tools are designed to deliver beautiful colours, consistent results and creative looks without the guesswork. Spend less time tweaking settings and more time creating images that feel uniquely yours."],
+         body=["Matan Wild's signature look for your photos and video, refined through years of shooting and teaching.",
+               "Beautiful colour and consistent results without the guesswork: less time tweaking, more time creating."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files and 33 LUTs", "Install guide for every program"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
     dict(step="Finish", tag="Photoshop plugin", name="Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Everything you need. All in one place.",
-         body=["Forget endless courses, scattered tutorials and expensive tools that are difficult to apply in practice. Stop piecing together a workflow from resources that don't work together.",
-               "Meet the all-in-one editing panel built to make professional editing simpler, faster and more intuitive.",
-               "From precise masking and advanced curves to powerful colour adjustments, creative looks and optimised export settings, everything you need is right at your fingertips."],
-         close="Less complexity. Less guesswork. More creative control. Everything you need to bring your vision to life.",
+         body=["No more scattered tutorials and tools that don't work together.",
+               "One editing panel for Photoshop that makes professional editing simpler and faster, with masking, colour, creative looks and export all in one place."],
+         close="Less complexity. Less guesswork. More creative control.",
          points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
          cta="See MWP Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
 ]
@@ -209,7 +208,8 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
   .st-line{margin-top:14px;font-size:18px}
   .st-body{gap:8px}
   .st-body p{font-size:14px;line-height:1.55}
-  .st-pts{display:none}
+  .st-pts{margin-top:16px;padding-top:14px;gap:6px}
+  .st-pts li{font-size:14px}
   .st-acts{margin-top:22px}
 }
 @media (max-width:900px){
