@@ -265,7 +265,6 @@ const HE = {
   "Beautiful colour and consistent results without the guesswork: less time tweaking, more time creating.": "צבעים יפים ותוצאות עקביות בלי ניחושים: פחות זמן על כיוונונים, יותר זמן ליצירה.",
   "No more scattered tutorials and tools that don't work together.": "די למדריכים מפוזרים ולכלים שלא עובדים יחד.",
   "One editing panel for Photoshop that makes professional editing simpler and faster, with masking, colour, creative looks and export all in one place.": "פאנל עריכה אחד לפוטושופ שהופך עריכה מקצועית לפשוטה ומהירה יותר, עם מסכות, צבע, מראות יצירתיים וייצוא, הכול במקום אחד.",
-  "Less complexity. Less guesswork. More creative control.": "פחות מורכבות. פחות ניחושים. יותר שליטה יצירתית.",
   "You were there. Now make the photo show it.": "הייתם שם. עכשיו תנו לתמונה להראות את זה.",
   "See the photo before you press the shutter.": "לראות את התמונה לפני שלוחצים.",
   "Footer": "קישורים",

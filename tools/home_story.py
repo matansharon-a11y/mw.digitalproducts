@@ -27,7 +27,6 @@ CHAPTERS = [
          title="Everything you need. All in one place.",
          body=["No more scattered tutorials and tools that don't work together.",
                "One editing panel for Photoshop that makes professional editing simpler and faster, with masking, colour, creative looks and export all in one place."],
-         close="Less complexity. Less guesswork. More creative control.",
          points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
          cta="See MWP Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
 ]
