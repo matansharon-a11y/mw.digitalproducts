@@ -13,7 +13,7 @@ CHAPTERS = [
          title="Learn the process behind the shot",
          body=["Four in-depth guides. Four essential subjects. One proven approach.",
                "Follow Matan's process in the field, from reading a scene and working with light to the decisions that shape the final image, and bring it into your own work."],
-         points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English and Hebrew"],
+         points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Edit", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets box",
