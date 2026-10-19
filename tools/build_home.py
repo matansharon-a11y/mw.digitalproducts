@@ -236,7 +236,7 @@ html = f'''<!doctype html>
 <h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
 <p class="about-intro">Matan Wild is the founder of a platform built around a community of photographers, real-world experience and a passion for better images.</p>
 <p class="about-more">Drawing on years in the field, Matan shaped an approach around what photographers really need to learn, built to make a real difference in their work.</p>
-<a class="ghost about-go" href="https://mw.photography" rel="noopener">Visit mw.photography {EXT}</a>
+<a class="ghost about-go" href="https://mw.photography" target="_blank" rel="noopener">Visit mw.photography {EXT}</a>
 </div>
 <ul class="roles">
 <li><span>Owner</span><strong>MW Photo Tours</strong></li>
