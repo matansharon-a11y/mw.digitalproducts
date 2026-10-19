@@ -77,22 +77,34 @@ home_css = """
 .faq details div{padding:0 0 26px;color:#CDD7DD;font-size:17px;line-height:1.7;max-width:680px}
 
 .about{border-top:1px solid rgba(156,177,194,.12)}
-.about-in{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.25fr) minmax(0,1fr);gap:56px;align-items:center}
-.about-ph{position:relative;align-self:stretch;margin:0;border-radius:20px;overflow:hidden;border:1px solid rgba(254,251,241,.09)}
-.about-ph img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
-.about .head{margin:0;max-width:none;text-align:start;align-items:flex-start}
-.about .head > *{text-align:start;margin-inline:0}
-.about .lead{margin-top:20px}
-.about .lead + .lead{margin-top:14px}
-.about-go{display:inline-flex;align-items:center;gap:10px;margin-top:32px;text-decoration:none}
+.about-card{position:relative;display:flex;flex-direction:column;min-height:640px;border-radius:28px;overflow:hidden;background:radial-gradient(90% 120% at 0% 0%,#1A1612 0%,#0F0D0B 60%);border:1px solid rgba(254,251,241,.08);box-shadow:0 40px 120px -40px rgba(0,0,0,.8)}
+.about-ph{position:absolute;inset-block:0;inset-inline-end:0;width:56%;margin:0}
+.about-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:45% 30%;-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.55) 22%,#000 48%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.55) 22%,#000 48%)}
+[dir="rtl"] .about-ph img{-webkit-mask-image:linear-gradient(to left,transparent 0,rgba(0,0,0,.55) 22%,#000 48%);mask-image:linear-gradient(to left,transparent 0,rgba(0,0,0,.55) 22%,#000 48%)}
+.about-body{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;width:min(580px,49%);padding:72px 0 64px;padding-inline-start:72px}
+.about-body .h2{margin-top:18px;font-size:clamp(34px,3.6vw,54px)}
+.about-intro{margin:28px 0 0;font-size:clamp(18px,1.45vw,21px);line-height:1.55;color:#FEFBF1;text-wrap:pretty}
+.about-more{margin:16px 0 0;font-size:16px;line-height:1.7;color:#9CB1C2;text-wrap:pretty}
+.about-go{display:inline-flex;align-self:flex-start;align-items:center;gap:10px;margin-top:36px;text-decoration:none}
 [dir="rtl"] .about-go .ext{transform:scaleX(-1)}
-.roles{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.roles li{display:flex;flex-direction:column;gap:6px;padding:24px 0;border-top:1px solid rgba(254,251,241,.09)}
-.roles li:last-child{border-bottom:1px solid rgba(254,251,241,.09)}
+.roles{position:relative;z-index:1;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(254,251,241,.1);background:rgba(10,9,8,.62);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.roles li{display:flex;flex-direction:column;gap:8px;padding:28px 40px}
+.roles li:first-child{padding-inline-start:72px}
+.roles li + li{border-inline-start:1px solid rgba(254,251,241,.08)}
 .roles span{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#F2A541}
 [dir="rtl"] .roles span{letter-spacing:normal}
-.roles strong{font-size:20px;line-height:1.35;font-weight:700;color:#FEFBF1}
-@media (max-width:1100px){.about-in{grid-template-columns:minmax(0,1fr);gap:40px}.about-ph{align-self:start;width:100%;max-width:420px;aspect-ratio:1/1}}
+.roles strong{font-size:18px;line-height:1.35;font-weight:600;color:#FEFBF1}
+@media (max-width:1100px){.about-body{width:52%;padding-inline-start:48px}.about-intro{font-size:17px}.about-more{font-size:15px}.roles li{padding:24px 28px}.roles li:first-child{padding-inline-start:48px}.about-ph{width:52%}}
+@media (max-width:900px){
+  .about-card{min-height:0;border-radius:22px}
+  .about-ph{position:relative;inset:auto;width:100%;aspect-ratio:4/3}
+  .about-ph img,[dir="rtl"] .about-ph img{object-position:50% 30%;-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);mask-image:linear-gradient(to bottom,#000 55%,transparent 100%)}
+  .about-body{width:auto;margin-top:-24px;padding:0 24px 36px}
+  .about-body .h2{margin-top:14px}
+  .roles{grid-template-columns:minmax(0,1fr)}
+  .roles li,.roles li:first-child{padding:20px 24px}
+  .roles li + li{border-inline-start:0;border-top:1px solid rgba(254,251,241,.08)}
+}
 @media (max-width:1100px){.shop{grid-template-columns:minmax(0,1fr);max-width:560px;margin-inline:auto}.trust{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}.trust > div{padding:0 28px}.trust > div:nth-child(odd){padding-inline-start:0;border-inline-start:0}}
 @media (max-width:600px){.trust{grid-template-columns:minmax(0,1fr);padding-top:56px;padding-bottom:56px;row-gap:0}.trust > div,.trust > div:nth-child(odd){display:grid;grid-template-columns:52px 1fr;column-gap:16px;row-gap:4px;padding:20px 0;border:0;border-top:1px solid rgba(254,251,241,.08)}.trust > div:first-child{border-top:0}.trust .ti{grid-row:span 2;margin:0}.trust > div + div{border-inline-start:0}.navr a.nl.hide-sm{display:none}.card .act{flex-direction:column}}
 @media (prefers-reduced-motion:reduce){.card,.card .ph img{transition:none}}
@@ -217,13 +229,13 @@ html = f'''<!doctype html>
 
 <section class="sec about" id="about">
 <div class="wrap">
-<div class="about-in">
+<div class="about-card">
 <figure class="about-ph"><img src="{IMG}matan.jpg" alt="Matan Wild" width="1062" height="1066" loading="lazy" decoding="async"></figure>
-<div class="head">
+<div class="about-body">
 <p class="kick">About Matan</p>
 <h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
-<p class="lead">Matan Wild is the founder of a platform built around a community of photographers, real-world experience and a passion for better images.</p>
-<p class="lead">Years of shooting, teaching and leading photography tours shaped his streamlined approach to photography and editing. His signature looks, practical guides and professional tools bring it to you, to simplify your workflow and help you get pro-grade results.</p>
+<p class="about-intro">Matan Wild is the founder of a platform built around a community of photographers, real-world experience and a passion for better images.</p>
+<p class="about-more">Years of shooting, teaching and leading photography tours shaped his streamlined approach to photography and editing. His signature looks, practical guides and professional tools bring it to you, to simplify your workflow and help you get pro-grade results.</p>
 <a class="ghost about-go" href="https://mw.photography" rel="noopener">Visit mw.photography {EXT}</a>
 </div>
 <ul class="roles">
