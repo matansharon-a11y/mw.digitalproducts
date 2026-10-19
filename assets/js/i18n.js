@@ -515,6 +515,7 @@ const HE = {
   "Do you prefer English or Hebrew?": "מה השפה המועדפת עליכם: עברית או אנגלית?",
   "English": "אנגלית",
   "Hebrew": "עברית",
+  "Choose your language. Your copy comes in that language.": "בחרו שפה. העותק שלכם יגיע בשפה הזו.",
   "Any other platforms you share on?": "יש עוד פלטפורמות שאתם משתפים בהן?",
   "TikTok, YouTube, blog…": "טיקטוק, יוטיוב, בלוג…",
   "Your photography": "הצילום שלכם",

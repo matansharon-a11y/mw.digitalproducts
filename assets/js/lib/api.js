@@ -168,7 +168,7 @@ export async function signOut() {
 export async function myLibrary() {
   const { data, error } = await requireClient()
     .from("entitlements")
-    .select("id, granted_at, revoked_at, view_only, products(slug, name, name_emphasis, category, cover_path, version, item_count)")
+    .select("id, granted_at, revoked_at, view_only, guide_lang, products(slug, name, name_emphasis, category, cover_path, version, item_count)")
     .is("revoked_at", null)
     .order("granted_at", { ascending: false });
   if (error) throw new ApiError(error.message);
@@ -191,7 +191,8 @@ async function callFunction(name, body, { auth = false } = {}) {
   return payload;
 }
 
-export const requestDownload = (slug) => callFunction("get-download", { slug }, { auth: true });
+// lang: the Field Guides buyer's language choice ("en" or "he"), sent once with their first download
+export const requestDownload = (slug, lang) => callFunction("get-download", lang ? { slug, lang } : { slug }, { auth: true });
 export const panelDevices = () => callFunction("license", { action: "devices" }, { auth: true });
 export const removePanelDevice = (device_id) => callFunction("license", { action: "remove", device_id }, { auth: true });
 export const sendSupport = (form) => callFunction("support", form);
