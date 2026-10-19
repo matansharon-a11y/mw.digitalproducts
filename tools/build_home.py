@@ -114,10 +114,42 @@ home_css = """
 }
 @media (max-width:1100px){.shop{grid-template-columns:minmax(0,1fr);max-width:560px;margin-inline:auto}}
 @media (max-width:600px){.navr a.nl.hide-sm{display:none}.card .act{flex-direction:column}}
+.mq{position:relative;overflow:hidden;direction:ltr;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mq 48s linear infinite}
+.mq-set{display:flex;align-items:center;flex:none}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mq-words{padding:80px 0 40px}
+.mq-words .mq-set span{padding-inline:28px;font-size:clamp(40px,5.6vw,88px);font-weight:600;letter-spacing:-.035em;line-height:1.1;white-space:nowrap}
+.mq-s{color:#FEFBF1}
+.mq-o{color:transparent;-webkit-text-stroke:1.4px rgba(242,165,65,.8)}
+.mq-star{flex:none;color:#F2A541;filter:drop-shadow(0 0 12px rgba(242,165,65,.6))}
+.mq-photos .mq-track{animation-duration:80s}
+.mq-photos:hover .mq-track{animation-play-state:paused}
+.mq-ph{flex:none;height:clamp(190px,21vw,300px);margin-right:16px;border-radius:18px;overflow:hidden;background:#141210;box-shadow:inset 0 0 0 1px rgba(254,251,241,.06)}
+.mq-ph img{display:block;height:100%;width:auto;transition:transform 1s cubic-bezier(.2,.8,.2,1),filter .6s;filter:saturate(.9) brightness(.85)}
+.mq-ph:hover img{transform:scale(1.07);filter:saturate(1.05) brightness(1)}
+.band .trust{position:relative;z-index:1;margin-top:-84px;padding-top:0}
+.trust > div{background:linear-gradient(180deg,rgba(30,26,22,.72),rgba(14,12,10,.86))!important;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.trust > div:hover{background:linear-gradient(180deg,rgba(52,38,22,.8),rgba(14,12,10,.88))!important}
+@media (max-width:600px){.mq-words{padding:56px 0 28px}.mq-words .mq-set span{padding-inline:18px}.mq-star{width:20px;height:20px}.mq-ph{margin-right:10px;border-radius:14px}.band .trust{margin-top:-48px}}
+@media (prefers-reduced-motion:reduce){.mq-track{animation:none}.mq{overflow-x:auto}}
 @media (max-width:1100px){.trust{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding-top:72px;padding-bottom:72px}}
 @media (max-width:600px){.trust{grid-template-columns:minmax(0,1fr);gap:12px;padding-top:56px;padding-bottom:56px}.trust > div{display:grid;grid-template-columns:52px 1fr;column-gap:16px;row-gap:4px;padding:20px}.trust .ti{grid-row:span 2;width:52px;height:52px;margin:0}.trust > div::before{display:none}}
 @media (prefers-reduced-motion:reduce){.card,.card .ph img,.trust > div,.trust .ti{transition:none}}
 """
+
+STRIP = [("s01.jpg", 960), ("s02.jpg", 419), ("s03.jpg", 960), ("s04.jpg", 480), ("s05.jpg", 338), ("s06.jpg", 960),
+         ("s07.jpg", 480), ("s08.jpg", 960), ("s09.jpg", 419), ("s10.jpg", 419), ("s11.jpg", 419)]   # Matan's edited photos, 600 px tall
+STAR = '<svg class="mq-star" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 1.5c.5 5.6 4.9 10 10.5 10.5-5.6.5-10 4.9-10.5 10.5C11.5 16.9 7.1 12.5 1.5 12 7.1 11.5 11.5 7.1 12 1.5Z" fill="currentColor"/></svg>'
+
+
+def marquee():
+    words = ["Instant download", "Secure checkout", "Free updates", "Real support"]
+    w = "".join(f'<span class="{"mq-o" if i % 2 else "mq-s"}">{t}</span>{STAR}' for i, t in enumerate(words))
+    ph = "".join(f'<span class="mq-ph"><img src="{IMG}strip/{n}" alt="" width="{wd}" height="600" loading="lazy" decoding="async"></span>' for n, wd in STRIP)
+    return (f'<div class="mq mq-words" aria-hidden="true"><div class="mq-track"><div class="mq-set">{w}</div><div class="mq-set">{w}</div></div></div>\n'
+            f'<div class="mq mq-photos" aria-hidden="true"><div class="mq-track"><div class="mq-set">{ph}</div><div class="mq-set">{ph}</div></div></div>')
+
 
 def box(href, img, gk, ttl, sub, left, top, delay):
     return f'''<a class="pos" href="{href}" style="left: {left}px; top: {top}px"><div class="box" style="animation-delay: {delay}s"><div class="face top"></div><div class="face spine"><span>{gk}</span></div><div class="face front"><img src="{IMG}{img}" alt=""><div class="lab"><div class="bn">MW PHOTO TOURS</div><div><div class="gk">{gk}</div><div class="ttl" data-no-i18n>{ttl}</div><div class="sub">{sub}</div></div></div></div></div><div class="shadow"></div></a>'''
@@ -212,6 +244,7 @@ html = f'''<!doctype html>
 </section>
 
 <section class="band" aria-label="Why buy here">
+{marquee()}
 <div class="wrap trust">
 <div><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M4.5 16.5v2A2 2 0 0 0 6.5 20.5h11a2 2 0 0 0 2-2v-2"/></svg></span><strong>Instant download</strong><span>Your files are ready the moment you pay.</span></div>
 <div><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5.5c0 4.3 2.9 8.1 7 9.5 4.1-1.4 7-5.2 7-9.5V6l-7-3Z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg></span><strong>Secure checkout</strong><span>Card payment through Lemon Squeezy. We never see your card.</span></div>
