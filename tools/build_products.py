@@ -316,38 +316,39 @@ def page(folder, lang):
 </section>''')
 
     # the proof
+    # the proof: a gallery of slides, the next one peeking in from the edge (no tabs, nothing on the photo)
+    def gallery(slides, caps):
+        n = len(slides)
+        bar = (f'<div class="gal-bar"><p class="cap" aria-live="polite">{esc(caps[0])}</p>'
+               f'<div class="gal-nav"><span class="count"><b>01</b> / {n:02d}</span>'
+               f'<button class="gbtn" type="button" data-prev aria-label="{u["prev"]}" disabled>{BACK}</button>'
+               f'<button class="gbtn" type="button" data-nextg aria-label="{u["next"]}">{ARROW}</button></div></div>') if n > 1 else ""
+        caps_attr = esc(json.dumps(caps, ensure_ascii=False))
+        return (f'<div class="gal" data-gal data-caps="{caps_attr}" data-r><div class="gal-track">'
+                + "".join(f'<figure class="slide{" on" if k == 0 else ""}" data-k="{k}">{sl}</figure>' for k, sl in enumerate(slides))
+                + f'</div>{bar}</div>')
     if p["proof_type"] == "ba":
-        (b0, a0) = p["pairs_from"][0]
-        chips = "".join(
-            f'<button class="ex" type="button" role="tab" data-pair aria-selected="{str(k == 0).lower()}" data-before="{img(b)}" data-after="{img(a)}" '
-            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}"><span class="no">{k + 1}</span>{esc(lab)}</button>'
-            for k, ((b, a), lab) in enumerate(zip(p["pairs_from"], c["pairs"])))
-        parts.append(f'''<section class="sec" id="compare">
-<div class="wrap" data-ba>
-<div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
-<div class="exbar" data-r><span class="exn">{len(c["pairs"])} {u["examples_n"]}</span><div class="exs" role="tablist" aria-label="{u["examples"]}">{chips}</div></div>
-<div class="ba" data-r>
-<img class="before" src="{img(b0)}" alt="{esc(c["pairs"][0])} · {u["raw"]}" loading="lazy">
-<img class="after" src="{img(a0)}" alt="{esc(c["pairs"][0])} · {u["final"]}" loading="lazy">
+        slides = [f'''<div class="ba">
+<img class="before" src="{img(b)}" alt="{esc(lab)} · {u["raw"]}" loading="lazy">
+<img class="after" src="{img(a)}" alt="{esc(lab)} · {u["final"]}" loading="lazy">
 <span class="tag t1">{u["raw"]}</span><span class="tag t2">{u["final"]}</span>
 <span class="line"></span><span class="knob">{GRIP}</span>
 <input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
-<button class="nextex" type="button" data-next>{u["next_ex"]} {ARROW}</button>
-</div>
+</div>''' for (b, a), lab in zip(p["pairs_from"], c["pairs"])]
+        parts.append(f'''<section class="sec" id="compare">
+<div class="wrap">
+<div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
+{gallery(slides, c["pairs"])}
 </div>
 </section>''')
     else:
         pages = p["pages"][lang]
-        imgs = "".join(f'<img class="{"on" if k == 0 else ""}" src="{img(x)}" alt="{esc(c["page_alts"][k])}" loading="lazy">' for k, x in enumerate(pages))
-        dots = "".join(f'<button type="button" aria-label="{u["page"]} {k + 1}" aria-current="{str(k == 0).lower()}"></button>' for k in range(len(pages)))
+        slides = [f'<div class="pg"><img src="{img(x)}" alt="{esc(c["page_alts"][k])}" loading="lazy"></div>' for k, x in enumerate(pages)]
+        caps = ["" for _ in pages]   # the counter says it all
         parts.append(f'''<section class="sec" id="inside">
 <div class="wrap">
 <div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
-<div class="viewer" data-viewer data-r tabindex="0" aria-roledescription="carousel">
-<div class="pg">{imgs}
-<button class="arr prev" type="button" aria-label="{u["prev"]}">{BACK}</button><button class="arr next" type="button" aria-label="{u["next"]}">{ARROW}</button><button class="nextex" type="button" data-nextpage>{u["next_page"]} {ARROW}</button></div>
-<div class="vbar"><span class="count" aria-live="polite"><b>1</b> / {len(pages)}</span><div class="dots">{dots}</div></div>
-</div>
+{gallery(slides, caps)}
 </div>
 </section>''')
 

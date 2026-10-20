@@ -226,33 +226,28 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .ba .knob::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(244,175,86,.7);animation:ring 1.8s var(--ease) infinite}
 .ba.touched .knob::after{display:none}
 @keyframes ring{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.45);opacity:0}}
-/* examples: a clear tab bar above the photo, and "Next example" on the photo itself */
-.exbar{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:40px}
-.exn{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
-[dir=rtl] .exn{letter-spacing:.04em}
-.exs{display:flex;max-width:100%;padding:6px;gap:6px;border-radius:999px;border:1.5px solid rgba(254,251,241,.18);background:rgba(254,251,241,.04);overflow-x:auto;scrollbar-width:none}
-.exs::-webkit-scrollbar{display:none}
-.ex{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 22px 0 8px;border:0;border-radius:999px;background:transparent;color:var(--ink2);font-size:15px;font-weight:600;white-space:nowrap;cursor:pointer;transition:color .25s,background .3s var(--ease)}
-[dir=rtl] .ex{padding:0 8px 0 22px}
-.ex .no{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(254,251,241,.3);font-size:13px;transition:all .3s}
-.ex:hover{color:var(--ink);background:rgba(254,251,241,.06)}
-.ex:hover .no{border-color:var(--gold);color:var(--gold)}
-.ex[aria-selected=true]{background:var(--grad);color:#0A0908}
-.ex[aria-selected=true] .no{border-color:rgba(10,9,8,.35);background:rgba(10,9,8,.12);color:#0A0908}
-.ba{margin-top:20px}
-.nextex{position:absolute;right:18px;bottom:18px;z-index:3;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px 0 18px;border-radius:999px;border:1.5px solid rgba(254,251,241,.35);background:rgba(10,9,8,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font-size:14px;font-weight:700;cursor:pointer;transition:background .25s,border-color .25s,transform .3s var(--ease)}
-[dir=rtl] .nextex{right:auto;left:18px;padding:0 18px 0 14px}
-[dir=rtl] .nextex svg{transform:scaleX(-1)}
-.nextex:hover{background:rgba(10,9,8,.85);border-color:var(--gold);transform:translateX(2px)}
-[dir=rtl] .nextex:hover{transform:translateX(-2px)}
-.viewer .nextex{right:20px;bottom:20px}
-/* guide viewer: page counter beside the dots, arrows that read as buttons */
-.vbar{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px}
-.vbar .dots{margin:0}
-.count{font-size:14px;color:var(--mute);font-variant-numeric:tabular-nums}
-.count b{color:var(--ink);font-weight:600}
-.arr{background:rgba(10,9,8,.72);border:1.5px solid rgba(254,251,241,.25)}
-.arr:hover{border-color:var(--gold)}
+/* galleries (RAW / final examples, guide pages): the next slide peeks in from the edge */
+.gal{margin-top:44px;overflow:hidden;margin-inline:-40px;padding-inline:40px}
+.gal{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40px,#000 calc(100% - 160px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 40px,#000 calc(100% - 160px),transparent)}
+.gal-track{display:flex;gap:24px;transition:transform .8s var(--ease)}
+.slide{flex:0 0 86%;margin:0;opacity:.35;transform:scale(.96);transform-origin:center;transition:opacity .6s var(--ease),transform .8s var(--ease);cursor:pointer}
+.slide.on{opacity:1;transform:none;cursor:auto}
+.slide:not(.on) > *{pointer-events:none}
+.slide:not(.on):hover{opacity:.55}
+.gal .ba,.gal .pg{margin:0}
+.gal:has(.slide:only-child) .slide{flex-basis:100%}
+.gal .pg{position:relative;aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;background:#141210;box-shadow:0 40px 100px -40px rgba(0,0,0,.9)}
+.gal .pg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.gal-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;width:86%;margin-top:22px}
+.cap{margin:0;color:var(--ink);font-size:16px;font-weight:600}
+.gal-nav{display:flex;align-items:center;gap:10px;flex:none}
+.gal-nav .count{margin-inline-end:8px;color:var(--mute);font-size:14px;font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.gal-nav .count b{color:var(--ink);font-weight:600}
+.gbtn{width:48px;height:48px;border-radius:50%;border:1.5px solid rgba(254,251,241,.3);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .25s,background .25s,color .25s,opacity .25s}
+.gbtn:not(:disabled):hover{border-color:var(--gold);background:rgba(242,165,65,.1);color:var(--gold)}
+.gbtn:disabled{opacity:.28;cursor:default}
+[dir=rtl] .gbtn svg{transform:scaleX(-1)}
+@media (max-width:600px){.gal{margin-inline:-24px;padding-inline:24px}.gal-track{gap:12px}.slide{flex-basis:88%}.gal-bar{width:100%}.cap{font-size:14px}.gbtn{width:42px;height:42px}}
 /* card rows: clearer arrows, and a fade on the side where more cards wait */
 .rail-nav button{background:rgba(254,251,241,.05);border-color:rgba(254,251,241,.3)}
 .rail-nav button:not(:disabled):hover{background:rgba(242,165,65,.12);border-color:var(--gold);color:var(--gold)}
@@ -273,4 +268,5 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .faq summary:hover i{background:rgba(242,165,65,.1)}
 @media (max-width:600px){.exs{width:100%}.ex{flex:1;justify-content:center;padding:0 12px;font-size:13px;min-height:42px}.ex .no{display:none}.nextex{min-height:40px;font-size:13px;right:12px;bottom:12px}[dir=rtl] .nextex{left:12px}}
 @media (prefers-reduced-motion:reduce){.ba .knob::after{animation:none;display:none}}
-.viewer .arr.next{display:none}
+[dir=rtl] .gal{-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 40px,#000 calc(100% - 160px),transparent);mask-image:linear-gradient(270deg,transparent 0,#000 40px,#000 calc(100% - 160px),transparent)}
+.gal-nav .count{direction:ltr;unicode-bidi:isolate}

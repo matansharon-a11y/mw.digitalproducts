@@ -38,17 +38,18 @@ if (bar && hero) {
   }
 }
 
-// ---------------------------------------------------------------- RAW / final slider
-document.querySelectorAll("[data-ba]").forEach((box) => {
-  const ba = box.querySelector(".ba");
+// ---------------------------------------------------------------- RAW / final slider (one per slide)
+document.querySelectorAll(".ba").forEach((ba) => {
   const range = ba.querySelector("input");
-  const [before, after] = ba.querySelectorAll("img");
   const set = (v) => ba.style.setProperty("--p", v + "%");
   range.addEventListener("input", () => set(range.value));
   range.addEventListener("pointerdown", () => ba.classList.add("drag"));
   addEventListener("pointerup", () => ba.classList.remove("drag"));
-  // a gentle hint the first time it comes into view
-  if (!reduce && "IntersectionObserver" in window) {
+  const touched = () => { range.dataset.touched = 1; ba.classList.add("touched"); };
+  range.addEventListener("pointerdown", touched, { once: true });
+  range.addEventListener("keydown", touched, { once: true });
+  // a gentle hint the first time the first slider comes into view
+  if (!reduce && "IntersectionObserver" in window && ba.closest(".slide.on")) {
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return;
       io.disconnect();
@@ -64,55 +65,36 @@ document.querySelectorAll("[data-ba]").forEach((box) => {
     }, { threshold: 0.6 });
     io.observe(ba);
   }
-  // the handle pulses until it has been moved once
-  const touched = () => { range.dataset.touched = 1; ba.classList.add("touched"); };
-  range.addEventListener("pointerdown", touched, { once: true });
-  range.addEventListener("keydown", touched, { once: true });
-  box.querySelectorAll("[data-pair]").forEach((chip) => chip.addEventListener("click", () => {
-    box.querySelectorAll("[data-pair]").forEach((c) => c.setAttribute("aria-selected", String(c === chip)));
-    before.src = chip.dataset.before; after.src = chip.dataset.after;
-    before.alt = chip.dataset.alt0; after.alt = chip.dataset.alt1;
-    set(50); range.value = 50;
-  }));
-  // "Next example" on the photo: the next tab, round and round
-  const tabs = [...box.querySelectorAll("[data-pair]")];
-  const nx = box.querySelector("[data-next]");
-  if (nx) {
-    if (tabs.length < 2) nx.hidden = true;
-    nx.addEventListener("click", () => {
-      const k = tabs.findIndex((t) => t.getAttribute("aria-selected") === "true");
-      tabs[(k + 1) % tabs.length].click();
-    });
-  }
 });
 
-// ---------------------------------------------------------------- guide page viewer
-document.querySelectorAll("[data-viewer]").forEach((v) => {
-  const imgs = [...v.querySelectorAll(".pg img")];
-  const dots = [...v.querySelectorAll(".dots button")];
+// ---------------------------------------------------------------- galleries: the next slide peeks in
+document.querySelectorAll("[data-gal]").forEach((gal) => {
+  const track = gal.querySelector(".gal-track");
+  const slides = [...gal.querySelectorAll(".slide")];
+  const caps = JSON.parse(gal.dataset.caps || "[]");
+  const cap = gal.querySelector(".cap"), num = gal.querySelector(".count b");
+  const prev = gal.querySelector("[data-prev]"), next = gal.querySelector("[data-nextg]");
   let i = 0;
   const go = (n) => {
-    i = (n + imgs.length) % imgs.length;
-    imgs.forEach((im, k) => im.classList.toggle("on", k === i));
-    dots.forEach((d, k) => d.setAttribute("aria-current", String(k === i)));
-    const num = v.querySelector(".count b"); if (num) num.textContent = i + 1;
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    track.style.transform = `translateX(${slides[0].offsetLeft - slides[i].offsetLeft}px)`;
+    slides.forEach((sl, k) => { sl.classList.toggle("on", k === i); sl.querySelectorAll("input,button,a").forEach((el) => { el.tabIndex = k === i ? 0 : -1; }); sl.setAttribute("aria-hidden", String(k !== i)); });
+    if (cap) cap.textContent = caps[i] || "";
+    if (num) num.textContent = String(i + 1).padStart(2, "0");
+    if (prev) { prev.disabled = i === 0; next.disabled = i === slides.length - 1; }
   };
-  const rtl = root.dir === "rtl";
-  v.querySelector(".prev").addEventListener("click", () => go(i - 1));
-  v.querySelector(".next").addEventListener("click", () => go(i + 1));
-  v.querySelector("[data-nextpage]")?.addEventListener("click", () => go(i + 1));
-  dots.forEach((d, k) => d.addEventListener("click", () => go(k)));
-  v.addEventListener("keydown", (e) => {
+  prev?.addEventListener("click", () => go(i - 1));
+  next?.addEventListener("click", () => go(i + 1));
+  // the peeking slide is a way forward too (its own slider is switched off, so the click reaches the figure)
+  slides.forEach((sl, k) => sl.addEventListener("click", () => { if (k !== i) go(k); }));
+  gal.addEventListener("keydown", (e) => {
+    const rtl = root.dir === "rtl";
+    if (e.target.matches("input")) return;
     if (e.key === "ArrowRight") go(rtl ? i - 1 : i + 1);
     if (e.key === "ArrowLeft") go(rtl ? i + 1 : i - 1);
   });
-  let x0 = null;
-  v.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
-  v.addEventListener("touchend", (e) => {
-    if (x0 === null) return;
-    const dx = e.changedTouches[0].clientX - x0; x0 = null;
-    if (Math.abs(dx) > 40) go(i + ((dx < 0) !== rtl ? 1 : -1));
-  });
+  addEventListener("resize", () => go(i));
+  go(0);
 });
 
 // ---------------------------------------------------------------- card rail arrows
