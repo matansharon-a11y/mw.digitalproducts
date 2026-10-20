@@ -247,7 +247,9 @@ page("shop.html", "Shop Wildlife Lightroom Presets, Photoshop Plugin &amp; Guide
       <h2 class="display" id="bundles-h" style="font-size:clamp(34px,4.4vw,64px)">Shoot with the guides. <span class="grad">Finish with the tools.</span></h2>
       <div class="bundles">{"".join(_bundle(*b) for b in BUNDLES)}</div>
     </div>
-  </section>""", "shop.js")
+  </section>""", "shop.js",
+ extra_head='\n  <link rel="alternate" hreflang="en" href="https://shop.mw.photography/shop/"><link rel="alternate" hreflang="he" href="https://shop.mw.photography/shop/he/"><link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/shop/">',
+ early='\n  <script>try{if(localStorage.getItem("mwp_lang")==="he")location.replace("/shop/he/"+location.search+location.hash)}catch(e){}</script>')
 
 page("product.html", "Product details · Editing tools from the field · MWP",
  "A digital product by Matan Wild for Lightroom and Photoshop.",

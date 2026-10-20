@@ -187,6 +187,7 @@ html = f'''<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>try{{if(localStorage.getItem("mwp_lang")==="he")location.replace("/he/"+location.search+location.hash)}}catch(e){{}}</script>
 {LANDING_GUARD}
 {LANG_GUARD}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -198,6 +199,8 @@ html = f'''<!doctype html>
 <meta property="og:title" content="Lightroom Presets &amp; Photoshop Plugin for Wildlife · MWP">
 <meta property="og:description" content="Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural.">
 <link rel="canonical" href="https://shop.mw.photography/">
+<link rel="alternate" hreflang="en" href="https://shop.mw.photography/"><link rel="alternate" hreflang="he" href="https://shop.mw.photography/he/"><link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/">
+<meta property="og:locale" content="en_US">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:url" content="https://shop.mw.photography/">
 <meta property="og:image" content="https://shop.mw.photography/assets/img/share.jpg">

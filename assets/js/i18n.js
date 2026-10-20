@@ -929,7 +929,9 @@ export function initI18n() {
       const b = e.target.closest("[data-lang]");
       if (!b) return;
       setLang(b.dataset.lang);
-      location.reload();
+      const other = document.querySelector(`link[rel="alternate"][hreflang="${b.dataset.lang}"]`);   // a page with its own Hebrew address (home, shop)
+      if (other) location.href = new URL(other.href).pathname + location.search + location.hash;
+      else location.reload();
     });
   }
   if (lang !== "he") { document.documentElement.classList.remove("he-wait"); return; }
@@ -954,3 +956,6 @@ export function initI18n() {
     }
   }).observe(document.body, { childList: true, subtree: true, characterData: true });
 }
+
+// For the build (tools/he_static.mjs): the same Hebrew the browser puts in, written into the Hebrew pages ahead of time.
+export { hebrew as toHebrew, names as hebrewNames, SALES };
