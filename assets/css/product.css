@@ -226,11 +226,26 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .ba .knob::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(244,175,86,.7);animation:ring 1.8s var(--ease) infinite}
 .ba.touched .knob::after{display:none}
 @keyframes ring{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.45);opacity:0}}
-/* examples: one quiet segmented switch under the photo */
-.exs{display:flex;width:max-content;max-width:100%;margin:28px auto 0;padding:5px;gap:4px;border-radius:999px;border:1px solid rgba(254,251,241,.12);background:rgba(254,251,241,.03)}
-.ex{min-height:40px;padding:0 20px;border:0;border-radius:999px;background:transparent;color:var(--mute);font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer;transition:color .25s,background .3s var(--ease)}
-.ex:hover{color:var(--ink)}
-.ex[aria-selected=true]{background:var(--ink);color:#0A0908}
+/* examples: a clear tab bar above the photo, and "Next example" on the photo itself */
+.exbar{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:40px}
+.exn{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+[dir=rtl] .exn{letter-spacing:.04em}
+.exs{display:flex;max-width:100%;padding:6px;gap:6px;border-radius:999px;border:1.5px solid rgba(254,251,241,.18);background:rgba(254,251,241,.04);overflow-x:auto;scrollbar-width:none}
+.exs::-webkit-scrollbar{display:none}
+.ex{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 22px 0 8px;border:0;border-radius:999px;background:transparent;color:var(--ink2);font-size:15px;font-weight:600;white-space:nowrap;cursor:pointer;transition:color .25s,background .3s var(--ease)}
+[dir=rtl] .ex{padding:0 8px 0 22px}
+.ex .no{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(254,251,241,.3);font-size:13px;transition:all .3s}
+.ex:hover{color:var(--ink);background:rgba(254,251,241,.06)}
+.ex:hover .no{border-color:var(--gold);color:var(--gold)}
+.ex[aria-selected=true]{background:var(--grad);color:#0A0908}
+.ex[aria-selected=true] .no{border-color:rgba(10,9,8,.35);background:rgba(10,9,8,.12);color:#0A0908}
+.ba{margin-top:20px}
+.nextex{position:absolute;right:18px;bottom:18px;z-index:3;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px 0 18px;border-radius:999px;border:1.5px solid rgba(254,251,241,.35);background:rgba(10,9,8,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font-size:14px;font-weight:700;cursor:pointer;transition:background .25s,border-color .25s,transform .3s var(--ease)}
+[dir=rtl] .nextex{right:auto;left:18px;padding:0 18px 0 14px}
+[dir=rtl] .nextex svg{transform:scaleX(-1)}
+.nextex:hover{background:rgba(10,9,8,.85);border-color:var(--gold);transform:translateX(2px)}
+[dir=rtl] .nextex:hover{transform:translateX(-2px)}
+.viewer .nextex{right:20px;bottom:20px}
 /* guide viewer: page counter beside the dots, arrows that read as buttons */
 .vbar{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px}
 .vbar .dots{margin:0}
@@ -256,5 +271,6 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .faq summary{margin-inline:-16px;padding-inline:16px;border-radius:14px;transition:color .2s,background .2s}
 .faq summary:hover{background:rgba(254,251,241,.035)}
 .faq summary:hover i{background:rgba(242,165,65,.1)}
-@media (max-width:600px){.ex{padding:0 14px;font-size:13px}}
+@media (max-width:600px){.exs{width:100%}.ex{flex:1;justify-content:center;padding:0 12px;font-size:13px;min-height:42px}.ex .no{display:none}.nextex{min-height:40px;font-size:13px;right:12px;bottom:12px}[dir=rtl] .nextex{left:12px}}
 @media (prefers-reduced-motion:reduce){.ba .knob::after{animation:none;display:none}}
+.viewer .arr.next{display:none}

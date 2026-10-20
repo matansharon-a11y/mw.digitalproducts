@@ -43,12 +43,12 @@ UI = {
            "hint": "Drag the handle to compare.", "faq_kick": "Before you buy", "faq": "FAQs",
            "spec_kick": "What you get", "spec_h": "What's in the download.", "price_kick": "Get it",
            "trust": "Instant download · Secure checkout · Free updates", "terms": "Full terms",
-           "more": "Questions about your setup?", "examples": "Choose an example", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside"},
+           "more": "Questions about your setup?", "examples": "Choose an example", "examples_n": "examples", "next_ex": "Next example", "next_page": "Next page", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside"},
     "he": {"buy": "לרכישה", "prev": "הקודם", "next": "הבא", "page": "עמוד", "raw": "RAW", "final": "סופי",
            "hint": "גררו את הידית כדי להשוות.", "faq_kick": "לפני שקונים", "faq": "שאלות נפוצות",
            "spec_kick": "מה מקבלים", "spec_h": "מה יש בהורדה.", "price_kick": "לרכישה",
            "trust": "הורדה מיידית · תשלום מאובטח · עדכונים חינם", "terms": "התנאים המלאים",
-           "more": "שאלות על ההתקנה?", "examples": "בחרו דוגמה", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים"},
+           "more": "שאלות על ההתקנה?", "examples": "בחרו דוגמה", "examples_n": "דוגמאות", "next_ex": "לדוגמה הבאה", "next_page": "לעמוד הבא", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים"},
 }
 
 # ---------------------------------------------------------------- the products
@@ -320,19 +320,20 @@ def page(folder, lang):
         (b0, a0) = p["pairs_from"][0]
         chips = "".join(
             f'<button class="ex" type="button" role="tab" data-pair aria-selected="{str(k == 0).lower()}" data-before="{img(b)}" data-after="{img(a)}" '
-            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}">{esc(lab)}</button>'
+            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}"><span class="no">{k + 1}</span>{esc(lab)}</button>'
             for k, ((b, a), lab) in enumerate(zip(p["pairs_from"], c["pairs"])))
         parts.append(f'''<section class="sec" id="compare">
 <div class="wrap" data-ba>
 <div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
+<div class="exbar" data-r><span class="exn">{len(c["pairs"])} {u["examples_n"]}</span><div class="exs" role="tablist" aria-label="{u["examples"]}">{chips}</div></div>
 <div class="ba" data-r>
 <img class="before" src="{img(b0)}" alt="{esc(c["pairs"][0])} · {u["raw"]}" loading="lazy">
 <img class="after" src="{img(a0)}" alt="{esc(c["pairs"][0])} · {u["final"]}" loading="lazy">
 <span class="tag t1">{u["raw"]}</span><span class="tag t2">{u["final"]}</span>
 <span class="line"></span><span class="knob">{GRIP}</span>
 <input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
+<button class="nextex" type="button" data-next>{u["next_ex"]} {ARROW}</button>
 </div>
-<div class="exs" role="tablist" aria-label="{u["examples"]}">{chips}</div>
 </div>
 </section>''')
     else:
@@ -344,7 +345,7 @@ def page(folder, lang):
 <div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
 <div class="viewer" data-viewer data-r tabindex="0" aria-roledescription="carousel">
 <div class="pg">{imgs}
-<button class="arr prev" type="button" aria-label="{u["prev"]}">{BACK}</button><button class="arr next" type="button" aria-label="{u["next"]}">{ARROW}</button></div>
+<button class="arr prev" type="button" aria-label="{u["prev"]}">{BACK}</button><button class="arr next" type="button" aria-label="{u["next"]}">{ARROW}</button><button class="nextex" type="button" data-nextpage>{u["next_page"]} {ARROW}</button></div>
 <div class="vbar"><span class="count" aria-live="polite"><b>1</b> / {len(pages)}</span><div class="dots">{dots}</div></div>
 </div>
 </div>

@@ -46,6 +46,21 @@ JS = """<script>
     if (/plan/.test(el.className) || el.parentElement.classList.contains("trust")) el.style.setProperty("--d", (i * 0.1) + "s");
     io.observe(el);
   });
+  // Arriving through a menu link (#bundles, #faq…): that section is shown at once, so the jump never
+  // lands on an empty, still-fading area.
+  function showTarget() {
+    var id = decodeURIComponent(location.hash.slice(1)), sec = id && document.getElementById(id);
+    if (!sec) return;
+    sec.querySelectorAll(".rv").forEach(function (el) { el.style.transitionDelay = "0s"; el.classList.add("in"); io.unobserve(el); });
+  }
+  showTarget();
+  addEventListener("hashchange", showTarget);
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"], a[href^="/#"]');
+    if (!a || (a.getAttribute("href").charAt(0) === "/" && location.pathname !== "/")) return;
+    var sec = document.getElementById(a.getAttribute("href").split("#")[1]);
+    if (sec) sec.querySelectorAll(".rv").forEach(function (el) { el.style.transitionDelay = "0s"; el.classList.add("in"); io.unobserve(el); });
+  }, true);
   document.addEventListener("pointermove", function (e) {
     var t = e.target.closest && e.target.closest(".plan"); if (!t) return;
     var r = t.getBoundingClientRect(); t.style.setProperty("--mx", (e.clientX - r.left) + "px"); t.style.setProperty("--my", (e.clientY - r.top) + "px");

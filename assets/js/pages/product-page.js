@@ -74,6 +74,16 @@ document.querySelectorAll("[data-ba]").forEach((box) => {
     before.alt = chip.dataset.alt0; after.alt = chip.dataset.alt1;
     set(50); range.value = 50;
   }));
+  // "Next example" on the photo: the next tab, round and round
+  const tabs = [...box.querySelectorAll("[data-pair]")];
+  const nx = box.querySelector("[data-next]");
+  if (nx) {
+    if (tabs.length < 2) nx.hidden = true;
+    nx.addEventListener("click", () => {
+      const k = tabs.findIndex((t) => t.getAttribute("aria-selected") === "true");
+      tabs[(k + 1) % tabs.length].click();
+    });
+  }
 });
 
 // ---------------------------------------------------------------- guide page viewer
@@ -90,6 +100,7 @@ document.querySelectorAll("[data-viewer]").forEach((v) => {
   const rtl = root.dir === "rtl";
   v.querySelector(".prev").addEventListener("click", () => go(i - 1));
   v.querySelector(".next").addEventListener("click", () => go(i + 1));
+  v.querySelector("[data-nextpage]")?.addEventListener("click", () => go(i + 1));
   dots.forEach((d, k) => d.addEventListener("click", () => go(k)));
   v.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight") go(rtl ? i - 1 : i + 1);
