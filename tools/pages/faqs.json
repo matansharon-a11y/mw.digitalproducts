@@ -2,6 +2,10 @@
  "presets": {
   "en": [
    {
+    "q": "Will they work on my photos, not only on yours?",
+    "a": "The 12 adaptive presets use Lightroom's AI masks to find the subject, the sky and the background in each photo, so they adjust to your frame. Every photo is different: expect to set white balance and exposure after the preset, as in the examples on this page."
+   },
+   {
     "q": "Which programs do they work in?",
     "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro."
    },
@@ -31,6 +35,10 @@
    }
   ],
   "he": [
+   {
+    "q": "הם יעבדו על התמונות שלי, ולא רק על שלכם?",
+    "a": "12 הפריסטים האדפטיביים משתמשים במסכות ה-AI של לייטרום כדי למצוא בכל תמונה את הנושא, את השמיים ואת הרקע, ולכן הם מתאימים את עצמם לפריים שלכם. כל תמונה שונה: אחרי הפריסט קובעים איזון לבן וחשיפה, כמו בדוגמאות בעמוד הזה."
+   },
    {
     "q": "באילו תוכנות הם עובדים?",
     "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו."

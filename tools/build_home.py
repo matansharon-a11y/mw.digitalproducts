@@ -168,19 +168,27 @@ PAIRS = [
     ("Panel · Background Darken", "af0d1799831d0417d338c0b162975a7b.jpg", "95e0579188ba924ac89563eb21facef6.jpg", "Background", "Darken", "45%", "FINAL · MWP PANEL"),
 ]
 
+LD = __import__("json").dumps([
+    {"@context": "https://schema.org", "@type": "Organization", "name": "MWP", "alternateName": "MW Photo Tours",
+     "url": "https://shop.mw.photography/", "logo": "https://shop.mw.photography/assets/img/favicon-512.png",
+     "founder": {"@type": "Person", "name": "Matan Wild"}, "email": "contact@matanwildphotography.com",
+     "sameAs": ["https://mw.photography"]},
+    {"@context": "https://schema.org", "@type": "WebSite", "name": "MWP", "url": "https://shop.mw.photography/", "inLanguage": ["en", "he"]},
+], ensure_ascii=False)
+
 html = f'''<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 {LANDING_GUARD}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>MWP · Presets, guides and tools by Matan Wild</title>
-<meta name="description" content="Lightroom presets, a Photoshop plugin and editing guides from wildlife photographer Matan Wild. Instant download, secure checkout.">
+<title>Lightroom Presets &amp; Photoshop Plugin for Wildlife · MWP</title>
+<meta name="description" content="Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural. Instant download.">
 <meta name="theme-color" content="#0A0908">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MWP">
-<meta property="og:title" content="MWP · Presets, guides and tools by Matan Wild">
-<meta property="og:description" content="Lightroom presets, a Photoshop plugin and editing guides from wildlife photographer Matan Wild. Instant download, secure checkout.">
+<meta property="og:title" content="Lightroom Presets &amp; Photoshop Plugin for Wildlife · MWP">
+<meta property="og:description" content="Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural.">
 <link rel="canonical" href="https://shop.mw.photography/">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:url" content="https://shop.mw.photography/">
@@ -188,6 +196,7 @@ html = f'''<!doctype html>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{LD}</script>
 {ICONS}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -228,13 +237,13 @@ html = f'''<!doctype html>
 <div class="head">
 <p class="kick">Bundles</p>
 <h2 class="h2">Shoot with the guides. <span class="b grad">Finish with the tools.</span></h2>
-<p class="lead">MWP Field Guides teach what happens before the click: composition, colour, light and planning, in 4 PDF guides in English or Hebrew. The presets and the Panel carry it on into the edit, in the same look.</p>
+<p class="lead">The Field Guides teach what happens before the click. MWP Presets and MWP Panel carry the same look into Lightroom and Photoshop. Pick the set that matches how you work.</p>
 </div>
 <div class="plans">
 {plan("MWP Field Guides", "Learn it in the field", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
-{plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", "field-guides/#bundles")}
+{plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", "field-guides/#buy")}
 {plan("Presets + Panel", "Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", "panel/#buy")}
-{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#bundles", hi=True)}
+{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>
 </section>
@@ -256,6 +265,7 @@ html = f'''<!doctype html>
 <h2 class="h2">FAQs</h2>
 </div>
 <div class="faq">
+<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Panel</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>
 <details><summary>Do I need an account?</summary><div>Yes. You create one with your email and a password before you pay, so your files and future updates are always waiting for you.</div></details>
@@ -271,8 +281,8 @@ html = f'''<!doctype html>
 <div class="about-body">
 <p class="kick">About Matan</p>
 <h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
-<p class="about-intro">Matan Wild is the founder of a platform built around a community of photographers, real-world experience and a passion for better images.</p>
-<p class="about-more">Drawing on years in the field, Matan shaped an approach around what photographers really need to learn, built to make a real difference in their work.</p>
+<p class="about-intro">Matan Wild founded MW Photo Tours in 2023. He leads wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.</p>
+<p class="about-more">The presets, the panel and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.</p>
 <a class="ghost about-go" href="https://mw.photography" target="_blank" rel="noopener">Visit mw.photography {EXT}</a>
 </div>
 <ul class="roles">

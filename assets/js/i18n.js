@@ -724,6 +724,44 @@ const HE = {
   "From the shot to the share": "מהצילום ועד השיתוף",
   "Get the full set": "לסט המלא",
   "[Bundle prices and discounts: Matan to decide]": "[מחירים והנחות לחבילות: לקביעת מתן]",
+
+  // home and shop, copy rewrite (Oct 2026, drafts for Matan)
+  "Lightroom Presets & Photoshop Plugin for Wildlife · MWP": "פריסטים ללייטרום ופלאגין לפוטושופ לצילום חיות בר · MWP",
+  "Let the animal": "תנו לחיה",
+  "stand out.": "לבלוט.",
+  "Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers. Built from Matan Wild's own edits and lessons from the field, so your photos pop and still look natural.":
+    "פריסטים ללייטרום, פלאגין לפוטושופ ומדריכי שטח לצלמי חיות בר וטבע. נבנו מתוך העריכות והשיעורים של מתן וויילד מהשטח, כדי שהתמונות שלכם יבלטו ועדיין ייראו טבעיות.",
+  "Start with the one you need.": "מתחילים מזה שאתם צריכים.",
+  "To shoot better, start with the Field Guides. If you edit in Lightroom, MWP Presets. If you finish in Photoshop, MWP Panel.":
+    "כדי לצלם טוב יותר, מתחילים במדריכי השטח. אם אתם עורכים בלייטרום, הפריסטים של MWP. אם אתם מסיימים בפוטושופ, הפאנל של MWP.",
+  "See the photo before you press the shutter": "לראות את התמונה לפני שלוחצים",
+  "137 one-page lessons on composition, colour, light and planning. Each one is a real photo from the field, with a drawing that shows why it works.":
+    "137 שיעורים של עמוד אחד על קומפוזיציה, צבע, אור ותכנון. כל שיעור הוא צילום אמיתי מהשטח, עם שרטוט שמראה למה הוא עובד.",
+  "Every guide ends with drills, a checklist and a cheat sheet to take on your next shoot.": "בסוף כל מדריך יש תרגילים, צ׳קליסט ודף סיכום שלוקחים לצילום הבא.",
+  "Presets that find the animal first": "פריסטים שמוצאים קודם את החיה",
+  "50 Lightroom presets built from Matan Wild's wildlife and landscape edits. 12 are adaptive: Lightroom's AI finds the animal, the sky and the background and treats each one on its own.":
+    "50 פריסטים ללייטרום, שנבנו מתוך העריכות של מתן וויילד לצילומי חיות בר ונופים. 12 מהם אדפטיביים: ה-AI של לייטרום מוצא את החיה, את השמיים ואת הרקע, ומטפל בכל אחד בנפרד.",
+  "So the look fits your photo, on desktop, on your phone and, with 33 LUTs, on video.": "כך המראה מתאים לתמונה שלכם, במחשב, בטלפון, ועם 33 קובצי LUT גם בווידאו.",
+  "MWP Presets, Lightroom presets for wildlife photography": "הפריסטים של MWP, פריסטים ללייטרום לצילום חיות בר",
+  "The animal brighter. Your original untouched.": "החיה בהירה יותר. המקור נשאר שלם.",
+  "Photoshop as simple buttons. Pick the animal, the sky or the background, pick an effect, set how strong. The panel builds the mask and the layer for you.":
+    "פוטושופ בכפתורים פשוטים. בוחרים את החיה, את השמיים או את הרקע, בוחרים אפקט וקובעים עוצמה. הפאנל בונה בשבילכם את המסכה ואת השכבה.",
+  "Every edit sits on its own layer, and one undo takes back a whole button.": "כל עריכה יושבת בשכבה משלה, וביטול אחד מחזיר כפתור שלם.",
+  "The Field Guides teach what happens before the click. MWP Presets and MWP Panel carry the same look into Lightroom and Photoshop. Pick the set that matches how you work.":
+    "מדריכי השטח מלמדים מה קורה לפני הקליק. הפריסטים והפאנל של MWP ממשיכים את אותו מראה בלייטרום ובפוטושופ. בחרו את הסט שמתאים לדרך שבה אתם עובדים.",
+  "Which one should I start with?": "במה כדאי להתחיל?",
+  "If you want to shoot better, start with": "אם אתם רוצים לצלם טוב יותר, התחילו עם",
+  ". If you edit in Lightroom,": ". אם אתם עורכים בלייטרום,",
+  ". If you finish your photos in Photoshop,": ". אם אתם מסיימים את התמונות בפוטושופ,",
+  "Matan Wild founded MW Photo Tours in 2023. He leads wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.":
+    "מתן וויילד ייסד את MW Photo Tours ב-2023. הוא מוביל מסעות צילום חיות בר בחו״ל וסדנאות בישראל, מנהל את קהילת הצלמים של MWP ומוציא את המגזין החודשי דה ווילד סייד אוף פוטוגרפי.",
+  "The presets, the panel and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.":
+    "הפריסטים, הפאנל והמדריכים נולדו מהעבודה הזאת: העריכות והשיעורים שהוא חולק עם צלמים בשטח, בצורה שאפשר להשתמש בה בבית.",
+  "Shop Wildlife Lightroom Presets, Photoshop Plugin & Guides · MWP": "חנות: פריסטים ללייטרום, פלאגין לפוטושופ ומדריכים לצילום חיות בר · MWP",
+  "Tools for wildlife and nature photographers, from the shoot to the share.": "כלים לצלמי חיות בר וטבע, מהצילום ועד השיתוף.",
+  "MWP Presets: Lightroom presets for wildlife photography": "הפריסטים של MWP: פריסטים ללייטרום לצילום חיות בר",
+  "MWP Panel: Photoshop plugin for wildlife photo editing": "הפאנל של MWP: פלאגין לפוטושופ לעריכת צילומי חיות בר",
+  "MWP Field Guides: nature photography guides in PDF": "מדריכי השטח של MWP: מדריכי צילום טבע ב-PDF",
 };
 
 // Text built from numbers or names.

@@ -199,9 +199,9 @@ page("index.html",
 CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The three products (wording from the home page) and the bundles (the home page's bundle cards)
-TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "Your signature look starts here", "mwp-presets"),
-         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop plugin", "Panel", "Everything you need. All in one place.", "mwp-panel"),
-         ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "Learn the process behind the shot", "mwp-field-guides")]
+TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "Presets that find the animal first", "mwp-presets", "MWP Presets: Lightroom presets for wildlife photography"),
+         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop plugin", "Panel", "The animal brighter. Your original untouched.", "mwp-panel", "MWP Panel: Photoshop plugin for wildlife photo editing"),
+         ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "See the photo before you press the shutter", "mwp-field-guides", "MWP Field Guides: nature photography guides in PDF")]
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", False),
            ("Presets + Panel", "Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", False),
            ("The full set", "From the shot to the share", "full-set", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
@@ -212,8 +212,8 @@ def _img(prefix):
     return "assets/pages/img/" + os.path.basename(sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix[:8] + "*")))[0])
 
 
-def _tile(href, im, tag, name, line, slug):
-    return (f'<a class="tile" href="/{href}"><img src="{_img(im)}" alt="" loading="lazy"><p class="kick">{tag}</p>'
+def _tile(href, im, tag, name, line, slug, alt):
+    return (f'<a class="tile" href="/{href}"><img src="{_img(im)}" alt="{alt}" loading="lazy"><p class="kick">{tag}</p>'
             f'<h2 data-no-i18n>MWP <span class="grad">{name}</span></h2><p>{line}</p>'
             f'<div class="foot"><span class="price"><span data-price="{slug}" data-no-i18n>$0.00</span></span><span class="go">Explore {GO}</span></div></a>')
 
@@ -225,12 +225,13 @@ def _bundle(name, sub, slug, pts, cta, hi):
             f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
 
 
-page("shop.html", "All products · MWP",
- "Lightroom presets, a Photoshop plugin, guides and bundles from wildlife photographer Matan Wild.",
+page("shop.html", "Shop Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP",
+ "All MWP products in one place: Lightroom presets, a Photoshop plugin and nature photography field guides by Matan Wild, alone or in bundles. Instant download, free updates.",
  f"""  <section class="page-hero">
     <div class="container">
       <p class="kick">The collection</p>
       <h1 class="display" id="shop-title">All products</h1>
+      <p class="lead">Tools for wildlife and nature photographers, from the shoot to the share.</p>
     </div>
   </section>
   <section class="section--tight" aria-labelledby="shop-title">

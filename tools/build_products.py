@@ -43,12 +43,14 @@ UI = {
            "hint": "Drag the handle to compare.", "faq_kick": "Before you buy", "faq": "FAQs",
            "spec_kick": "What you get", "spec_h": "What's in the download.", "price_kick": "Get it",
            "trust": "Instant download · Secure checkout · Free updates", "terms": "Full terms",
-           "more": "Questions about your setup?", "examples": "Choose an example", "examples_n": "examples", "next_ex": "Next example", "next_page": "Next page", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside"},
+           "more": "Questions about your setup?", "examples": "Choose an example", "examples_n": "examples", "next_ex": "Next example", "next_page": "Next page", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside",
+           "raw_alt": "the RAW file before editing", "final_alt": "the finished edit", "home": "Home"},
     "he": {"buy": "לרכישה", "prev": "הקודם", "next": "הבא", "page": "עמוד", "raw": "RAW", "final": "סופי",
            "hint": "גררו את הידית כדי להשוות.", "faq_kick": "לפני שקונים", "faq": "שאלות נפוצות",
            "spec_kick": "מה מקבלים", "spec_h": "מה יש בהורדה.", "price_kick": "לרכישה",
            "trust": "הורדה מיידית · תשלום מאובטח · עדכונים חינם", "terms": "התנאים המלאים",
-           "more": "שאלות על ההתקנה?", "examples": "בחרו דוגמה", "examples_n": "דוגמאות", "next_ex": "לדוגמה הבאה", "next_page": "לעמוד הבא", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים"},
+           "more": "שאלות על ההתקנה?", "examples": "בחרו דוגמה", "examples_n": "דוגמאות", "next_ex": "לדוגמה הבאה", "next_page": "לעמוד הבא", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים",
+           "raw_alt": "קובץ ה-RAW לפני העריכה", "final_alt": "העריכה הסופית", "home": "דף הבית"},
 }
 
 # ---------------------------------------------------------------- the products
@@ -61,10 +63,11 @@ P["presets"] = dict(
     bundle="full-set",
     en=dict(
         name="MWP Presets", name_html='MWP <span class="grad">Presets</span>',
-        title="Lightroom presets for wildlife and landscapes · MWP Presets",
-        desc="50 Lightroom presets and 33 video LUTs built from the MWP edits of wildlife and landscapes. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.",
-        kick="MWP Presets · Lightroom", h1=["The look behind every MWP frame.", "Now one click away."],
-        lead="50 Lightroom presets built from the MWP edits of wildlife and landscapes. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.",
+        title="Lightroom Presets for Wildlife Photography · MWP Presets",
+        desc="50 Lightroom presets for wildlife and landscape photos, 12 of them adaptive: AI masks treat the animal, the sky and the background separately. With 50 mobile DNGs and 33 video LUTs.",
+        hero_alt="Lioness in golden grass, photographed by Matan Wild",
+        kick="MWP Presets · Lightroom presets for wildlife", h1=["Presets that find", "the animal first."],
+        lead="50 Lightroom presets built from Matan Wild's wildlife and landscape edits. 12 are adaptive: Lightroom's AI finds the animal, the sky and the background, so the look fits your photo. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.",
         cta="Get MWP Presets", cta2="Compare RAW and final",
         facts=["50 presets, 12 of them adaptive", "Desktop and mobile", "33 LUTs for video"],
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["Your RAW file.", "In MWP light."],
@@ -86,17 +89,18 @@ P["presets"] = dict(
                ("33", "LUTs", ".cube for Photoshop and video editors: Premiere Pro, DaVinci Resolve and Final Cut Pro"),
                ("1", "Install guide", "A page for each program, step by step")],
         spec_note="Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+.",
-        final_kick="MWP Presets", final_h=["The MWP signature look,", "ready for your next photo."],
-        final_lead="50 presets, 50 mobile files, 33 LUTs and an install guide in one download.",
+        final_kick="MWP Presets", final_h=["The MWP look,", "ready for your next photo."],
+        final_lead="50 presets, 50 mobile files, 33 LUTs and an install guide in one download. Free updates, in your account for good.",
         plan=("MWP Presets", "Edit in Lightroom", ["50 Lightroom presets, 12 adaptive", "50 mobile files and 33 LUTs", "Install guide for every program"], "Get MWP Presets"),
         plan2=("The full set", "From the shot to the share", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
     ),
     he=dict(
         name="הפריסטים של MWP", name_html='הפריסטים של <span class="grad">MWP</span>',
-        title="הפריסטים של MWP",
-        desc="50 פריסטים ללייטרום ו־33 קובצי LUT לווידאו, שנבנו מתוך העריכות של MWP לצילומי חיות בר ונופים. ללייטרום קלאסיק, ללייטרום, ללייטרום מובייל ולקאמרה ראו.",
-        kick="הפריסטים של MWP · לייטרום", h1=["המראה של כל פריים של MWP.", "עכשיו בקליק אחד."],
-        lead="50 פריסטים ללייטרום, שנבנו מתוך העריכות של MWP לצילומי חיות בר ונופים. ללייטרום קלאסיק, ללייטרום, ללייטרום מובייל ולקאמרה ראו.",
+        title="פריסטים ללייטרום לצילום חיות בר · הפריסטים של MWP",
+        desc="50 פריסטים ללייטרום לצילומי חיות בר ונופים, 12 מהם אדפטיביים: מסכות AI מטפלות בנפרד בחיה, בשמיים וברקע. עם 50 קובצי DNG לנייד ו־33 קובצי LUT לווידאו.",
+        hero_alt="לביאה בעשב זהוב, צילום: מתן וויילד",
+        kick="הפריסטים של MWP · פריסטים ללייטרום לחיות בר", h1=["פריסטים שמוצאים", "קודם את החיה."],
+        lead="50 פריסטים ללייטרום, שנבנו מתוך העריכות של מתן וויילד לצילומי חיות בר ונופים. 12 מהם אדפטיביים: ה־AI של לייטרום מוצא את החיה, את השמיים ואת הרקע, כך שהמראה מתאים לתמונה שלכם. ללייטרום קלאסיק, ללייטרום, ללייטרום מובייל ולקאמרה ראו.",
         cta="לרכישת הפריסטים של MWP", cta2="מ-RAW לתמונה הסופית",
         facts=["50 פריסטים, 12 מהם אדפטיביים", "למחשב ולנייד", "33 קובצי LUT לווידאו"],
         proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["קובץ ה-RAW שלכם.", "באור של MWP."],
@@ -119,7 +123,7 @@ P["presets"] = dict(
                ("1", "מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד")],
         spec_note="הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה.",
         final_kick="הפריסטים של MWP", final_h=["המראה של MWP,", "מוכן לתמונה הבאה שלכם."],
-        final_lead="50 פריסטים, 50 קבצים לנייד, 33 קובצי LUT ומדריך התקנה, בהורדה אחת.",
+        final_lead="50 פריסטים, 50 קבצים לנייד, 33 קובצי LUT ומדריך התקנה, בהורדה אחת. עדכונים בחינם, והכול נשמר בחשבון שלכם.",
         plan=("הפריסטים של MWP", "עורכים בלייטרום", ["50 פריסטים ללייטרום, 12 אדפטיביים", "50 קבצים לנייד ו-33 קובצי LUT", "מדריך התקנה לכל תוכנה"], "לרכישת הפריסטים של MWP"),
         plan2=("הסט המלא", "מהצילום ועד השיתוף", ["הפריסטים של MWP: ‏50 פריסטים ו-33 קובצי LUT", "הפאנל של MWP: הפלאגין לפוטושופ", "מדריכי השטח של MWP: ‏4 מדריכי PDF, ‏137 שיעורים"], "לסט המלא"),
     ),
@@ -132,16 +136,18 @@ P["panel"] = dict(
     bundle="presets-panel",
     en=dict(
         name="MWP Panel", name_html='MWP <span class="grad">Panel</span>',
-        title="MWP Panel by Matan Wild",
-        desc="MWP Panel, a Photoshop plugin: the way we edit on our expeditions, built in as simple buttons. Pick the animal or the sky, pick an effect, set how strong.",
-        kick="MWP Panel · Photoshop plugin", h1=["You were there.", "Now make the photo show it."],
-        lead="The way we edit on our expeditions, built into Photoshop as simple buttons. Pick the animal or the sky, pick an effect, set how strong. Your original stays as it was.",
+        title="Photoshop Plugin for Wildlife Photo Editing · MWP Panel",
+        desc="MWP Panel is a Photoshop plugin for wildlife and nature photographers. Pick the animal, the sky or the background, pick an effect, set the strength. Every edit on its own layer, your original untouched.",
+        hero_alt="A tiger, photographed by Matan Wild",
+        kick="MWP Panel · Photoshop plugin for wildlife", h1=["You were there.", "Now make the photo show it."],
+        lead="The way we edit on our expeditions, built into Photoshop as simple buttons. Pick the animal, the sky or the background, pick an effect, set how strong. The panel builds the mask and the layer, and your original stays untouched.",
         cta="Get MWP Panel", cta2="Compare RAW and final",
-        facts=["8 one-click effects", "11 looks and 4 painted lights", "Photoshop 2023 or newer · Mac and Windows"],
+        facts=["8 one-click effects", "No layers or masks to learn", "Photoshop 2023 or newer · Mac and Windows"],
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The animal brighter.", "The sky calmer."],
         proof_lead="Choose the subject or the sky, then an effect. The panel builds the mask and puts the edit on its own layer.",
         pairs=["Subject · Pop", "Background · Darken"],
-        inside_kick="What's inside", inside_h=["Four tabs,", "in the order you edit."], inside_lead="",
+        inside_kick="What's inside", inside_h=["Four tabs,", "in the order you edit."],
+        inside_lead="From the first crop to the Instagram copy, without leaving the panel.",
         cards=[("Prepare", "Crop around the animal, straighten, find and erase dust, denoise. Neutral color in one tap.", "Iceberg under storm light"),
                ("Edit", "Subject, eye, sky, background, lights, darks or any color. 8 effects. Paint them in or out.", "Red fox looking at the camera"),
                ("Style", "11 looks from golden to blue hour to B&W. Sun glow, sunbeams, rim light, spotlight.", "Lion walking, black and white"),
@@ -157,23 +163,25 @@ P["panel"] = dict(
                ("", "Installation Guide · PDF", "Setup step by step, with fixes for common problems."),
                ("", "Built-in guide", "Hover tips and a full help page inside the panel.")],
         spec_note="Works with Photoshop 2023 (24.2) or newer on Mac and Windows. Not for Lightroom, iPad or phones.",
-        final_kick="MWP Panel", final_h=["MWP Panel", "for Photoshop."],
-        final_lead="The plugin with both PDF guides. Or together with MWP Presets, for Photoshop and Lightroom in the same look.",
+        final_kick="MWP Panel", final_h=["Make the photo", "show what you saw."],
+        final_lead="The plugin with both PDF guides and free updates. Or together with MWP Presets, for Lightroom and Photoshop in the same look.",
         plan=("MWP Panel", "Photoshop plugin", ["Photoshop plugin, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get MWP Panel"),
         plan2=("MWP Panel + MWP Presets", "Photoshop and Lightroom", ["Everything in MWP Panel", "50 Lightroom presets in the same look", "Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw"], "Get the bundle"),
     ),
     he=dict(
         name="הפאנל של MWP", name_html='הפאנל של <span class="grad">MWP</span>',
-        title="הפאנל של MWP",
-        desc="הפאנל של MWP, פלאגין לפוטושופ: הדרך שבה אנחנו עורכים במסעות שלנו, בכפתורים פשוטים. בוחרים את החיה או את השמיים, בוחרים אפקט וקובעים עוצמה.",
-        kick="הפאנל של MWP · פלאגין לפוטושופ", h1=["הייתם שם.", "עכשיו תנו לתמונה להראות את זה."],
-        lead="הדרך שבה אנחנו עורכים במסעות שלנו, בתוך פוטושופ ובכפתורים פשוטים. בוחרים את החיה או את השמיים, בוחרים אפקט וקובעים עוצמה. המקור נשאר כמו שהוא.",
+        title="פלאגין לפוטושופ לעריכת צילומי חיות בר · הפאנל של MWP",
+        desc="הפאנל של MWP הוא פלאגין לפוטושופ לצלמי חיות בר וטבע. בוחרים את החיה, את השמיים או את הרקע, בוחרים אפקט וקובעים עוצמה. כל עריכה בשכבה משלה, והמקור נשאר שלם.",
+        hero_alt="טיגריס, צילום: מתן וויילד",
+        kick="הפאנל של MWP · פלאגין לפוטושופ לחיות בר", h1=["הייתם שם.", "עכשיו תנו לתמונה להראות את זה."],
+        lead="הדרך שבה אנחנו עורכים במסעות שלנו, בתוך פוטושופ ובכפתורים פשוטים. בוחרים את החיה, את השמיים או את הרקע, בוחרים אפקט וקובעים עוצמה. הפאנל בונה את המסכה ואת השכבה, והמקור נשאר שלם.",
         cta="לקבלת הפאנל של MWP", cta2="מ-RAW לתמונה הסופית",
-        facts=["8 אפקטים בלחיצה", "11 לוקים ו-4 תאורות מצוירות", "פוטושופ 2023 ומעלה · מק ו־ווינדוס"],
+        facts=["8 אפקטים בלחיצה", "בלי ללמוד שכבות ומסכות", "פוטושופ 2023 ומעלה · מק ו־ווינדוס"],
         proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["החיה בהירה יותר.", "השמיים רגועים יותר."],
         proof_lead="בוחרים את הנושא או את השמיים, ואז אפקט. הפאנל בונה את המסכה ושם את העריכה בשכבה נפרדת.",
         pairs=["נושא · הבלטה", "רקע · הכהיה"],
-        inside_kick="מה יש בפנים", inside_h=["ארבע לשוניות,", "לפי סדר העריכה."], inside_lead="",
+        inside_kick="מה יש בפנים", inside_h=["ארבע לשוניות,", "לפי סדר העריכה."],
+        inside_lead="מהחיתוך הראשון ועד העותק לאינסטגרם, בלי לצאת מהפאנל.",
         cards=[("הכנה", "חיתוך סביב החיה, יישור, איתור ומחיקה של כתמי אבק, הפחתת רעש. צבע ניטרלי בנגיעה אחת.", "קרחון באור סערה"),
                ("עריכה", "נושא, עין, שמיים, רקע, אזורים בהירים או כהים, או כל צבע. 8 אפקטים, שאפשר להוסיף או למחוק במכחול.", "שועל אדום מביט במצלמה"),
                ("סגנון", "11 לוקים, מזהוב ועד שעה כחולה ושחור-לבן. זוהר שמש, קרני אור, תאורת קצה וזרקור.", "אריה הולך, בשחור-לבן"),
@@ -189,8 +197,8 @@ P["panel"] = dict(
                ("", "מדריך התקנה · PDF", "התקנה צעד אחרי צעד, עם פתרונות לבעיות נפוצות."),
                ("", "מדריך מובנה", "טיפים במעבר עכבר ועמוד עזרה מלא בתוך הפאנל.")],
         spec_note="עובד עם פוטושופ 2023 (‏24.2) ומעלה, במק ובווינדוס. לא ללייטרום, לאייפד או לטלפון.",
-        final_kick="הפאנל של MWP", final_h=["הפאנל של MWP", "לפוטושופ."],
-        final_lead="הפלאגין עם שני מדריכי ה-PDF. או יחד עם הפריסטים של MWP, לפוטושופ וללייטרום באותו לוק.",
+        final_kick="הפאנל של MWP", final_h=["תנו לתמונה", "להראות את מה שראיתם."],
+        final_lead="הפלאגין עם שני מדריכי ה-PDF ועדכונים בחינם. או יחד עם הפריסטים של MWP, ללייטרום ולפוטושופ באותו לוק.",
         plan=("הפאנל של MWP", "פלאגין לפוטושופ", ["פלאגין לפוטושופ, מק ו־ווינדוס", "מדריך למשתמש · PDF, ‏21 עמודים", "מדריך התקנה · PDF"], "לקבלת הפאנל של MWP"),
         plan2=("הפאנל + הפריסטים של MWP", "פוטושופ ולייטרום", ["כל מה שיש בהפאנל של MWP", "50 פריסטים ללייטרום באותו לוק", "לייטרום קלאסיק, לייטרום, לייטרום מובייל, קאמרה ראו"], "לקבלת החבילה"),
     ),
@@ -205,9 +213,10 @@ P["field-guides"] = dict(
     bundle="full-set",
     en=dict(
         name="MWP Field Guides", name_html='MWP <span class="grad">Field Guides</span>',
-        title="MWP Field Guides",
-        desc="MWP Field Guides: four visual guides with 137 short lessons on composition, colour, light and planning, each one a real photo from the field.",
-        kick="MWP Field Guides · by Matan Wild", h1=["See the photo", "before you press the shutter."],
+        title="Nature Photography Guides (PDF) · MWP Field Guides",
+        desc="Four visual nature photography guides with 137 one-page lessons on composition, colour, light and planning. Every lesson is a real photo from the field with a drawing that shows why it works. PDF, English or Hebrew.",
+        hero_alt="Mountains at dusk, photographed by Matan Wild",
+        kick="MWP Field Guides · nature photography guides", h1=["See the photo", "before you press the shutter."],
         lead="Four visual guides with 137 short lessons: composition, colour, light and planning. Every lesson is a real photo from the field, with a drawing that shows exactly why it works.",
         cta="Get the guides", cta2="Look inside", facts=["137 lessons", "English or Hebrew", "PDF for any device"],
         proof_label="Look inside", proof_kick="Look inside", proof_h=["This is what every", "lesson looks like."],
@@ -230,16 +239,17 @@ P["field-guides"] = dict(
                ("31", "Tools and diagrams", "With drills, a checklist and a cheat sheet in every guide"),
                ("229", "Pages", "PDF for any device, in English or Hebrew: you choose one language")],
         spec_note="",
-        final_kick="MWP Field Guides", final_h=["Ready to shoot", "differently?"],
+        final_kick="MWP Field Guides", final_h=["Your next shoot", "starts on page one."],
         final_lead="4 guides, 137 lessons and 229 pages of composition, colour, light and planning. In English or Hebrew, in one set.",
         plan=("MWP Field Guides", "Learn to shoot: before the click", ["4 field guides, English or Hebrew", "137 lessons, 229 pages", "Cheat sheets, drills and checklists"], "Get the guides"),
         plan2=("The full set", "From the shot to the share", ["MWP Field Guides: 4 PDF guides, 137 lessons", "MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin"], "Get the full set"),
     ),
     he=dict(
         name="מדריכי השטח של MWP", name_html='מדריכי השטח של <span class="grad">MWP</span>',
-        title="מדריכי השטח של MWP",
-        desc="מדריכי השטח של MWP: ארבעה מדריכים חזותיים עם 137 שיעורים קצרים על קומפוזיציה, צבע, אור ותכנון. כל שיעור הוא צילום אמיתי מהשטח.",
-        kick="מדריכי השטח של MWP · מאת מתן וויילד", h1=["לראות את התמונה", "לפני שלוחצים."],
+        title="מדריכי צילום טבע ב-PDF · מדריכי השטח של MWP",
+        desc="ארבעה מדריכי צילום טבע חזותיים עם 137 שיעורים של עמוד אחד על קומפוזיציה, צבע, אור ותכנון. כל שיעור הוא צילום אמיתי מהשטח, עם שרטוט שמראה למה הוא עובד. PDF, בעברית או באנגלית.",
+        hero_alt="הרים בדמדומים, צילום: מתן וויילד",
+        kick="מדריכי השטח של MWP · מדריכי צילום טבע", h1=["לראות את התמונה", "לפני שלוחצים."],
         lead="4 מדריכים דיגיטליים עם 137 שיעורים קצרים: קומפוזיציה, צבע, אור ותכנון. כל שיעור הוא צילום אמיתי מהשטח, עם שרטוט שמראה בדיוק למה הוא עובד.",
         cta="לרכישת הסט", cta2="הציצו פנימה", facts=["137 שיעורים", "עברית או אנגלית", "PDF לכל מכשיר"],
         proof_label="הצצה פנימה", proof_kick="הצצה פנימה", proof_h=["ככה נראה", "כל שיעור."],
@@ -262,7 +272,7 @@ P["field-guides"] = dict(
                ("31", "כלים ודיאגרמות", "ובכל מדריך תרגילים, צ׳קליסט ודף סיכום"),
                ("229", "עמודים", "PDF לכל מכשיר, בעברית או באנגלית: בוחרים שפה אחת")],
         spec_note="",
-        final_kick="מדריכי השטח של MWP", final_h=["מוכנים", "לצלם אחרת?"],
+        final_kick="מדריכי השטח של MWP", final_h=["הצילום הבא שלכם", "מתחיל בעמוד הראשון."],
         final_lead="4 מדריכים, 137 שיעורים ו-229 עמודים של קומפוזיציה, צבע, אור ותכנון. בעברית או באנגלית, בסט אחד.",
         plan=("מדריכי השטח של MWP", "לומדים לצלם: לפני הקליק", ["4 מדריכי שטח, עברית או אנגלית", "137 שיעורים, 229 עמודים", "דפי סיכום, תרגילים וצ׳קליסטים"], "לרכישת הסט"),
         plan2=("הסט המלא", "מהצילום ועד השיתוף", ["מדריכי השטח של MWP: ‏4 מדריכי PDF, ‏137 שיעורים", "הפריסטים של MWP: ‏50 פריסטים ו-33 קובצי LUT", "הפאנל של MWP: הפלאגין לפוטושופ"], "לסט המלא"),
@@ -278,6 +288,21 @@ def h(lines, tag="h2", cls="h2"):
 
 def price(slug, lang, was=False):
     return f'<span data-price="{slug}"{" data-was" if was else ""} data-no-i18n>{ZERO[lang]}</span>'
+
+
+def structured(folder, lang, url):
+    """schema.org data for search engines: the breadcrumb trail and the page's FAQs.
+    No Product markup yet: Google wants a price in it, and the prices are set in the admin (add it once they are)."""
+    c, u = P[folder][lang], UI[lang]
+    data = [
+        {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": u["home"], "item": f"{SITE}/"},
+            {"@type": "ListItem", "position": 2, "name": c["name"], "item": url}]},
+        {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": lang, "mainEntity": [
+            {"@type": "Question", "name": f["q"], "acceptedAnswer": {"@type": "Answer", "text": f["a"]}}
+            for f in FAQS[folder][lang]]},
+    ]
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 
 def nav_right(lang, folder):
@@ -304,7 +329,7 @@ def page(folder, lang):
     # hero
     facts = "".join(f"<li>{esc(f)}</li>" for f in c["facts"])
     parts.append(f'''<section class="hero" id="top">
-<img src="{img(p["hero_img"])}" alt="" fetchpriority="high" style="object-position:{p["hero_pos"]}">
+<img src="{img(p["hero_img"])}" alt="{esc(c["hero_alt"])}" fetchpriority="high" style="object-position:{p["hero_pos"]}">
 <div class="vf" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 <div class="wrap">
 <p class="kick in" style="--i:0">{esc(c["kick"])}</p>
@@ -329,8 +354,8 @@ def page(folder, lang):
                 + f'</div>{bar}</div>')
     if p["proof_type"] == "ba":
         slides = [f'''<div class="ba">
-<img class="before" src="{img(b)}" alt="{esc(lab)} · {u["raw"]}" loading="lazy">
-<img class="after" src="{img(a)}" alt="{esc(lab)} · {u["final"]}" loading="lazy">
+<img class="before" src="{img(b)}" alt="{esc(c["name"])}, {esc(lab)}: {u["raw_alt"]}" loading="lazy">
+<img class="after" src="{img(a)}" alt="{esc(c["name"])}, {esc(lab)}: {u["final_alt"]}" loading="lazy">
 <span class="tag t1">{u["raw"]}</span><span class="tag t2">{u["final"]}</span>
 <span class="line"></span><span class="knob">{GRIP}</span>
 <input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
@@ -443,8 +468,10 @@ def page(folder, lang):
 <meta property="og:type" content="website"><meta property="og:site_name" content="MWP">
 <meta property="og:title" content="{esc(c["title"])}"><meta property="og:description" content="{esc(c["desc"])}">
 <meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}{img(p["hero_img"])}">
+<meta property="og:image:alt" content="{esc(c["hero_alt"])}"><meta property="og:locale" content="{"he_IL" if he else "en_US"}">
 <meta name="twitter:card" content="summary_large_image">
 {ICONS}
+<script type="application/ld+json">{structured(folder, lang, url)}</script>
 <link rel="preload" as="image" href="{img(p["hero_img"])}" fetchpriority="high">
 <link rel="stylesheet" href="/assets/css/product.css?v={CSS_V}">
 <style id="site-nav">{NAV_CSS}{SITE_CSS}</style>
