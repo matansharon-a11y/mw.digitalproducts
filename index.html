@@ -3,13 +3,6 @@
 <head>
 <meta charset="utf-8">
 <script>try{if(localStorage.getItem("mwp_lang")==="he")location.replace("/he/"+location.search+location.hash)}catch(e){}</script>
-<script>(function(){try{
-if(sessionStorage.getItem("mwp_landed"))return;
-if(document.referrer&&new URL(document.referrer).origin===location.origin)return;
-for(var i=0;i<localStorage.length;i++){if(/^sb-.+-auth-token$/.test(localStorage.key(i))){
-var d=document.documentElement;d.style.visibility="hidden";
-setTimeout(function(){d.style.visibility=""},2500);return}}
-}catch(e){}})();</script>
 <script>try{if(localStorage.getItem("mwp_lang")==="he"){var d=document.documentElement;d.lang="he";d.dir="rtl";d.classList.add("he-wait");setTimeout(function(){d.classList.remove("he-wait")},1500)}}catch(e){}</script><style>html.he-wait body{visibility:hidden}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lightroom Presets &amp; Photoshop Plugin for Wildlife · MWP</title>
@@ -1269,8 +1262,6 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
   import { initI18n } from "./assets/js/i18n.js";
   import { initCart } from "./assets/js/lib/cart.js";
   import { initPrices } from "./assets/js/lib/prices.js";
-  import { ambassadorLanding } from "./assets/js/lib/landing.js";
-  ambassadorLanding();
   initI18n();
   initCart();
   initPrices();
