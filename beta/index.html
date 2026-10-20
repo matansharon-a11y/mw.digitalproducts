@@ -13,7 +13,7 @@ setTimeout(function(){d.style.visibility=""},2500);return}}
 <title>MWP Ambassador Program</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#0A0908">
-<link rel="icon" href="../assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png">
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <style>
 
 *,*::before,*::after{box-sizing:border-box}
@@ -259,8 +259,9 @@ html.nav-scrolled .nav{background:rgba(10,9,8,.66);border-bottom-color:rgba(254,
 html .nav .wrap{display:flex;align-items:center;justify-content:flex-start;gap:28px;height:80px;transition:height .35s ease}
 html.nav-scrolled .nav .wrap{height:64px}
 html .nav .brand{display:flex;align-items:center;gap:12px;color:#FEFBF1;text-decoration:none;direction:ltr;flex:none}
-html .nav .brand img{width:30px;height:30px;object-fit:contain;opacity:.95}
-html .nav .brand span{display:inline;font:700 12px/1 Montserrat,Heebo,sans-serif;letter-spacing:.34em}
+html .nav .brand img{width:auto;height:38px;object-fit:contain;opacity:.95;transition:opacity .25s,transform .45s cubic-bezier(.2,.7,.2,1)}
+html .nav .brand:hover img{opacity:1;transform:scale(1.04)}
+html.nav-scrolled .nav .brand img{height:34px}
 html .nav .links{display:flex;align-items:center;gap:34px;margin-inline:auto}
 html .nav .links a{position:relative;padding:8px 0;color:rgba(254,251,241,.66);text-decoration:none;white-space:nowrap;font:500 13px/1 Montserrat,Heebo,sans-serif;letter-spacing:.06em;transition:color .25s ease}
 html .nav .links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,#E4AA7C,#F4AF56);transform:scaleX(0);transform-origin:center;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
@@ -286,7 +287,7 @@ html .nav .navr .btn.sm:hover{transform:translateY(-1px);filter:brightness(1.06)
 @media (max-width:1280px){html .nav .links{gap:24px}html .nav .links a{font-size:12px}}
 html .nav .links + .navr{margin-inline-start:0}
 @media (max-width:1100px){html .nav .links{display:none}html .nav .navr,html .nav .links + .navr{margin-inline-start:auto}}
-@media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .brand span{display:none}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
+@media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
 
 /* Beta page: one steady header. No height change and no blur when scrolling or hovering (the page is
    short, and a blur over the big photo can flicker in Chrome on Windows). */
@@ -303,7 +304,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <body>
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
-<a class="brand" href="../" aria-label="MWP, home"><img src="../assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
+<a class="brand" href="/" aria-label="MWP, home"><img src="/assets/img/logo-mark.png" alt="MWP" width="36" height="38"></a>
 <div class="navr"></div>
 </div>
 </nav>
@@ -329,7 +330,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <button type="button" class="modal-x" data-close aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 
 <header class="sh-head">
-<div class="sh-brand"><img src="../assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><p class="kick">MWP Ambassador Program</p></div>
+<div class="sh-brand"><img src="/assets/img/logo-mark.png" alt=""><p class="kick">MWP Ambassador Program</p></div>
 <h2 class="sh-title" id="terms-h">Terms of <span class="grad">Use.</span></h2>
 <p class="sh-meta only-en" data-no-i18n>Oct 13, 2026 · Matan Wild</p>
 <p class="sh-meta only-he" lang="he" dir="rtl" data-no-i18n>13 באוקטובר 2026 · מתן וויילד</p>
@@ -400,7 +401,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 </main>
 
 <script src="../assets/js/lib/nav.js" defer></script>
-<script type="module" src="../assets/js/pages/beta.js?v=3f41c7ce"></script>
+<script type="module" src="../assets/js/pages/beta.js?v=57f91f3e"></script>
 <script>setTimeout(function(){document.querySelectorAll(".reveal").forEach(function(e){e.classList.add("on")})},1200)</script>
 </body>
 </html>

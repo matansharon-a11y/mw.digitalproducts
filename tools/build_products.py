@@ -10,7 +10,7 @@ Run: python3 tools/build_products.py
 """
 import glob, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer
+from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://shop.mw.photography"
@@ -443,7 +443,7 @@ def page(folder, lang):
 <meta property="og:title" content="{esc(c["title"])}"><meta property="og:description" content="{esc(c["desc"])}">
 <meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}{img(p["hero_img"])}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png">
+{ICONS}
 <link rel="preload" as="image" href="{img(p["hero_img"])}" fetchpriority="high">
 <link rel="stylesheet" href="/assets/css/product.css?v={CSS_V}">
 <style id="site-nav">{NAV_CSS}{SITE_CSS}</style>
@@ -453,7 +453,7 @@ def page(folder, lang):
 <a class="skip" href="#main">{"דילוג לתוכן" if he else "Skip to content"}</a>
 <nav class="nav site-header" aria-label="{"ראשי" if he else "Main"}">
 <div class="wrap container">
-<a class="brand" href="/" aria-label="MWP, home"><img src="/assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
+{BRAND}
 <div class="links">{site_links(lang, f"/{folder}/")}</div>
 {nav_right(lang, folder)}
 {menu_button(lang)}

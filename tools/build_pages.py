@@ -1,7 +1,7 @@
 """Generates the MWP's static pages with one shared head, header and footer."""
 import re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
@@ -35,7 +35,7 @@ def head(title, desc, path, extra="", early=""):
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  {ICONS}
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   {SITE_HEAD}{extra}
@@ -48,7 +48,7 @@ HEADER = f"""<body>
 <a class="skip-link" href="#main">Skip to content</a>
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
-<a class="brand" href="/" aria-label="MWP, home"><img src="assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
+{BRAND}
 <div class="links">{site_links()}</div>
 <div class="navr"></div>
 {menu_button()}

@@ -6,7 +6,7 @@ Bring the three sales pages (EN + HE) in line with the home page: gold palette, 
 the comparison sliders. Page content and layout stay as Matan designed them. Safe to run again."""
 import re, sys, os
 sys.path.insert(0, os.path.dirname(__file__))
-from brand import CART, USER, gold, NAV_CSS, FONTS, BUNDLE_CSS, SITE_CSS, site_links, menu_button, site_footer, use_webp
+from brand import CART, USER, gold, NAV_CSS, FONTS, BUNDLE_CSS, SITE_CSS, site_links, menu_button, site_footer, use_webp, BRAND, ICONS
 from sales_he import hebrew
 from img_loading import prioritize
 
@@ -129,7 +129,7 @@ for path, lang in PAGES.items():
     s = gold(s)
     # header: home-page brand (logo + MWP, links home), Help + icons + language toggle
     s = re.sub(r'<a class="brand" href="[^"]*"[^>]*><img src="[^"]+" alt="[^"]*"><span>[^<]*</span></a>',
-               r'<a class="brand" href="../" aria-label="MWP, home"><img src="../assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>', s, count=1)
+               BRAND, s, count=1)
     # header: icons + language toggle only (no "Get ..." button: every page already has one in its buy section)
     s = re.sub(r'<div class="navr">.*?</div>(?=\s*</div>\s*</nav>)', lambda m: navr(lang), s, count=1, flags=re.S)
     # the site's one menu (the same on every page), with a menu button for phones

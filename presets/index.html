@@ -14,7 +14,7 @@
 <meta property="og:title" content="Lightroom presets for wildlife and landscapes · MWP Presets"><meta property="og:description" content="50 Lightroom presets and 33 video LUTs built from the MWP edits of wildlife and landscapes. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.">
 <meta property="og:url" content="https://shop.mw.photography/presets/"><meta property="og:image" content="https://shop.mw.photography/assets/pages/img/6fbe4f2a1e8774797e76a9165fd05e51.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png">
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preload" as="image" href="/assets/pages/img/6fbe4f2a1e8774797e76a9165fd05e51.jpg" fetchpriority="high">
 <link rel="stylesheet" href="/assets/css/product.css?v=952a46fa">
 <style id="site-nav">
@@ -23,8 +23,9 @@ html.nav-scrolled .nav{background:rgba(10,9,8,.66);border-bottom-color:rgba(254,
 html .nav .wrap{display:flex;align-items:center;justify-content:flex-start;gap:28px;height:80px;transition:height .35s ease}
 html.nav-scrolled .nav .wrap{height:64px}
 html .nav .brand{display:flex;align-items:center;gap:12px;color:#FEFBF1;text-decoration:none;direction:ltr;flex:none}
-html .nav .brand img{width:30px;height:30px;object-fit:contain;opacity:.95}
-html .nav .brand span{display:inline;font:700 12px/1 Montserrat,Heebo,sans-serif;letter-spacing:.34em}
+html .nav .brand img{width:auto;height:38px;object-fit:contain;opacity:.95;transition:opacity .25s,transform .45s cubic-bezier(.2,.7,.2,1)}
+html .nav .brand:hover img{opacity:1;transform:scale(1.04)}
+html.nav-scrolled .nav .brand img{height:34px}
 html .nav .links{display:flex;align-items:center;gap:34px;margin-inline:auto}
 html .nav .links a{position:relative;padding:8px 0;color:rgba(254,251,241,.66);text-decoration:none;white-space:nowrap;font:500 13px/1 Montserrat,Heebo,sans-serif;letter-spacing:.06em;transition:color .25s ease}
 html .nav .links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,#E4AA7C,#F4AF56);transform:scaleX(0);transform-origin:center;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
@@ -50,7 +51,7 @@ html .nav .navr .btn.sm:hover{transform:translateY(-1px);filter:brightness(1.06)
 @media (max-width:1280px){html .nav .links{gap:24px}html .nav .links a{font-size:12px}}
 html .nav .links + .navr{margin-inline-start:0}
 @media (max-width:1100px){html .nav .links{display:none}html .nav .navr,html .nav .links + .navr{margin-inline-start:auto}}
-@media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .brand span{display:none}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
+@media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
 
 html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
 html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
@@ -85,7 +86,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <a class="skip" href="#main">Skip to content</a>
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
-<a class="brand" href="/" aria-label="MWP, home"><img src="/assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
+<a class="brand" href="/" aria-label="MWP, home"><img src="/assets/img/logo-mark.png" alt="MWP" width="36" height="38"></a>
 <div class="links"><a href="/presets/" aria-current="page" class="is-active">Presets</a><a href="/panel/">Panel</a><a href="/field-guides/">Field Guides</a><a href="/#bundles">Bundles</a><a href="/#about">About Matan</a></div>
 <div class="navr"><div class="nav-icons"><button class="nav-ico" type="button" data-cart aria-label="Cart" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg><span class="count" hidden>0</span><span class="tip">Cart</span></button><button class="nav-ico" type="button" data-account aria-label="Account" aria-haspopup="menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg><span class="tip">Account</span></button></div><div class="lang-toggle" role="group" aria-label="Language"><span class="on" aria-current="true">EN</span><a href="/presets/he/" hreflang="he" lang="he" onclick="try{localStorage.setItem('mwp_lang','he')}catch(e){}">עב</a></div></div>
 <button class="nav-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-links"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg></button>

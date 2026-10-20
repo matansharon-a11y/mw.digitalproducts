@@ -7,7 +7,7 @@ supabase/functions/beta/index.ts when it changes. Same look as the home page (da
 Run: python3 tools/build_beta.py"""
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from brand import NAV_CSS, FONTS
+from brand import NAV_CSS, FONTS, BRAND, ICONS
 
 IMG = "../assets/pages/img/"
 HERO = "5275cc7bcd4fb7560d8f7163592e3122.jpg"
@@ -350,7 +350,7 @@ html = f"""<!doctype html>
 <title>MWP Ambassador Program</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#0A0908">
-<link rel="icon" href="{IMG}{LOGO}">
+{ICONS}
 <style>
 {CSS}
 {NAV_CSS}
@@ -365,7 +365,7 @@ html .nav .wrap,html.nav-scrolled .nav .wrap{{height:80px;transition:none}}
 <body>
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
-<a class="brand" href="../" aria-label="MWP, home"><img src="{IMG}{LOGO}" alt=""><span>MWP</span></a>
+{BRAND}
 <div class="navr"></div>
 </div>
 </nav>
@@ -391,7 +391,7 @@ html .nav .wrap,html.nav-scrolled .nav .wrap{{height:80px;transition:none}}
 <button type="button" class="modal-x" data-close aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 
 <header class="sh-head">
-<div class="sh-brand"><img src="{IMG}{LOGO}" alt=""><p class="kick">MWP Ambassador Program</p></div>
+<div class="sh-brand"><img src="/assets/img/logo-mark.png" alt=""><p class="kick">MWP Ambassador Program</p></div>
 <h2 class="sh-title" id="terms-h">Terms of <span class="grad">Use.</span></h2>
 <p class="sh-meta only-en" data-no-i18n>{TERMS_DATE} · Matan Wild</p>
 <p class="sh-meta only-he" lang="he" dir="rtl" data-no-i18n>{TERMS_DATE_HE} · מתן וויילד</p>

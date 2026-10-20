@@ -21,8 +21,9 @@ html.nav-scrolled .nav{background:rgba(10,9,8,.66);border-bottom-color:rgba(254,
 html .nav .wrap{display:flex;align-items:center;justify-content:flex-start;gap:28px;height:80px;transition:height .35s ease}
 html.nav-scrolled .nav .wrap{height:64px}
 html .nav .brand{display:flex;align-items:center;gap:12px;color:#FEFBF1;text-decoration:none;direction:ltr;flex:none}
-html .nav .brand img{width:30px;height:30px;object-fit:contain;opacity:.95}
-html .nav .brand span{display:inline;font:700 12px/1 Montserrat,Heebo,sans-serif;letter-spacing:.34em}
+html .nav .brand img{width:auto;height:38px;object-fit:contain;opacity:.95;transition:opacity .25s,transform .45s cubic-bezier(.2,.7,.2,1)}
+html .nav .brand:hover img{opacity:1;transform:scale(1.04)}
+html.nav-scrolled .nav .brand img{height:34px}
 html .nav .links{display:flex;align-items:center;gap:34px;margin-inline:auto}
 html .nav .links a{position:relative;padding:8px 0;color:rgba(254,251,241,.66);text-decoration:none;white-space:nowrap;font:500 13px/1 Montserrat,Heebo,sans-serif;letter-spacing:.06em;transition:color .25s ease}
 html .nav .links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,#E4AA7C,#F4AF56);transform:scaleX(0);transform-origin:center;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
@@ -48,7 +49,7 @@ html .nav .navr .btn.sm:hover{transform:translateY(-1px);filter:brightness(1.06)
 @media (max-width:1280px){html .nav .links{gap:24px}html .nav .links a{font-size:12px}}
 html .nav .links + .navr{margin-inline-start:0}
 @media (max-width:1100px){html .nav .links{display:none}html .nav .navr,html .nav .links + .navr{margin-inline-start:auto}}
-@media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .brand span{display:none}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
+@media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
 """
 
 # One typeface per language across the whole site: Google Sans for English, Heebo for Hebrew.
@@ -169,3 +170,12 @@ def use_webp(html):
     for h in WEBP:
         html = html.replace(f"{h}.jpg", f"{h}.webp")
     return html
+
+
+# The logo on its own (the ibex mark, no words around it) and the site icons made from it (Oct 2026)
+LOGO_MARK = "/assets/img/logo-mark.png"
+BRAND = f'<a class="brand" href="/" aria-label="MWP, home"><img src="{LOGO_MARK}" alt="MWP" width="36" height="38"></a>'
+ICONS = ('<link rel="icon" href="/favicon.ico" sizes="any">'
+         '<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">'
+         '<link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png">'
+         '<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">')

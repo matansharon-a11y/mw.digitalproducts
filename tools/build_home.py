@@ -17,7 +17,7 @@ ba_css += "\n@media (max-width:600px){.ba{aspect-ratio:4/5;border-radius:18px}.r
 IMG = "assets/pages/img/"
 import home_fx, home_story
 import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(__file__))
-from brand import NAV_CSS, FONTS, SITE_CSS, site_links, menu_button, site_footer, use_webp
+from brand import NAV_CSS, FONTS, SITE_CSS, site_links, menu_button, site_footer, use_webp, BRAND, ICONS
 from landing_guard import LANDING_GUARD   # no flash before signed-in ambassadors are sent to My downloads
 CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F2A541" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>'
 EXT = '<svg class="ext" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>'
@@ -180,7 +180,7 @@ html = f'''<!doctype html>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="{IMG}2dd3356528167ddf9a64c0c7301c8aa3.png">
+{ICONS}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&amp;family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
@@ -202,7 +202,7 @@ html = f'''<!doctype html>
 
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
-<a class="brand" href="./" aria-label="MWP, home"><img src="{IMG}2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
+{BRAND}
 <div class="links">{site_links()}</div>
 <div class="navr"></div>
 {menu_button()}
