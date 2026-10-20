@@ -51,6 +51,29 @@ html .nav .links + .navr{margin-inline-start:0}
 @media (max-width:1100px){html .nav .links{display:none}html .nav .navr,html .nav .links + .navr{margin-inline-start:auto}}
 @media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .brand span{display:none}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
 
+html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
+html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
+html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
+html[lang=he] .site-foot .sf-brand{letter-spacing:.3em;direction:ltr}
+html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
+html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
+html .site-foot a:hover{color:#FEFBF1}
+html .nav .nav-menu{display:none;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu svg path{transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-origin:12px 12px}
+html.menu-open .nav .nav-menu .m1{transform:translateY(4px) rotate(45deg)}
+html.menu-open .nav .nav-menu .m2{transform:translateY(-4px) rotate(-45deg)}
+@media (max-width:1100px){
+  html .nav .nav-menu{display:inline-flex}
+  html .nav .links{display:flex!important;position:fixed;inset:64px 0 auto 0;z-index:39;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:8px 24px 28px;background:rgba(10,9,8,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(254,251,241,.08);opacity:0;transform:translateY(-8px);pointer-events:none;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s}
+  html.menu-open .nav .links{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .3s ease,transform .3s ease}
+  html .nav .links a{padding:18px 0;font-size:17px;letter-spacing:.02em;border-bottom:1px solid rgba(254,251,241,.07)}
+  html .nav .links a::after{display:none}
+  html.menu-open{overflow:hidden}
+  html.menu-open .nav{background:rgba(10,9,8,.96)}
+}
+@media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path{transition:none!important}}
+
 html .plans{gap:20px}
 html .plans > .plan{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:0;align-content:start;padding:36px 30px 30px;border-radius:26px;background:linear-gradient(180deg,rgba(254,251,241,.055),rgba(254,251,241,.015) 55%,rgba(254,251,241,.03));border:1px solid rgba(254,251,241,.08);box-shadow:inset 0 1px 0 rgba(254,251,241,.06),0 30px 60px -40px rgba(0,0,0,.8);backdrop-filter:none;-webkit-backdrop-filter:none;text-align:start;transition:opacity 1s cubic-bezier(.16,1,.3,1) var(--rd,0s),transform .6s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s}
 html .plans.p3 > .plan{grid-row:span 5}
@@ -395,8 +418,8 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 <nav class="nav" aria-label="Main">
 <div class="wrap">
 <a class="brand" href="../" aria-label="MWP, home"><img src="../assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
-<div class="links"><a href="#ba">From RAW to final</a><a href="#inside">What's inside</a><a href="#panel">With MWP Panel</a><a href="#faq">Questions</a></div>
-<div class="navr"><div class="nav-icons"><button class="nav-ico" type="button" data-cart aria-label="Cart" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg><span class="count" hidden>0</span><span class="tip">Cart</span></button><button class="nav-ico" type="button" data-account aria-label="Account" aria-haspopup="menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg><span class="tip">Account</span></button></div><div class="lang-toggle" role="group" aria-label="Language"><span class="on" aria-current="true">EN</span><a href="he/" hreflang="he" lang="he" onclick="try{localStorage.setItem('mwp_lang','he')}catch(e){}">עב</a></div></div>
+<div class="links"><a href="/presets/" aria-current="page" class="is-active">Presets</a><a href="/panel/">Panel</a><a href="/field-guides/">Field Guides</a><a href="/#bundles">Bundles</a><a href="/#about">About Matan</a></div>
+<div class="navr"><div class="nav-icons"><button class="nav-ico" type="button" data-cart aria-label="Cart" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg><span class="count" hidden>0</span><span class="tip">Cart</span></button><button class="nav-ico" type="button" data-account aria-label="Account" aria-haspopup="menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg><span class="tip">Account</span></button></div><div class="lang-toggle" role="group" aria-label="Language"><span class="on" aria-current="true">EN</span><a href="he/" hreflang="he" lang="he" onclick="try{localStorage.setItem('mwp_lang','he')}catch(e){}">עב</a></div></div><button class="nav-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-links"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg></button>
 </div>
 </nav>
 <main id="main">
@@ -438,14 +461,6 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 </div>
 </section>
 
-<section class="band">
-<div class="wrap stats" data-cnt="st">
-<div class="stat"><div class="n grad">{{cnt.st0}}</div><div class="t">Lightroom presets</div><div class="bar"><i style="width: {{cnt.bar}}%"></i></div></div>
-<div class="stat"><div class="n grad">{{cnt.st1}}</div><div class="t">AI adaptive</div><div class="bar"><i style="width: {{cnt.bar}}%"></i></div></div>
-<div class="stat"><div class="n grad">{{cnt.st2}}</div><div class="t">LUTs for video</div><div class="bar"><i style="width: {{cnt.bar}}%"></i></div></div>
-<div class="stat"><div class="n grad">{{cnt.st3}}</div><div class="t">Adobe apps</div><div class="bar"><i style="width: {{cnt.bar}}%"></i></div></div>
-</div>
-</section>
 
 <section class="sec" id="ba">
 <div class="wrap">
@@ -514,135 +529,10 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 </div>
 </section>
 
-<section class="sec" style="background: linear-gradient(180deg,#0A0908,#0C2925); padding-bottom: 40px">
-<div class="wrap">
-<div class="head">
-<div class="kick">Desktop, mobile and video</div>
-<h2 class="h2">Edit at the desk. <span class="b grad">Finish anywhere.</span></h2>
-<p class="lead">XMP presets for Lightroom Classic, Lightroom and Camera Raw. DNG files for Lightroom Mobile. LUTs for Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro.</p>
-</div>
-<div class="devs" aria-hidden="true">
-<div class="laptop">
-<div class="screen">
-<div class="ui">
-<div class="lrp">
-<div class="hd">PRESETS</div>
-<div class="on">MWP 1 Signature</div><div>MWP 2 Light &amp; Scene</div><div>MWP 3 Mono</div><div class="on">MWP 4 Adaptive</div><div>MWP 5 Tools</div>
-</div>
-<div class="canvasarea"><img loading="lazy" src="../assets/pages/img/8726daeb4a1c2551c37d43692b07fa4a.jpg" alt=""></div>
-<div class="lrp">
-<div class="hd">BASIC</div>
-<div class="row"><span>Contrast</span><div class="bar"><i style="left: 58%"></i></div></div>
-<div class="row"><span class="on">Highlights</span><div class="bar"><i style="left: 24%"></i></div></div>
-<div class="row"><span>Shadows</span><div class="bar"><i style="left: 62%"></i></div></div>
-<div class="row"><span class="on">Clarity</span><div class="bar"><i style="left: 59%"></i></div></div>
-<div class="row"><span>Dehaze</span><div class="bar"><i style="left: 54%"></i></div></div>
-<div class="row"><span class="on">Vibrance</span><div class="bar"><i style="left: 56%"></i></div></div>
-</div>
-</div>
-</div>
-<div class="basebar"></div>
-</div>
-<div class="phone"><img loading="lazy" src="../assets/pages/img/49caac68a148e8a94f554155c537cf56.jpg" alt=""></div>
-</div>
-</div>
-</section>
 
-<section class="sec alt" id="panel">
-<div class="wrap">
-<div class="head">
-<div class="kick">MWP Presets + MWP Panel</div>
-<h2 class="h2">The preset sets the look. <span class="b grad">The Panel finishes it.</span></h2>
-<p class="lead">Start in Lightroom with a preset, then finish in Photoshop with MWP Panel. Try it: click Subject, Eye, Background and Dodge &amp; Burn.</p>
-</div>
-<div class="combo">
-<div class="shot">
-<img loading="lazy" src="../assets/pages/img/9a95f4aafdcef50170f5aa90a3945504.jpg" alt="Red fox, the RAW file before editing">
-<img loading="lazy" src="../assets/pages/img/3435b57c94c21180053de328ef05f972.jpg" alt="Red fox after the MWP preset and Panel" style="opacity: {{fxOpacity}}; transition: opacity .6s ease">
-<div class="hud"><span class="{{st1}}">RAW</span><span class="{{st2}}">MWP PRESET</span><span class="{{st3}}">MWP PANEL</span></div>
-<div class="ph">PLACEHOLDER: the finished frame is Matan's own edit. Replace with the same RAW after the preset and the Panel only.</div>
-<div class="plabel">{{fxLabel}}</div>
-<div class="pbar"><div class="pfill" style="width: {{fxPct}}%"></div></div>
-</div>
-<div class="panel" aria-label="MWP Panel demo">
-<div class="ptop"><span>MWP · PANEL</span><span>v2.1.1</span></div>
-<div class="ptabs">
-<sc-for list="{{ptabs}}" as="t" hint-placeholder-count="4">
-<button type="button" class="{{t.cls}}" onClick="{{t.pick}}">{{t.label}}</button>
-</sc-for>
-</div>
-<div class="pgrid">
-<sc-for list="{{pbtns}}" as="b" hint-placeholder-count="8">
-<button type="button" class="{{b.cls}}" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}"><i></i>{{b.label}}</button>
-</sc-for>
-</div>
-<div class="layers">
-<div class="lhead"><span>LAYERS</span><span>{{undoText}}</span></div>
-<sc-for list="{{layers}}" as="l" hint-placeholder-count="2">
-<div class="lrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>{{l}}</div>
-</sc-for>
-<div class="lrow base"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a9a9a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect></svg>Original · locked</div>
-</div>
-<button type="button" class="reset" onClick="{{resetFx}}">Start over</button>
-</div>
-</div>
-<div class="g3">
-<div class="step"><div class="fk">01 · LIGHTROOM</div><h3 class="h3">Apply a preset</h3><p class="body">Set white balance, pick the look and fine-tune exposure.</p></div>
-<div class="step"><div class="fk">02 · PHOTOSHOP</div><h3 class="h3">Finish with the Panel</h3><p class="body">Subject, eye, sky, background, dodge and burn, one button each.</p></div>
-<div class="step"><div class="fk">03 · EXPORT</div><h3 class="h3">Ready to share</h3><p class="body">Instagram, web or print, with your own watermark.</p></div>
-</div>
-<div class="ctas" style="justify-content: center; margin-top: 40px">
-<a class="ghost" href="#buy">Get Presets + Panel <span class="pr" style="opacity:.7;font-weight:500">· <span data-price="presets-panel" data-no-i18n>$0.00</span></span></a>
-</div>
-<p class="small" style="text-align: center; margin-top: 16px">MWP Panel needs Photoshop 2023 (24.2) or newer, on Mac or Windows.</p>
-</div>
-</section>
 
-<section class="sec">
-<div class="wrap split">
-<div class="stack">
-<div class="kick">Where it comes from</div>
-<h2 class="h2">Built in the field. <span class="b grad">Shared with you.</span></h2>
-<p class="lead">MW Photo Tours leads photography expeditions, and we edit every frame ourselves. These presets come straight from the MWP Lightroom catalog: the settings we go back to in golden light, in shade, over water and in the desert.</p>
-<div class="thumbs">
-<img loading="lazy" src="../assets/pages/img/8be22742a3e020062bfe042419b7e7f7.jpg" alt="Dune at twilight">
-<img loading="lazy" src="../assets/pages/img/0015a37d9647a275fec7fcd23aa228d9.jpg" alt="Two elephants at sunset">
-<img loading="lazy" src="../assets/pages/img/07a726e1ad5390d3edaefb6d26df5150.jpg" alt="Iceberg under storm light">
-</div>
-</div>
-<div class="frame"><img loading="lazy" src="../assets/pages/img/928a86d8f814d3f9272b1b0dc34da084.jpg" alt="A photographer with a long lens in the mountains"></div>
-</div>
-</section>
 
-<section class="sec alt" id="how">
-<div class="wrap">
-<div class="head">
-<div class="kick">Three steps</div>
-<h2 class="h2">How to <span class="b grad">use them.</span></h2>
-</div>
-<div class="g3">
-<div class="step"><div class="k grad">01</div><h3 class="h3">Set white balance</h3><p class="body">Every scene has its own light. Choose the white balance you remember, and the preset builds on it.</p></div>
-<div class="step"><div class="k grad">02</div><h3 class="h3">Apply a preset</h3><p class="body">One click gives the frame MWP tones, contrast and colour.</p></div>
-<div class="step"><div class="k grad">03</div><h3 class="h3">Fine-tune</h3><p class="body">Set exposure for the frame and use the Amount slider to dial the look up or down.</p></div>
-</div>
-</div>
-</section>
 
-<section class="sec">
-<div class="wrap">
-<div class="head">
-<div class="kick">What you get</div>
-<h2 class="h2">What's in <span class="b grad">the download.</span></h2>
-</div>
-<div class="inc" data-cnt="ic">
-<div class="i"><div class="big grad">{{cnt.ic0}}</div><h3 class="h3" style="font-size: 18px">Desktop presets</h3><p class="small">XMP for Lightroom Classic, Lightroom and Camera Raw</p></div>
-<div class="i"><div class="big grad">{{cnt.ic1}}</div><h3 class="h3" style="font-size: 18px">Mobile files</h3><p class="small">DNG for Lightroom Mobile on iPhone, iPad and Android</p></div>
-<div class="i"><div class="big grad">{{cnt.ic2}}</div><h3 class="h3" style="font-size: 18px">LUTs</h3><p class="small">.cube for Photoshop and video editors</p></div>
-<div class="i"><div class="big grad">{{cnt.ic3}}</div><h3 class="h3" style="font-size: 18px">Install guide</h3><p class="small">A page for each program, step by step</p></div>
-</div>
-<p class="small" style="text-align: center; margin-top: 24px">Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+.</p>
-</div>
-</section>
 
 <section class="sec alt" id="bundles">
 <div class="wrap">
@@ -689,10 +579,11 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 </section>
 
 </main>
-<footer style="padding: 40px 0; border-top: 1px solid rgba(156,177,194,.14)">
-<div class="wrap" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; color: #9CB1C2; font-size: 13px">
-<div style="font-weight: 800; letter-spacing: .32em; color: #FEFBF1">MW PHOTO TOURS</div>
-<div>© 2026 Matan Wild Photography. All rights reserved. · contact@matanwildphotography.com</div>
+<footer class="site-foot">
+<div class="wrap container">
+<div class="sf-brand">MW PHOTO TOURS</div>
+<nav class="sf-links" aria-label="Footer"><a href="/shop/">All products</a><a href="/account/">My downloads</a><a href="/support/">Contact support</a><a href="/legal/#refunds">Refunds</a><a href="/legal/#terms">Terms</a><a href="/legal/#privacy">Privacy</a></nav>
+<div class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</div>
 </div>
 </footer>
 

@@ -878,7 +878,8 @@ export function initI18n() {
   const lang = getLang();
   const header = document.querySelector(".site-header .container");
   if (header && !header.querySelector(".lang-toggle")) {
-    header.insertAdjacentHTML("beforeend", toggleHTML(lang));
+    const menu = header.querySelector(".nav-menu");   // the phone menu button stays last
+    menu ? menu.insertAdjacentHTML("beforebegin", toggleHTML(lang)) : header.insertAdjacentHTML("beforeend", toggleHTML(lang));
     header.querySelector(".lang-toggle").addEventListener("click", (e) => {
       const b = e.target.closest("[data-lang]");
       if (!b) return;

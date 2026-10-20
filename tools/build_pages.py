@@ -1,7 +1,7 @@
 """Generates the MWP's static pages with one shared head, header and footer."""
 import re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from brand import FONTS
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
@@ -34,81 +34,29 @@ def head(title, desc, path, extra=""):
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@200..800&display=swap">
   <link rel="stylesheet" href="assets/css/tokens.css">
-  <link rel="stylesheet" href="assets/css/styles.css">{extra}
+  <link rel="stylesheet" href="assets/css/styles.css">
+  {SITE_HEAD}{extra}
 {FONTS}
 </head>"""
 
+# The home page's header on every page: logo, the site's one menu, cart and account icons (added by cart.js),
+# language toggle (i18n.js) and a menu button for phones. No announcement bar: the pages say it where it matters.
 HEADER = f"""<body>
 <a class="skip-link" href="#main">Skip to content</a>
-<aside class="announce">
-  <div class="container">
-    <span>{ICON['download']}Instant download after payment</span>
-    <span>{ICON['lock']}Secure card checkout</span>
-    <span>{ICON['refresh']}Free updates to everything you buy</span>
-  </div>
-</aside>
-<header class="site-header">
-  <div class="container">
-    <a class="brand" href="/" aria-label="MWP, home">MWP</a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><span></span><span></span></button>
-    <nav class="nav" id="site-nav" aria-label="Main">
-      <div class="nav__links">
-        <a href="/shop/">All products</a>
-        <a href="presets/">Presets</a>
-        <a href="panel/">Plugin</a>
-        <a href="field-guides/">Guides &amp; PDFs</a>
-      </div>
-      <div class="nav__end">
-      </div>
-    </nav>
-  </div>
-</header>"""
-# Pages with nothing to buy (Read online) leave out the "Instant download after payment" bar.
-NO_ANNOUNCE_HEADER = re.sub(r'<aside class="announce">.*?</aside>\n', "", HEADER, count=1, flags=re.S)
+<nav class="nav site-header" aria-label="Main">
+<div class="wrap container">
+<a class="brand" href="/" aria-label="MWP, home"><img src="assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
+<div class="links">{site_links()}</div>
+<div class="navr"></div>
+{menu_button()}
+</div>
+</nav>"""
+NO_ANNOUNCE_HEADER = HEADER
+SITE_HEAD = f"""<style id="site-nav">{NAV_CSS}{SITE_CSS}</style>
+  <script src="assets/js/lib/nav.js" defer></script>"""
 
 
-FOOTER = f"""<footer class="site-footer">
-  <div class="container">
-    <div class="site-footer__top">
-      <div class="stack">
-        <a class="brand" href="/">MWP</a>
-        <p class="muted" style="max-width:34ch">Editing tools and guides from wildlife photographer Matan Wild.</p>
-      </div>
-      <div>
-        <h2>Shop</h2>
-        <ul role="list">
-          <li><a href="/shop/">All products</a></li>
-          <li><a href="presets/">Presets</a></li>
-          <li><a href="panel/">Plugin</a></li>
-          <li><a href="field-guides/">Guides &amp; PDFs</a></li>
-          <li><a href="/shop/?cat=bundle">Bundles</a></li>
-        </ul>
-      </div>
-      <div>
-        <h2>Help</h2>
-        <ul role="list">
-          <li><a href="/account/">My downloads</a></li>
-          <li><a href="/support/">Contact support</a></li>
-          <li><a href="/#faq">FAQs</a></li>
-          <li><a href="/legal/#refunds">Refunds</a></li>
-          <li><a href="/legal/#licence">Licence</a></li>
-        </ul>
-      </div>
-      <div>
-        <h2>MWP</h2>
-        <ul role="list">
-          <li><a href="https://mw.photography" rel="noopener">Matan Wild</a></li>
-          <li><a href="https://mw-phototours.com" rel="noopener">MW Photo Tours</a></li>
-          <li><a href="https://www.instagram.com/mw_phototours" rel="noopener">Instagram</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="site-footer__bottom">
-      <p class="meta">© <span data-year>2026</span> Matan Wild Photography</p>
-      <p class="meta pay-note">{ICON['lock']}Payments processed securely by Lemon Squeezy · <a href="/legal/#terms">Terms</a> · <a href="/legal/#privacy">Privacy</a></p>
-    </div>
-  </div>
-</footer>"""
+FOOTER = site_footer()
 
 def ver(script):
     """Short fingerprint of a page script, so browsers fetch the new one after every change."""
@@ -256,22 +204,7 @@ page("shop.html", "All products · MWP",
     <div class="container">
       <div class="shop-toolbar">
         <div class="quick-cats" id="shop-cats" role="group" aria-label="Category"></div>
-        <div class="shop-toolbar__end">
-          <form class="search" id="shop-search" role="search">
-            {ICON['search']}
-            <label class="visually-hidden" for="shop-q">Search products</label>
-            <input id="shop-q" type="search" placeholder="Search" autocomplete="off">
-          </form>
-          <label class="visually-hidden" for="shop-sort">Sort by</label>
-          <select class="select-inline" id="shop-sort">
-            <option value="featured">Featured</option>
-            <option value="newest">Newest</option>
-            <option value="price-asc">Price: low to high</option>
-            <option value="price-desc">Price: high to low</option>
-          </select>
-        </div>
       </div>
-      <p class="result-count" id="shop-count" aria-live="polite" style="margin-bottom:var(--s-4)"></p>
       <div class="grid grid--3" id="shop-grid"></div>
     </div>
   </section>""", "shop.js")

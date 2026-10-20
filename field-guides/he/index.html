@@ -52,6 +52,29 @@ html .nav .links + .navr{margin-inline-start:0}
 @media (max-width:1100px){html .nav .links{display:none}html .nav .navr,html .nav .links + .navr{margin-inline-start:auto}}
 @media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .brand span{display:none}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
 
+html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
+html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
+html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
+html[lang=he] .site-foot .sf-brand{letter-spacing:.3em;direction:ltr}
+html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
+html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
+html .site-foot a:hover{color:#FEFBF1}
+html .nav .nav-menu{display:none;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu svg path{transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-origin:12px 12px}
+html.menu-open .nav .nav-menu .m1{transform:translateY(4px) rotate(45deg)}
+html.menu-open .nav .nav-menu .m2{transform:translateY(-4px) rotate(-45deg)}
+@media (max-width:1100px){
+  html .nav .nav-menu{display:inline-flex}
+  html .nav .links{display:flex!important;position:fixed;inset:64px 0 auto 0;z-index:39;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:8px 24px 28px;background:rgba(10,9,8,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(254,251,241,.08);opacity:0;transform:translateY(-8px);pointer-events:none;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s}
+  html.menu-open .nav .links{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .3s ease,transform .3s ease}
+  html .nav .links a{padding:18px 0;font-size:17px;letter-spacing:.02em;border-bottom:1px solid rgba(254,251,241,.07)}
+  html .nav .links a::after{display:none}
+  html.menu-open{overflow:hidden}
+  html.menu-open .nav{background:rgba(10,9,8,.96)}
+}
+@media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path{transition:none!important}}
+
 html .plans{gap:20px}
 html .plans > .plan{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:0;align-content:start;padding:36px 30px 30px;border-radius:26px;background:linear-gradient(180deg,rgba(254,251,241,.055),rgba(254,251,241,.015) 55%,rgba(254,251,241,.03));border:1px solid rgba(254,251,241,.08);box-shadow:inset 0 1px 0 rgba(254,251,241,.06),0 30px 60px -40px rgba(0,0,0,.8);backdrop-filter:none;-webkit-backdrop-filter:none;text-align:start;transition:opacity 1s cubic-bezier(.16,1,.3,1) var(--rd,0s),transform .6s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s}
 html .plans.p3 > .plan{grid-row:span 5}
@@ -367,8 +390,8 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 <nav class="nav" aria-label="ראשי">
 <div class="wrap">
 <a class="brand" href="../" aria-label="MWP, דף הבית"><img src="../assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
-<div class="links"><a href="/field-guides/he/#inside">הצצה פנימה</a><a href="/field-guides/he/#guides">המדריכים</a><a href="/field-guides/he/#how">איך לומדים</a><a href="/field-guides/he/#faq">שאלות נפוצות</a></div>
-<div class="navr"><div class="nav-icons"><button class="nav-ico" type="button" data-cart aria-label="עגלה" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg><span class="count" hidden>0</span><span class="tip">עגלה</span></button><button class="nav-ico" type="button" data-account aria-label="חשבון" aria-haspopup="menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg><span class="tip">חשבון</span></button></div><div class="lang-toggle" role="group" aria-label="שפה"><a href="./" hreflang="en" lang="en" onclick="try{localStorage.setItem('mwp_lang','en')}catch(e){}">EN</a><span class="on" aria-current="true" lang="he">עב</span></div></div>
+<div class="links"><a href="/presets/">פריסטים</a><a href="/panel/">פאנל</a><a href="/field-guides/" aria-current="page" class="is-active">מדריכי השטח</a><a href="/#bundles">חבילות</a><a href="/#about">על מתן</a></div>
+<div class="navr"><div class="nav-icons"><button class="nav-ico" type="button" data-cart aria-label="עגלה" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg><span class="count" hidden>0</span><span class="tip">עגלה</span></button><button class="nav-ico" type="button" data-account aria-label="חשבון" aria-haspopup="menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg><span class="tip">חשבון</span></button></div><div class="lang-toggle" role="group" aria-label="שפה"><a href="./" hreflang="en" lang="en" onclick="try{localStorage.setItem('mwp_lang','en')}catch(e){}">EN</a><span class="on" aria-current="true" lang="he">עב</span></div></div><button class="nav-menu" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="site-links"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg></button>
 </div>
 </nav>
 <main id="main">
@@ -398,14 +421,6 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 </div>
 </section>
 
-<section class="band">
-<div class="wrap stats">
-<div class="stat"><div class="n grad">4</div><div class="t">מדריכים</div></div>
-<div class="stat"><div class="n grad">137</div><div class="t">שיעורים</div></div>
-<div class="stat"><div class="n grad">31</div><div class="t">כלים ודיאגרמות</div></div>
-<div class="stat"><div class="n grad">229</div><div class="t">עמודים</div></div>
-</div>
-</section>
 
 <section class="sec" id="inside">
 <div class="wrap">
@@ -451,29 +466,7 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 </div>
 </section>
 
-<section class="sec" style="background: linear-gradient(180deg,#0A0908,#121110); padding-bottom: 40px">
-<div class="wrap">
-<div class="head">
-<p class="kick">בכל מסך</p>
-<h2 class="h2">במחשב, בטאבלט <span class="b grad">ובטלפון בשטח.</span></h2>
-<p class="lead">קובצי PDF שנפתחים בכל מכשיר. לומדים בבית על מסך גדול, ופותחים את דף הסיכום בטלפון רגע לפני הזריחה.</p>
-</div>
-<div class="devs" aria-hidden="true">
-<div class="tablet"><img loading="lazy" src="../assets/pages/img/74624b3dcffdd95bdb0fcfaedd24bc11.jpg" alt=""></div>
-</div>
-</div>
-</section>
 
-<section class="sec alt">
-<div class="wrap split">
-<div class="frame" style="aspect-ratio: 4/5"><img loading="lazy" src="../assets/pages/img/513d483952c48c897b884b9901fd50cc.jpg" alt="מתן וויילד בשטח"></div>
-<div class="stack">
-<p class="kick">מי מלמד אתכם</p>
-<h2 class="h2">צלם טבע <span class="b grad">שחי בשטח.</span></h2>
-<p class="lead">מתן וויילד הוא צלם טבע וחיות בר, מדריך מסעות צילום בארץ ובעולם והמייסד של <span class="en">אם־דבליו פוטו טורס</span>. במדריכים הוא מלמד את מה שהוא עושה בשטח: איך מוצאים את התמונה, מתי מחכים, ואיפה עומדים כשהאור מגיע.</p>
-</div>
-</div>
-</section>
 
 <section class="sec" id="how">
 <div class="wrap">
@@ -482,10 +475,6 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 </div>
 </section>
 
-<section class="gal" aria-label="מהשטח">
-<div class="wrap"><div class="head"><p class="kick">מתוך המדריכים</p><h2 class="h2">137 שיעורים. <span class="b grad">כולם מהשטח.</span></h2><p class="lead">כל שיעור בנוי סביב צילום אמיתי של מתן, עם שרטוט שמראה בדיוק למה הוא עובד.</p><a class="btn" href="/field-guides/he/#buy" style="margin-top: 8px">לרכישת הסט <span class="pr">· <span data-price="mwp-field-guides" data-no-i18n>₪0.00</span></span></a></div></div>
-<div class="mq" dir="ltr" aria-hidden="true"><div class="mqt"><img loading="lazy" src="../assets/pages/img/2c79f949f816ee693322cfce98f61afc.jpg" alt=""><img loading="lazy" src="../assets/pages/img/9583692af9aca77b648b4e2ff3733f72.jpg" alt=""><img loading="lazy" src="../assets/pages/img/aaa6b678f12b2bc6866e736281498d1c.jpg" alt=""><img loading="lazy" src="../assets/pages/img/070e7608dbefe0693b217fc9c0a64234.jpg" alt=""><img loading="lazy" src="../assets/pages/img/cff5b2d414538979bb1efe787e67de9f.jpg" alt=""><img loading="lazy" src="../assets/pages/img/2c79f949f816ee693322cfce98f61afc.jpg" alt=""><img loading="lazy" src="../assets/pages/img/9583692af9aca77b648b4e2ff3733f72.jpg" alt=""><img loading="lazy" src="../assets/pages/img/aaa6b678f12b2bc6866e736281498d1c.jpg" alt=""><img loading="lazy" src="../assets/pages/img/070e7608dbefe0693b217fc9c0a64234.jpg" alt=""><img loading="lazy" src="../assets/pages/img/cff5b2d414538979bb1efe787e67de9f.jpg" alt=""></div><div class="mqt rev"><img loading="lazy" src="../assets/pages/img/32909dca904452841a5b6ea7a187f4aa.jpg" alt=""><img loading="lazy" src="../assets/pages/img/b7cfa28802573f545067cc876c19f44e.jpg" alt=""><img loading="lazy" src="../assets/pages/img/a7adf42375708a6165c1498e3e170f8e.jpg" alt=""><img loading="lazy" src="../assets/pages/img/5578f8776625aac5bc0ebc1673fe549a.jpg" alt=""><img loading="lazy" src="../assets/pages/img/3c19b4355bad5a4a5cf99bf0881b4e8b.jpg" alt=""><img loading="lazy" src="../assets/pages/img/32909dca904452841a5b6ea7a187f4aa.jpg" alt=""><img loading="lazy" src="../assets/pages/img/b7cfa28802573f545067cc876c19f44e.jpg" alt=""><img loading="lazy" src="../assets/pages/img/a7adf42375708a6165c1498e3e170f8e.jpg" alt=""><img loading="lazy" src="../assets/pages/img/5578f8776625aac5bc0ebc1673fe549a.jpg" alt=""><img loading="lazy" src="../assets/pages/img/3c19b4355bad5a4a5cf99bf0881b4e8b.jpg" alt=""></div></div>
-</section>
 
 <section class="sec alt" id="bundles">
 <div class="wrap">
@@ -528,11 +517,11 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 </section>
 
 </main>
-<footer style="padding: 40px 0; border-top: 1px solid rgba(156,177,194,.15)">
-<div class="wrap" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; color: #9CB1C2; font-size: 14px">
-<div class="en" style="font-weight: 800; letter-spacing: .3em; color: #FEFBF1">אם־דבליו פוטו טורס</div>
-<div>כל הצילומים: <span class="en">מתן וויילד</span> · <span class="en">contact@matanwildphotography.com</span></div>
-<div style="flex-basis: 100%">© 2026 <span class="en">אם־דבליו פוטו טורס</span>. כל הזכויות שמורות.</div>
+<footer class="site-foot">
+<div class="wrap container">
+<div class="sf-brand">אם־דבליו פוטו טורס</div>
+<nav class="sf-links" aria-label="קישורים"><a href="/shop/">כל המוצרים</a><a href="/account/">ההורדות שלי</a><a href="/support/">פנייה לתמיכה</a><a href="/legal/#refunds">החזרים</a><a href="/legal/#terms">תנאים</a><a href="/legal/#privacy">פרטיות</a></nav>
+<div class="sf-credit">כל הצילומים: מתן וויילד · contact@matanwildphotography.com</div>
 </div>
 </footer>
 

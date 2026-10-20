@@ -3,7 +3,7 @@
 the comparison sliders. Page content and layout stay as Matan designed them. Safe to run again."""
 import re, sys, os
 sys.path.insert(0, os.path.dirname(__file__))
-from brand import gold, NAV_CSS, FONTS, BUNDLE_CSS
+from brand import gold, NAV_CSS, FONTS, BUNDLE_CSS, SITE_CSS, site_links, menu_button, site_footer
 from sales_he import hebrew
 from img_loading import prioritize
 
@@ -34,7 +34,7 @@ def navr(lang, btn=""):
 CSS = """<style id="mwp-unify">
 html .ba{direction:ltr}
 html .lrp .hd{color:#a8a8a8}
-""" + NAV_CSS + BUNDLE_CSS + """</style>"""
+""" + NAV_CSS + SITE_CSS + BUNDLE_CSS + """</style>"""
 
 SCRIPT = """<script src="../assets/js/lib/nav.js" defer></script>
 <script type="module">
@@ -74,6 +74,32 @@ PRICE_SLOTS = {
     "field-guides": ["mwp-field-guides", "mwp-field-guides", "full-set", "full-set~was", "mwp-field-guides", "presets-field-guides", "field-guides-panel", "mwp-field-guides"],
 }
 PLACEHOLDER = re.compile(r'\[(?:YOUR PRICE|BUNDLE PRICE|PRICE BEFORE DISCOUNT|המחיר|מחיר חבילה|מחיר החבילה|מחיר לפני הנחה)\]|<span data-price="[^"]*"(?: data-was)? data-no-i18n>[^<]*</span>')
+FRESH = re.compile(r'\[(?:YOUR PRICE|BUNDLE PRICE|PRICE BEFORE DISCOUNT|המחיר|מחיר חבילה|מחיר החבילה|מחיר לפני הנחה)\]')
+
+# A simpler site (Oct 2026): sections each sales page leaves out, by their heading's first words (EN and HE) or
+# "band" for the numbers strip under the hero. They repeat the hero, the bundles or the home page (About Matan).
+DROP = {
+    "presets": ["band", "Edit at the desk", "עורכים ליד השולחן", "The preset sets the look", "הפריסט קובע את המראה",
+                "Built in the field", "נבנה בשטח", "How to use them", "איך משתמשים בהם", "What's in the download", "מה יש בהורדה"],
+    "panel": ["band", "A panel next to your layers", "פאנל אחד, ליד השכבות", "The questions from our evenings", "השאלות מהערבים",
+              "How it works.", "איך זה עובד", "What's in the download", "מה יש בהורדה"],
+    "field-guides": ["band", "On your desk, your tablet", "במחשב, בטאבלט", "A wildlife photographer who lives", "צלם טבע שחי בשטח",
+                     "137 lessons. All from", "137 שיעורים. כולם"],
+}
+
+
+def drop_sections(s, keys):
+    def keep(m):
+        cls = re.search(r'class="([^"]*)"', m.group(1))
+        if "band" in keys and cls and cls.group(1).split() == ["band"]:
+            return ""
+        h = re.search(r"<h[12][^>]*>(.*?)</h[12]>", m.group(2), re.S)
+        text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h.group(1))).strip() if h else ""
+        text = re.sub(r"\s+([.,])", r"\1", text)
+        return "" if any(k != "band" and text.startswith(k) for k in keys) else m.group(0)
+    return re.sub(r"<section([^>]*)>(.*?)</section>\n?", keep, s, flags=re.S)
+
+
 ZERO = {"en": "$0.00", "he": "₪0.00"}
 PRICE_JS = """<script type="module">
 import { initPrices } from "../assets/js/lib/prices.js";
@@ -88,8 +114,11 @@ for path, lang in PAGES.items():
                r'<a class="brand" href="../" aria-label="MWP, home"><img src="../assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>', s, count=1)
     # header: icons + language toggle only (no "Get ..." button: every page already has one in its buy section)
     s = re.sub(r'<div class="navr">.*?</div>(?=\s*</div>\s*</nav>)', lambda m: navr(lang), s, count=1, flags=re.S)
-    # no Bundles link in the header menu
-    s = re.sub(r'(<div class="links">[^\n]*?)<a href="#bundles">[^<]*</a>', r'\1', s, count=1)
+    # the site's one menu (the same on every page), with a menu button for phones
+    folder = path.split("/")[0]
+    s = re.sub(r'<div class="links">.*?</div>', lambda m: f'<div class="links">{site_links(lang, f"/{folder}/")}</div>', s, count=1, flags=re.S)
+    if "nav-menu" not in s:
+        s = re.sub(r'(<div class="navr">.*?</div></div>)', lambda m: m.group(1) + menu_button(lang), s, count=1, flags=re.S)
     for a, b in WORDS[lang]:
         s = s.replace(a, b)
     # no arrows on the outlined buttons
@@ -112,9 +141,13 @@ for path, lang in PAGES.items():
             print("  warning: more price spots than PRICE_SLOTS lists in", path); return m.group(0)
         slug, _, was = k.partition("~")
         return f'<span data-price="{slug}"{" data-was" if was else ""} data-no-i18n>{ZERO[lang]}</span>'
-    s = PLACEHOLDER.sub(slot, s)
-    if next(slots, None) is not None:
-        print("  warning: fewer price spots than PRICE_SLOTS lists in", path)
+    if FRESH.search(s):   # a freshly imported design: give each price spot its product, in page order
+        s = PLACEHOLDER.sub(slot, s)
+        if next(slots, None) is not None:
+            print("  warning: fewer price spots than PRICE_SLOTS lists in", path)
+    s = drop_sections(s, DROP[path.split("/")[0]])
+    # the site's one footer
+    s = re.sub(r"<footer\b.*?</footer>", lambda m: site_footer(lang), s, count=1, flags=re.S)
     if "initPrices" not in s:
         s = s.replace("</body>", PRICE_JS + "\n</body>", 1)
     # Follow the site's language: Hebrew visitors get Matan's Hebrew page, and opening a page sets the language.

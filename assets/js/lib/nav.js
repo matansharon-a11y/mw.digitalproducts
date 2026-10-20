@@ -8,8 +8,15 @@
   window.addEventListener("scroll", onScroll, { passive: true });
 
   function watch() {
-    const links = Array.from(document.querySelectorAll(".nav .links a[href^='#']"));
-    const pairs = links.map((a) => [a, document.getElementById(a.getAttribute("href").slice(1))]).filter((p) => p[1]);
+    // "#id", or "/#id" on the home page: the menu link of a section on this page
+    const target = (a) => {
+      const h = a.getAttribute("href") || "";
+      if (h.startsWith("#")) return h.slice(1);
+      if (h.startsWith("/#") && location.pathname === "/") return h.slice(2);
+      return "";
+    };
+    const links = Array.from(document.querySelectorAll(".nav .links a")).filter(target);
+    const pairs = links.map((a) => [a, document.getElementById(target(a))]).filter((p) => p[1]);
     if (!pairs.length || !("IntersectionObserver" in window)) return false;
     const seen = new Map();
     const io = new IntersectionObserver((entries) => {
@@ -17,11 +24,26 @@
       let best = null, max = 0;
       pairs.forEach(([a, sec]) => { const r = seen.get(sec) || 0; if (r > max) { max = r; best = a; } });
       // The sales pages re-render their menu; look the links up again each time.
-      document.querySelectorAll(".nav .links a").forEach((a) => a.classList.toggle("is-active", !!best && a.getAttribute("href") === best.getAttribute("href")));
+      document.querySelectorAll(".nav .links a").forEach((a) => { if (target(a)) a.classList.toggle("is-active", !!best && a.getAttribute("href") === best.getAttribute("href")); });
     }, { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.01, 0.25, 0.5] });
     pairs.forEach(([, sec]) => io.observe(sec));
     return true;
   }
+  // Phones and tablets: the menu button opens the links as a panel under the header.
+  function menu() {
+    const btn = document.querySelector(".nav .nav-menu");
+    const links = document.querySelector(".nav .links");
+    if (!btn || !links) return;
+    links.id = links.id || "site-links";
+    const set = (open) => { root.classList.toggle("menu-open", open); btn.setAttribute("aria-expanded", String(open)); };
+    btn.addEventListener("click", () => set(!root.classList.contains("menu-open")));
+    links.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && root.classList.contains("menu-open")) { set(false); btn.focus(); } });
+    document.addEventListener("click", (e) => { if (root.classList.contains("menu-open") && !e.target.closest(".nav")) set(false); });
+    matchMedia("(min-width: 1101px)").addEventListener("change", (m) => { if (m.matches) set(false); });
+  }
+  document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", menu) : menu();
+
   let tries = 0;
   (function poll() { if (!watch() && tries++ < 40) setTimeout(poll, 150); })();
 })();

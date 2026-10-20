@@ -95,3 +95,62 @@ html .ctas > .ghost:hover,html .frow > .ghost:hover{border-color:#F2A541;color:#
 html[lang=he] .plans .plan .small,html[lang=he] .plans .plan .tagx,html[lang=he] .plans .plan .lbl{letter-spacing:.03em}
 @media (prefers-reduced-motion:reduce){html .plans > .plan{transition:none}html .plans > .plan:hover{transform:none}}
 """
+
+
+# ---------------------------------------------------------------- one header and footer for the whole site
+# The same menu on every page (home, sales pages, shop pages), in the home page's look. Absolute links, so
+# they work from any folder; the English sales pages send Hebrew visitors to their Hebrew page by themselves.
+SITE_LINKS = [("/presets/", "Presets", "פריסטים"), ("/panel/", "Panel", "פאנל"), ("/field-guides/", "Field Guides", "מדריכי השטח"),
+              ("/#bundles", "Bundles", "חבילות"), ("/#about", "About Matan", "על מתן")]
+MENU_ICON = ('<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" '
+             'stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg>')
+
+
+def site_links(lang="en", current=""):
+    he = lang == "he"
+    return "".join(f'<a href="{href}"{" aria-current=\"page\" class=\"is-active\"" if current and href == current else ""}>{h if he else e}</a>'
+                   for href, e, h in SITE_LINKS)
+
+
+def menu_button(lang="en"):
+    label = "תפריט" if lang == "he" else "Menu"
+    return f'<button class="nav-menu" type="button" aria-label="{label}" aria-expanded="false" aria-controls="site-links">{MENU_ICON}</button>'
+
+
+FOOTER_LINKS = [("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
+                ("/support/", "Contact support", "פנייה לתמיכה"), ("/legal/#refunds", "Refunds", "החזרים"),
+                ("/legal/#terms", "Terms", "תנאים"), ("/legal/#privacy", "Privacy", "פרטיות")]
+
+
+def site_footer(lang="en"):
+    he = lang == "he"
+    links = "".join(f'<a href="{href}">{h if he else e}</a>' for href, e, h in FOOTER_LINKS)
+    credit = "כל הצילומים: מתן וויילד · contact@matanwildphotography.com" if he else "All photos: Matan Wild · contact@matanwildphotography.com"
+    return (f'<footer class="site-foot">\n<div class="wrap container">\n<div class="sf-brand">MW PHOTO TOURS</div>\n'
+            f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n<div class="sf-credit">{credit}</div>\n</div>\n</footer>')
+
+
+SITE_CSS = """
+html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
+html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
+html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
+html[lang=he] .site-foot .sf-brand{letter-spacing:.3em;direction:ltr}
+html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
+html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
+html .site-foot a:hover{color:#FEFBF1}
+html .nav .nav-menu{display:none;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu svg path{transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-origin:12px 12px}
+html.menu-open .nav .nav-menu .m1{transform:translateY(4px) rotate(45deg)}
+html.menu-open .nav .nav-menu .m2{transform:translateY(-4px) rotate(-45deg)}
+@media (max-width:1100px){
+  html .nav .nav-menu{display:inline-flex}
+  html .nav .links{display:flex!important;position:fixed;inset:64px 0 auto 0;z-index:39;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:8px 24px 28px;background:rgba(10,9,8,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(254,251,241,.08);opacity:0;transform:translateY(-8px);pointer-events:none;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s}
+  html.menu-open .nav .links{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .3s ease,transform .3s ease}
+  html .nav .links a{padding:18px 0;font-size:17px;letter-spacing:.02em;border-bottom:1px solid rgba(254,251,241,.07)}
+  html .nav .links a::after{display:none}
+  html.menu-open{overflow:hidden}
+  html.menu-open .nav{background:rgba(10,9,8,.96)}
+}
+@media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path{transition:none!important}}
+"""

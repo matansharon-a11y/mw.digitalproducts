@@ -19,7 +19,7 @@ ba_css += "\n@media (max-width:600px){.ba{aspect-ratio:4/5;border-radius:18px}.r
 IMG = "assets/pages/img/"
 import home_fx, home_story
 import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(__file__))
-from brand import NAV_CSS, FONTS
+from brand import NAV_CSS, FONTS, SITE_CSS, site_links, menu_button, site_footer
 from landing_guard import LANDING_GUARD   # no flash before signed-in ambassadors are sent to My downloads
 CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F2A541" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>'
 EXT = '<svg class="ext" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>'
@@ -185,6 +185,7 @@ html = f'''<!doctype html>
 /* before / after (from the Presets page) */
 {ba_css}
 {NAV_CSS}
+{SITE_CSS}
 {home_fx.CSS}
 {home_story.CSS}
 {home_css}
@@ -198,8 +199,9 @@ html = f'''<!doctype html>
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
 <a class="brand" href="./" aria-label="MWP, home"><img src="{IMG}2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
-<div class="links"><a href="#shop">Shop</a><a href="#bundles">Bundles</a><a href="#faq">FAQs</a><a href="#about">About Matan</a></div>
+<div class="links">{site_links()}</div>
 <div class="navr"></div>
+{menu_button()}
 </div>
 </nav>
 
@@ -273,13 +275,7 @@ html = f'''<!doctype html>
 
 </main>
 
-<footer style="padding: 40px 0; border-top: 1px solid rgba(156,177,194,.15)">
-<div class="wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px 32px; color: #9CB1C2; font-size: 13px">
-<div style="font-weight: 800; letter-spacing: .3em; color: #FEFBF1">MW PHOTO TOURS</div>
-<div style="display: flex; flex-wrap: wrap; gap: 20px"><a style="color: #9CB1C2" href="/shop/">All products</a><a style="color: #9CB1C2" href="/account/">My downloads</a><a style="color: #9CB1C2" href="/support/">Contact support</a><a style="color: #9CB1C2" href="/legal/#refunds">Refunds</a><a style="color: #9CB1C2" href="/legal/#terms">Terms</a><a style="color: #9CB1C2" href="/legal/#privacy">Privacy</a></div>
-<div>All photos: Matan Wild · contact@matanwildphotography.com</div>
-</div>
-</footer>
+{site_footer()}
 </div>
 
 {home_fx.JS}

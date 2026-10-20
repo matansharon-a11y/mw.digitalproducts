@@ -111,7 +111,8 @@ a{color:#F4AF56}a:hover{color:#F8D29C}
 .tab.on{background:#FEFBF1;color:#0A0908;border-color:#FEFBF1}
 .viewer{position:relative;width:100%;aspect-ratio:16/10;border-radius:24px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);background:#111}
 .viewer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.pager{display:flex;justify-content:center;gap:10px;margin-top:20px}
+#inside .viewer{margin-top:48px}
+.pager{display:flex;justify-content:center;gap:10px;margin-top:24px}
 .pbtn{min-height:46px;padding:0 24px;border-radius:64px;border:1.5px solid rgba(156,177,194,.35);background:transparent;color:#CDD7DD;font:700 14px Montserrat,sans-serif;cursor:pointer}
 .pbtn.on{border-color:#F4AF56;color:#F4AF56}
 /* cards */
@@ -341,6 +342,30 @@ html .nav .navr .btn.sm:hover{transform:translateY(-1px);filter:brightness(1.06)
 html .nav .links + .navr{margin-inline-start:0}
 @media (max-width:1100px){html .nav .links{display:none}html .nav .navr,html .nav .links + .navr{margin-inline-start:auto}}
 @media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html.nav-scrolled .nav .wrap{height:58px}html .nav .brand span{display:none}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
+
+
+html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
+html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
+html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
+html[lang=he] .site-foot .sf-brand{letter-spacing:.3em;direction:ltr}
+html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
+html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
+html .site-foot a:hover{color:#FEFBF1}
+html .nav .nav-menu{display:none;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu svg path{transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-origin:12px 12px}
+html.menu-open .nav .nav-menu .m1{transform:translateY(4px) rotate(45deg)}
+html.menu-open .nav .nav-menu .m2{transform:translateY(-4px) rotate(-45deg)}
+@media (max-width:1100px){
+  html .nav .nav-menu{display:inline-flex}
+  html .nav .links{display:flex!important;position:fixed;inset:64px 0 auto 0;z-index:39;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:8px 24px 28px;background:rgba(10,9,8,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(254,251,241,.08);opacity:0;transform:translateY(-8px);pointer-events:none;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s}
+  html.menu-open .nav .links{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .3s ease,transform .3s ease}
+  html .nav .links a{padding:18px 0;font-size:17px;letter-spacing:.02em;border-bottom:1px solid rgba(254,251,241,.07)}
+  html .nav .links a::after{display:none}
+  html.menu-open{overflow:hidden}
+  html.menu-open .nav{background:rgba(10,9,8,.96)}
+}
+@media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path{transition:none!important}}
 
 
 html .plans{gap:20px}
@@ -773,8 +798,9 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
 <a class="brand" href="./" aria-label="MWP, home"><img src="assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
-<div class="links"><a href="#shop">Shop</a><a href="#bundles">Bundles</a><a href="#faq">FAQs</a><a href="#about">About Matan</a></div>
+<div class="links"><a href="/presets/">Presets</a><a href="/panel/">Panel</a><a href="/field-guides/">Field Guides</a><a href="/#bundles">Bundles</a><a href="/#about">About Matan</a></div>
 <div class="navr"></div>
+<button class="nav-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-links"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg></button>
 </div>
 </nav>
 
@@ -1045,11 +1071,11 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
 
 </main>
 
-<footer style="padding: 40px 0; border-top: 1px solid rgba(156,177,194,.15)">
-<div class="wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px 32px; color: #9CB1C2; font-size: 13px">
-<div style="font-weight: 800; letter-spacing: .3em; color: #FEFBF1">MW PHOTO TOURS</div>
-<div style="display: flex; flex-wrap: wrap; gap: 20px"><a style="color: #9CB1C2" href="/shop/">All products</a><a style="color: #9CB1C2" href="/account/">My downloads</a><a style="color: #9CB1C2" href="/support/">Contact support</a><a style="color: #9CB1C2" href="/legal/#refunds">Refunds</a><a style="color: #9CB1C2" href="/legal/#terms">Terms</a><a style="color: #9CB1C2" href="/legal/#privacy">Privacy</a></div>
-<div>All photos: Matan Wild · contact@matanwildphotography.com</div>
+<footer class="site-foot">
+<div class="wrap container">
+<div class="sf-brand">MW PHOTO TOURS</div>
+<nav class="sf-links" aria-label="Footer"><a href="/shop/">All products</a><a href="/account/">My downloads</a><a href="/support/">Contact support</a><a href="/legal/#refunds">Refunds</a><a href="/legal/#terms">Terms</a><a href="/legal/#privacy">Privacy</a></nav>
+<div class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</div>
 </div>
 </footer>
 </div>
