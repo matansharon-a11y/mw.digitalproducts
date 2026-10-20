@@ -320,7 +320,7 @@ def page(folder, lang):
         (b0, a0) = p["pairs_from"][0]
         chips = "".join(
             f'<button class="ex" type="button" role="tab" data-pair aria-selected="{str(k == 0).lower()}" data-before="{img(b)}" data-after="{img(a)}" '
-            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}"><span class="th"><img src="{img(a)}" alt="" loading="lazy"></span><span class="lb">{esc(lab)}</span></button>'
+            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}">{esc(lab)}</button>'
             for k, ((b, a), lab) in enumerate(zip(p["pairs_from"], c["pairs"])))
         parts.append(f'''<section class="sec" id="compare">
 <div class="wrap" data-ba>
@@ -332,8 +332,6 @@ def page(folder, lang):
 <span class="line"></span><span class="knob">{GRIP}</span>
 <input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
 </div>
-<p class="hint"><span class="hint-ico" aria-hidden="true">↔</span>{u["hint"]}</p>
-<p class="ex-h">{u["examples"]}</p>
 <div class="exs" role="tablist" aria-label="{u["examples"]}">{chips}</div>
 </div>
 </section>''')
