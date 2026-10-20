@@ -929,7 +929,7 @@ export function initI18n() {
       location.reload();
     });
   }
-  if (lang !== "he") return;
+  if (lang !== "he") { document.documentElement.classList.remove("he-wait"); return; }
 
   document.documentElement.lang = "he";
   document.documentElement.dir = "rtl";
@@ -943,6 +943,7 @@ export function initI18n() {
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.content = hebrew(desc.content).trim();
   walk(document.body);
+  document.documentElement.classList.remove("he-wait");   // Hebrew is in: show the page (see LANG_GUARD)
   new MutationObserver((records) => {
     for (const r of records) {
       if (r.type === "characterData") walk(r.target);

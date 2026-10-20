@@ -416,6 +416,7 @@ function afterSignIn(user) {
 
 const user = await currentUser();
 if (user) afterSignIn(user);
+document.documentElement.classList.remove("acct-wait");   // the session is known: show the form if it's needed
 supabase?.auth.onAuthStateChange((event, session) => {
   if (event === "PASSWORD_RECOVERY") { recovering = true; signedOut.hidden = false; show("reset"); return; }
   if (event === "SIGNED_IN" && session?.user) afterSignIn(session.user);

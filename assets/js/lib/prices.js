@@ -77,6 +77,7 @@ async function load() {
     rows = {};
     (await res.json()).forEach((r) => { rows[r.slug] = r; });
     paint();
+    document.documentElement.classList.add("prices-on");   // the real prices are in: show the price spots (hidden in SITE_CSS until now)
     try { productData(); } catch { /* no product on this page */ }
   } catch { /* offline or not set up yet: the 0.00 placeholders stay */ }
 }

@@ -1,7 +1,7 @@
 """Generates the MWP's static pages with one shared head, header and footer."""
 import re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
@@ -20,6 +20,7 @@ def head(title, desc, path, extra="", early=""):
 <html lang="en" dir="ltr" class="no-js">
 <head>
   <meta charset="utf-8">{early}
+  {LANG_GUARD}
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>{title}</title>
   <meta name="description" content="{desc}">
@@ -518,7 +519,12 @@ page("account.html", "My downloads · MWP",
         <p class="acct-note">Download links are created when you click and expire after 5 minutes. Trouble? <a class="link" href="/support/?topic=download">Contact support</a>.</p>
       </div>
     </div>
-  </section>""", "account.js", extra_head='\n  <meta name="robots" content="noindex">' + ACCOUNT_CSS)
+  </section>""", "account.js", extra_head='\n  <meta name="robots" content="noindex">' + ACCOUNT_CSS,
+ # Signed in already (a saved session in this browser): keep the sign-in form hidden while the session is
+ # checked, so it doesn't flash before the library. account.js removes acct-wait once it knows; 5 s at most.
+ early='\n  <script>try{for(var k in localStorage)if(/^sb-.+-auth-token$/.test(k)){document.documentElement.classList.add("acct-wait");'
+       'setTimeout(function(){document.documentElement.classList.remove("acct-wait")},5000);break}}catch(e){}</script>'
+       '\n  <style>html.acct-wait #signed-out{display:none}</style>')
 
 page("read.html", "Field Guides · Read online · MWP",
  "Read the MWP Field Guides online.",

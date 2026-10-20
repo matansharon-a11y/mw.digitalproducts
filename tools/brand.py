@@ -133,6 +133,7 @@ def site_footer(lang="en"):
 
 
 SITE_CSS = """
+html:not(.prices-on) [data-price]{visibility:hidden}
 html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
 html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
 html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
@@ -180,3 +181,11 @@ ICONS = ('<link rel="icon" href="/favicon.ico" sizes="any">'
          '<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">'
          '<link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png">'
          '<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">')
+
+
+# Pages translated in the browser (home, shop, account, help …): with Hebrew chosen, the English text would paint
+# first and then switch. This sets right-to-left at once and keeps the page invisible until i18n.js has put the
+# Hebrew in (it removes he-wait), 1.5 s at most.
+LANG_GUARD = ('<script>try{if(localStorage.getItem("mwp_lang")==="he"){var d=document.documentElement;d.lang="he";d.dir="rtl";'
+              'd.classList.add("he-wait");setTimeout(function(){d.classList.remove("he-wait")},1500)}}catch(e){}</script>'
+              '<style>html.he-wait body{visibility:hidden}</style>')
