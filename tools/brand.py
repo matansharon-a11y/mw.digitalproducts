@@ -159,3 +159,13 @@ html.menu-open .nav .nav-menu .m2{transform:translateY(-4px) rotate(-45deg)}
 # Header icons (cart and account), shared by the sales-page tools
 USER = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>'
 CART = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>'
+
+# Photos with a smaller WebP copy next to the JPEG (same name, .webp): the home and sales pages use the WebP.
+WEBP = ["1a2e3ed3f44db1f671babb09a599b29f", "8cb56471dbe5940badc7a93cad5c8bf1", "5275cc7bcd4fb7560d8f7163592e3122",
+        "d5f6d2a7c84cc3346ef45e4922528351", "ce73f34a054f9959d99fd850c1df9ce5", "6d84bcea4206fe4c622103d7d3aea920"]
+
+
+def use_webp(html):
+    for h in WEBP:
+        html = html.replace(f"{h}.jpg", f"{h}.webp")
+    return html

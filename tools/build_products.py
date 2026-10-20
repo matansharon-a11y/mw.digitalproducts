@@ -21,7 +21,7 @@ FAQS = json.load(open(os.path.join(ROOT, "tools/pages/faqs.json"), encoding="utf
 
 def img(prefix):
     """/assets/pages/img/<file> from the first characters of its name (the files are named by their hash)."""
-    found = sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix + "*")))
+    found = sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix + "*")), key=lambda f: not f.endswith(".webp"))   # the smaller WebP copy first
     if not found:
         raise SystemExit(f"no image starting with {prefix}")
     return "/assets/pages/img/" + os.path.basename(found[0])

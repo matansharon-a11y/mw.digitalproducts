@@ -14,25 +14,28 @@ ICON = {
  "user": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 }
 
-def head(title, desc, path, extra=""):
+def head(title, desc, path, extra="", early=""):
+    url = f"{SITE}/{path[:-5] + '/' if path.endswith('.html') else path}"
     return f"""<!doctype html>
 <html lang="en" dir="ltr" class="no-js">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8">{early}
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>{title}</title>
   <meta name="description" content="{desc}">
   <meta name="theme-color" content="#0A0908">
-  <link rel="canonical" href="{SITE}/{path[:-5] + "/" if path.endswith(".html") else path}">
+  <link rel="canonical" href="{url}">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="MWP">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:url" content="{url}">
+  <meta property="og:image" content="{SITE}/assets/img/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@200..800&display=swap">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   {SITE_HEAD}{extra}
@@ -67,10 +70,10 @@ def ver(script):
         h.update(open(f, "rb").read())
     return h.hexdigest()[:8]
 
-def page(name, title, desc, body, script, extra_head="", announce=True):
+def page(name, title, desc, body, script, extra_head="", announce=True, early=""):
     if name == "index.html":
         return  # the home page is hand-built in the sales-page look (index.html)
-    html = f"""{head(title, desc, name if name != 'index.html' else '', extra_head)}
+    html = f"""{head(title, desc, name if name != 'index.html' else '', extra_head, early)}
 {HEADER if announce else NO_ANNOUNCE_HEADER}
 <main id="main">
 {body}
@@ -254,7 +257,9 @@ page("product.html", "Product details · Editing tools from the field · MWP",
         <div class="skeleton" style="height:420px"></div>
       </div>
     </div>
-  </section>""", "product.js")
+  </section>""", "product.js",
+ # no product in the address: go to the shop before fonts and styles start loading (a later redirect cancels them)
+ early='\n  <script>if(!new URLSearchParams(location.search).get("p"))location.replace("/shop/")</script>')
 
 ACCOUNT_CSS = """
 <style id="acct">

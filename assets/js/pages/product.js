@@ -7,6 +7,8 @@ import { addToCart } from "../lib/cart.js";
 
 initChrome();
 
+// the page keeps a main heading when there's no product to show (unavailable, or an error)
+const H1 = `<h1 class="visually-hidden">Product details</h1>`;
 const root = document.getElementById("product-root");
 const slug = new URLSearchParams(location.search).get("p");
 
@@ -101,7 +103,7 @@ async function load() {
   try {
     const p = await getProduct(slug);
     if (!p) {
-      root.innerHTML = `<div class="empty">This product isn't available. <a class="link" href="/shop/">See all products</a></div>`;
+      root.innerHTML = `${H1}<div class="empty">This product isn't available. <a class="link" href="/shop/">See all products</a></div>`;
       return;
     }
     const { pairs, gallery } = splitMedia(p.product_media);
@@ -158,7 +160,7 @@ async function load() {
       });
     }
   } catch (err) {
-    root.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+    root.innerHTML = `${H1}<div class="empty">${esc(err.message)}</div>`;
     toast(err.message, { type: "error" });
   }
 }

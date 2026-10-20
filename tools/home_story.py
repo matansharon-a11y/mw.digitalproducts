@@ -33,7 +33,7 @@ CHAPTERS = [
 
 HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("st-wait");var go=function(){{h.classList.remove("st-wait")}};setTimeout(go,1500);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go)}})();</script>
 <section class="st-hero" id="top">
-<img class="st-hero-img" src="{IMG}1a2e3ed3f44db1f671babb09a599b29f.jpg" alt="A male lion roaring, photographed by Matan Wild">
+<img class="st-hero-img" src="{IMG}1a2e3ed3f44db1f671babb09a599b29f.jpg" fetchpriority="high" alt="A male lion roaring, photographed by Matan Wild">
 <div class="st-hero-shade"></div>
 <div class="st-vf" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 <div class="wrap st-hero-in">
