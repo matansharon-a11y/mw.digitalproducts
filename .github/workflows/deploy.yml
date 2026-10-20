@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir _site
           cp *.html robots.txt sitemap.xml favicon.ico .nojekyll _site/
-          cp -r assets admin presets panel field-guides beta account shop product support legal thank-you read testers _site/
+          cp -r assets admin presets panel field-guides beta account shop product support legal thank-you read testers he _site/
           # Fresh scripts after every deploy: each page asks for the current version of every script it uses.
           python3 tools/stamp_scripts.py _site
 
