@@ -580,9 +580,9 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 
 /* ---------- landing: pinned story ---------- */
 .st-ch{position:relative;background:#0A0908}
-.st-ch-head{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(96px,14vh,160px);padding-bottom:clamp(56px,8vh,88px)}
+.st-ch-head{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(72px,10vh,120px);padding-bottom:clamp(40px,6vh,64px)}
 .st-ch-head .lead{text-wrap:balance}
-.st-track{position:relative;height:500vh}
+.st-track{position:relative;height:420vh}
 .st-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
 .st-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);height:100%;width:100%}
 .st-media{position:relative;height:100%;overflow:hidden;background:#141210}
@@ -632,7 +632,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-art-img,.st-mscene{display:none}
 
 /* ---------- landing: closing line ---------- */
-.st-close{padding:clamp(120px,18vh,200px) 0;text-align:center;background:radial-gradient(80% 60% at 50% 100%,rgba(244,175,86,.08),transparent 70%),#0A0908}
+.st-close{padding:clamp(88px,13vh,150px) 0;text-align:center;background:radial-gradient(80% 60% at 50% 100%,rgba(244,175,86,.08),transparent 70%),#0A0908}
 .st-close .wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
 .st-big{margin:0;font-size:clamp(44px,7.4vw,112px);line-height:.98;font-weight:400;letter-spacing:-.04em;color:#FEFBF1}
 .st-big span{display:block}
@@ -755,40 +755,48 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .faq details div{padding:0 0 26px;color:#CDD7DD;font-size:17px;line-height:1.7;max-width:680px}
 
 #faq.sec{padding-bottom:56px}
-.about.sec{padding-top:40px}
-@media (max-width:600px){#faq.sec{padding-bottom:40px}.about.sec{padding-top:24px}}
-.about-card{position:relative;display:flex;flex-direction:column;min-height:640px;border-radius:28px;overflow:hidden;background:radial-gradient(90% 120% at 0% 0%,#1A1612 0%,#0F0D0B 60%);border:1px solid rgba(254,251,241,.08);box-shadow:0 40px 120px -40px rgba(0,0,0,.8)}
-.about-ph{position:absolute;inset-block:0;inset-inline-end:0;width:56%;margin:0}
-.about-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:45% 30%;-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.55) 22%,#000 48%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.55) 22%,#000 48%)}
-[dir="rtl"] .about-ph img{-webkit-mask-image:linear-gradient(to left,transparent 0,rgba(0,0,0,.55) 22%,#000 48%);mask-image:linear-gradient(to left,transparent 0,rgba(0,0,0,.55) 22%,#000 48%)}
-.about-body{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;width:min(580px,49%);padding:72px 0 64px;padding-inline-start:72px}
-.about-body .h2{margin-top:18px;font-size:clamp(34px,3.6vw,54px)}
-.about-intro{margin:28px 0 0;font-size:clamp(18px,1.45vw,21px);line-height:1.55;color:#FEFBF1;text-wrap:pretty}
-.about-more{margin:16px 0 0;font-size:16px;line-height:1.7;color:#9CB1C2;text-wrap:pretty}
-.about-go{display:inline-flex;align-self:flex-start;align-items:center;gap:10px;margin-top:36px;text-decoration:none}
+/* About Matan: full width. The photo runs to the edge of the page on the end side and fades into the dark;
+   the words sit on the start side, the three roles in a row along the bottom. */
+.about{position:relative;overflow:hidden;isolation:isolate;display:flex;min-height:min(780px,96svh);padding:clamp(64px,7vw,104px) 0 0;border:0}
+.about-ph{position:absolute;inset-block:0;inset-inline-end:0;width:60%;margin:0;z-index:-1}
+.about-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 22%;-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.6) 24%,#000 52%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.6) 24%,#000 52%)}
+[dir="rtl"] .about-ph img{-webkit-mask-image:linear-gradient(to left,transparent 0,rgba(0,0,0,.6) 24%,#000 52%);mask-image:linear-gradient(to left,transparent 0,rgba(0,0,0,.6) 24%,#000 52%)}
+.about-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0A0908 0%,rgba(10,9,8,0) 22%,rgba(10,9,8,0) 62%,#0A0908 100%)}
+.about-in{display:flex;flex-direction:column;justify-content:space-between;width:100%}
+.about-body{max-width:560px;margin-block:auto}
+.about-body .h2{margin-top:16px;font-size:clamp(36px,4vw,60px)}
+.about-intro{margin:26px 0 0;font-size:clamp(18px,1.45vw,21px);line-height:1.55;color:#FEFBF1;text-wrap:pretty}
+.about-more{margin:14px 0 0;font-size:16px;line-height:1.7;color:#9CB1C2;text-wrap:pretty}
+.about-go{display:inline-flex;align-self:flex-start;align-items:center;gap:10px;margin-top:32px;text-decoration:none}
 [dir="rtl"] .about-go .ext{transform:scaleX(-1)}
-.roles{position:relative;z-index:1;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(254,251,241,.1);background:rgba(10,9,8,.62);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
-.roles li{display:flex;flex-direction:column;gap:8px;padding:28px 40px}
-.roles li:first-child{padding-inline-start:72px}
-.roles li + li{border-inline-start:1px solid rgba(254,251,241,.08)}
+.roles{list-style:none;margin:64px 0 0;padding:28px 0 clamp(48px,6vw,72px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(254,251,241,.12)}
+.roles li{display:flex;flex-direction:column;gap:8px;padding-inline-end:32px}
+.roles li + li{padding-inline-start:32px;border-inline-start:1px solid rgba(254,251,241,.1)}
 .roles span{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#F4AF56}
 [dir="rtl"] .roles span{letter-spacing:normal}
 .roles strong{font-size:18px;line-height:1.35;font-weight:600;color:#FEFBF1}
-@media (max-width:1100px){.about-body{width:52%;padding-inline-start:48px}.about-intro{font-size:17px}.about-more{font-size:15px}.roles li{padding:24px 28px}.roles li:first-child{padding-inline-start:48px}.about-ph{width:52%}}
+@media (max-width:1100px){.about-ph{width:66%}.about-body{max-width:480px}}
 @media (max-width:900px){
-  .about-card{min-height:0;border-radius:22px}
-  .about-ph{position:relative;inset:auto;width:100%;aspect-ratio:4/3}
-  .about-ph img,[dir="rtl"] .about-ph img{object-position:50% 30%;-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);mask-image:linear-gradient(to bottom,#000 55%,transparent 100%)}
-  .about-body{width:auto;margin-top:-24px;padding:0 24px 36px}
-  .about-body .h2{margin-top:14px}
-  .roles{grid-template-columns:minmax(0,1fr)}
-  .roles li,.roles li:first-child{padding:20px 24px}
-  .roles li + li{border-inline-start:0;border-top:1px solid rgba(254,251,241,.08)}
+  .about{display:block;min-height:0;padding-top:0}
+  .about-ph{position:relative;inset:auto;width:100%;height:min(560px,72svh);z-index:-1}
+  .about-ph img,[dir="rtl"] .about-ph img{object-position:50% 25%;-webkit-mask-image:none;mask-image:none}
+  .about-ph::after{background:linear-gradient(180deg,#0A0908 0%,rgba(10,9,8,0) 18%,rgba(10,9,8,0) 55%,#0A0908 100%)}
+  .about-in{margin-top:-96px}
+  .roles{grid-template-columns:minmax(0,1fr);margin-top:40px;padding-top:0;border-top:0}
+  .roles li,.roles li + li{padding:18px 0;border-inline-start:0;border-top:1px solid rgba(254,251,241,.1)}
 }
 @media (max-width:1100px){.shop{grid-template-columns:minmax(0,1fr);max-width:560px;margin-inline:auto}}
 @media (max-width:600px){.navr a.nl.hide-sm{display:none}.card .act{flex-direction:column}}
 @media (max-width:1100px){.trust{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding-top:72px;padding-bottom:72px}}
 @media (max-width:600px){.trust{grid-template-columns:minmax(0,1fr);gap:12px;padding-top:56px;padding-bottom:56px}.trust > div{display:grid;grid-template-columns:52px 1fr;column-gap:16px;row-gap:4px;padding:20px}.trust .ti{grid-row:span 2;width:52px;height:52px;margin:0}}
+/* One spacing rhythm for the whole site (Oct 2026): sections 64 to 112 px apart */
+.sec{padding:clamp(64px,8vw,112px) 0}
+#faq.sec{padding-bottom:clamp(40px,4vw,56px)}
+.plans{margin-top:44px}
+.faq{margin-top:40px}
+.faq summary{margin-inline:-16px;padding-inline:16px;border-radius:14px;transition:color .2s,background .2s}
+.faq summary:hover{background:rgba(254,251,241,.035)}
+.trust{padding-top:clamp(56px,6vw,80px);padding-bottom:clamp(56px,6vw,80px)}
 @media (prefers-reduced-motion:reduce){.card,.card .ph img,.trust > div,.trust .ti,.trust .ti svg{transition:none;animation:none!important}}
 
 </style>
@@ -1056,10 +1064,9 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
 </div>
 </section>
 
-<section class="sec about" id="about">
-<div class="wrap">
-<div class="about-card">
+<section class="about" id="about">
 <figure class="about-ph"><img src="assets/pages/img/matan.jpg" alt="Matan Wild" width="1062" height="1066" loading="lazy" decoding="async"></figure>
+<div class="wrap about-in">
 <div class="about-body">
 <p class="kick">About Matan</p>
 <h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
@@ -1072,7 +1079,6 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
 <li><span>Founder</span><strong>The Wild Side of Photography</strong></li>
 <li><span>Educator</span><strong>Mentoring photographers and content creators</strong></li>
 </ul>
-</div>
 </div>
 </section>
 

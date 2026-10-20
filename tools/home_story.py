@@ -133,9 +133,9 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 
 /* ---------- landing: pinned story ---------- */
 .st-ch{position:relative;background:#0A0908}
-.st-ch-head{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(96px,14vh,160px);padding-bottom:clamp(56px,8vh,88px)}
+.st-ch-head{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(72px,10vh,120px);padding-bottom:clamp(40px,6vh,64px)}
 .st-ch-head .lead{text-wrap:balance}
-.st-track{position:relative;height:500vh}
+.st-track{position:relative;height:420vh}
 .st-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
 .st-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);height:100%;width:100%}
 .st-media{position:relative;height:100%;overflow:hidden;background:#141210}
@@ -185,7 +185,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-art-img,.st-mscene{display:none}
 
 /* ---------- landing: closing line ---------- */
-.st-close{padding:clamp(120px,18vh,200px) 0;text-align:center;background:radial-gradient(80% 60% at 50% 100%,rgba(244,175,86,.08),transparent 70%),#0A0908}
+.st-close{padding:clamp(88px,13vh,150px) 0;text-align:center;background:radial-gradient(80% 60% at 50% 100%,rgba(244,175,86,.08),transparent 70%),#0A0908}
 .st-close .wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
 .st-big{margin:0;font-size:clamp(44px,7.4vw,112px);line-height:.98;font-weight:400;letter-spacing:-.04em;color:#FEFBF1}
 .st-big span{display:block}

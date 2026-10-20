@@ -43,12 +43,12 @@ UI = {
            "hint": "Drag the handle to compare.", "faq_kick": "Before you buy", "faq": "FAQs",
            "spec_kick": "What you get", "spec_h": "What's in the download.", "price_kick": "Get it",
            "trust": "Instant download · Secure checkout · Free updates", "terms": "Full terms",
-           "more": "Questions about your setup?", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside"},
+           "more": "Questions about your setup?", "examples": "Choose an example", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside"},
     "he": {"buy": "לרכישה", "prev": "הקודם", "next": "הבא", "page": "עמוד", "raw": "RAW", "final": "סופי",
            "hint": "גררו את הידית כדי להשוות.", "faq_kick": "לפני שקונים", "faq": "שאלות נפוצות",
            "spec_kick": "מה מקבלים", "spec_h": "מה יש בהורדה.", "price_kick": "לרכישה",
            "trust": "הורדה מיידית · תשלום מאובטח · עדכונים חינם", "terms": "התנאים המלאים",
-           "more": "שאלות על ההתקנה?", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים"},
+           "more": "שאלות על ההתקנה?", "examples": "בחרו דוגמה", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים"},
 }
 
 # ---------------------------------------------------------------- the products
@@ -310,7 +310,7 @@ def page(folder, lang):
 <p class="kick in" style="--i:0">{esc(c["kick"])}</p>
 <h1 class="h1 in" style="--i:1">{esc(c["h1"][0])} <span class="grad">{esc(c["h1"][1])}</span></h1>
 <p class="lead in" style="--i:2">{esc(c["lead"])}</p>
-<div class="ctas in" style="--i:3"><a class="btn" href="#buy" data-add-to-cart="{slug}">{esc(c["cta"])} <span class="pr">· {price(slug, lang)}</span></a><a class="ghost" href="#{proof_id}">{esc(c["cta2"])}</a></div>
+<div class="ctas in" style="--i:3"><a class="btn" href="#buy" data-add-to-cart="{slug}">{esc(c["cta"])} <span class="pr">· {price(slug, lang)}</span></a></div>
 <ul class="facts in" style="--i:4">{facts}</ul>
 </div>
 </section>''')
@@ -319,8 +319,8 @@ def page(folder, lang):
     if p["proof_type"] == "ba":
         (b0, a0) = p["pairs_from"][0]
         chips = "".join(
-            f'<button class="chip" type="button" data-pair aria-pressed="{str(k == 0).lower()}" data-before="{img(b)}" data-after="{img(a)}" '
-            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}">{esc(lab)}</button>'
+            f'<button class="ex" type="button" role="tab" data-pair aria-selected="{str(k == 0).lower()}" data-before="{img(b)}" data-after="{img(a)}" '
+            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}"><span class="th"><img src="{img(a)}" alt="" loading="lazy"></span><span class="lb">{esc(lab)}</span></button>'
             for k, ((b, a), lab) in enumerate(zip(p["pairs_from"], c["pairs"])))
         parts.append(f'''<section class="sec" id="compare">
 <div class="wrap" data-ba>
@@ -332,8 +332,9 @@ def page(folder, lang):
 <span class="line"></span><span class="knob">{GRIP}</span>
 <input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
 </div>
-<div class="chips" role="group">{chips}</div>
-<p class="hint">{u["hint"]}</p>
+<p class="hint"><span class="hint-ico" aria-hidden="true">↔</span>{u["hint"]}</p>
+<p class="ex-h">{u["examples"]}</p>
+<div class="exs" role="tablist" aria-label="{u["examples"]}">{chips}</div>
 </div>
 </section>''')
     else:
@@ -346,7 +347,7 @@ def page(folder, lang):
 <div class="viewer" data-viewer data-r tabindex="0" aria-roledescription="carousel">
 <div class="pg">{imgs}
 <button class="arr prev" type="button" aria-label="{u["prev"]}">{BACK}</button><button class="arr next" type="button" aria-label="{u["next"]}">{ARROW}</button></div>
-<div class="dots">{dots}</div>
+<div class="vbar"><span class="count" aria-live="polite"><b>1</b> / {len(pages)}</span><div class="dots">{dots}</div></div>
 </div>
 </div>
 </section>''')

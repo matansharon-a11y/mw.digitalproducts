@@ -64,9 +64,12 @@ document.querySelectorAll("[data-ba]").forEach((box) => {
     }, { threshold: 0.6 });
     io.observe(ba);
   }
-  range.addEventListener("pointerdown", () => { range.dataset.touched = 1; }, { once: true });
+  // the handle pulses until it has been moved once
+  const touched = () => { range.dataset.touched = 1; ba.classList.add("touched"); };
+  range.addEventListener("pointerdown", touched, { once: true });
+  range.addEventListener("keydown", touched, { once: true });
   box.querySelectorAll("[data-pair]").forEach((chip) => chip.addEventListener("click", () => {
-    box.querySelectorAll("[data-pair]").forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+    box.querySelectorAll("[data-pair]").forEach((c) => c.setAttribute("aria-selected", String(c === chip)));
     before.src = chip.dataset.before; after.src = chip.dataset.after;
     before.alt = chip.dataset.alt0; after.alt = chip.dataset.alt1;
     set(50); range.value = 50;
@@ -82,6 +85,7 @@ document.querySelectorAll("[data-viewer]").forEach((v) => {
     i = (n + imgs.length) % imgs.length;
     imgs.forEach((im, k) => im.classList.toggle("on", k === i));
     dots.forEach((d, k) => d.setAttribute("aria-current", String(k === i)));
+    const num = v.querySelector(".count b"); if (num) num.textContent = i + 1;
   };
   const rtl = root.dir === "rtl";
   v.querySelector(".prev").addEventListener("click", () => go(i - 1));
@@ -111,6 +115,8 @@ document.querySelectorAll("[data-rail]").forEach((wrap) => {
     const max = rail.scrollWidth - rail.clientWidth - 2;
     prev.disabled = pos() <= 2; next.disabled = pos() >= max;
     wrap.querySelector(".rail-nav").hidden = max <= 0;
+    // a soft fade on the side where more cards are waiting
+    rail.classList.toggle("more-end", pos() < max); rail.classList.toggle("more-start", pos() > 2);
   };
   const by = (dir) => rail.scrollBy({ left: dir * (rtl ? -1 : 1) * rail.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" });
   prev.addEventListener("click", () => by(-1));

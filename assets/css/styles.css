@@ -520,3 +520,10 @@ main { flex: 1; }
 .bundle li svg { margin-top: 4px; }
 .bundle .btn { width: 100%; }
 @media (max-width: 1000px) { .shop-tiles, .bundles { grid-template-columns: minmax(0, 1fr); } .tile { min-height: 460px; } }
+
+/* One spacing rhythm for the whole site (Oct 2026): the same steps as the home and product pages */
+.page-hero { padding-block: clamp(80px, 9vw, 128px) clamp(28px, 3.5vw, 44px); }
+.section { padding-block: clamp(64px, 8vw, 112px); }
+.section--tight { padding-block: 24px clamp(64px, 8vw, 104px); }
+.bundles { margin-top: 40px; }
+.topics { margin-bottom: 20px; }
