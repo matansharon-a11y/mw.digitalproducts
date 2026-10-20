@@ -1,9 +1,12 @@
-"""Bring the three sales pages (EN + HE) in line with the home page: gold palette, the same header
+"""(Since Oct 2026 the three product pages are built by tools/build_products.py and this script skips them.
+It still applies if Matan's sales-page designs are imported again with import_designs.py.)
+
+Bring the three sales pages (EN + HE) in line with the home page: gold palette, the same header
 (MWP logo, Help, My downloads and cart icons, language toggle) and the same RAW / FINAL wording on
 the comparison sliders. Page content and layout stay as Matan designed them. Safe to run again."""
 import re, sys, os
 sys.path.insert(0, os.path.dirname(__file__))
-from brand import gold, NAV_CSS, FONTS, BUNDLE_CSS, SITE_CSS, site_links, menu_button, site_footer
+from brand import CART, USER, gold, NAV_CSS, FONTS, BUNDLE_CSS, SITE_CSS, site_links, menu_button, site_footer
 from sales_he import hebrew
 from img_loading import prioritize
 
@@ -14,8 +17,6 @@ PAGES = {
 }
 HELP = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></svg>'
 DL = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>'
-USER = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>'
-CART = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>'
 
 def navr(lang, btn=""):
     he = lang == "he"
@@ -108,6 +109,8 @@ initPrices();
 
 for path, lang in PAGES.items():
     s = open(path, encoding="utf-8").read()
+    if "/assets/css/product.css" in s:   # built by tools/build_products.py (Oct 2026): nothing to do here
+        print("skipped", path, "(built by build_products.py)"); continue
     s = gold(s)
     # header: home-page brand (logo + MWP, links home), Help + icons + language toggle
     s = re.sub(r'<a class="brand" href="[^"]*"[^>]*><img src="[^"]+" alt="[^"]*"><span>[^<]*</span></a>',

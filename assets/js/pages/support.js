@@ -12,6 +12,17 @@ const user = await currentUser();
 if (user?.email) form.elements.email.value = user.email;
 const topic = new URLSearchParams(location.search).get("topic");
 if (topic && form.elements.category.querySelector(`option[value="${CSS.escape(topic)}"]`)) form.elements.category.value = topic;
+// The topic tiles above the form choose its topic and move on to the subject
+const tiles = [...document.querySelectorAll("[data-topic]")];
+const markTile = () => tiles.forEach((t) => t.setAttribute("aria-pressed", String(t.dataset.topic === form.elements.category.value)));
+tiles.forEach((t) => t.addEventListener("click", () => {
+  form.elements.category.value = t.dataset.topic;
+  markTile();
+  form.elements.subject.focus({ preventScroll: true });
+  form.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+}));
+form.elements.category.addEventListener("change", markTile);
+markTile();
 
 function fieldError(name, message) {
   const input = form.elements[name];

@@ -1,0 +1,480 @@
+"""The three product pages (MWP Presets, MWP Panel, MWP Field Guides), English and Hebrew, from one template.
+
+Writes <folder>/index.html (English), <folder>/he/index.html and <folder>/he.html (Hebrew) for each product.
+Every page follows the same story, in the home page's look:
+  hero → product bar (appears once the hero has scrolled away) → the proof (RAW / final slider, or real guide
+  pages) → what's inside (photo cards) → one signature feature → what's in the download → FAQs → closing call
+  with the price cards.
+The wording comes from Matan's sales-page designs (EN and HE); the FAQs live in tools/pages/faqs.json.
+Run: python3 tools/build_products.py
+"""
+import glob, json, os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SITE = "https://shop.mw.photography"
+import hashlib
+CSS_V = hashlib.sha1(open(os.path.join(ROOT, "assets/css/product.css"), "rb").read()).hexdigest()[:8]   # fresh CSS after every change
+FAQS = json.load(open(os.path.join(ROOT, "tools/pages/faqs.json"), encoding="utf-8"))
+
+
+def img(prefix):
+    """/assets/pages/img/<file> from the first characters of its name (the files are named by their hash)."""
+    found = sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix + "*")))
+    if not found:
+        raise SystemExit(f"no image starting with {prefix}")
+    return "/assets/pages/img/" + os.path.basename(found[0])
+
+
+def esc(s):
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
+ARROW = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'
+BACK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>'
+GRIP = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FEFBF1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>'
+ZERO = {"en": "$0.00", "he": "₪0.00"}
+
+# Words the template uses on every page
+UI = {
+    "en": {"buy": "Buy", "prev": "Previous", "next": "Next", "page": "Page", "raw": "RAW", "final": "FINAL",
+           "hint": "Drag the handle to compare.", "faq_kick": "Before you buy", "faq": "FAQs",
+           "spec_kick": "What you get", "spec_h": "What's in the download.", "price_kick": "Get it",
+           "trust": "Instant download · Secure checkout · Free updates", "terms": "Full terms",
+           "more": "Questions about your setup?", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside"},
+    "he": {"buy": "לרכישה", "prev": "הקודם", "next": "הבא", "page": "עמוד", "raw": "RAW", "final": "סופי",
+           "hint": "גררו את הידית כדי להשוות.", "faq_kick": "לפני שקונים", "faq": "שאלות נפוצות",
+           "spec_kick": "מה מקבלים", "spec_h": "מה יש בהורדה.", "price_kick": "לרכישה",
+           "trust": "הורדה מיידית · תשלום מאובטח · עדכונים חינם", "terms": "התנאים המלאים",
+           "more": "שאלות על ההתקנה?", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים"},
+}
+
+# ---------------------------------------------------------------- the products
+P = {}
+
+P["presets"] = dict(
+    slug="mwp-presets", hero_img="6fbe4f2a", hero_pos="62% 40%", final_img="fbaf19ae",
+    proof_type="ba", pairs_from=[("3c14b23d", "fbaf19ae"), ("7c359a77", "84c2340d")],
+    cards=["6fbe4f2a", "e83b1947", "f424f86b", "e55ba138", "ff95ea5c"], feat_img="e55ba138", feat_flip=False,
+    bundle="full-set",
+    en=dict(
+        name="MWP Presets", name_html='MWP <span class="grad">Presets</span>',
+        title="Lightroom presets for wildlife and landscapes · MWP Presets",
+        desc="50 Lightroom presets and 33 video LUTs built from the MWP edits of wildlife and landscapes. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.",
+        kick="MWP Presets · Lightroom", h1=["The look behind every MWP frame.", "Now one click away."],
+        lead="50 Lightroom presets built from the MWP edits of wildlife and landscapes. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.",
+        cta="Get MWP Presets", cta2="Compare RAW and final",
+        facts=["50 presets, 12 of them adaptive", "Desktop and mobile", "33 LUTs for video"],
+        proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["Your RAW file.", "In MWP light."],
+        proof_lead="Each example shows the RAW file beside the same file with one preset, plus white balance and exposure.",
+        pairs=["Light and Scene · Blue Hour", "Light and Scene · Macro Ground"],
+        inside_kick="What's inside", inside_h=["Five collections,", "every kind of light."],
+        inside_lead="From golden backlight to blue hour, from desert sun to soft shade. Each one starts from the settings we use in our own MWP work.",
+        cards=[("Signature", "The MWP look and its variations, from soft to deep.", "Lioness in golden grass"),
+               ("Light & Scene", "Golden light, blue hour, desert, water and night.", "Volcano erupting at night"),
+               ("Mono", "Black and white in MWP tones.", "Lion walking, black and white"),
+               ("Adaptive", "AI masks for the subject, sky and background.", "Red fox looking at the camera"),
+               ("Tools", "Exposure, fur detail, vignette and grain.", "Tiger walking out of the forest")],
+        feat_kick="12 adaptive presets", feat_h=["Lightroom finds the animal.", "The preset lights it."],
+        feat_lead="The adaptive presets use Lightroom's AI masks to find the subject, the sky or the background in each photo and treat each one on its own.",
+        feat_points=["Subject: shadows and whites lifted on the animal", "Sky: highlights held, deeper and calmer",
+                     "Background: gently darker, so the animal stands out"], feat_alt="Red fox looking at the camera",
+        specs=[("50", "Desktop presets", "XMP for Lightroom Classic, Lightroom and Camera Raw"),
+               ("50", "Mobile files", "DNG for Lightroom Mobile on iPhone, iPad and Android"),
+               ("33", "LUTs", ".cube for Photoshop and video editors: Premiere Pro, DaVinci Resolve and Final Cut Pro"),
+               ("1", "Install guide", "A page for each program, step by step")],
+        spec_note="Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+.",
+        final_kick="MWP Presets", final_h=["The MWP signature look,", "ready for your next photo."],
+        final_lead="50 presets, 50 mobile files, 33 LUTs and an install guide in one download.",
+        plan=("MWP Presets", "Edit in Lightroom", ["50 Lightroom presets, 12 adaptive", "50 mobile files and 33 LUTs", "Install guide for every program"], "Get MWP Presets"),
+        plan2=("The full set", "From the shot to the share", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
+    ),
+    he=dict(
+        name="הפריסטים של MWP", name_html='הפריסטים של <span class="grad">MWP</span>',
+        title="הפריסטים של MWP",
+        desc="50 פריסטים ללייטרום ו־33 קובצי LUT לווידאו, שנבנו מתוך העריכות של MWP לצילומי חיות בר ונופים. ללייטרום קלאסיק, ללייטרום, ללייטרום מובייל ולקאמרה ראו.",
+        kick="הפריסטים של MWP · לייטרום", h1=["המראה של כל פריים של MWP.", "עכשיו בקליק אחד."],
+        lead="50 פריסטים ללייטרום, שנבנו מתוך העריכות של MWP לצילומי חיות בר ונופים. ללייטרום קלאסיק, ללייטרום, ללייטרום מובייל ולקאמרה ראו.",
+        cta="לרכישת הפריסטים של MWP", cta2="מ-RAW לתמונה הסופית",
+        facts=["50 פריסטים, 12 מהם אדפטיביים", "למחשב ולנייד", "33 קובצי LUT לווידאו"],
+        proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["קובץ ה-RAW שלכם.", "באור של MWP."],
+        proof_lead="בכל דוגמה רואים את קובץ ה-RAW לצד אותו קובץ עם פריסט אחד, איזון לבן וחשיפה.",
+        pairs=["אור וסצנה · שעה כחולה", "אור וסצנה · קרקע במאקרו"],
+        inside_kick="מה בפנים", inside_h=["חמישה אוספים,", "לכל סוג של אור."],
+        inside_lead="מאור זהוב מאחור ועד השעה הכחולה, משמש מדברית ועד צל רך. כל אחד מתחיל מההגדרות שאנחנו משתמשים בהן בעבודה של MWP.",
+        cards=[("חתימה", "המראה של MWP והגרסאות שלו, מרך ועד עמוק.", "לביאה בעשב זהוב"),
+               ("אור וסצנה", "אור זהוב, שעה כחולה, מדבר, מים ולילה.", "הר געש מתפרץ בלילה"),
+               ("מונו", "שחור-לבן בגוונים של MWP.", "אריה הולך, בשחור-לבן"),
+               ("אדפטיבי", "מסכות AI לנושא, לשמיים ולרקע.", "שועל אדום מביט במצלמה"),
+               ("כלים", "חשיפה, פרטי פרווה, וינייט וגרעין.", "נמר יוצא מהיער")],
+        feat_kick="12 פריסטים אדפטיביים", feat_h=["לייטרום מוצא את החיה.", "הפריסט מאיר אותה."],
+        feat_lead="הפריסטים האדפטיביים משתמשים במסכות ה-AI של לייטרום כדי למצוא בכל תמונה את הנושא, את השמיים או את הרקע, ומטפלים בכל אחד בנפרד.",
+        feat_points=["נושא: הצללים והלבנים עולים על החיה", "שמיים: האור נשמר, עמוק ורגוע יותר", "רקע: כהה מעט, כך שהחיה בולטת"],
+        feat_alt="שועל אדום מביט במצלמה",
+        specs=[("50", "פריסטים למחשב", "XMP ללייטרום קלאסיק, ללייטרום ולקאמרה ראו"),
+               ("50", "קבצים לנייד", "DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד"),
+               ("33", "קובצי LUT", "בפורמט ‎.cube לפוטושופ ולתוכנות וידאו: פרמייר פרו, דה־וינצ׳י ריזולב ופיינל קאט פרו"),
+               ("1", "מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד")],
+        spec_note="הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה.",
+        final_kick="הפריסטים של MWP", final_h=["המראה של MWP,", "מוכן לתמונה הבאה שלכם."],
+        final_lead="50 פריסטים, 50 קבצים לנייד, 33 קובצי LUT ומדריך התקנה, בהורדה אחת.",
+        plan=("הפריסטים של MWP", "עורכים בלייטרום", ["50 פריסטים ללייטרום, 12 אדפטיביים", "50 קבצים לנייד ו-33 קובצי LUT", "מדריך התקנה לכל תוכנה"], "לרכישת הפריסטים של MWP"),
+        plan2=("הסט המלא", "מהצילום ועד השיתוף", ["הפריסטים של MWP: ‏50 פריסטים ו-33 קובצי LUT", "הפאנל של MWP: הפלאגין לפוטושופ", "מדריכי השטח של MWP: ‏4 מדריכי PDF, ‏137 שיעורים"], "לסט המלא"),
+    ),
+)
+
+P["panel"] = dict(
+    slug="mwp-panel", hero_img="866c1bdb", hero_pos="58% 40%", final_img="99ef2d40",
+    proof_type="ba", pairs_from=[("c339384f", "52e0c3d2"), ("af0d1799", "95e05791")],
+    cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], feat_img="0f68e984", feat_flip=True, feat_tall=True,
+    bundle="presets-panel",
+    en=dict(
+        name="MWP Panel", name_html='MWP <span class="grad">Panel</span>',
+        title="MWP Panel by Matan Wild",
+        desc="MWP Panel, a Photoshop plugin: the way we edit on our expeditions, built in as simple buttons. Pick the animal or the sky, pick an effect, set how strong.",
+        kick="MWP Panel · Photoshop plugin", h1=["You were there.", "Now make the photo show it."],
+        lead="The way we edit on our expeditions, built into Photoshop as simple buttons. Pick the animal or the sky, pick an effect, set how strong. Your original stays as it was.",
+        cta="Get MWP Panel", cta2="Compare RAW and final",
+        facts=["8 one-click effects", "11 looks and 4 painted lights", "Photoshop 2023 or newer · Mac and Windows"],
+        proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The animal brighter.", "The sky calmer."],
+        proof_lead="Choose the subject or the sky, then an effect. The panel builds the mask and puts the edit on its own layer.",
+        pairs=["Subject · Pop", "Background · Darken"],
+        inside_kick="What's inside", inside_h=["Four tabs,", "in the order you edit."], inside_lead="",
+        cards=[("Prepare", "Crop around the animal, straighten, find and erase dust, denoise. Neutral color in one tap.", "Iceberg under storm light"),
+               ("Edit", "Subject, eye, sky, background, lights, darks or any color. 8 effects. Paint them in or out.", "Red fox looking at the camera"),
+               ("Style", "11 looks from golden to blue hour to B&W. Sun glow, sunbeams, rim light, spotlight.", "Lion walking, black and white"),
+               ("Export", "Your own watermark. Instagram, web and print copies in one click. Apply your edit to a whole series.", "Two elephants at sunset")],
+        feat_kick="Built to be safe", feat_h=["Your original", "stays untouched."],
+        feat_lead="Subject, Sky and Background use Photoshop's own AI. Hold a button to see the area in red before you edit.",
+        feat_points=["<strong>Every edit on its own layer.</strong> All edits sit in one MWP group. Your photo underneath stays locked.",
+                     "<strong>One button, one undo.</strong> Ctrl+Z takes back a whole button. Before / After shows the original at any time.",
+                     "<strong>Exports are new files.</strong> The panel never saves over your original file."],
+        feat_alt="MWP Panel open in Photoshop, the Edit tab",
+        specs=[("", "Photoshop plugin", "Double-click to install. Mac and Windows."),
+               ("21", "User Manual · PDF", "21 pages. Every button, step by step, for complete beginners."),
+               ("", "Installation Guide · PDF", "Setup step by step, with fixes for common problems."),
+               ("", "Built-in guide", "Hover tips and a full help page inside the panel.")],
+        spec_note="Works with Photoshop 2023 (24.2) or newer on Mac and Windows. Not for Lightroom, iPad or phones.",
+        final_kick="MWP Panel", final_h=["MWP Panel", "for Photoshop."],
+        final_lead="The plugin with both PDF guides. Or together with MWP Presets, for Photoshop and Lightroom in the same look.",
+        plan=("MWP Panel", "Photoshop plugin", ["Photoshop plugin, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get MWP Panel"),
+        plan2=("MWP Panel + MWP Presets", "Photoshop and Lightroom", ["Everything in MWP Panel", "50 Lightroom presets in the same look", "Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw"], "Get the bundle"),
+    ),
+    he=dict(
+        name="הפאנל של MWP", name_html='הפאנל של <span class="grad">MWP</span>',
+        title="הפאנל של MWP",
+        desc="הפאנל של MWP, פלאגין לפוטושופ: הדרך שבה אנחנו עורכים במסעות שלנו, בכפתורים פשוטים. בוחרים את החיה או את השמיים, בוחרים אפקט וקובעים עוצמה.",
+        kick="הפאנל של MWP · פלאגין לפוטושופ", h1=["הייתם שם.", "עכשיו תנו לתמונה להראות את זה."],
+        lead="הדרך שבה אנחנו עורכים במסעות שלנו, בתוך פוטושופ ובכפתורים פשוטים. בוחרים את החיה או את השמיים, בוחרים אפקט וקובעים עוצמה. המקור נשאר כמו שהוא.",
+        cta="לקבלת הפאנל של MWP", cta2="מ-RAW לתמונה הסופית",
+        facts=["8 אפקטים בלחיצה", "11 לוקים ו-4 תאורות מצוירות", "פוטושופ 2023 ומעלה · מק ו־ווינדוס"],
+        proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["החיה בהירה יותר.", "השמיים רגועים יותר."],
+        proof_lead="בוחרים את הנושא או את השמיים, ואז אפקט. הפאנל בונה את המסכה ושם את העריכה בשכבה נפרדת.",
+        pairs=["נושא · הבלטה", "רקע · הכהיה"],
+        inside_kick="מה יש בפנים", inside_h=["ארבע לשוניות,", "לפי סדר העריכה."], inside_lead="",
+        cards=[("הכנה", "חיתוך סביב החיה, יישור, איתור ומחיקה של כתמי אבק, הפחתת רעש. צבע ניטרלי בנגיעה אחת.", "קרחון באור סערה"),
+               ("עריכה", "נושא, עין, שמיים, רקע, אזורים בהירים או כהים, או כל צבע. 8 אפקטים, שאפשר להוסיף או למחוק במכחול.", "שועל אדום מביט במצלמה"),
+               ("סגנון", "11 לוקים, מזהוב ועד שעה כחולה ושחור-לבן. זוהר שמש, קרני אור, תאורת קצה וזרקור.", "אריה הולך, בשחור-לבן"),
+               ("ייצוא", "סימן מים משלכם. עותקים לאינסטגרם, לאתר ולהדפסה בלחיצה. העתקת העריכה לסדרה שלמה.", "שני פילים בשקיעה")],
+        feat_kick="בנוי להיות בטוח", feat_h=["המקור שלכם", "נשאר שלם."],
+        feat_lead="נושא, שמיים ו-רקע משתמשים ב-AI של פוטושופ עצמו. לחיצה ארוכה על כפתור מראה את האזור באדום, לפני שעורכים.",
+        feat_points=["<strong>כל עריכה בשכבה משלה.</strong> כל העריכות יושבות בקבוצת MWP אחת. התמונה שמתחת נשארת נעולה.",
+                     "<strong>כפתור אחד, ביטול אחד.</strong> Ctrl+Z מבטל כפתור שלם. לפני / אחרי מראה את המקור בכל רגע.",
+                     "<strong>הייצוא תמיד לקובץ חדש.</strong> הפאנל אף פעם לא שומר על הקובץ המקורי."],
+        feat_alt="הפאנל של MWP פתוח בפוטושופ, בלשונית העריכה",
+        specs=[("", "הפלאגין לפוטושופ", "לחיצה כפולה להתקנה. מק ו־ווינדוס."),
+               ("21", "מדריך למשתמש · PDF", "21 עמודים. כל כפתור, צעד אחרי צעד, גם למתחילים גמורים."),
+               ("", "מדריך התקנה · PDF", "התקנה צעד אחרי צעד, עם פתרונות לבעיות נפוצות."),
+               ("", "מדריך מובנה", "טיפים במעבר עכבר ועמוד עזרה מלא בתוך הפאנל.")],
+        spec_note="עובד עם פוטושופ 2023 (‏24.2) ומעלה, במק ובווינדוס. לא ללייטרום, לאייפד או לטלפון.",
+        final_kick="הפאנל של MWP", final_h=["הפאנל של MWP", "לפוטושופ."],
+        final_lead="הפלאגין עם שני מדריכי ה-PDF. או יחד עם הפריסטים של MWP, לפוטושופ וללייטרום באותו לוק.",
+        plan=("הפאנל של MWP", "פלאגין לפוטושופ", ["פלאגין לפוטושופ, מק ו־ווינדוס", "מדריך למשתמש · PDF, ‏21 עמודים", "מדריך התקנה · PDF"], "לקבלת הפאנל של MWP"),
+        plan2=("הפאנל + הפריסטים של MWP", "פוטושופ ולייטרום", ["כל מה שיש בהפאנל של MWP", "50 פריסטים ללייטרום באותו לוק", "לייטרום קלאסיק, לייטרום, לייטרום מובייל, קאמרה ראו"], "לקבלת החבילה"),
+    ),
+)
+
+P["field-guides"] = dict(
+    slug="mwp-field-guides", hero_img="5275cc7b", hero_pos="56% 55%", final_img="57773169",
+    proof_type="pages", pages={"en": ["ad1aed91", "4b0264b3"], "he": ["94febd64", "124b0082"]},
+    cards=["d5f6d2a7", "6d84bcea", "ce73f34a", "2f9794f4"],
+    feat_img={"en": "669cd248", "he": "6a58bfae"}, feat_flip=False,
+    steps={"en": ["b47f93dd", "ca5358c4", "d73281c0"], "he": ["9456cbfa", "86253563", "d73281c0"]},
+    bundle="full-set",
+    en=dict(
+        name="MWP Field Guides", name_html='MWP <span class="grad">Field Guides</span>',
+        title="MWP Field Guides",
+        desc="MWP Field Guides: four visual guides with 137 short lessons on composition, colour, light and planning, each one a real photo from the field.",
+        kick="MWP Field Guides · by Matan Wild", h1=["See the photo", "before you press the shutter."],
+        lead="Four visual guides with 137 short lessons: composition, colour, light and planning. Every lesson is a real photo from the field, with a drawing that shows exactly why it works.",
+        cta="Get the guides", cta2="Look inside", facts=["137 lessons", "English or Hebrew", "PDF for any device"],
+        proof_label="Look inside", proof_kick="Look inside", proof_h=["This is what every", "lesson looks like."],
+        proof_lead="Flip through real pages from the guide. A photo, a drawing and a short explanation. Nothing extra.",
+        page_alts=["Clean background page", "Odd numbers page"],
+        inside_kick="What's in the set", inside_h=["Four guides. Four skills", "every photographer needs."], inside_lead="",
+        cards=[("Composition", "Where to place it, what to leave out and how to lead the eye. 39 lessons.", "Puma looking into the lens"),
+               ("Colour", "Harmony, temperature, saturation and white balance. 36 lessons and 10 theory pages.", "Puffin among yellow flowers"),
+               ("Light", "Direction, quality, time of day and exposure. 25 lessons and 8 light tools.", "Lynx in side light"),
+               ("Planning", "Seasons, sky, apps, fieldcraft and gear. 37 lessons and 13 planning tools.", "Young fox looking into the lens")],
+        feat_kick="Why it works", feat_h=["A whole lesson", "on one page."],
+        feat_lead='On every page: a real photo, a drawing that shows what is happening in it, and a line or two you can remember in the field. Every lesson ends with "Break the rule": when to go against it, and how.',
+        feat_points=[], feat_alt="The look room page from the Composition guide",
+        steps_kick="Three steps", steps_h=["Read, practise,", "go shoot."],
+        steps=[("Read a lesson", "One page, one idea. Start with any guide and any page.", "The backlight page from the Light guide"),
+               ("Practise", "Every guide has drills, a checklist and a cheat sheet to take into the field.", "The check the frame checklist"),
+               ("Go shoot", "Arrive at the scene with a plan, and know what to look for in the viewfinder.", "A photographer lying on the ice, shooting")],
+        specs=[("4", "Field guides", "Composition, colour, light and planning"),
+               ("137", "Lessons", "One page each: a real photo, a drawing and a short explanation"),
+               ("31", "Tools and diagrams", "With drills, a checklist and a cheat sheet in every guide"),
+               ("229", "Pages", "PDF for any device, in English or Hebrew: you choose one language")],
+        spec_note="",
+        final_kick="MWP Field Guides", final_h=["Ready to shoot", "differently?"],
+        final_lead="4 guides, 137 lessons and 229 pages of composition, colour, light and planning. In English or Hebrew, in one set.",
+        plan=("MWP Field Guides", "Learn to shoot: before the click", ["4 field guides, English or Hebrew", "137 lessons, 229 pages", "Cheat sheets, drills and checklists"], "Get the guides"),
+        plan2=("The full set", "From the shot to the share", ["MWP Field Guides: 4 PDF guides, 137 lessons", "MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin"], "Get the full set"),
+    ),
+    he=dict(
+        name="מדריכי השטח של MWP", name_html='מדריכי השטח של <span class="grad">MWP</span>',
+        title="מדריכי השטח של MWP",
+        desc="מדריכי השטח של MWP: ארבעה מדריכים חזותיים עם 137 שיעורים קצרים על קומפוזיציה, צבע, אור ותכנון. כל שיעור הוא צילום אמיתי מהשטח.",
+        kick="מדריכי השטח של MWP · מאת מתן וויילד", h1=["לראות את התמונה", "לפני שלוחצים."],
+        lead="4 מדריכים דיגיטליים עם 137 שיעורים קצרים: קומפוזיציה, צבע, אור ותכנון. כל שיעור הוא צילום אמיתי מהשטח, עם שרטוט שמראה בדיוק למה הוא עובד.",
+        cta="לרכישת הסט", cta2="הציצו פנימה", facts=["137 שיעורים", "עברית או אנגלית", "PDF לכל מכשיר"],
+        proof_label="הצצה פנימה", proof_kick="הצצה פנימה", proof_h=["ככה נראה", "כל שיעור."],
+        proof_lead="דפדפו בעמודים אמיתיים מתוך המדריך. צילום, שרטוט והסבר קצר, בלי מילים מיותרות.",
+        page_alts=["עמוד רקע נקי", "עמוד מספרים אי־זוגיים"],
+        inside_kick="מה בסט", inside_h=["4 מדריכים. 4 מיומנויות", "שכל צלם צריך."], inside_lead="",
+        cards=[("קומפוזיציה", "איפה למקם, מה להשאיר בחוץ ואיך להוביל את העין. 39 שיעורים.", "פומה מביטה לעדשה"),
+               ("צבע", "הרמוניה, טמפרטורה, רוויה ואיזון לבן. 36 שיעורים ו-10 עמודי תיאוריה.", "פאפין בין פרחים צהובים"),
+               ("אור", "כיוון, איכות, שעה וחשיפה. 25 שיעורים ו-8 כלי אור.", "לינקס באור צד"),
+               ("תכנון", "עונות, שמיים, אפליקציות, שטח וציוד. 37 שיעורים ו-13 כלי תכנון.", "שועל צעיר מביט לעדשה")],
+        feat_kick="למה זה עובד", feat_h=["שיעור שלם", "בעמוד אחד."],
+        feat_lead='בכל עמוד: צילום אמיתי, שרטוט שמראה מה קורה בו, והסבר של משפט או שניים שקל לזכור בשטח. ובסוף כל שיעור, "שוברים את הכלל": מתי כדאי ללכת נגד הכלל, ואיך.',
+        feat_points=[], feat_alt="העמוד מקום למבט מתוך מדריך הקומפוזיציה",
+        steps_kick="שלושה צעדים", steps_h=["קוראים, מתרגלים,", "יוצאים לצלם."],
+        steps=[("קוראים שיעור", "עמוד אחד, רעיון אחד. אפשר להתחיל מכל מדריך ומכל עמוד.", "עמוד התאורה האחורית מתוך מדריך האור"),
+               ("מתרגלים", "בכל מדריך יש תרגילים, צ׳קליסט ודף סיכום שלוקחים לשטח.", "צ׳קליסט בודקים את הפריים"),
+               ("יוצאים לצלם", "מגיעים לסצנה עם תוכנית, ויודעים מה לחפש בעינית.", "צלם שוכב על הקרח ומצלם")],
+        specs=[("4", "מדריכים", "קומפוזיציה, צבע, אור ותכנון"),
+               ("137", "שיעורים", "כל אחד בעמוד: צילום אמיתי, שרטוט והסבר קצר"),
+               ("31", "כלים ודיאגרמות", "ובכל מדריך תרגילים, צ׳קליסט ודף סיכום"),
+               ("229", "עמודים", "PDF לכל מכשיר, בעברית או באנגלית: בוחרים שפה אחת")],
+        spec_note="",
+        final_kick="מדריכי השטח של MWP", final_h=["מוכנים", "לצלם אחרת?"],
+        final_lead="4 מדריכים, 137 שיעורים ו-229 עמודים של קומפוזיציה, צבע, אור ותכנון. בעברית או באנגלית, בסט אחד.",
+        plan=("מדריכי השטח של MWP", "לומדים לצלם: לפני הקליק", ["4 מדריכי שטח, עברית או אנגלית", "137 שיעורים, 229 עמודים", "דפי סיכום, תרגילים וצ׳קליסטים"], "לרכישת הסט"),
+        plan2=("הסט המלא", "מהצילום ועד השיתוף", ["מדריכי השטח של MWP: ‏4 מדריכי PDF, ‏137 שיעורים", "הפריסטים של MWP: ‏50 פריסטים ו-33 קובצי LUT", "הפאנל של MWP: הפלאגין לפוטושופ"], "לסט המלא"),
+    ),
+)
+
+
+# ---------------------------------------------------------------- the template
+def h(lines, tag="h2", cls="h2"):
+    a, b = lines
+    return f'<{tag} class="{cls}">{esc(a)} <span class="grad">{esc(b)}</span></{tag}>'
+
+
+def price(slug, lang, was=False):
+    return f'<span data-price="{slug}"{" data-was" if was else ""} data-no-i18n>{ZERO[lang]}</span>'
+
+
+def nav_right(lang, folder):
+    he = lang == "he"
+    t = (lambda e, hb: hb if he else e)
+    # the language switch goes to the other language's page and remembers the choice (mwp_lang)
+    other = (f'<a href="/{folder}/" hreflang="en" lang="en" onclick="try{{localStorage.setItem(\'mwp_lang\',\'en\')}}catch(e){{}}">EN</a><span class="on" aria-current="true">עב</span>'
+             if he else
+             f'<span class="on" aria-current="true">EN</span><a href="/{folder}/he/" hreflang="he" lang="he" onclick="try{{localStorage.setItem(\'mwp_lang\',\'he\')}}catch(e){{}}">עב</a>')
+    return (f'<div class="navr"><div class="nav-icons">'
+            f'<button class="nav-ico" type="button" data-cart aria-label="{t("Cart", "עגלה")}" aria-haspopup="dialog">{CART}<span class="count" hidden>0</span><span class="tip">{t("Cart", "עגלה")}</span></button>'
+            f'<button class="nav-ico" type="button" data-account aria-label="{t("Account", "חשבון")}" aria-haspopup="menu" aria-expanded="false">{USER}<span class="tip">{t("Account", "חשבון")}</span></button>'
+            f'</div><div class="lang-toggle" role="group" aria-label="{UI[lang]["lang"]}">{other}</div></div>')
+
+
+def page(folder, lang):
+    p, c, u = P[folder], P[folder][lang], UI[lang]
+    he = lang == "he"
+    slug = p["slug"]
+    url = f"{SITE}/{folder}/{'he/' if he else ''}"
+    proof_id = "compare" if p["proof_type"] == "ba" else "inside"
+    parts = []
+
+    # hero
+    facts = "".join(f"<li>{esc(f)}</li>" for f in c["facts"])
+    parts.append(f'''<section class="hero" id="top">
+<img src="{img(p["hero_img"])}" alt="" fetchpriority="high" style="object-position:{p["hero_pos"]}">
+<div class="vf" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+<div class="wrap">
+<p class="kick in" style="--i:0">{esc(c["kick"])}</p>
+<h1 class="h1 in" style="--i:1">{esc(c["h1"][0])} <span class="grad">{esc(c["h1"][1])}</span></h1>
+<p class="lead in" style="--i:2">{esc(c["lead"])}</p>
+<div class="ctas in" style="--i:3"><a class="btn" href="#buy" data-add-to-cart="{slug}">{esc(c["cta"])} <span class="pr">· {price(slug, lang)}</span></a><a class="ghost" href="#{proof_id}">{esc(c["cta2"])}</a></div>
+<ul class="facts in" style="--i:4">{facts}</ul>
+</div>
+</section>''')
+
+    # the proof
+    if p["proof_type"] == "ba":
+        (b0, a0) = p["pairs_from"][0]
+        chips = "".join(
+            f'<button class="chip" type="button" data-pair aria-pressed="{str(k == 0).lower()}" data-before="{img(b)}" data-after="{img(a)}" '
+            f'data-alt0="{esc(lab)} · {u["raw"]}" data-alt1="{esc(lab)} · {u["final"]}">{esc(lab)}</button>'
+            for k, ((b, a), lab) in enumerate(zip(p["pairs_from"], c["pairs"])))
+        parts.append(f'''<section class="sec" id="compare">
+<div class="wrap" data-ba>
+<div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
+<div class="ba" data-r>
+<img class="before" src="{img(b0)}" alt="{esc(c["pairs"][0])} · {u["raw"]}" loading="lazy">
+<img class="after" src="{img(a0)}" alt="{esc(c["pairs"][0])} · {u["final"]}" loading="lazy">
+<span class="tag t1">{u["raw"]}</span><span class="tag t2">{u["final"]}</span>
+<span class="line"></span><span class="knob">{GRIP}</span>
+<input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
+</div>
+<div class="chips" role="group">{chips}</div>
+<p class="hint">{u["hint"]}</p>
+</div>
+</section>''')
+    else:
+        pages = p["pages"][lang]
+        imgs = "".join(f'<img class="{"on" if k == 0 else ""}" src="{img(x)}" alt="{esc(c["page_alts"][k])}" loading="lazy">' for k, x in enumerate(pages))
+        dots = "".join(f'<button type="button" aria-label="{u["page"]} {k + 1}" aria-current="{str(k == 0).lower()}"></button>' for k in range(len(pages)))
+        parts.append(f'''<section class="sec" id="inside">
+<div class="wrap">
+<div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
+<div class="viewer" data-viewer data-r tabindex="0" aria-roledescription="carousel">
+<div class="pg">{imgs}
+<button class="arr prev" type="button" aria-label="{u["prev"]}">{BACK}</button><button class="arr next" type="button" aria-label="{u["next"]}">{ARROW}</button></div>
+<div class="dots">{dots}</div>
+</div>
+</div>
+</section>''')
+
+    # what's inside: photo cards
+    inside_id = "contents" if p["proof_type"] == "pages" else "inside"
+    cards = "".join(f'''<article class="card" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"><span class="no">0{k + 1}</span></div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>'''
+                    for k, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
+    lead = f'<p class="lead">{esc(c["inside_lead"])}</p>' if c["inside_lead"] else ""
+    parts.append(f'''<section class="sec tint" id="{inside_id}">
+<div class="wrap" data-rail>
+<div class="rail-top"><div class="head" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
+<div class="rail-nav"><button type="button" aria-label="{u["prev"]}">{BACK}</button><button type="button" aria-label="{u["next"]}">{ARROW}</button></div></div>
+<div class="rail{" n3" if len(p["cards"]) == 3 else ""}">{cards}</div>
+</div>
+</section>''')
+
+    # signature feature
+    fimg = p["feat_img"][lang] if isinstance(p["feat_img"], dict) else p["feat_img"]
+    ticks = "".join(f"<li>{CHECK}<span>{pt}</span></li>" for pt in c["feat_points"])
+    parts.append(f'''<section class="sec">
+<div class="wrap feat{" flip" if p["feat_flip"] else ""}">
+<div class="ph{" tall" if p.get("feat_tall") else ""}" data-r><img src="{img(fimg)}" alt="{esc(c["feat_alt"])}" loading="lazy"></div>
+<div data-r style="--d:.1s"><p class="kick">{esc(c["feat_kick"])}</p>{h(c["feat_h"])}<p class="lead">{esc(c["feat_lead"])}</p>{f'<ul class="ticks">{ticks}</ul>' if ticks else ""}</div>
+</div>
+</section>''')
+
+    # three steps (Field Guides)
+    if "steps" in p:
+        steps = "".join(f'''<div class="step" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"></div><span class="n">0{k + 1}</span><h3>{esc(t)}</h3><p>{esc(d)}</p></div>'''
+                        for k, (im, (t, d, alt)) in enumerate(zip(p["steps"][lang], c["steps"])))
+        parts.append(f'''<section class="sec" id="how">
+<div class="wrap"><div class="head" data-r><p class="kick">{esc(c["steps_kick"])}</p>{h(c["steps_h"])}</div><div class="steps">{steps}</div></div>
+</section>''')
+
+    # what's in the download
+    rows = "".join(f'<div class="row"><dt>{f"<b>{esc(n)}</b>" if n else ""}{esc(t)}</dt><dd>{esc(d)}</dd></div>' for n, t, d in c["specs"])
+    note = f'<p class="note">{esc(c["spec_note"])}</p>' if c["spec_note"] else ""
+    parts.append(f'''<section class="sec tint" id="specs">
+<div class="wrap specs">
+<div class="head" data-r><p class="kick">{u["spec_kick"]}</p><h2 class="h2">{u["spec_h"]}</h2></div>
+<div data-r style="--d:.1s"><dl>{rows}</dl>{note}</div>
+</div>
+</section>''')
+
+    # FAQs
+    qa = "".join(f'<details><summary>{esc(f["q"])}<i aria-hidden="true"></i></summary><div class="a"><p>{esc(f["a"])}</p></div></details>' for f in FAQS[folder][lang])
+    parts.append(f'''<section class="sec" id="faq">
+<div class="wrap">
+<div class="head c" data-r><p class="kick">{u["faq_kick"]}</p><h2 class="h2">{u["faq"]}</h2></div>
+<div class="faq" data-r>{qa}</div>
+<p class="small">{u["more"]} <a href="/support/">{u["write"]}</a></p>
+</div>
+</section>''')
+
+    # closing call with the two price cards
+    def plan(data, s, hi=False, badge=""):
+        name, sub, pts, cta = data
+        li = "".join(f"<li>{CHECK}<span>{esc(x)}</span></li>" for x in pts)
+        return (f'<div class="plan{" hi" if hi else ""}" data-r>{f"<span class=badge>{badge}</span>" if badge else ""}<h3>{esc(name)}</h3><p class="sub">{esc(sub)}</p>'
+                f'<div class="amt">{price(s, lang)}</div><ul>{li}</ul>'
+                f'<a class="{"btn" if hi else "ghost"}" href="#buy" data-add-to-cart="{s}">{esc(cta)}</a></div>')
+    parts.append(f'''<section class="final" id="buy">
+<img src="{img(p["final_img"])}" alt="" loading="lazy">
+<div class="wrap">
+<div class="head c" data-r><p class="kick">{esc(c["final_kick"])}</p>{h(c["final_h"])}<p class="lead">{esc(c["final_lead"])}</p></div>
+<div class="prices">{plan(c["plan"], slug, hi=True)}{plan(c["plan2"], p["bundle"], badge=u["bundle"])}</div>
+<p class="small">{u["trust"]} · <a href="/legal/">{u["terms"]}</a></p>
+</div>
+</section>''')
+
+    # product bar
+    bar_links = [(proof_id, c["proof_label"]), (inside_id, u["inside"]), ("faq", u["faq"])]
+    bar = (f'<div class="pbar" aria-label="{esc(c["name"])}"><div class="wrap"><span class="nm" data-no-i18n>{c["name_html"]}</span>'
+           f'<nav>{"".join(f"<a href=#{i}>{esc(t)}</a>" for i, t in bar_links)}</nav>'
+           f'<span class="pp">{price(slug, lang)}</span><a class="btn sm" href="#buy" data-add-to-cart="{slug}">{u["buy"]}</a></div></div>')
+
+    redirect = ("" if he else
+                f'<script>try{{if(localStorage.getItem("mwp_lang")==="he")location.replace("/{folder}/he/"+location.search+location.hash)}}catch(e){{}}</script>')
+    remember = '<script>try{localStorage.setItem("mwp_lang","he")}catch(e){}</script>' if he else ""
+    return f'''<!doctype html>
+<html lang="{lang}" dir="{"rtl" if he else "ltr"}">
+<head>
+<meta charset="utf-8">
+{redirect}{remember}
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{esc(c["title"])}</title>
+<meta name="description" content="{esc(c["desc"])}">
+<link rel="canonical" href="{url}">
+<link rel="alternate" hreflang="en" href="{SITE}/{folder}/"><link rel="alternate" hreflang="he" href="{SITE}/{folder}/he/">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#0A0908">
+<meta property="og:type" content="website"><meta property="og:site_name" content="MWP">
+<meta property="og:title" content="{esc(c["title"])}"><meta property="og:description" content="{esc(c["desc"])}">
+<meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}{img(p["hero_img"])}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png">
+<link rel="preload" as="image" href="{img(p["hero_img"])}" fetchpriority="high">
+<link rel="stylesheet" href="/assets/css/product.css?v={CSS_V}">
+<style id="site-nav">{NAV_CSS}{SITE_CSS}</style>
+{FONTS}
+</head>
+<body>
+<a class="skip" href="#main">{"דילוג לתוכן" if he else "Skip to content"}</a>
+<nav class="nav site-header" aria-label="{"ראשי" if he else "Main"}">
+<div class="wrap container">
+<a class="brand" href="/" aria-label="MWP, home"><img src="/assets/pages/img/2dd3356528167ddf9a64c0c7301c8aa3.png" alt=""><span>MWP</span></a>
+<div class="links">{site_links(lang, f"/{folder}/")}</div>
+{nav_right(lang, folder)}
+{menu_button(lang)}
+</div>
+</nav>
+{bar}
+<main id="main">
+{chr(10).join(parts)}
+</main>
+{site_footer(lang)}
+<script src="/assets/js/lib/nav.js" defer></script>
+<script type="module" src="/assets/js/pages/product-page.js"></script>
+</body>
+</html>
+'''
+
+
+if __name__ == "__main__":
+    for folder in P:
+        en, he = page(folder, "en"), page(folder, "he")
+        os.makedirs(os.path.join(ROOT, folder, "he"), exist_ok=True)
+        for path, html in [(f"{folder}/index.html", en), (f"{folder}/he/index.html", he), (f"{folder}/he.html", he)]:
+            open(os.path.join(ROOT, path), "w", encoding="utf-8").write(html)
+        print("built", folder)

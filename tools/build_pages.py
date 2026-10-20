@@ -193,19 +193,53 @@ page("index.html",
     </div>
   </section>""", "home.js")
 
+CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
+GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+# The three products (wording from the home page) and the bundles (the home page's bundle cards)
+TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "Your signature look starts here", "mwp-presets"),
+         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop plugin", "Panel", "Everything you need. All in one place.", "mwp-panel"),
+         ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "Learn the process behind the shot", "mwp-field-guides")]
+BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", False),
+           ("Presets + Panel", "Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", False),
+           ("The full set", "From the shot to the share", "full-set", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
+
+
+def _img(prefix):
+    import glob
+    return "assets/pages/img/" + os.path.basename(sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix[:8] + "*")))[0])
+
+
+def _tile(href, im, tag, name, line, slug):
+    return (f'<a class="tile" href="/{href}"><img src="{_img(im)}" alt="" loading="lazy"><p class="kick">{tag}</p>'
+            f'<h2 data-no-i18n>MWP <span class="grad">{name}</span></h2><p>{line}</p>'
+            f'<div class="foot"><span class="price"><span data-price="{slug}" data-no-i18n>$0.00</span></span><span class="go">Explore {GO}</span></div></a>')
+
+
+def _bundle(name, sub, slug, pts, cta, hi):
+    li = "".join(f"<li>{CHECK_G}<span>{x}</span></li>" for x in pts)
+    return (f'<div class="bundle{" hi" if hi else ""}">{"<span class=badge>Everything</span>" if hi else ""}<h3>{name}</h3><p class="sub">{sub}</p>'
+            f'<div class="amt"><span data-price="{slug}" data-no-i18n>$0.00</span></div><ul>{li}</ul>'
+            f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
+
+
 page("shop.html", "All products · MWP",
  "Lightroom presets, a Photoshop plugin, guides and bundles from wildlife photographer Matan Wild.",
- f"""  <section class="page-hero" style="padding-bottom:var(--s-4)">
+ f"""  <section class="page-hero">
     <div class="container">
+      <p class="kick">The collection</p>
       <h1 class="display" id="shop-title">All products</h1>
     </div>
   </section>
   <section class="section--tight" aria-labelledby="shop-title">
     <div class="container">
-      <div class="shop-toolbar">
-        <div class="quick-cats" id="shop-cats" role="group" aria-label="Category"></div>
-      </div>
-      <div class="grid grid--3" id="shop-grid"></div>
+      <div class="shop-tiles">{"".join(_tile(*t) for t in TILES)}</div>
+    </div>
+  </section>
+  <section class="section" id="bundles" aria-labelledby="bundles-h">
+    <div class="container">
+      <p class="kick">Bundles</p>
+      <h2 class="display" id="bundles-h" style="font-size:clamp(34px,4.4vw,64px)">Shoot with the guides. <span class="grad">Finish with the tools.</span></h2>
+      <div class="bundles">{"".join(_bundle(*b) for b in BUNDLES)}</div>
     </div>
   </section>""", "shop.js")
 
@@ -548,14 +582,20 @@ page("testers.html", "Testers · MWP",
 
 page("support.html", "Help with downloads, installing and refunds · MWP",
  "Help with downloading, installing or using MWP products.",
- """  <section class="page-hero">
+ f"""  <section class="page-hero">
     <div class="container container--text stack">
+      <p class="kick">Help</p>
       <h1 class="display">How can we help?</h1>
       <p class="lead">A person answers within one business day.</p>
     </div>
   </section>
   <section class="section--tight">
     <div class="container container--text">
+      <div class="topics" role="group" aria-label="Topic">
+        <button class="topic" type="button" data-topic="download" aria-pressed="false">{ICON['download']}<span>Downloading my files</span></button>
+        <button class="topic" type="button" data-topic="install" aria-pressed="false">{ICON['chat']}<span>Installing or using a product</span></button>
+        <button class="topic" type="button" data-topic="refund" aria-pressed="false">{ICON['refresh']}<span>Refund request</span></button>
+      </div>
       <form class="form panel" id="support-form" novalidate>
         <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
           <div class="field"><label for="s-name">Name</label><input class="input" id="s-name" name="name" autocomplete="name" required><span class="field__error" data-error-for="name"></span></div>
@@ -584,6 +624,7 @@ page("thank-you.html", "Thank you · MWP", "Your order is confirmed.",
  """  <section class="page-hero">
     <div class="container container--text stack-lg">
       <div class="stack">
+        <p class="kick">MWP</p>
         <h1 class="display">Thank you. Your order is confirmed.</h1>
         <p class="lead">Your files are ready in My downloads. We've also emailed you a link<span id="sent-to-wrap" hidden> at <b id="sent-to"></b></span>.</p>
       </div>
@@ -603,13 +644,16 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
  "Terms of sale, licence, refund policy and privacy notice for MWP.",
  """  <!-- DRAFT FOR APPROVAL: every section below must be approved by Matan (refunds and terms are money terms) before launch. -->
   <section class="page-hero">
-    <div class="container container--text stack">
+    <div class="container stack">
+      <p class="kick">MWP</p>
       <h1 class="display">Terms and policies</h1>
       <p class="meta">Last updated <span data-year>2026</span></p>
     </div>
   </section>
   <section class="section--tight">
-    <div class="container container--text prose">
+    <div class="container legal">
+      <nav aria-label="Contents"><a href="#licence">Licence</a><a href="#refunds">Refunds</a><a href="#terms">Terms of sale</a><a href="#privacy">Privacy</a></nav>
+      <div class="prose">
       <h2 id="licence">Licence</h2>
       <p>When you buy a product you get a personal, non-transferable licence to use it in your own work and in work you do for clients.</p>
       <ul>
@@ -629,6 +673,7 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
       <p>We collect only what we need to sell and deliver your products: your name, email, country and what you bought. Payment details are handled by the checkout provider and never reach us.</p>
       <p>We use your email to deliver your files, answer support requests and, if you agreed, send occasional news and new releases. You can unsubscribe from any email.</p>
       <p>Our service providers: Supabase (database, sign-in and file storage), Lemon Squeezy (checkout), MailerLite (email), Make.com and monday.com (order handling). To see, correct or delete your data, write to support.</p>
+      </div>
     </div>
   </section>""", "static.js")
 
@@ -636,6 +681,7 @@ page("404.html", "Page not found · MWP", "This page doesn't exist.",
  """  <section class="page-hero section">
     <div class="container container--text stack-lg">
       <div class="stack">
+        <p class="kick">404</p>
         <h1 class="display">This page doesn't exist.</h1>
         <p class="lead">The link may be old or mistyped. Everything in the shop is one click away.</p>
       </div>

@@ -1,0 +1,180 @@
+{
+ "presets": {
+  "en": [
+   {
+    "q": "Which programs do they work in?",
+    "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro."
+   },
+   {
+    "q": "Can I use them on my phone only?",
+    "a": "Yes. The pack includes 50 DNG files for Lightroom Mobile on iPhone, iPad and Android. If you also use Lightroom on desktop, install there and they sync to your phone."
+   },
+   {
+    "q": "Do they work on JPEG?",
+    "a": "Yes. They shine on RAW files, which give them the most room to work, and on JPEGs they give a gentler version of the look."
+   },
+   {
+    "q": "Can I use the LUTs on video?",
+    "a": "Yes. They carry the colour and tone of presets 01 to 33 and are built for standard Rec.709 footage. With LOG footage, convert to Rec.709 first, then apply the LUT."
+   },
+   {
+    "q": "How do I get and install the files?",
+    "a": "Right after payment they're waiting in My downloads, in your MWP account. The pack includes an install guide with a page for each program. Most installs take a couple of minutes."
+   },
+   {
+    "q": "What can I do with the files?",
+    "a": "Use them on all your own photos and videos, including paid client work, on every device you use. The files are for you alone: please don’t share, resell or repackage them."
+   },
+   {
+    "q": "Can I get a refund?",
+    "a": "Yes, within 14 days if you haven’t downloaded the files yet, or if a technical problem can’t be solved together. Write to contact@matanwildphotography.com with your order number."
+   }
+  ],
+  "he": [
+   {
+    "q": "באילו תוכנות הם עובדים?",
+    "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו."
+   },
+   {
+    "q": "אפשר להשתמש רק בטלפון?",
+    "a": "כן. בחבילה יש 50 קובצי DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד. אם אתם משתמשים גם בלייטרום במחשב, מתקינים שם והפריסטים מסתנכרנים לטלפון."
+   },
+   {
+    "q": "הם עובדים גם על JPEG?",
+    "a": "כן. הם מבריקים על קובצי RAW, שנותנים להם הכי הרבה מרחב, ועל JPEG הם נותנים גרסה עדינה יותר של המראה."
+   },
+   {
+    "q": "אפשר להשתמש ב-LUT בווידאו?",
+    "a": "כן. הם נושאים את הצבע והטון של פריסטים 01 עד 33 ובנויים לצילום וידאו רגיל. בצילום לוג (שטוח) ממירים קודם לצבע רגיל, ואז מחילים את ה-LUT."
+   },
+   {
+    "q": "איך מקבלים ומתקינים את הקבצים?",
+    "a": "מיד אחרי התשלום הם מחכים לכם בעמוד ההורדות שלי, בחשבון ה-MWP שלכם. בחבילה יש מדריך התקנה עם עמוד לכל תוכנה. רוב ההתקנות לוקחות כמה דקות."
+   },
+   {
+    "q": "מה מותר לעשות עם הקבצים?",
+    "a": "משתמשים בהם על כל התמונות והסרטונים שלכם, כולל עבודה בתשלום ללקוחות, בכל המכשירים שלכם. הקבצים אישיים: לא משתפים, לא מוכרים מחדש ולא אורזים מחדש."
+   },
+   {
+    "q": "אפשר לקבל החזר?",
+    "a": "כן, תוך 14 יום אם עדיין לא הורדתם את הקבצים, או אם בעיה טכנית לא נפתרת יחד. כתבו ל-contact@matanwildphotography.com עם מספר ההזמנה."
+   }
+  ]
+ },
+ "panel": {
+  "en": [
+   {
+    "q": "Do I need to know layers and masks?",
+    "a": "No. You choose what to edit and an effect, and the panel builds the layers and masks for you. A 21-page manual and a guide inside the panel explain every button from the start."
+   },
+   {
+    "q": "Which Photoshop do I need?",
+    "a": "Photoshop 2023 (version 24.2) or newer, on Mac or Windows, from a Creative Cloud subscription. It does not run in Lightroom, on iPad or on phones."
+   },
+   {
+    "q": "Can it ruin my photo?",
+    "a": "No. Every button adds its own layer and your original layer is locked. One Ctrl+Z (Cmd+Z on Mac) undoes a whole button, Reset MWP removes everything the panel added, and exports are always saved as new files."
+   },
+   {
+    "q": "Can I edit a whole series the same way?",
+    "a": "Yes. Open the other photos, return to the edited one and click Apply under More photos. Subject, sky and background are found again on each. You can also save your edit as a look under Save my look."
+   },
+   {
+    "q": "Are updates included?",
+    "a": "Yes. Updates to MWP Panel are free: new versions appear in My downloads."
+   },
+   {
+    "q": "License, computers and refunds?",
+    "a": "A personal licence for your own work and client work. MWP Panel works on up to 3 computers at a time, signed in with your email; changed computer? Free one up in My downloads. If it doesn't work for you, write to support within 14 days of purchase: we'll help, and if we can't, we'll refund you."
+   },
+   {
+    "q": "What if I get stuck?",
+    "a": "The Installation Guide covers common problems and their fixes, and every button in the panel has a tip and a help entry. Still stuck? Write to support and a person replies within one business day."
+   }
+  ],
+  "he": [
+   {
+    "q": "צריך לדעת שכבות ומסכות?",
+    "a": "לא. בוחרים מה לערוך ואפקט, והפאנל בונה בשבילכם את השכבות והמסכות. מדריך של 21 עמודים ומדריך בתוך הפאנל מסבירים כל כפתור מההתחלה."
+   },
+   {
+    "q": "איזה פוטושופ צריך?",
+    "a": "פוטושופ 2023 (גרסה 24.2) ומעלה, על מק או ווינדוס, במנוי קריאייטיב קלאוד. הפאנל לא עובד בלייטרום, באייפד או בטלפון."
+   },
+   {
+    "q": "זה יכול להרוס לי את התמונה?",
+    "a": "לא. כל כפתור מוסיף שכבה משלו ושכבת המקור נעולה. ביטול אחד (‏Ctrl+Z, ובמק Cmd+Z) מבטל כפתור שלם, כפתור האיפוס מסיר את כל מה שהפאנל הוסיף, והייצוא תמיד נשמר כקובץ חדש."
+   },
+   {
+    "q": "אפשר לערוך סדרה שלמה באותה צורה?",
+    "a": "כן. פותחים את שאר התמונות, חוזרים לתמונה הערוכה ולוחצים על החלה על תמונות נוספות. הנושא, השמיים והרקע מזוהים מחדש בכל תמונה. אפשר גם לשמור את העריכה כלוק משלכם."
+   },
+   {
+    "q": "עדכונים כלולים?",
+    "a": "כן. העדכונים לפאנל של MWP בחינם: גרסאות חדשות מופיעות בעמוד ההורדות שלי."
+   },
+   {
+    "q": "רישיון, מחשבים והחזרים?",
+    "a": "רישיון אישי, לעבודה שלכם ולעבודה ללקוחות. הפאנל של MWP עובד על עד 3 מחשבים בו זמנית, כשמתחברים עם המייל שלכם; החלפתם מחשב? אפשר לפנות מקום בעמוד ההורדות שלי. אם הוא לא עובד לכם, כתבו לתמיכה תוך 14 יום מהרכישה: נעזור, ואם לא נצליח, נחזיר לכם את הכסף."
+   },
+   {
+    "q": "ומה אם נתקעים?",
+    "a": "מדריך ההתקנה מכסה בעיות נפוצות ואת הפתרונות שלהן, ולכל כפתור בפאנל יש טיפ ועמוד עזרה. עדיין תקועים? כתבו לתמיכה ונחזור אליכם תוך יום עסקים אחד."
+   }
+  ]
+ },
+ "field-guides": {
+  "en": [
+   {
+    "q": "What exactly do I get?",
+    "a": "All four guides, in English or Hebrew: you choose one language. Each guide has one-page lessons with a photo, a drawing and a short explanation, plus tools and diagrams, a cheat sheet, drills and a checklist. They open on any computer, tablet or phone."
+   },
+   {
+    "q": "Is it for beginners too?",
+    "a": "Yes. The lessons start from the basics, and every lesson ends with \"Break the rule\" for those who already shoot and want to go further. Start with any guide and any page."
+   },
+   {
+    "q": "Do I need a particular camera or gear?",
+    "a": "No. The guides teach you to see and plan: composition, colour, light and planning. They don't depend on any camera or lens."
+   },
+   {
+    "q": "Can I buy just one guide?",
+    "a": "Yes, you can buy individual guides."
+   },
+   {
+    "q": "How do I get the files?",
+    "a": "Your purchased files will be available in the My downloads section."
+   },
+   {
+    "q": "What is the refund policy, and how can I use the files?",
+    "a": "If the guides don't work for you, write to support within 14 days of purchase. We'll help, and if we can't, we'll refund you. The files are for your own use: please don't share, resell or give them away. The full terms are on our Terms page."
+   }
+  ],
+  "he": [
+   {
+    "q": "מה בדיוק מקבלים?",
+    "a": "ארבעת המדריכים, בעברית או באנגלית: בוחרים שפה אחת. בכל מדריך שיעורים של עמוד אחד עם צילום, שרטוט והסבר קצר, ובנוסף כלים ודיאגרמות, דף סיכום, תרגילים וצ׳קליסט. נפתחים בכל מחשב, טאבלט או טלפון."
+   },
+   {
+    "q": "זה מתאים גם למתחילים?",
+    "a": "כן. השיעורים מתחילים מהיסודות, וכל שיעור נגמר ב״שוברים את הכלל״ בשביל מי שכבר מצלם ורוצה ללכת רחוק יותר. אפשר להתחיל מכל מדריך ומכל עמוד."
+   },
+   {
+    "q": "צריך מצלמה או ציוד מסוים?",
+    "a": "לא. המדריכים מלמדים לראות ולתכנן: קומפוזיציה, צבע, אור ותכנון. הם לא תלויים במצלמה או בעדשה מסוימת."
+   },
+   {
+    "q": "אפשר לקנות מדריך אחד?",
+    "a": "כן, אפשר לקנות מדריכים בודדים."
+   },
+   {
+    "q": "איך מקבלים את הקבצים?",
+    "a": "הקבצים שקניתם יחכו לכם בעמוד ההורדות שלי."
+   },
+   {
+    "q": "מה מדיניות ההחזרים והשימוש בקבצים?",
+    "a": "אם המדריכים לא מתאימים לכם, כתבו לתמיכה תוך 14 יום מהרכישה. נעזור, ואם לא נצליח, נחזיר לכם את הכסף. הקבצים לשימוש שלכם בלבד: אין לשתף, למכור או להעביר אותם. התנאים המלאים בעמוד התנאים."
+   }
+  ]
+ }
+}
