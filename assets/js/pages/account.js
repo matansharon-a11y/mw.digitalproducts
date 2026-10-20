@@ -25,8 +25,21 @@ const DL_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" str
 const LANGS = { en: "English", he: "Hebrew" };
 const READ_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg>';
 
+// One card per product. The same product can be on an account more than once (bought, a bundle, the
+// Ambassador Program, testing); the card shows the best of them: downloadable before read-only, a chosen
+// guide language before none, and the earliest date.
+function onePerProduct(items) {
+  const rank = (i) => (i.view_only ? 0 : 2) + (i.guide_lang ? 1 : 0);
+  const best = new Map();
+  for (const i of items) {
+    const k = i.products.slug, cur = best.get(k);
+    if (!cur || rank(i) > rank(cur) || (rank(i) === rank(cur) && i.granted_at < cur.granted_at)) best.set(k, i);
+  }
+  return items.filter((i) => best.get(i.products.slug) === i);
+}
+
 function libraryHTML(items) {
-  items = items.filter((i) => i.products);   // a product that can't be shown is skipped, not fatal
+  items = onePerProduct(items.filter((i) => i.products));   // a product that can't be shown is skipped, not fatal
   if (!items.length) {
     return `<div class="glass lib-empty stack">
       <p>Nothing on this email yet.</p>
