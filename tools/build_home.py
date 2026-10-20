@@ -127,6 +127,9 @@ home_css = """
 .sec{padding:clamp(64px,8vw,112px) 0}
 #faq.sec{padding-bottom:clamp(40px,4vw,56px)}
 .plans{margin-top:44px}
+.plan .deal{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:-4px 0 0;font-size:15px;color:#9CB1C2}
+.plan .deal s:empty{display:none}
+.plan .deal .save{padding:3px 10px;border-radius:64px;background:rgba(242,165,65,.14);color:#F4AF56;font-weight:600;font-size:13px}
 .faq{margin-top:40px}
 .faq summary{margin-inline:-16px;padding-inline:16px;border-radius:14px;transition:color .2s,background .2s}
 .faq summary:hover{background:rgba(254,251,241,.035)}
@@ -159,7 +162,10 @@ def plan(title, sub, price, points, cta, href, hi=False):
     lis = "".join(f"<li>{CHECK}<span>{p}</span></li>" for p in points)
     tag = '<span class="tagx">EVERYTHING</span>' if hi else ""
     btn = "btn sm" if hi else "ghost sm"
-    return f'<div class="plan{" hi" if hi else ""}">{tag}<div><h3 class="h3">{title}</h3><p class="small" style="margin-top: 6px">{sub}</p></div><div class="price">{price}</div><ul>{lis}</ul><a class="{btn}" href="{href}">{cta}</a></div>'
+    slug = re.search(r'data-price="([^"]+)"', price).group(1)
+    deal = ("" if slug.startswith("mwp-") else   # bundles: the sum of the parts struck out, and the saving
+            f'<p class="deal"><s><span data-price="{slug}" data-was data-no-i18n></span></s> <span class="save" data-save="{slug}" data-no-i18n hidden></span></p>')
+    return f'<div class="plan{" hi" if hi else ""}">{tag}<div><h3 class="h3">{title}</h3><p class="small" style="margin-top: 6px">{sub}</p></div><div class="price">{price}</div>{deal}<ul>{lis}</ul><a class="{btn}" href="{href}">{cta}</a></div>'
 
 PAIRS = [
     ("Presets · Blue Hour", "3c14b23dbb00f051684ad60fb205ed10.jpg", "fbaf19aea2af10f26b2949ab31fff094.jpg", "Light and Scene", "Blue Hour", "100%", "FINAL · MWP PRESET"),

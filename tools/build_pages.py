@@ -221,7 +221,8 @@ def _tile(href, im, tag, name, line, slug, alt):
 def _bundle(name, sub, slug, pts, cta, hi):
     li = "".join(f"<li>{CHECK_G}<span>{x}</span></li>" for x in pts)
     return (f'<div class="bundle{" hi" if hi else ""}">{"<span class=badge>Everything</span>" if hi else ""}<h3>{name}</h3><p class="sub">{sub}</p>'
-            f'<div class="amt"><span data-price="{slug}" data-no-i18n>$0.00</span></div><ul>{li}</ul>'
+            f'<div class="amt"><span data-price="{slug}" data-no-i18n>$0.00</span></div>'
+            f'<p class="deal"><s><span data-price="{slug}" data-was data-no-i18n></span></s> <span class="save" data-save="{slug}" data-no-i18n hidden></span></p><ul>{li}</ul>'
             f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
 
 

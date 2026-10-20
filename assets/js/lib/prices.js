@@ -26,11 +26,45 @@ function textFor(el) {
   return fmt(c, r?.currency || "USD");
 }
 
+// <span data-save="slug">: "Save $20.00" when the bundle has a "before" price, else nothing.
+function saveFor(el) {
+  const r = rows && rows[el.dataset.save];
+  if (!r) return "";
+  const [now, was, cur] = he() ? [r.price_ils_cents, r.compare_at_ils_cents, "ILS"] : [r.price_cents, r.compare_at_cents, r.currency || "USD"];
+  if (!was || !now || was <= now) return "";
+  return (he() ? "חוסכים " : "Save ") + fmt(was - now, cur);
+}
+
 function paint(root = document) {
   root.querySelectorAll("[data-price]").forEach((el) => {
     const t = textFor(el);
     if (el.textContent !== t) el.textContent = t;
   });
+  root.querySelectorAll("[data-save]").forEach((el) => {
+    const t = saveFor(el);
+    if (el.textContent !== t) el.textContent = t;
+    if (el.hidden !== !t) el.hidden = !t;
+  });
+}
+
+// Product pages carry <script type="application/json" id="mwp-product"> (name, description, image, url, slug).
+// Once the live price is in, it becomes schema.org Product data for search engines, priced from the admin,
+// so the price in search results always matches the page.
+function productData() {
+  const src = document.getElementById("mwp-product");
+  if (!src || !rows) return;
+  const p = JSON.parse(src.textContent);
+  const r = rows[p.slug];
+  const [cents, cur] = r ? (he() ? [r.price_ils_cents, "ILS"] : [r.price_cents, r.currency || "USD"]) : [0, ""];
+  if (!cents) return;
+  const ld = {
+    "@context": "https://schema.org", "@type": "Product", name: p.name, description: p.description, image: p.image,
+    brand: { "@type": "Brand", name: "MWP" }, url: p.url,
+    offers: { "@type": "Offer", price: (cents / 100).toFixed(2), priceCurrency: cur, availability: "https://schema.org/InStock", url: p.url },
+  };
+  let out = document.getElementById("mwp-product-ld");
+  if (!out) { out = document.createElement("script"); out.type = "application/ld+json"; out.id = "mwp-product-ld"; document.head.append(out); }
+  out.textContent = JSON.stringify(ld);
 }
 
 async function load() {
@@ -43,6 +77,7 @@ async function load() {
     rows = {};
     (await res.json()).forEach((r) => { rows[r.slug] = r; });
     paint();
+    try { productData(); } catch { /* no product on this page */ }
   } catch { /* offline or not set up yet: the 0.00 placeholders stay */ }
 }
 

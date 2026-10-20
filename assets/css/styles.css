@@ -515,6 +515,9 @@ main { flex: 1; }
 .bundle h3 { margin: 0; font-size: 22px; font-weight: 600; }
 .bundle .sub { margin: 6px 0 0; color: #9CB1C2; font-size: 14px; }
 .bundle .amt { margin: 24px 0 0; padding: 20px 0; border-block: 1px solid rgba(254, 251, 241, .09); font-size: 38px; line-height: 1; letter-spacing: -.03em; }
+.bundle .deal { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin: 14px 0 0; font-size: 15px; color: #9CB1C2; }
+.bundle .deal s:empty { display: none; }
+.bundle .deal .save { padding: 3px 10px; border-radius: 64px; background: rgba(242, 165, 65, .14); color: #F4AF56; font-weight: 600; font-size: 13px; }
 .bundle ul { list-style: none; margin: 22px 0 28px; padding: 0; display: grid; gap: 10px; flex: 1; color: #CDD7DD; font-size: 15px; }
 .bundle li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; }
 .bundle li svg { margin-top: 4px; }

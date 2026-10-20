@@ -432,8 +432,10 @@ def page(folder, lang):
     def plan(data, s, hi=False, badge=""):
         name, sub, pts, cta = data
         li = "".join(f"<li>{CHECK}<span>{esc(x)}</span></li>" for x in pts)
+        deal = (f'<p class="deal"><s>{price(s, lang, was=True)}</s> <span class="save" data-save="{s}" data-no-i18n hidden></span></p>'
+                if s != slug else "")   # bundles: the sum of the parts struck out, and the saving
         return (f'<div class="plan{" hi" if hi else ""}" data-r>{f"<span class=badge>{badge}</span>" if badge else ""}<h3>{esc(name)}</h3><p class="sub">{esc(sub)}</p>'
-                f'<div class="amt">{price(s, lang)}</div><ul>{li}</ul>'
+                f'<div class="amt">{price(s, lang)}</div>{deal}<ul>{li}</ul>'
                 f'<a class="{"btn" if hi else "ghost"}" href="#buy" data-add-to-cart="{s}">{esc(cta)}</a></div>')
     parts.append(f'''<section class="final" id="buy">
 <img src="{img(p["final_img"])}" alt="" loading="lazy">
@@ -472,6 +474,7 @@ def page(folder, lang):
 <meta name="twitter:card" content="summary_large_image">
 {ICONS}
 <script type="application/ld+json">{structured(folder, lang, url)}</script>
+<script type="application/json" id="mwp-product">{json.dumps({"slug": slug, "name": c["name"], "description": c["desc"], "image": SITE + img(p["hero_img"]), "url": url}, ensure_ascii=False).replace("</", "<" + chr(92) + "/")}</script>
 <link rel="preload" as="image" href="{img(p["hero_img"])}" fetchpriority="high">
 <link rel="stylesheet" href="/assets/css/product.css?v={CSS_V}">
 <style id="site-nav">{NAV_CSS}{SITE_CSS}</style>

@@ -1,11 +1,17 @@
-# Pre-launch: keep search engines out until the shop is approved and live.
-# At launch, replace the two lines below with the launch version.
+# Launched 20 Oct 2026: search engines may index the shop.
+# Private pages (admin, accounts, the link-only Ambassador and testers pages, the reader) stay out.
 User-agent: *
-Disallow: /
+Disallow: /admin/
+Disallow: /account
+Disallow: /account.html
+Disallow: /thank-you
+Disallow: /thank-you.html
+Disallow: /beta/
+Disallow: /testers
+Disallow: /testers.html
+Disallow: /read
+Disallow: /read.html
+Disallow: /product
+Disallow: /product.html
 
-# Launch version:
-# User-agent: *
-# Disallow: /admin/
-# Disallow: /account.html
-# Disallow: /thank-you.html
-# Sitemap: https://shop.mw.photography/sitemap.xml
+Sitemap: https://shop.mw.photography/sitemap.xml
