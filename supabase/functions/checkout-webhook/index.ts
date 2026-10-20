@@ -51,6 +51,12 @@ Deno.serve(async (req) => {
   try {
     if (event === "order_created") {
       if (a.status !== "paid") return text(`ignored status ${a.status}`);
+      // A test-card order must never give real downloads (security fix, needs Matan's OK). To try the whole
+      // purchase flow with Lemon Squeezy's test mode, set ALLOW_TEST_ORDERS=true for that test only.
+      if (body.meta.test_mode === true && Deno.env.get("ALLOW_TEST_ORDERS") !== "true") {
+        await db.from("webhook_events").insert({ event_id: eventId, provider: "lemonsqueezy", payload: body });
+        return text("ignored test-mode order");
+      }
       await handlePaid(db, orderId, a, body.meta.custom_data ?? {}, body.meta.test_mode === true);
     } else if (event === "order_refunded") {
       await handleRefund(db, orderId, a.refunded !== false, a, body.meta.test_mode === true);

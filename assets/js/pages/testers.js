@@ -45,22 +45,21 @@ $("t-form").addEventListener("submit", async (e) => {
   if (!name) { setStatus(status, T("Please enter your name.", "נא למלא שם."), "error"); return; }
   if (!code) { setStatus(status, T("Please enter your tester code.", "נא למלא את קוד הבודקים."), "error"); return; }
   const btn = form.querySelector("button[type=submit]");
-  setBusy(btn, true, T("Signing in…", "נכנסים…"));
+  setBusy(btn, true, T("Checking…", "בודקים…"));
   setStatus(status, T("Checking your code…", "בודקים את הקוד…"), "");
   try {
     const lang = he() ? "he" : "en";
-    // the code signs them in right here: no email step
+    // the code adds them; the sign-in link arrives by email (so only the email's owner can open the account)
     const r = await testerJoin({ name, email, code, lang });
-    if (r.token_hash) {
+    if (r.token_hash) {   // older server version: still signs in on the page
       setStatus(status, T("Opening your downloads…", "פותחים את ההורדות שלכם…"), "");
       const { error } = await supabase.auth.verifyOtp({ token_hash: r.token_hash, type: "magiclink" });
       if (error) throw error;
-      location.replace("/account/");   // they're a tester now: no need to ask again
+      location.replace("/account/");
       return;
     }
-    // an email that already has a protected account (admin, buyer, ambassador): an emailed link instead
-    $("t-sent-text").textContent = T("This email already has an MWP account, so for its safety we've emailed you a sign-in link. Open it on this device.",
-      "למייל הזה כבר יש חשבון MWP, אז לשמירה עליו שלחנו לכם במייל קישור כניסה. פתחו אותו במכשיר הזה.");
+    $("t-sent-text").textContent = T("You're in. We've emailed you a sign-in link: open it on this device to reach your downloads.",
+      "נכנסתם. שלחנו לכם במייל קישור כניסה: פתחו אותו במכשיר הזה כדי להגיע להורדות.");
     form.hidden = true; $("t-sent").hidden = false;
   } catch (err) {
     setStatus(status, err.message, "error");
