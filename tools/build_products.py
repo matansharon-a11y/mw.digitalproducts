@@ -42,13 +42,13 @@ UI = {
     "en": {"buy": "Buy", "prev": "Previous", "next": "Next", "page": "Page", "raw": "RAW", "final": "FINAL",
            "hint": "Drag the handle to compare.", "faq_kick": "Before you buy", "faq": "FAQs",
            "spec_kick": "What you get", "spec_h": "What's in the download.", "price_kick": "Get it",
-           "trust": "Instant download · Secure checkout · Free updates", "terms": "Full terms",
+           "trust": "Instant download · Secure checkout · Free updates · Help or a refund within 14 days", "terms": "Full terms",
            "more": "Questions about your setup?", "examples": "Choose an example", "examples_n": "examples", "next_ex": "Next example", "next_page": "Next page", "write": "Write to us", "bundle": "Bundle", "lang": "Language", "inside": "What's inside",
            "raw_alt": "the RAW file before editing", "final_alt": "the finished edit", "home": "Home"},
     "he": {"buy": "לרכישה", "prev": "הקודם", "next": "הבא", "page": "עמוד", "raw": "RAW", "final": "סופי",
            "hint": "גררו את הידית כדי להשוות.", "faq_kick": "לפני שקונים", "faq": "שאלות נפוצות",
            "spec_kick": "מה מקבלים", "spec_h": "מה יש בהורדה.", "price_kick": "לרכישה",
-           "trust": "הורדה מיידית · תשלום מאובטח · עדכונים חינם", "terms": "התנאים המלאים",
+           "trust": "הורדה מיידית · תשלום מאובטח · עדכונים חינם · עזרה או החזר תוך 14 יום", "terms": "התנאים המלאים",
            "more": "שאלות על ההתקנה?", "examples": "בחרו דוגמה", "examples_n": "דוגמאות", "next_ex": "לדוגמה הבאה", "next_page": "לעמוד הבא", "write": "כתבו לנו", "bundle": "חבילה", "lang": "שפה", "inside": "מה בפנים",
            "raw_alt": "קובץ ה-RAW לפני העריכה", "final_alt": "העריכה הסופית", "home": "דף הבית"},
 }
@@ -464,7 +464,7 @@ def page(folder, lang):
 <title>{esc(c["title"])}</title>
 <meta name="description" content="{esc(c["desc"])}">
 <link rel="canonical" href="{url}">
-<link rel="alternate" hreflang="en" href="{SITE}/{folder}/"><link rel="alternate" hreflang="he" href="{SITE}/{folder}/he/">
+<link rel="alternate" hreflang="en" href="{SITE}/{folder}/"><link rel="alternate" hreflang="he" href="{SITE}/{folder}/he/"><link rel="alternate" hreflang="x-default" href="{SITE}/{folder}/">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#0A0908">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MWP">

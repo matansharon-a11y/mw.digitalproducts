@@ -226,6 +226,8 @@ const HE = {
   "and we'll help. Our": "ונעזור. ב",
   "refund policy": "מדיניות ההחזרים",
   "has the details.": "יש את כל הפרטים.",
+  "within 14 days of purchase. We'll help you get it working, and if we can't, we'll refund you. The": "תוך 14 יום מהרכישה. נעזור לכם להפעיל את המוצר, ואם לא נצליח, נחזיר לכם את הכסף. ב",
+  "Photography guides": "מדריכי צילום",
   "Lightroom presets, a Photoshop plugin and editing guides from wildlife photographer Matan Wild. Instant download, secure checkout.":
     "פריסטים ללייטרום, פלאגין לפוטושופ ומדריכי עריכה מצלם חיות הבר מתן וויילד. הורדה מיידית ותשלום מאובטח.",
   "The first products are being prepared. Get the free sampler below and you'll hear the moment they're out.":
@@ -794,7 +796,8 @@ function translate(text) {
   }
   if (out === undefined) return null;
   const lead = /^\s/.test(text) ? " " : "";
-  const trail = /\s$/.test(text) ? " " : "";
+  // a Hebrew one-letter prefix before a link ("כתבו ל" + <a>תמיכה</a>) joins the next word: no space after it
+  const trail = /\s$/.test(text) && !/(^|\s)ו?[בהכלמש]$/.test(out) ? " " : "";
   return lead + out + trail;
 }
 

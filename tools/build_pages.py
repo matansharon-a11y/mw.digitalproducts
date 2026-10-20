@@ -596,7 +596,7 @@ page("testers.html", "Testers · MWP",
   "</style>")
 
 page("support.html", "Help with downloads, installing and refunds · MWP",
- "Help with downloading, installing or using MWP products.",
+ "Help with downloading, installing or using MWP Presets, MWP Panel and the Field Guides. A person replies within one business day.",
  f"""  <section class="page-hero">
     <div class="container container--text stack">
       <p class="kick">Help</p>
@@ -701,6 +701,7 @@ page("404.html", "Page not found · MWP", "This page doesn't exist.",
         <p class="lead">The link may be old or mistyped. Everything in the shop is one click away.</p>
       </div>
       <div class="row"><a class="btn" href="/shop/">Browse all products</a><a class="btn btn--ghost" href="/">Home</a></div>
+      <p class="muted"><a class="link" href="/presets/">Lightroom presets</a> · <a class="link" href="/panel/">Photoshop plugin</a> · <a class="link" href="/field-guides/">Photography guides</a></p>
     </div>
   </section>""", "static.js")
 print("pages written")

@@ -119,7 +119,8 @@ def menu_button(lang="en"):
     return f'<button class="nav-menu" type="button" aria-label="{label}" aria-expanded="false" aria-controls="site-links">{MENU_ICON}</button>'
 
 
-FOOTER_LINKS = [("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
+FOOTER_LINKS = [("/presets/", "Lightroom presets", "פריסטים ללייטרום"), ("/panel/", "Photoshop plugin", "פלאגין לפוטושופ"),
+                ("/field-guides/", "Photography guides", "מדריכי צילום"), ("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
                 ("/support/", "Contact support", "פנייה לתמיכה"), ("/legal/#refunds", "Refunds", "החזרים"),
                 ("/legal/#terms", "Terms", "תנאים"), ("/legal/#privacy", "Privacy", "פרטיות")]
 

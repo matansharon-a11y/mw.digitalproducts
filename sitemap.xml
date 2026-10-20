@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- The shop's public pages, English and Hebrew. Add new product pages here. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!-- The shop's public pages. Each product page has an English and a Hebrew address, linked to each other. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url><loc>https://shop.mw.photography/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://shop.mw.photography/shop/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://shop.mw.photography/presets/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://shop.mw.photography/presets/he/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://shop.mw.photography/panel/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://shop.mw.photography/panel/he/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://shop.mw.photography/field-guides/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://shop.mw.photography/field-guides/he/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://shop.mw.photography/presets/</loc><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shop.mw.photography/presets/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://shop.mw.photography/presets/he/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/presets/"/></url>
+  <url><loc>https://shop.mw.photography/presets/he/</loc><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shop.mw.photography/presets/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://shop.mw.photography/presets/he/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/presets/"/></url>
+  <url><loc>https://shop.mw.photography/panel/</loc><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shop.mw.photography/panel/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://shop.mw.photography/panel/he/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/panel/"/></url>
+  <url><loc>https://shop.mw.photography/panel/he/</loc><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shop.mw.photography/panel/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://shop.mw.photography/panel/he/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/panel/"/></url>
+  <url><loc>https://shop.mw.photography/field-guides/</loc><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shop.mw.photography/field-guides/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://shop.mw.photography/field-guides/he/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/field-guides/"/></url>
+  <url><loc>https://shop.mw.photography/field-guides/he/</loc><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shop.mw.photography/field-guides/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://shop.mw.photography/field-guides/he/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/field-guides/"/></url>
   <url><loc>https://shop.mw.photography/support/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://shop.mw.photography/legal/</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>

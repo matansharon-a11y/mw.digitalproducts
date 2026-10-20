@@ -278,7 +278,7 @@ html = f'''<!doctype html>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>
 <details><summary>Do I need an account?</summary><div>Yes. You create one with your email and a password before you pay, so your files and future updates are always waiting for you.</div></details>
 <details><summary>Do they work in Photoshop (Beta)?</summary><div>Yes. MWP Panel installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.</div></details>
-<details><summary>What if something doesn't work for me?</summary><div>Write to <a href="/support/">support</a> and we'll help. Our <a href="/legal/#refunds">refund policy</a> has the details.</div></details>
+<details><summary>What if something doesn't work for me?</summary><div>Write to <a href="/support/">support</a> within 14 days of purchase. We'll help you get it working, and if we can't, we'll refund you. The <a href="/legal/#refunds">refund policy</a> has the details.</div></details>
 </div>
 </div>
 </section>

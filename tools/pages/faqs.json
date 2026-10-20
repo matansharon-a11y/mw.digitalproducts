@@ -10,6 +10,10 @@
     "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro."
    },
    {
+    "q": "Presets or Panel: which do I need?",
+    "a": "If you edit in Lightroom, MWP Presets. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
+   },
+   {
     "q": "Can I use them on my phone only?",
     "a": "Yes. The pack includes 50 DNG files for Lightroom Mobile on iPhone, iPad and Android. If you also use Lightroom on desktop, install there and they sync to your phone."
    },
@@ -44,6 +48,10 @@
     "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו."
    },
    {
+    "q": "פריסטים או פאנל: מה אני צריך?",
+    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
+   },
+   {
     "q": "אפשר להשתמש רק בטלפון?",
     "a": "כן. בחבילה יש 50 קובצי DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד. אם אתם משתמשים גם בלייטרום במחשב, מתקינים שם והפריסטים מסתנכרנים לטלפון."
    },
@@ -76,6 +84,10 @@
     "a": "No. You choose what to edit and an effect, and the panel builds the layers and masks for you. A 21-page manual and a guide inside the panel explain every button from the start."
    },
    {
+    "q": "Presets or Panel: which do I need?",
+    "a": "If you edit in Lightroom, MWP Presets. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
+   },
+   {
     "q": "Which Photoshop do I need?",
     "a": "Photoshop 2023 (version 24.2) or newer, on Mac or Windows, from a Creative Cloud subscription. It does not run in Lightroom, on iPad or on phones."
    },
@@ -104,6 +116,10 @@
    {
     "q": "צריך לדעת שכבות ומסכות?",
     "a": "לא. בוחרים מה לערוך ואפקט, והפאנל בונה בשבילכם את השכבות והמסכות. מדריך של 21 עמודים ומדריך בתוך הפאנל מסבירים כל כפתור מההתחלה."
+   },
+   {
+    "q": "פריסטים או פאנל: מה אני צריך?",
+    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
    },
    {
     "q": "איזה פוטושופ צריך?",
@@ -146,6 +162,10 @@
     "a": "No. The guides teach you to see and plan: composition, colour, light and planning. They don't depend on any camera or lens."
    },
    {
+    "q": "Do the guides cover editing?",
+    "a": "No. They're about what happens before the click: composition, colour, light and planning. For the edit, MWP Presets and MWP Panel carry the same approach into Lightroom and Photoshop, and both come in bundles with the guides."
+   },
+   {
     "q": "Can I buy just one guide?",
     "a": "Not at the moment. The four guides come as one set, in the language you choose, and together they cost less than four separate guides would."
    },
@@ -170,6 +190,10 @@
    {
     "q": "צריך מצלמה או ציוד מסוים?",
     "a": "לא. המדריכים מלמדים לראות ולתכנן: קומפוזיציה, צבע, אור ותכנון. הם לא תלויים במצלמה או בעדשה מסוימת."
+   },
+   {
+    "q": "המדריכים מלמדים גם עריכה?",
+    "a": "לא. הם עוסקים במה שקורה לפני הקליק: קומפוזיציה, צבע, אור ותכנון. לעריכה, הפריסטים והפאנל של MWP ממשיכים את אותה גישה בלייטרום ובפוטושופ, ושניהם מגיעים גם בחבילות עם המדריכים."
    },
    {
     "q": "אפשר לקנות מדריך אחד?",
