@@ -21,8 +21,8 @@ Deno.serve(async (req) => {
   const user = auth?.user;
   if (!user?.email) return fail(req, "Please sign in again.", 401);
 
-  let slug = "";
-  try { slug = String((await req.json()).slug ?? ""); } catch { /* handled below */ }
+  let slug = "", lang = "";
+  try { const body = await req.json(); slug = String(body.slug ?? ""); lang = String(body.lang ?? ""); } catch { /* handled below */ }
   if (!/^[a-z0-9-]{1,80}$/.test(slug)) return fail(req, "Unknown product.", 400);
 
   const email = user.email.toLowerCase();
@@ -38,11 +38,22 @@ Deno.serve(async (req) => {
   if (!product) return fail(req, "Unknown product.", 404);
 
   const { data: ent } = await db.from("entitlements")
-    .select("id, revoked_at, view_only").eq("customer_id", customer.id).eq("product_id", product.id).maybeSingle();
+    .select("id, revoked_at, view_only, guide_lang").eq("customer_id", customer.id).eq("product_id", product.id).maybeSingle();
   if (!ent) return fail(req, "This pack isn't in your library.", 403);
   if (ent.revoked_at) return fail(req, "Access to this pack was removed after a refund.", 403);
   // Ambassadors read the Field Guides online (guide-view); their copy can't be downloaded.
   if (ent.view_only) return fail(req, "In the Ambassador Program the Field Guides are read online. Open them with Read online in My downloads.", 403);
+
+  // Field Guides come in one language, chosen once in My downloads ('both' = bought before the choice existed).
+  let guideLang: string | null = ent.guide_lang ?? null;
+  if (product.category === "guide" && !guideLang) {
+    if (lang !== "en" && lang !== "he") {
+      return json(req, { choose_lang: true, message: "Choose the language of your Field Guides: English or Hebrew." });
+    }
+    await db.from("entitlements").update({ guide_lang: lang }).eq("id", ent.id).is("guide_lang", null);
+    const { data: again } = await db.from("entitlements").select("guide_lang").eq("id", ent.id).maybeSingle();
+    guideLang = again?.guide_lang ?? lang;
+  }
 
   const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
   const { count } = await db.from("downloads").select("id", { count: "exact", head: true })
@@ -58,7 +69,9 @@ Deno.serve(async (req) => {
   // (new purchase, or a new version was just uploaded), ask for it and tell the page to wait.
   if (PERSONAL.includes(product.category)) {
     const { data: mine } = await db.from("personal_files").select("path, version").eq("entitlement_id", ent.id).maybeSingle();
-    if (!mine || mine.version !== file.version) {
+    // a one-language copy carries its language in the version, so it's made again if the choice changes
+    const want = guideLang === "en" || guideLang === "he" ? `${file.version}:${guideLang}` : file.version;
+    if (!mine || mine.version !== want) {
       await requestPersonalCopies();
       return json(req, { preparing: true, message: "We're making your personal copy. It's usually ready in a few minutes; this page will start the download when it is." }, 202);
     }

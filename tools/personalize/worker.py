@@ -76,7 +76,7 @@ def personal_copies():
     if not products:
         print("No Presets or Field Guides files yet."); return 0
 
-    ents = rest("entitlements", select="id,product_id,customers(name,email),personal_files(path,version)",
+    ents = rest("entitlements", select="id,product_id,guide_lang,customers(name,email),personal_files(path,version)",
                 revoked_at="is.null", view_only="is.false", product_id=f"in.({','.join(products)})")
     todo = []
     for e in ents:
@@ -84,26 +84,38 @@ def personal_copies():
         pf = pf[0] if isinstance(pf, list) else pf
         mine = e.get("personal_files")
         mine = (mine[0] if isinstance(mine, list) and mine else mine) or {}
-        if mine.get("version") != pf["version"] and e.get("customers", {}).get("email"):
-            todo.append((e, pf, mine.get("path")))
+        lang = one_lang(products[e["product_id"]], e)
+        if lang == "wait":   # a Field Guides buyer who hasn't chosen English or Hebrew yet
+            continue
+        want = f"{pf['version']}:{lang}" if lang else pf["version"]
+        if mine.get("version") != want and e.get("customers", {}).get("email"):
+            todo.append((e, pf, mine.get("path"), lang, want))
     print(f"{len(ents)} entitlements, {len(todo)} personal copies to make", flush=True)
 
     made = failed = 0
     with tempfile.TemporaryDirectory() as tmp:
         bases = {}
-        for e, pf, old in todo:
+        for e, pf, old, lang, want in todo:
             try:
                 if pf["path"] not in bases:
                     bases[pf["path"]] = os.path.join(tmp, f"base-{len(bases)}.zip")
                     download(pf["path"], bases[pf["path"]])
+                src = bases[pf["path"]]
+                if lang:   # only the guides in the buyer's language
+                    key = (pf["path"], lang)
+                    if key not in bases:
+                        bases[key] = os.path.join(tmp, f"base-{len(bases)}.zip")
+                        only_lang(src, bases[key], lang)
+                    src = bases[key]
                 out = os.path.join(tmp, "out.zip")
                 c = e["customers"]
-                personalize(bases[pf["path"]], out, (c.get("name") or "").strip(), c["email"].strip(), licence_id(e["id"]))
-                dest = f"personal/{e['id']}/{os.path.basename(pf['path'])}"
+                personalize(src, out, (c.get("name") or "").strip(), c["email"].strip(), licence_id(e["id"]))
+                stem, ext = os.path.splitext(os.path.basename(pf["path"]))
+                dest = f"personal/{e['id']}/{stem}-{lang}{ext}" if lang else f"personal/{e['id']}/{stem}{ext}"
                 upload(dest, out)
                 r = S.post(f"{URL}/rest/v1/personal_files", params={"on_conflict": "entitlement_id"},
                            headers={"content-type": "application/json", "prefer": "resolution=merge-duplicates"},
-                           json={"entitlement_id": e["id"], "path": dest, "version": pf["version"],
+                           json={"entitlement_id": e["id"], "path": dest, "version": want,
                                  "size_bytes": os.path.getsize(out), "created_at": datetime.now(timezone.utc).isoformat()}, timeout=60)
                 r.raise_for_status()
                 if old and old != dest:   # the copy of an older version, no longer served
@@ -116,6 +128,37 @@ def personal_copies():
                 print(f"  failed one copy: {type(err).__name__}: {str(err)[:200]}", flush=True)
     print(f"Personal copies: {made} made, {failed} failed")
     return failed
+
+
+def one_lang(product, ent):
+    """For Field Guides: 'en' or 'he' (one language), None (the full set, bought before the choice
+    existed) or 'wait' (not chosen yet). Other products: None."""
+    if product.get("category") != "guide":
+        return None
+    lang = ent.get("guide_lang")
+    return lang if lang in ("en", "he") else (None if lang == "both" else "wait")
+
+
+def only_lang(src, dst, lang):
+    """A copy of the pack with only the PDFs in one language (everything that isn't a PDF stays).
+    If no PDF is found in that language, the full pack is kept, so nobody ends up with an empty copy."""
+    import pymupdf, shutil, zipfile
+    with zipfile.ZipFile(src) as zin:
+        drop = set()
+        for info in zin.infolist():
+            if info.filename.lower().endswith(".pdf"):
+                with pymupdf.open(stream=zin.read(info), filetype="pdf") as doc:
+                    if guide_lang(info.filename, doc) != lang:
+                        drop.add(info.filename)
+        pdfs = [i.filename for i in zin.infolist() if i.filename.lower().endswith(".pdf")]
+        if not pdfs or len(drop) == len(pdfs):
+            print(f"  no {lang} guides found in the pack: keeping all of them", flush=True)
+            shutil.copy(src, dst); return
+        with zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as zout:
+            for info in zin.infolist():
+                if info.filename not in drop:
+                    zout.writestr(info, zin.read(info))
+    print(f"  {lang} pack: {len(pdfs) - len(drop)} of {len(pdfs)} guides", flush=True)
 
 
 # ---------------------------------------------------------------- Field Guides to read online

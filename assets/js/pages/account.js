@@ -21,6 +21,8 @@ const COVERS = {
 const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin", guide: "PDF field guides", bundle: "Bundle" };
 const DL_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
 
+// The Field Guides language the buyer chose ('both': bought before the choice existed)
+const LANGS = { en: "English", he: "Hebrew" };
 const READ_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg>';
 
 function libraryHTML(items) {
@@ -31,7 +33,7 @@ function libraryHTML(items) {
       <p class="meta">Bought with a different email? Sign out and use that one, or <a class="link" href="/support/">contact support</a> with your order number.</p>
     </div>`;
   }
-  return items.map(({ granted_at, view_only: viewOnly, products: p }, i) => {
+  return items.map(({ granted_at, view_only: viewOnly, guide_lang: lang, products: p }, i) => {
     const [img, pos] = p.cover_path ? [mediaUrl(p.cover_path, { width: 600 }), "50% 40%"] : (COVERS[p.slug] || []);
     const count = countLabel(p);
     return `
@@ -40,10 +42,14 @@ function libraryHTML(items) {
       <div>
         <p class="tg">${esc(TAGS[p.category] || "")}</p>
         <h3 class="nm" data-no-i18n>${esc(p.name)}${p.name_emphasis ? ` <span class="grad">${esc(p.name_emphasis)}</span>` : ""}</h3>
-        <div class="chips"><span>Version ${esc(p.version)}</span>${count ? `<span>${esc(count)}</span>` : ""}<span>Added ${shortDate(granted_at)}</span></div>
+        <div class="chips"><span>Version ${esc(p.version)}</span>${count ? `<span>${esc(count)}</span>` : ""}<span>Added ${shortDate(granted_at)}</span>${LANGS[lang] ? `<span>${LANGS[lang]}</span>` : ""}</div>
       </div>
       ${viewOnly
         ? `<a class="dl" href="/read/">${READ_ICON}<span>Read online</span></a>`
+        : p.category === "guide" && !lang
+        ? `<div class="lang-pick"><p class="meta">Choose your language. Your copy comes in that language.</p>
+            <div class="lang-btns"><button class="dl" type="button" data-download="${esc(p.slug)}" data-guide-lang="en">${DL_ICON}<span>English</span></button>
+            <button class="dl" type="button" data-download="${esc(p.slug)}" data-guide-lang="he">${DL_ICON}<span>Hebrew</span></button></div></div>`
         : `<button class="dl" type="button" data-download="${esc(p.slug)}">${DL_ICON}<span>Download</span></button>`}
     </article>`;
   }).join("");
@@ -210,13 +216,14 @@ library.addEventListener("click", async (e) => {
   busy(true, he() ? "מכינים…" : "Preparing…");
   try {
     const started = Date.now();
-    let res = await requestDownload(btn.dataset.download);
+    const lang = btn.dataset.guideLang;   // the Field Guides language, the first time
+    let res = await requestDownload(btn.dataset.download, lang);
     if (res.preparing) {
       busy(true, he() ? "מכינים את העותק שלכם…" : "Making your copy…");
       toast(res.message, { timeout: 9000 });
       while (res.preparing && Date.now() - started < POLL_FOR_MS) {
         await wait(POLL_MS);
-        res = await requestDownload(btn.dataset.download);
+        res = await requestDownload(btn.dataset.download, lang);
       }
       if (res.preparing) {
         toast("Your personal copy is still being made. Please come back in a little while and download it from here.", { timeout: 10000 });
@@ -226,6 +233,7 @@ library.addEventListener("click", async (e) => {
     // A same-tab navigation to a Content-Disposition: attachment URL downloads without leaving the page.
     location.href = res.url;
     toast("Your download has started. The link is valid for 5 minutes.");
+    if (lang) setTimeout(() => currentUser().then((u) => u && showLibrary(u)), 1500);   // the card now shows the chosen language
   } catch (err) {
     toast(err.message, { type: "error", timeout: 7000 });
   } finally {
