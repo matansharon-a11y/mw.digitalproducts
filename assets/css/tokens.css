@@ -74,7 +74,7 @@
   --w-page: 1360px;
   --w-text: 680px;
   --gutter: clamp(16px, 5vw, 80px);    /* mw.photography gutter */
-  --header-h: 68px;
+  --header-h: 65px;
 
   /* Shape and motion: square surfaces and pill buttons, as on mw.photography */
   --r-xs: 2px;

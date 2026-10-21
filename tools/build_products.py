@@ -486,7 +486,7 @@ def page(folder, lang):
 <a class="skip" href="#main">{"דילוג לתוכן" if he else "Skip to content"}</a>
 <nav class="nav site-header" aria-label="{"ראשי" if he else "Main"}">
 <div class="wrap container">
-{BRAND}
+{BRAND.replace('href="/"', 'href="/he/"') if he else BRAND}
 <div class="links">{site_links(lang, f"/{folder}/")}</div>
 {nav_right(lang, folder)}
 {menu_button(lang)}

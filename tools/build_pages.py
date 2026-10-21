@@ -268,7 +268,7 @@ page("product.html", "Product details · Editing tools from the field · MWP",
 
 ACCOUNT_CSS = """
 <style id="acct">
-.acct-hero{position:relative;overflow:hidden;padding:clamp(90px,12vw,150px) 0 clamp(70px,8vw,110px)}
+.acct-hero{position:relative;overflow:hidden;padding:clamp(80px,9vw,128px) 0 clamp(70px,8vw,110px)}
 .acct-hero .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;transform:scale(1.05);animation:acbg 2.4s cubic-bezier(.2,.7,.1,1) both}
 @keyframes acbg{to{transform:none}}
 .acct-hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,9,8,.55),rgba(10,9,8,.7) 50%,#0A0908)}

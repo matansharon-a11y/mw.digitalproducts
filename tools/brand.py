@@ -108,9 +108,19 @@ MENU_ICON = ('<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke
              'stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg>')
 
 
+def he_href(href):
+    """The Hebrew address of a page: Hebrew visitors go straight there, never through the English page and its
+    redirect (a second page load that shows as a flicker)."""
+    if href.startswith("/#") or href == "/":
+        return "/he" + href
+    if href in ("/shop/", "/presets/", "/panel/", "/field-guides/"):
+        return href + "he/"
+    return href
+
+
 def site_links(lang="en", current=""):
     he = lang == "he"
-    return "".join(f'<a href="{href}"{" aria-current=\"page\" class=\"is-active\"" if current and href == current else ""}>{h if he else e}</a>'
+    return "".join(f'<a href="{he_href(href) if he else href}"{" aria-current=\"page\" class=\"is-active\"" if current and href == current else ""}>{h if he else e}</a>'
                    for href, e, h in SITE_LINKS)
 
 
@@ -127,7 +137,7 @@ FOOTER_LINKS = [("/presets/", "Lightroom presets", "פריסטים ללייטר�
 
 def site_footer(lang="en"):
     he = lang == "he"
-    links = "".join(f'<a href="{href}">{h if he else e}</a>' for href, e, h in FOOTER_LINKS)
+    links = "".join(f'<a href="{he_href(href) if he else href}">{h if he else e}</a>' for href, e, h in FOOTER_LINKS)
     credit = "כל הצילומים: מתן וויילד · contact@matanwildphotography.com" if he else "All photos: Matan Wild · contact@matanwildphotography.com"
     return (f'<footer class="site-foot">\n<div class="wrap container">\n<div class="sf-brand">MW PHOTO TOURS</div>\n'
             f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n<div class="sf-credit">{credit}</div>\n</div>\n</footer>')

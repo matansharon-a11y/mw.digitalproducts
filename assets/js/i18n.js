@@ -932,6 +932,9 @@ function walk(root) {
       for (const [en, he] of Object.entries(SALES)) {
         if (href === en || href.endsWith("/" + en)) root.setAttribute("href", href.slice(0, href.length - en.length) + he);
       }
+      // the Hebrew home and shop have their own addresses: go there directly, not through the English page's redirect
+      if (href === "/" || href.startsWith("/#")) root.setAttribute("href", "/he" + href);
+      if (href === "/shop/") root.setAttribute("href", "/shop/he/");
     }
   }
   for (const c of Array.from(root.childNodes)) walk(c);
