@@ -116,9 +116,9 @@ CSS = home_devices.CSS + """
 .st-vf span:nth-child(3){bottom:0;left:0;border-bottom-width:1px;border-left-width:1px}
 .st-vf span:nth-child(4){bottom:0;right:0;border-bottom-width:1px;border-right-width:1px}
 :root{--hero-top:clamp(110px,22vh,240px)}
-@media (max-width:700px){:root{--hero-top:clamp(160px,30vh,300px)}.st-hero-in{padding-top:calc(var(--hero-top) + 64px) !important}}
 /* the hero tucks 80px under the header: the text starts --hero-top below it, the same as on the product pages */
 .st-hero-in{position:relative;width:100%;padding-top:calc(var(--hero-top) + 80px);padding-bottom:clamp(72px,12vh,140px)}
+@media (max-width:700px){:root{--hero-top:clamp(100px,17vh,170px)}.st-hero{min-height:0}.st-hero-in{padding-top:calc(var(--hero-top) + 64px);padding-bottom:64px}}
 .st-hero-in .lead{max-width:560px;margin-top:28px}
 .st-hero-in .st-meta{display:flex;align-items:center;gap:12px;margin:18px 0 0;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(254,251,241,.55)}
 .st-hero-in .st-meta span{color:#F4AF56}

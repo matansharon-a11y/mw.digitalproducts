@@ -279,4 +279,4 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 /* the hero text starts at the same height on every product page, whatever the headline length */
 .hero{align-items:flex-start}.hero .wrap{padding-top:var(--hero-top)}
 :root{--hero-top:clamp(110px,22vh,240px)}
-@media (max-width:700px){:root{--hero-top:clamp(160px,30vh,300px)}}
+@media (max-width:700px){:root{--hero-top:clamp(100px,17vh,170px)}.hero{min-height:0}}
