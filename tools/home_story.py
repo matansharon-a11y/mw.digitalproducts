@@ -10,23 +10,23 @@ ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="cur
 CHAPTERS = [
     dict(step="Shoot", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", href="field-guides/",
          img="5275cc7bcd4fb7560d8f7163592e3122.jpg", pos="56% 55%", alt="Mountains at dusk, photographed by Matan Wild",
-         title="See the photo before you press the shutter",
+         title="Know what to aim for, before you press the shutter",
          body=["137 one-page lessons on composition, colour, light and planning. Each one is a real photo from the field, with a drawing that shows why it works.",
-               "Every guide ends with drills, a checklist and a cheat sheet to take on your next shoot."],
+               "Every guide ends with drills, a checklist and a cheat sheet for your next shoot."],
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Edit", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets for wildlife photography",
-         title="Presets that find the animal first",
-         body=["50 Lightroom presets built from Matan Wild's wildlife and landscape edits. 12 are adaptive: Lightroom's AI finds the animal, the sky and the background and treats each one on its own.",
-               "So the look fits your photo, on desktop, on your phone and, with 33 LUTs, on video."],
+         title="A natural starting point for every photo",
+         body=["50 Lightroom presets made from Matan Wild's own wildlife and landscape edits. 12 are adaptive: they find the animal, the sky and the background and treat each one on its own.",
+               "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files and 33 LUTs", "Install guide for every program"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
     dict(step="Finish", tag="Photoshop plugin", name="Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
-         title="The animal brighter. Your original untouched.",
-         body=["Photoshop as simple buttons. Pick the animal, the sky or the background, pick an effect, set how strong. The panel builds the mask and the layer for you.",
-               "Every edit sits on its own layer, and one undo takes back a whole button."],
+         title="Photoshop, without the maze of menus",
+         body=["Pick the animal, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
+               "Your original stays locked, and one undo takes back a whole button."],
          points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
          cta="See MWP Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
 ]
@@ -37,11 +37,11 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="st-hero-shade"></div>
 <div class="st-vf" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 <div class="wrap st-hero-in">
-<p class="kick st-in" style="--i:0">MWP · by Matan Wild</p>
-<h1 class="st-h1"><span class="st-l"><span style="--i:1">Let the animal</span></span> <span class="st-l"><span class="grad" style="--i:2">stand out.</span></span></h1>
-<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers. Built from Matan Wild's own edits and lessons from the field, so your photos pop and still look natural.</p>
+<p class="kick st-in" style="--i:0">MWP · by wildlife photographer Matan Wild</p>
+<h1 class="st-h1"><span class="st-l"><span style="--i:1">Your wildlife photos,</span></span> <span class="st-l"><span class="grad" style="--i:2">the way you saw them.</span></span></h1>
+<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop plugin and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout<span aria-hidden="true">·</span>Free updates</p>
-<div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Shop the collection</a></div>
+<div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Find your tool</a></div>
 </div>
 </section>"""
 
@@ -66,8 +66,8 @@ def _chapter_text(i, c):
 STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
-<h2 class="h2">Three tools. <span class="b grad">Start with the one you need.</span></h2>
-<p class="lead">To shoot better, start with the Field Guides. If you edit in Lightroom, MWP Presets. If you finish in Photoshop, MWP Panel.</p>
+<h2 class="h2">Three tools. <span class="b grad">Start where you get stuck.</span></h2>
+<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets. Photoshop feels like a maze of menus? MWP Panel.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

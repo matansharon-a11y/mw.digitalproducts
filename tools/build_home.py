@@ -189,12 +189,12 @@ html = f'''<!doctype html>
 <script>try{{if(localStorage.getItem("mwp_lang")==="he")location.replace("/he/"+location.search+location.hash)}}catch(e){{}}</script>
 {LANG_GUARD}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Lightroom Presets &amp; Photoshop Plugin for Wildlife · MWP</title>
-<meta name="description" content="Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural. Instant download.">
+<title>Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP</title>
+<meta name="description" content="Edit wildlife photos so they look the way you saw them: Lightroom presets, a Photoshop plugin and field guides by wildlife photographer Matan Wild. Instant download, free updates.">
 <meta name="theme-color" content="#0A0908">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MWP">
-<meta property="og:title" content="Lightroom Presets &amp; Photoshop Plugin for Wildlife · MWP">
+<meta property="og:title" content="Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP">
 <meta property="og:description" content="Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural.">
 <link rel="canonical" href="https://shop.mw.photography/">
 <link rel="alternate" hreflang="en" href="https://shop.mw.photography/"><link rel="alternate" hreflang="he" href="https://shop.mw.photography/he/"><link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/">
@@ -246,12 +246,12 @@ html = f'''<!doctype html>
 <div class="head">
 <p class="kick">Bundles</p>
 <h2 class="h2">Shoot with the guides. <span class="b grad">Finish with the tools.</span></h2>
-<p class="lead">The Field Guides teach what happens before the click. MWP Presets and MWP Panel carry the same look into Lightroom and Photoshop. Pick the set that matches how you work.</p>
+<p class="lead">The Field Guides help you take a stronger photo. MWP Presets and MWP Panel help you finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.</p>
 </div>
 <div class="plans">
-{plan("MWP Field Guides", "Learn it in the field", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
+{plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
 {plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", "field-guides/#buy")}
-{plan("Presets + Panel", "Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", "panel/#buy")}
+{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", "panel/#buy")}
 {plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>

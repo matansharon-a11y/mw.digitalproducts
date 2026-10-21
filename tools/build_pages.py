@@ -200,11 +200,11 @@ page("index.html",
 CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The three products (wording from the home page) and the bundles (the home page's bundle cards)
-TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "Presets that find the animal first", "mwp-presets", "MWP Presets: Lightroom presets for wildlife photography"),
-         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop plugin", "Panel", "The animal brighter. Your original untouched.", "mwp-panel", "MWP Panel: Photoshop plugin for wildlife photo editing"),
-         ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "See the photo before you press the shutter", "mwp-field-guides", "MWP Field Guides: nature photography guides in PDF")]
+TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "A natural starting point for every wildlife photo", "mwp-presets", "MWP Presets: Lightroom presets for wildlife photography"),
+         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop plugin", "Panel", "Photoshop for wildlife. No Photoshop skills needed.", "mwp-panel", "MWP Panel: Photoshop plugin for wildlife photo editing"),
+         ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "Know what to aim for before you press the shutter", "mwp-field-guides", "MWP Field Guides: nature photography guides in PDF")]
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", False),
-           ("Presets + Panel", "Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", False),
+           ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", False),
            ("The full set", "From the shot to the share", "full-set", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
 
 

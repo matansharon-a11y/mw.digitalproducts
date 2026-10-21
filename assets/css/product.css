@@ -273,3 +273,6 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 @media (prefers-reduced-motion:reduce){.ba .knob::after{animation:none;display:none}}
 [dir=rtl] .gal{-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 40px,#000 calc(100% - 160px),transparent);mask-image:linear-gradient(270deg,transparent 0,#000 40px,#000 calc(100% - 160px),transparent)}
 .gal-nav .count{direction:ltr;unicode-bidi:isolate}
+
+/* the hero headline: the gold line always starts on its own line on wide screens */
+@media (min-width:760px){.hero .h1 .grad{display:block}}
