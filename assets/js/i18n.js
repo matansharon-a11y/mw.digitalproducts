@@ -30,8 +30,10 @@ const HE = {
   "Bundles": "חבילות",
   // copy rewrite from the audience research (Oct 2026, drafts for Matan)
   "MWP · by wildlife photographer Matan Wild": "MWP · מאת צלם חיות הבר מתן וויילד",
-  "Your wildlife photos,": "צילומי חיות הבר שלכם,",
-  "the way you saw them.": "כמו שראיתם אותם.",
+  "Wildlife,": "חיות הבר,",
+  "as you saw it.": "כמו שראיתם אותן.",
+  "Built": "נבנו",
+  "in the field.": "בשטח.",
   "Lightroom presets, a Photoshop plugin and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.": "פריסטים ללייטרום, פלאגין לפוטושופ ומדריכי שטח מאת צלם חיות הבר מתן וויילד. החיה בולטת, האור נשאר אמיתי, ושום דבר לא נראה מזויף.",
   "Find your tool": "מצאו את הכלי שלכם",
   "Start where you get stuck.": "מתחילים איפה שנתקעים.",

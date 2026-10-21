@@ -289,7 +289,7 @@ html = f'''<!doctype html>
 <div class="wrap about-in">
 <div class="about-body">
 <p class="kick">About Matan</p>
-<h2 class="h2">Tools from a photographer <span class="b grad">who works in the field.</span></h2>
+<h2 class="h2">Built <span class="b grad">in the field.</span></h2>
 <p class="about-intro">Matan Wild founded MW Photo Tours in 2023. He leads wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.</p>
 <p class="about-more">The presets, the panel and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.</p>
 <a class="ghost about-go" href="https://mw.photography" target="_blank" rel="noopener">Visit mw.photography {EXT}</a>

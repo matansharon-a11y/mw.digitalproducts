@@ -38,7 +38,7 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="st-vf" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 <div class="wrap st-hero-in">
 <p class="kick st-in" style="--i:0">MWP · by wildlife photographer Matan Wild</p>
-<h1 class="st-h1"><span class="st-l"><span style="--i:1">Your wildlife photos,</span></span> <span class="st-l"><span class="grad" style="--i:2">the way you saw them.</span></span></h1>
+<h1 class="st-h1"><span class="st-l"><span style="--i:1">Wildlife,</span></span> <span class="st-l"><span class="grad" style="--i:2">as you saw it.</span></span></h1>
 <p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop plugin and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout<span aria-hidden="true">·</span>Free updates</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Find your tool</a></div>
