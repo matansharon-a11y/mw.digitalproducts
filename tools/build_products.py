@@ -134,7 +134,7 @@ P["presets"] = dict(
 P["panel"] = dict(
     slug="mwp-panel", hero_img="866c1bdb", hero_pos="58% 40%", final_img="99ef2d40",
     proof_type="ba", pairs_from=[("c339384f", "52e0c3d2"), ("af0d1799", "95e05791")],
-    cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], versions_img=["8929f94d", "99ef2d40"], feat_img="0f68e984", feat_flip=True, feat_tall=True, feat_first=True,
+    cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], versions_img=[("8929f94d", "50% 0%"), ("99ef2d40", "52% 45%")], feat_img="0f68e984", feat_flip=True, feat_tall=True, feat_first=True,
     bundle="presets-panel",
     en=dict(
         name="MWP Panel", name_html='MWP <span class="grad">Panel</span>',
@@ -383,7 +383,7 @@ def page(folder, lang):
     # two versions of one product (MWP Panel: Photoshop and Lightroom Classic), right after the hero
     if "versions" in c:
         cards = "".join(f'''<a class="ver" href="#{href}" data-r style="--d:{k * 0.08:.2f}s">
-<div class="ver-ph"><img src="{img(p["versions_img"][k])}" alt="{esc(alt)}" loading="lazy"><div class="ver-top"><p class="ver-for">{u["for"]}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
+<div class="ver-ph"><img src="{img(p["versions_img"][k][0])}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["versions_img"][k][1]}"><div class="ver-top"><p class="ver-for">{u["for"]}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
 <div class="ver-body"><p>{esc(line)}</p><ol class="ver-tabs">{"".join(f'<li><b>{i + 1}</b>{esc(t)}</li>' for i, t in enumerate(tabs))}</ol><p class="ver-req">{esc(req)}</p><span class="ver-go">{esc(go)} {ARROW}</span></div></a>'''
                         for k, (app, badge, line, req, go, href, tabs, alt) in enumerate(c["versions"]))
         parts.append(f'''<section class="sec" id="versions">
