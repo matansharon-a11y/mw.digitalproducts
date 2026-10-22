@@ -290,19 +290,32 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .tabs7 p{margin:0;color:rgba(254,251,241,.66);font-size:15px;line-height:1.55}
 #lightroom-classic .small{margin-top:18px}
 
-/* MWP Panel: the two versions (Photoshop, Lightroom Classic) side by side, right after the hero */
-.vers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:clamp(28px,4vw,44px)}
-.ver{position:relative;display:flex;flex-direction:column;gap:12px;padding:clamp(26px,3vw,38px);border-radius:24px;color:inherit;text-decoration:none;
-  background:linear-gradient(180deg,rgba(254,251,241,.05),rgba(254,251,241,.015));border:1px solid rgba(254,251,241,.1);
+/* MWP Panel: the two versions (Photoshop, Lightroom Classic) side by side, right after the hero:
+   a photo with the app's name on it, then its tabs as numbered chips */
+.vers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:clamp(28px,4vw,44px)}
+.ver{position:relative;display:flex;flex-direction:column;border-radius:26px;overflow:hidden;color:inherit;text-decoration:none;isolation:isolate;
+  background:#0f0e0c;border:1px solid rgba(254,251,241,.1);
   transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s}
-.ver:hover{transform:translateY(-4px);border-color:rgba(244,175,86,.45);box-shadow:0 40px 80px -40px rgba(244,175,86,.3)}
-.ver-for{margin:0;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9CB1C2}
+.ver:hover{transform:translateY(-6px);border-color:rgba(244,175,86,.5);box-shadow:0 50px 90px -40px rgba(244,175,86,.35)}
+.ver-ph{position:relative;aspect-ratio:16/9;overflow:hidden}
+.ver-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;transition:transform 1.4s cubic-bezier(.2,.7,.1,1)}
+.ver:hover .ver-ph img{transform:scale(1.06)}
+.ver-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,9,8,0) 30%,rgba(15,14,12,.6) 62%,#0f0e0c 100%)}
+.ver-top{position:absolute;z-index:1;inset:auto 0 0 0;padding:0 clamp(24px,3vw,34px) 6px}
+.ver-for{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#F4AF56}
 html[lang=he] .ver-for{letter-spacing:.04em}
-.ver h3{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;font-size:clamp(30px,3.4vw,44px);font-weight:400;letter-spacing:-.02em;line-height:1.05}
-.ver-badge{padding:5px 11px;border-radius:64px;border:1px solid rgba(244,175,86,.5);color:#F4AF56;font-size:12.5px;font-weight:600;letter-spacing:.02em}
-.ver p{margin:0;color:rgba(254,251,241,.72);font-size:16px;line-height:1.6}
+.ver h3{margin:0;font-size:clamp(34px,3.8vw,52px);font-weight:400;letter-spacing:-.025em;line-height:1}
+.ver-badge{position:absolute;z-index:1;top:18px;inset-inline-end:18px;padding:6px 12px;border-radius:64px;background:rgba(10,9,8,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(244,175,86,.55);color:#F4AF56;font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.ver-body{display:flex;flex-direction:column;gap:16px;flex:1;padding:18px clamp(24px,3vw,34px) clamp(24px,3vw,32px)}
+.ver p{margin:0;color:rgba(254,251,241,.75);font-size:16px;line-height:1.6}
+.ver-tabs{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.ver-tabs li{display:inline-flex;align-items:center;gap:8px;padding:7px 13px 7px 8px;border-radius:64px;border:1px solid rgba(254,251,241,.13);background:rgba(254,251,241,.03);font-size:14px;color:#FEFBF1;transition:border-color .3s,background .3s}
+[dir=rtl] .ver-tabs li{padding:7px 8px 7px 13px}
+.ver-tabs b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(244,175,86,.14);color:#F4AF56;font-size:11.5px;font-weight:700}
+.ver:hover .ver-tabs li{border-color:rgba(244,175,86,.3)}
 .ver .ver-req{color:rgba(254,251,241,.5);font-size:14px}
-.ver-go{margin-top:auto;padding-top:10px;display:inline-flex;align-items:center;gap:6px;color:#F4AF56;font-weight:600;font-size:15px}
+.ver-go{margin-top:auto;display:inline-flex;align-items:center;gap:6px;color:#F4AF56;font-weight:600;font-size:15px}
 .ver-go svg{transition:transform .3s}.ver:hover .ver-go svg{transform:translateX(4px)}
 [dir=rtl] .ver-go svg{transform:scaleX(-1)}[dir=rtl] .ver:hover .ver-go svg{transform:scaleX(-1) translateX(4px)}
 @media (max-width:760px){.vers{grid-template-columns:minmax(0,1fr)}}

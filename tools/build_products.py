@@ -134,7 +134,7 @@ P["presets"] = dict(
 P["panel"] = dict(
     slug="mwp-panel", hero_img="866c1bdb", hero_pos="58% 40%", final_img="99ef2d40",
     proof_type="ba", pairs_from=[("c339384f", "52e0c3d2"), ("af0d1799", "95e05791")],
-    cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], feat_img="0f68e984", feat_flip=True, feat_tall=True, feat_first=True,
+    cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], versions_img=["8929f94d", "99ef2d40"], feat_img="0f68e984", feat_flip=True, feat_tall=True, feat_first=True,
     bundle="presets-panel",
     en=dict(
         name="MWP Panel", name_html='MWP <span class="grad">Panel</span>',
@@ -150,8 +150,10 @@ P["panel"] = dict(
         pairs=["Subject · Pop", "Background · Darken"],
         versions_kick="Two versions, one purchase", versions_h=["Pick your app.", "You get both."],
         versions_lead="MWP Panel comes for Photoshop and for Lightroom Classic. Install the one you use, or both. Video tutorials and free updates for each.",
-        versions=[("Photoshop", "", "Four tabs, in the order you edit: Prepare, Edit, Style and Export. Every edit on its own layer, your original locked.", "Photoshop 2023 (24.2) or newer · Mac and Windows", "See the Photoshop version", "inside"),
-                  ("Lightroom Classic", "Early access", "Seven tabs, from the card to the post: Cull, Organize, Expedition, Looks, Edit, Color and Export.", "Lightroom Classic 13 or newer · Mac and Windows", "See the Lightroom Classic version", "lightroom-classic")],
+        versions=[("Photoshop", "", "Four tabs, in the order you edit. Every edit on its own layer, your original locked.", "Photoshop 2023 (24.2) or newer · Mac and Windows", "See the Photoshop version", "inside",
+                   ["Prepare", "Edit", "Style", "Export"], "Red fox looking at the camera"),
+                  ("Lightroom Classic", "Early access", "Seven tabs that follow a whole shoot, from the card to the post.", "Lightroom Classic 13 or newer · Mac and Windows", "See the Lightroom Classic version", "lightroom-classic",
+                   ["Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"], "Two elephants at sunset")],
         bar_inside="Photoshop",
         inside_kick="MWP Panel for Photoshop", inside_h=["Four tabs,", "in the order you edit."],
         inside_lead="From the first crop to the Instagram copy, without leaving the panel.",
@@ -201,8 +203,10 @@ P["panel"] = dict(
         pairs=["נושא · הבלטה", "רקע · הכהיה"],
         versions_kick="שתי גרסאות, רכישה אחת", versions_h=["בוחרים תוכנה.", "מקבלים את שתיהן."],
         versions_lead="הפאנל של MWP מגיע לפוטושופ וללייטרום קלאסיק. מתקינים את זו שעובדים איתה, או את שתיהן. סרטוני הדרכה ועדכונים חינמיים לכל אחת.",
-        versions=[("פוטושופ", "", "ארבע לשוניות, לפי סדר העריכה: הכנה, עריכה, סגנון וייצוא. כל עריכה בשכבה משלה, והמקור נעול.", "פוטושופ 2023 (‏24.2) ומעלה · מק ו־ווינדוס", "לגרסת הפוטושופ", "inside"),
-                  ("לייטרום קלאסיק", "גישה מוקדמת", "שבע לשוניות, מהכרטיס ועד הפרסום: מיון, ארגון, משלחת, לוקים, עריכה, צבע וייצוא.", "לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס", "לגרסת לייטרום קלאסיק", "lightroom-classic")],
+        versions=[("פוטושופ", "", "ארבע לשוניות, לפי סדר העריכה. כל עריכה בשכבה משלה, והמקור נעול.", "פוטושופ 2023 (‏24.2) ומעלה · מק ו־ווינדוס", "לגרסת הפוטושופ", "inside",
+                   ["הכנה", "עריכה", "סגנון", "ייצוא"], "שועל אדום מביט במצלמה"),
+                  ("לייטרום קלאסיק", "גישה מוקדמת", "שבע לשוניות שמלוות צילום שלם, מהכרטיס ועד הפרסום.", "לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס", "לגרסת לייטרום קלאסיק", "lightroom-classic",
+                   ["מיון", "ארגון", "משלחת", "לוקים", "עריכה", "צבע", "ייצוא"], "שני פילים בשקיעה")],
         bar_inside="פוטושופ",
         inside_kick="הפאנל של MWP לפוטושופ", inside_h=["ארבע לשוניות,", "לפי סדר העריכה."],
         inside_lead="מהחיתוך הראשון ועד העותק לאינסטגרם, בלי לצאת מהפאנל.",
@@ -378,8 +382,10 @@ def page(folder, lang):
 
     # two versions of one product (MWP Panel: Photoshop and Lightroom Classic), right after the hero
     if "versions" in c:
-        cards = "".join(f'''<a class="ver" href="#{href}" data-r style="--d:{k * 0.08:.2f}s"><p class="ver-for">{u["for"]}</p><h3>{esc(app)}{f' <span class="ver-badge">{esc(badge)}</span>' if badge else ""}</h3><p>{esc(line)}</p><p class="ver-req">{esc(req)}</p><span class="ver-go">{esc(go)} {ARROW}</span></a>'''
-                        for k, (app, badge, line, req, go, href) in enumerate(c["versions"]))
+        cards = "".join(f'''<a class="ver" href="#{href}" data-r style="--d:{k * 0.08:.2f}s">
+<div class="ver-ph"><img src="{img(p["versions_img"][k])}" alt="{esc(alt)}" loading="lazy"><div class="ver-top"><p class="ver-for">{u["for"]}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
+<div class="ver-body"><p>{esc(line)}</p><ol class="ver-tabs">{"".join(f'<li><b>{i + 1}</b>{esc(t)}</li>' for i, t in enumerate(tabs))}</ol><p class="ver-req">{esc(req)}</p><span class="ver-go">{esc(go)} {ARROW}</span></div></a>'''
+                        for k, (app, badge, line, req, go, href, tabs, alt) in enumerate(c["versions"]))
         parts.append(f'''<section class="sec" id="versions">
 <div class="wrap">
 <div class="head c" data-r><p class="kick">{esc(c["versions_kick"])}</p>{h(c["versions_h"])}<p class="lead">{esc(c["versions_lead"])}</p></div>
