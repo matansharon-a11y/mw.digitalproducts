@@ -291,7 +291,13 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .lrc-desc p[hidden]{display:none}
 .lrc-desc .n{font-size:12px;font-weight:700;letter-spacing:.16em;color:#F4AF56}
 .lrc-desc b{font-weight:500;color:#FEFBF1}
-#lightroom-classic .lrc-note{margin-top:8px;text-align:center}
+/* the label over the window: says it's a live preview, with a soft pulsing dot */
+.lrc-label{display:flex;width:fit-content;max-width:100%;align-items:center;gap:10px;margin:0 auto 22px;padding:8px 16px;border-radius:64px;
+  border:1px solid rgba(244,175,86,.4);background:rgba(244,175,86,.08);color:#F4D6A8;font-size:13.5px;line-height:1.4;text-align:center}
+.lrc-label i{flex:none;width:8px;height:8px;border-radius:50%;background:#F4AF56;box-shadow:0 0 0 0 rgba(244,175,86,.6);animation:lrcpulse 2.2s infinite}
+@keyframes lrcpulse{70%{box-shadow:0 0 0 8px rgba(244,175,86,0)}100%{box-shadow:0 0 0 0 rgba(244,175,86,0)}}
+@media (prefers-reduced-motion:reduce){.lrc-label i{animation:none}}
+@media (max-width:600px){.lrc-label .req{display:none}}   /* phones: one line; the requirements are on the version card */
 #lightroom-classic{overflow-x:clip}   /* the glow behind the window never widens the page */
 
 .lw{font:400 13.5px/1.4 "Google Sans","Heebo",sans-serif;color:#d6d6d6;background:#2a2a2a;border:1px solid #444;border-radius:12px;overflow:hidden;

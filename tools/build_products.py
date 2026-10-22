@@ -455,9 +455,8 @@ def page(folder, lang):
         parts.append(f'''<section class="sec" id="lightroom-classic">
 <div class="wrap">
 <div class="head c" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
-<div class="lrc" data-lrc data-r><div class="lrc-stage">{lrc_window()}</div>
+<div class="lrc" data-lrc data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["lrc_note"].split(" · ")[0])}<span class="req"> · {esc(c["lrc_note"].split(" · ")[1])}</span></span></p><div class="lrc-stage">{lrc_window()}</div>
 <div class="lrc-desc" aria-live="polite">{descs}</div></div>
-<p class="small lrc-note" data-r>{esc(c["lrc_note"])}</p>
 </div>
 </section>''')
 
