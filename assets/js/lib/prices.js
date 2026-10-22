@@ -67,19 +67,21 @@ function productData() {
   out.textContent = JSON.stringify(ld);
 }
 
-async function load() {
+async function load(tries = 3) {
   if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) return;
+  // a slow or dropped connection gets two more tries (after 2 s and 5 s): until the prices are in, the price spots stay hidden
+  const again = () => { if (tries > 1) setTimeout(() => load(tries - 1), tries === 3 ? 2000 : 5000); };
   try {
     const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/page_prices?select=*`, {
       headers: { apikey: CONFIG.SUPABASE_ANON_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}` },
     });
-    if (!res.ok) return;
+    if (!res.ok) return again();
     rows = {};
     (await res.json()).forEach((r) => { rows[r.slug] = r; });
     paint();
     document.documentElement.classList.add("prices-on");   // the real prices are in: show the price spots (hidden in SITE_CSS until now)
     try { productData(); } catch { /* no product on this page */ }
-  } catch { /* offline or not set up yet: the 0.00 placeholders stay */ }
+  } catch { again(); /* offline or blocked: the price spots stay hidden, the buy buttons still work */ }
 }
 
 export function initPrices() {

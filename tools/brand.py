@@ -145,6 +145,7 @@ def site_footer(lang="en"):
 
 SITE_CSS = """
 html:not(.prices-on) [data-price]{visibility:hidden}
+html:not(.prices-on) .btn .pr{display:none}   /* a buy button reads "Get …" until its price is in, never "Get … ·" */
 html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
 html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
 html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
