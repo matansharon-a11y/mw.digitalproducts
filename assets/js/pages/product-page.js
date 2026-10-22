@@ -145,7 +145,7 @@ document.querySelectorAll("[data-lrc]").forEach((box) => {
 
 // ---------------------------------------------------------------- MWP Panel in Photoshop: the live preview
 // Like the real panel: one chip picks what to edit, an effect adds an edit to it (the card shows it, the slider sets its
-// strength, "Your edits" counts it), undo takes back the last one, reset clears them, Before / After dims the controls.
+// strength, "Your edits" counts it), undo takes back the last one, reset clears them, Before / After shows the RAW on the canvas.
 // Nothing is edited: it's a preview (tools/ps_preview.py).
 document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
   const now = pw.querySelector("[data-pw-now]"), range = pw.querySelector(".pw-range"), count = pw.querySelector("[data-pw-count]");
@@ -172,11 +172,14 @@ document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
   pw.querySelector('[data-pw="undo"]').addEventListener("click", () => { if (edits.length) { undone.push(edits.pop()); paint(); } });
   pw.querySelector('[data-pw="redo"]').addEventListener("click", () => { if (undone.length) { edits.push(undone.pop()); paint(); } });
   pw.querySelector('[data-pw="reset"]').addEventListener("click", () => { if (edits.length) { edits.length = 0; undone.length = 0; paint(); } });
+  // Before / After: the RAW on the canvas of the window around the panel
+  const host = pw.closest("[data-pws]"), win = host?.querySelector(".psw");
   const ba = pw.querySelector('[data-pw="ba"]');
-  ba.addEventListener("click", () => { ba.classList.toggle("on"); pw.classList.toggle("before", ba.classList.contains("on")); });
+  ba.addEventListener("click", () => { ba.classList.toggle("on"); win?.classList.toggle("before", ba.classList.contains("on")); });
   pw.querySelectorAll("[data-pw-tab]").forEach((t) => t.addEventListener("click", () => {
     pw.querySelectorAll("[data-pw-tab]").forEach((o) => { const on = o === t; o.classList.toggle("on", on); o.setAttribute("aria-selected", String(on)); });
     pw.querySelectorAll("[data-pw-pane]").forEach((pn) => { pn.hidden = pn.dataset.pwPane !== t.dataset.pwTab; });
+    host?.querySelectorAll("[data-pw-desc]").forEach((d) => { d.hidden = d.dataset.pwDesc !== t.dataset.pwTab; });   // the line under the window
   }));
 });
 

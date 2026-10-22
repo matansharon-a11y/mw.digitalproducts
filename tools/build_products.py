@@ -136,7 +136,7 @@ P["presets"] = dict(
 P["panel"] = dict(
     slug="mwp-panel", hero_img="866c1bdb", hero_pos="58% 40%", final_img="99ef2d40",
     proof_type="ba", pairs_from=[("c339384f", "52e0c3d2"), ("af0d1799", "95e05791")],
-    cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], versions_img=[("8929f94d", "50% 0%"), ("99ef2d40", "52% 45%")], feat_img="0f68e984", feat_flip=True, feat_tall=True, feat_first=True,
+    cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], versions_img=[("8929f94d", "50% 0%"), ("99ef2d40", "52% 45%")], feat_img="2cfa033c", feat_flip=True, feat_first=True, ps_show=True,
     bundle="presets-panel",
     en=dict(
         name="MWP Panel", name_html='MWP <span class="grad">Panel</span>',
@@ -168,7 +168,7 @@ P["panel"] = dict(
         feat_points=["<strong>Every edit on its own layer.</strong> All edits sit in one MWP group. Your photo underneath stays locked.",
                      "<strong>One button, one undo.</strong> Ctrl+Z takes back a whole button. Before / After shows the original at any time.",
                      "<strong>Exports are new files.</strong> The panel never saves over your original file."],
-        feat_alt="MWP Panel open in Photoshop, the Edit tab", feat_live="Interactive preview of the Edit tab, button for button",
+        feat_alt="Lion walking, black and white", ps_label="Interactive preview of the real panel · the Edit tab, button for button",
         lrc_kick="MWP Panel for Lightroom Classic", lrc_h=["Seven tabs,", "from the card to the post."],
         lrc_lead="From the first cull to the export, in one window. Included with MWP Panel, in early access with free updates. Click a tab to look inside.",
         lrc=[("Cull", "Turn a day of bursts into a short list. Nothing is ever deleted."),
@@ -221,7 +221,7 @@ P["panel"] = dict(
         feat_points=["<strong>כל עריכה בשכבה משלה.</strong> כל העריכות יושבות בקבוצת MWP אחת. התמונה שמתחת נשארת נעולה.",
                      "<strong>כפתור אחד, ביטול אחד.</strong> Ctrl+Z מבטל כפתור שלם. לפני / אחרי מראה את המקור בכל רגע.",
                      "<strong>הייצוא תמיד לקובץ חדש.</strong> הפאנל אף פעם לא שומר על הקובץ המקורי."],
-        feat_alt="הפאנל של MWP פתוח בפוטושופ, בלשונית העריכה", feat_live="תצוגה מקדימה אינטראקטיבית של לשונית העריכה, כפתור אחר כפתור",
+        feat_alt="אריה הולך, בשחור-לבן", ps_label="תצוגה מקדימה אינטראקטיבית של הפאנל האמיתי, באנגלית כמו בתוסף · לשונית העריכה, כפתור אחר כפתור",
         lrc_kick="הפאנל של MWP ללייטרום קלאסיק", lrc_h=["שבע לשוניות,", "מהכרטיס ועד הפרסום."],
         lrc_lead="מהמיון הראשון ועד הייצוא, בחלון אחד. כלול בפאנל של MWP, בגישה מוקדמת ועם עדכונים חינמיים. לחצו על לשונית כדי להציץ פנימה.",
         lrc=[("מיון", "הופכים יום של רצפים לרשימה קצרה. שום דבר לא נמחק."),
@@ -439,7 +439,22 @@ def page(folder, lang):
     cards = "".join(f'''<article class="card" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"><span class="no">0{k + 1}</span></div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>'''
                     for k, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
     lead = f'<p class="lead">{esc(c["inside_lead"])}</p>' if c["inside_lead"] else ""
-    parts.append(f'''<section class="sec tint" id="{inside_id}">
+    if p.get("ps_show"):   # MWP Panel: Photoshop as one centred showcase, like the Lightroom Classic one
+        ba, fa = p["pairs_from"][0]
+        descs = "".join(f'<p data-pw-desc="{esc(t2)}"{"" if k == 1 else " hidden"}><span class="n">0{k + 1}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
+                        for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Style", "Export"))))
+        parts.append(f'''<section class="sec tint" id="{inside_id}">
+<div class="wrap">
+<div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
+<div class="lrc pws" data-pws data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["ps_label"].split(" · ")[0])}<span class="req"> · {esc(c["ps_label"].split(" · ")[1])}</span></span></p>
+<div class="lrc-stage"><div class="psw" lang="en" dir="ltr" data-no-i18n><div class="psw-bar"><i></i><i></i><i></i><span>Photoshop</span></div>
+<div class="psw-main"><div class="psw-canvas"><img class="psw-after" src="{img(fa)}" alt="{esc(c["pairs"][0])}" loading="lazy"><img class="psw-before" src="{img(ba)}" alt="" loading="lazy"><span class="psw-tag">Before</span></div>
+{ps_window("/assets/img/logo-mark.png")}</div></div></div>
+<div class="lrc-desc" aria-live="polite">{descs}</div></div>
+</div>
+</section>''')
+    else:
+        parts.append(f'''<section class="sec tint" id="{inside_id}">
 <div class="wrap" data-rail>
 <div class="rail-top"><div class="head" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
 <div class="rail-nav"><button type="button" aria-label="{u["prev"]}">{BACK}</button><button type="button" aria-label="{u["next"]}">{ARROW}</button></div></div>

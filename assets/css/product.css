@@ -377,10 +377,31 @@ html[lang=he] .ver-for{letter-spacing:.04em}
 [dir=rtl] .ver-go svg{transform:scaleX(-1)}[dir=rtl] .ver:hover .ver-go svg{transform:scaleX(-1) translateX(4px)}
 @media (max-width:760px){.vers{grid-template-columns:minmax(0,1fr)}}
 
-/* MWP Panel in Photoshop: a live copy of the panel (tools/ps_preview.py) in place of the screenshot, in the
-   "No way to ruin it" feature. Sizes follow the real panel at its usual width. */
-.feat .ph.live{position:relative;display:flex;flex-direction:column;align-items:center;padding:30px 24px 34px;background:radial-gradient(60% 50% at 50% 45%,rgba(244,175,86,.12),rgba(244,175,86,0) 70%),linear-gradient(180deg,#1A1714,#100E0C);overflow:visible}
-.feat .ph.live .lrc-label{margin-bottom:18px}
+/* MWP Panel in Photoshop: one centred showcase like the Lightroom Classic one (#inside, ps_show in build_products.py).
+   A Photoshop-like window: the photo on the canvas, MWP Panel docked on the right at full height (tools/ps_preview.py).
+   Before / After in the panel shows the RAW on the canvas. */
+.psw{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;background:#232323;border:1px solid #444;box-shadow:0 60px 120px -50px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.4);text-align:left}
+.psw-bar{display:flex;align-items:center;gap:7px;height:34px;padding:0 12px;background:#1b1b1b;border-bottom:1px solid #383838}
+.psw-bar i{width:11px;height:11px;border-radius:50%;background:#4a4a4a}
+.psw-bar span{flex:1;margin-right:40px;text-align:center;font:500 12.5px "Google Sans",sans-serif;color:#bdbdbd}
+.psw-main{display:flex;align-items:stretch}
+.psw-canvas{position:relative;flex:1;min-width:0;display:grid;place-items:center;padding:28px;background:#1d1d1d}
+.psw-canvas img{grid-area:1/1;width:100%;height:auto;max-height:100%;object-fit:contain;box-shadow:0 20px 50px -20px rgba(0,0,0,.8);transition:opacity .5s}
+.psw-before{opacity:0}
+.psw.before .psw-before{opacity:1}
+.psw-tag{position:absolute;top:14px;left:14px;padding:4px 10px;border-radius:64px;background:rgba(0,0,0,.6);color:#fff;font:600 11.5px "Google Sans",sans-serif;letter-spacing:.06em;opacity:0;transition:opacity .3s}
+.psw.before .psw-tag{opacity:1}
+.psw .pw{width:372px;height:auto;flex:none;border:0;border-left:1px solid #3d3d3d;border-radius:0;box-shadow:none;font-size:13px}
+.psw .pw-icons{gap:0}.psw .pw-ic{width:28px}
+.psw .pw-chip{padding:5px 11px;font-size:13px}
+.psw .pw-btn{padding:8px 11px;font-size:13.5px}
+.psw .pw-h{margin:10px 0 8px}
+.psw .pw-scroll{padding:12px 14px 14px}
+.psw .pw-card{padding:10px 12px}.psw .pw-range{margin:9px 0 8px}
+.psw .pw-scroll{overflow:visible}
+.pws .lrc-desc{margin-top:26px}
+.pws{max-width:1060px}
+@media (max-width:820px){.psw-canvas{display:none}.psw .pw{width:100%;border-left:0}.psw{max-width:400px;margin:0 auto}}
 .pw{width:min(100%,360px);height:560px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:#2b2b2b;border:1px solid #3d3d3d;
   box-shadow:0 40px 80px -30px rgba(0,0,0,.9);font:400 13.5px/1.35 "Google Sans","Heebo",sans-serif;color:#e6e6e6;text-align:left}
 .pw-top{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 14px;border-bottom:1px solid #3a3a3a}
@@ -426,5 +447,4 @@ html[lang=he] .ver-for{letter-spacing:.04em}
 .pw-foot b.bump{animation:pwbump .4s}
 @keyframes pwbump{40%{color:#F4AF56;transform:scale(1.25)}}
 .pw-foot b{display:inline-block}
-.pw.before .pw-scroll{opacity:.45}
-@media (max-width:420px){.pw-top{gap:8px;padding:10px}.pw-top b{font-size:11px;letter-spacing:.12em}.pw-ic{width:26px;height:26px}.pw-ic svg{width:17px;height:17px}.feat .ph.live{padding:24px 12px 28px}}
+@media (max-width:420px){.pw-top{gap:8px;padding:10px}.pw-top b{font-size:11px;letter-spacing:.12em}.pw-ic{width:26px;height:26px}.pw-ic svg{width:17px;height:17px}}
