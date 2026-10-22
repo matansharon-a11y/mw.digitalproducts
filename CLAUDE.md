@@ -25,6 +25,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 ## Prices on the home and sales pages
 - Every price spot is `<span data-price="slug">` and shows the price set for that product in the admin (`assets/js/lib/prices.js`, reading the `page_prices` view). English shows the dollar price, Hebrew the shekel price. With no price set, it shows $0.00 / ₪0.00.
 - Product slugs: mwp-presets, mwp-panel, mwp-field-guides, presets-field-guides, presets-panel, field-guides-panel, full-set.
+- Prices show at once: on every deploy `tools/bake_prices.py` writes the current prices into the published pages (and marks them `prices-on`); the browser also keeps the last prices it saw (`mwp_prices` in localStorage). `prices.js` still loads the live prices on every visit and corrects them, so a price changed in the admin shows right away and is baked in at the next deploy. Until prices are in, price spots stay hidden and buy buttons read just "Get …".
 - On the sales pages, `PRICE_SLOTS` in `tools/unify_pages.py` lists the price spots in page order. Update it if a redesign adds or moves a price.
 
 ## Ambassador Program page (/beta/)

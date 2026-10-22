@@ -36,6 +36,7 @@ function saveFor(el) {
 }
 
 function paint(root = document) {
+  if (!rows) return;   // no prices yet: keep what the page has (the prices baked in at deploy, or hidden placeholders)
   root.querySelectorAll("[data-price]").forEach((el) => {
     const t = textFor(el);
     if (el.textContent !== t) el.textContent = t;
@@ -78,14 +79,21 @@ async function load(tries = 3) {
     if (!res.ok) return again();
     rows = {};
     (await res.json()).forEach((r) => { rows[r.slug] = r; });
+    try { localStorage.setItem(CACHE, JSON.stringify(rows)); } catch { /* private mode */ }
     paint();
     document.documentElement.classList.add("prices-on");   // the real prices are in: show the price spots (hidden in SITE_CSS until now)
     try { productData(); } catch { /* no product on this page */ }
   } catch { again(); /* offline or blocked: the price spots stay hidden, the buy buttons still work */ }
 }
 
+// The last prices this browser saw: a returning visitor sees prices at once, before the live ones arrive.
+const CACHE = "mwp_prices";
+
 export function initPrices() {
-  paint();
+  try {
+    const cached = JSON.parse(localStorage.getItem(CACHE) || "null");
+    if (cached && typeof cached === "object") { rows = cached; paint(); document.documentElement.classList.add("prices-on"); }
+  } catch { /* no cache */ }
   load();
   // the sales pages re-render parts of the page, and the home page switches language in place
   let queued = false;
