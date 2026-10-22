@@ -87,7 +87,8 @@ P["presets"] = dict(
         specs=[("50", "Desktop presets", "XMP for Lightroom Classic, Lightroom and Camera Raw"),
                ("50", "Mobile files", "DNG for Lightroom Mobile on iPhone, iPad and Android"),
                ("33", "LUTs", ".cube for Photoshop and video editors: Premiere Pro, DaVinci Resolve and Final Cut Pro"),
-               ("1", "Install guide", "A page for each program, step by step")],
+               ("1", "Install guide", "A page for each program, step by step"),
+               ("", "Video tutorial", "Installing and using the presets, in My downloads")],
         spec_note="Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+.",
         final_kick="MWP Presets", final_h=["Start", "your next edit."],
         final_lead="50 presets, 50 mobile files, 33 LUTs and an install guide in one download. Free updates, kept in your account.",
@@ -120,7 +121,8 @@ P["presets"] = dict(
         specs=[("50", "פריסטים למחשב", "XMP ללייטרום קלאסיק, ללייטרום ולקאמרה ראו"),
                ("50", "קבצים לנייד", "DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד"),
                ("33", "קובצי LUT", "בפורמט ‎.cube לפוטושופ ולתוכנות וידאו: פרמייר פרו, דה־וינצ׳י ריזולב ופיינל קאט פרו"),
-               ("1", "מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד")],
+               ("1", "מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד"),
+               ("", "סרטון הדרכה", "התקנה ושימוש בפריסטים, בעמוד ההורדות שלי")],
         spec_note="הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה.",
         final_kick="הפריסטים של MWP", final_h=["התחילו", "את העריכה הבאה."],
         final_lead="50 פריסטים, 50 קבצים לנייד, 33 קובצי LUT ומדריך התקנה, בהורדה אחת. עדכונים בחינם, והכול נשמר בחשבון שלכם.",
@@ -136,17 +138,17 @@ P["panel"] = dict(
     bundle="presets-panel",
     en=dict(
         name="MWP Panel", name_html='MWP <span class="grad">Panel</span>',
-        title="Photoshop Plugin for Wildlife Photographers · MWP Panel",
-        desc="Edit wildlife photos in Photoshop without learning layers or masks. Pick the animal, the sky or the background, pick an effect, set the strength. Your original stays locked. Mac and Windows.",
+        title="Photoshop & Lightroom Classic Plugin for Wildlife · MWP Panel",
+        desc="Edit wildlife photos in Photoshop or Lightroom Classic without learning layers or masks. Pick the animal, the sky or the background, pick an effect, set the strength. Video tutorials included. Mac and Windows.",
         hero_alt="A tiger, photographed by Matan Wild",
-        kick="MWP Panel · Photoshop plugin for wildlife", h1=["Photoshop,", "made easy."],
-        lead="Pick the animal, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you, and your original stays locked.",
+        kick="MWP Panel · for Photoshop and Lightroom Classic", h1=["Editing,", "made easy."],
+        lead="Pick the animal, the sky or the background. Pick an effect. Set the strength. In Photoshop or Lightroom Classic, the panel builds the masks for you, and your original is never touched.",
         cta="Get MWP Panel", cta2="Compare RAW and final",
-        facts=["No layers or masks to learn", "Your original stays locked", "Photoshop 2023 or newer · Mac and Windows"],
+        facts=["No layers or masks to learn", "Photoshop and Lightroom Classic", "Video tutorials included"],
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The animal brighter.", "The sky calmer."],
         proof_lead="Choose the subject or the sky, then an effect. The panel builds the mask and puts the edit on its own layer.",
         pairs=["Subject · Pop", "Background · Darken"],
-        inside_kick="What's inside", inside_h=["Four tabs,", "in the order you edit."],
+        inside_kick="In Photoshop", inside_h=["Four tabs,", "in the order you edit."],
         inside_lead="From the first crop to the Instagram copy, without leaving the panel.",
         cards=[("Prepare", "Crop around the animal, straighten, find and erase dust, denoise. Neutral color in one tap.", "Iceberg under storm light"),
                ("Edit", "Subject, eye, sky, background, lights, darks or any color. 8 effects. Paint them in or out.", "Red fox looking at the camera"),
@@ -158,29 +160,41 @@ P["panel"] = dict(
                      "<strong>One button, one undo.</strong> Ctrl+Z takes back a whole button. Before / After shows the original at any time.",
                      "<strong>Exports are new files.</strong> The panel never saves over your original file."],
         feat_alt="MWP Panel open in Photoshop, the Edit tab",
+        lrc_kick="In Lightroom Classic", lrc_h=["Seven tabs,", "from the card to the post."],
+        lrc_lead="The Lightroom Classic version follows a whole shoot, from the first cull to the export. It comes with MWP Panel at no extra cost, in early access: it works today and grows with free updates.",
+        lrc=[("Cull", "Turn a day of bursts into a short list. Nothing is ever deleted."),
+             ("Organize", "Trips, a collection per day, and 51,471 species for your keywords."),
+             ("Expedition", "The edit we teach in camp, one step per line."),
+             ("Looks", "A finished mood with a strength slider, and looks of your own."),
+             ("Edit", "Subject, sky, background or people: pick an effect, set the strength."),
+             ("Color", "Hue, saturation and luminance per colour, and ready fixes like Warm fur."),
+             ("Export", "Instagram, web and print sizes, your watermark, and a competition check.")],
+        lrc_note="Lightroom Classic 13 or newer, Mac and Windows.",
         specs=[("", "Photoshop plugin", "Double-click to install. Mac and Windows."),
+               ("", "Lightroom Classic plugin", "Early access. Add it once in the Plug-in Manager. Manual built in."),
+               ("", "Video tutorials", "For Photoshop and Lightroom Classic, in My downloads."),
                ("21", "User Manual · PDF", "21 pages. Every button, step by step, for complete beginners."),
                ("", "Installation Guide · PDF", "Setup step by step, with fixes for common problems."),
                ("", "Built-in guide", "Hover tips and a full help page inside the panel.")],
-        spec_note="Works with Photoshop 2023 (24.2) or newer on Mac and Windows. Not for Lightroom, iPad or phones.",
+        spec_note="Photoshop 2023 (24.2) or newer, or Lightroom Classic 13 or newer, on Mac and Windows. Not for Lightroom (the cloud version), iPad or phones.",
         final_kick="MWP Panel", final_h=["Edit with", "confidence."],
-        final_lead="The plugin with both PDF guides and free updates. Or together with MWP Presets, for Lightroom and Photoshop in the same look.",
-        plan=("MWP Panel", "Photoshop plugin", ["Photoshop plugin, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get MWP Panel"),
-        plan2=("MWP Panel + MWP Presets", "Photoshop and Lightroom", ["Everything in MWP Panel", "50 Lightroom presets in the same look", "Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw"], "Get the bundle"),
+        final_lead="For Photoshop and Lightroom Classic, with the PDF guides, video tutorials and free updates. Or together with MWP Presets.",
+        plan=("MWP Panel", "Photoshop and Lightroom Classic", ["Photoshop plugin and Lightroom Classic plugin", "User Manual and Installation Guide · PDF", "Video tutorials"], "Get MWP Panel"),
+        plan2=("MWP Panel + MWP Presets", "Photoshop and Lightroom", ["Everything in MWP Panel", "50 Lightroom presets in the same look", "Video tutorials for both"], "Get the bundle"),
     ),
     he=dict(
         name="הפאנל של MWP", name_html='הפאנל של <span class="grad">MWP</span>',
-        title="פלאגין לפוטושופ לצלמי חיות בר · הפאנל של MWP",
-        desc="עורכים צילומי חיות בר בפוטושופ בלי ללמוד שכבות ומסכות. בוחרים את החיה, את השמיים או את הרקע, בוחרים אפקט וקובעים עוצמה. המקור נשאר נעול. מק ו־ווינדוס.",
+        title="פלאגין לפוטושופ וללייטרום קלאסיק לחיות בר · הפאנל של MWP",
+        desc="עורכים צילומי חיות בר בפוטושופ או בלייטרום קלאסיק בלי ללמוד שכבות ומסכות. בוחרים את החיה, את השמיים או את הרקע, בוחרים אפקט וקובעים עוצמה. כולל סרטוני הדרכה. מק ו־ווינדוס.",
         hero_alt="טיגריס, צילום: מתן וויילד",
-        kick="הפאנל של MWP · פלאגין לפוטושופ לחיות בר", h1=["פוטושופ,", "בלי להסתבך."],
-        lead="בוחרים את החיה, את השמיים או את הרקע. בוחרים אפקט. קובעים עוצמה. הפאנל בונה בשבילכם את המסכות ואת השכבות, והמקור נשאר נעול.",
+        kick="הפאנל של MWP · לפוטושופ וללייטרום קלאסיק", h1=["עריכה,", "בלי להסתבך."],
+        lead="בוחרים את החיה, את השמיים או את הרקע. בוחרים אפקט. קובעים עוצמה. בפוטושופ או בלייטרום קלאסיק, הפאנל בונה בשבילכם את המסכות, והמקור לא נפגע לעולם.",
         cta="לקבלת הפאנל של MWP", cta2="מ-RAW לתמונה הסופית",
-        facts=["בלי ללמוד שכבות ומסכות", "המקור נשאר נעול", "פוטושופ 2023 ומעלה · מק ו־ווינדוס"],
+        facts=["בלי ללמוד שכבות ומסכות", "פוטושופ ולייטרום קלאסיק", "כולל סרטוני הדרכה"],
         proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["החיה בהירה יותר.", "השמיים רגועים יותר."],
         proof_lead="בוחרים את הנושא או את השמיים, ואז אפקט. הפאנל בונה את המסכה ושם את העריכה בשכבה נפרדת.",
         pairs=["נושא · הבלטה", "רקע · הכהיה"],
-        inside_kick="מה יש בפנים", inside_h=["ארבע לשוניות,", "לפי סדר העריכה."],
+        inside_kick="בפוטושופ", inside_h=["ארבע לשוניות,", "לפי סדר העריכה."],
         inside_lead="מהחיתוך הראשון ועד העותק לאינסטגרם, בלי לצאת מהפאנל.",
         cards=[("הכנה", "חיתוך סביב החיה, יישור, איתור ומחיקה של כתמי אבק, הפחתת רעש. צבע ניטרלי בנגיעה אחת.", "קרחון באור סערה"),
                ("עריכה", "נושא, עין, שמיים, רקע, אזורים בהירים או כהים, או כל צבע. 8 אפקטים, שאפשר להוסיף או למחוק במכחול.", "שועל אדום מביט במצלמה"),
@@ -192,15 +206,27 @@ P["panel"] = dict(
                      "<strong>כפתור אחד, ביטול אחד.</strong> Ctrl+Z מבטל כפתור שלם. לפני / אחרי מראה את המקור בכל רגע.",
                      "<strong>הייצוא תמיד לקובץ חדש.</strong> הפאנל אף פעם לא שומר על הקובץ המקורי."],
         feat_alt="הפאנל של MWP פתוח בפוטושופ, בלשונית העריכה",
+        lrc_kick="בלייטרום קלאסיק", lrc_h=["שבע לשוניות,", "מהכרטיס ועד הפרסום."],
+        lrc_lead="גרסת לייטרום קלאסיק מלווה צילום שלם, מהמיון הראשון ועד הייצוא. היא מגיעה עם הפאנל של MWP בלי תוספת תשלום, בגישה מוקדמת: היא עובדת כבר היום וגדלה עם עדכונים חינמיים.",
+        lrc=[("מיון", "הופכים יום של רצפים לרשימה קצרה. שום דבר לא נמחק."),
+             ("ארגון", "טיולים, אוסף לכל יום, ו־51,471 מינים למילות המפתח שלכם."),
+             ("משלחת", "העריכה שאנחנו מלמדים במחנה, צעד אחד בכל שורה."),
+             ("לוקים", "אווירה מוגמרת עם מחוון עוצמה, ולוקים משלכם."),
+             ("עריכה", "נושא, שמיים, רקע או אנשים: בוחרים אפקט וקובעים עוצמה."),
+             ("צבע", "גוון, רוויה ובהירות לכל צבע, ותיקונים מוכנים כמו פרווה חמה."),
+             ("ייצוא", "גדלים לאינסטגרם, לאתר ולהדפסה, סימן המים שלכם ובדיקה לתחרויות.")],
+        lrc_note="לייטרום קלאסיק 13 ומעלה, מק ו־ווינדוס.",
         specs=[("", "הפלאגין לפוטושופ", "לחיצה כפולה להתקנה. מק ו־ווינדוס."),
+               ("", "הפלאגין ללייטרום קלאסיק", "גישה מוקדמת. מוסיפים אותו פעם אחת במנהל התוספים. מדריך מובנה."),
+               ("", "סרטוני הדרכה", "לפוטושופ וללייטרום קלאסיק, בעמוד ההורדות שלי."),
                ("21", "מדריך למשתמש · PDF", "21 עמודים. כל כפתור, צעד אחרי צעד, גם למתחילים גמורים."),
                ("", "מדריך התקנה · PDF", "התקנה צעד אחרי צעד, עם פתרונות לבעיות נפוצות."),
                ("", "מדריך מובנה", "טיפים במעבר עכבר ועמוד עזרה מלא בתוך הפאנל.")],
-        spec_note="עובד עם פוטושופ 2023 (‏24.2) ומעלה, במק ובווינדוס. לא ללייטרום, לאייפד או לטלפון.",
+        spec_note="פוטושופ 2023 (‏24.2) ומעלה, או לייטרום קלאסיק 13 ומעלה, במק ובווינדוס. לא ללייטרום (גרסת הענן), לאייפד או לטלפון.",
         final_kick="הפאנל של MWP", final_h=["עורכים", "בביטחון."],
-        final_lead="הפלאגין עם שני מדריכי ה-PDF ועדכונים בחינם. או יחד עם הפריסטים של MWP, ללייטרום ולפוטושופ באותו לוק.",
-        plan=("הפאנל של MWP", "פלאגין לפוטושופ", ["פלאגין לפוטושופ, מק ו־ווינדוס", "מדריך למשתמש · PDF, ‏21 עמודים", "מדריך התקנה · PDF"], "לקבלת הפאנל של MWP"),
-        plan2=("הפאנל + הפריסטים של MWP", "פוטושופ ולייטרום", ["כל מה שיש בהפאנל של MWP", "50 פריסטים ללייטרום באותו לוק", "לייטרום קלאסיק, לייטרום, לייטרום מובייל, קאמרה ראו"], "לקבלת החבילה"),
+        final_lead="לפוטושופ וללייטרום קלאסיק, עם מדריכי ה-PDF, סרטוני הדרכה ועדכונים בחינם. או יחד עם הפריסטים של MWP.",
+        plan=("הפאנל של MWP", "פוטושופ ולייטרום קלאסיק", ["פלאגין לפוטושופ ופלאגין ללייטרום קלאסיק", "מדריך למשתמש ומדריך התקנה · PDF", "סרטוני הדרכה"], "לקבלת הפאנל של MWP"),
+        plan2=("הפאנל + הפריסטים של MWP", "פוטושופ ולייטרום", ["כל מה שיש בהפאנל של MWP", "50 פריסטים ללייטרום באותו לוק", "סרטוני הדרכה לשניהם"], "לקבלת החבילה"),
     ),
 )
 
@@ -377,6 +403,8 @@ def page(folder, lang):
 </div>
 </section>''')
 
+    after_proof = len(parts)   # where the feature goes when it comes first (feat_first)
+
     # what's inside: photo cards
     inside_id = "contents" if p["proof_type"] == "pages" else "inside"
     cards = "".join(f'''<article class="card" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"><span class="no">0{k + 1}</span></div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>'''
@@ -390,6 +418,18 @@ def page(folder, lang):
 </div>
 </section>''')
 
+    # a second app (MWP Panel in Lightroom Classic): the tabs as a numbered list, no photos
+    if "lrc" in c:
+        tabs = "".join(f'<li data-r style="--d:{k * 0.05:.2f}s"><span class="n">{k + 1:02d}</span><h3>{esc(t)}</h3><p>{esc(d)}</p></li>'
+                       for k, (t, d) in enumerate(c["lrc"]))
+        parts.append(f'''<section class="sec" id="lightroom-classic">
+<div class="wrap">
+<div class="head" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
+<ol class="tabs7">{tabs}</ol>
+<p class="small" data-r>{esc(c["lrc_note"])}</p>
+</div>
+</section>''')
+
     # signature feature
     fimg = p["feat_img"][lang] if isinstance(p["feat_img"], dict) else p["feat_img"]
     ticks = "".join(f"<li>{CHECK}<span>{pt}</span></li>" for pt in c["feat_points"])
@@ -400,7 +440,7 @@ def page(folder, lang):
 </div>
 </section>''')
     if p.get("feat_first"):   # the feature right after the proof, before what's inside
-        parts.insert(len(parts) - 2, parts.pop())
+        parts.insert(after_proof, parts.pop())
 
     # three steps (Field Guides)
     if "steps" in p:
@@ -450,6 +490,8 @@ def page(folder, lang):
 
     # product bar
     bar_links = [(proof_id, c["proof_label"]), (inside_id, u["inside"]), ("faq", u["faq"])]
+    if "lrc" in c:   # MWP Panel: its Lightroom Classic section gets its own link
+        bar_links.insert(2, ("lightroom-classic", "Lightroom Classic" if lang == "en" else "לייטרום קלאסיק"))
     bar = (f'<div class="pbar" aria-label="{esc(c["name"])}"><div class="wrap"><span class="nm" data-no-i18n>{c["name_html"]}</span>'
            f'<nav>{"".join(f"<a href=#{i}>{esc(t)}</a>" for i, t in bar_links)}</nav>'
            f'<span class="pp">{price(slug, lang)}</span><a class="btn sm" href="#buy" data-add-to-cart="{slug}">{u["buy"]}</a></div></div>')

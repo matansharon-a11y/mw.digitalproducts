@@ -175,6 +175,17 @@ export async function myLibrary() {
   return data;
 }
 
+// The extra downloads (no storage path) and the video tutorials of the products the person owns.
+export async function myExtras() {
+  const db = requireClient();
+  const [files, videos] = await Promise.all([
+    db.rpc("my_extra_files"),
+    db.from("product_tutorials").select("app, title, title_he, url, sort_order, products(slug)").order("sort_order"),
+  ]);
+  // before the database has these (or on any error) My downloads simply shows the main downloads
+  return { files: files.error ? [] : files.data || [], videos: videos.error ? [] : videos.data || [] };
+}
+
 // ---------------------------------------------------------------- Edge Functions
 async function callFunction(name, body, { auth = false } = {}) {
   const headers = { "content-type": "application/json", apikey: CONFIG.SUPABASE_ANON_KEY };
@@ -192,7 +203,8 @@ async function callFunction(name, body, { auth = false } = {}) {
 }
 
 // lang: the Field Guides buyer's language choice ("en" or "he"), sent once with their first download
-export const requestDownload = (slug, lang) => callFunction("get-download", lang ? { slug, lang } : { slug }, { auth: true });
+// file: one of the product's extra downloads (e.g. "lightroom-classic"); none = the main zip
+export const requestDownload = (slug, lang, file) => callFunction("get-download", { slug, ...(lang ? { lang } : {}), ...(file ? { file } : {}) }, { auth: true });
 export const panelDevices = () => callFunction("license", { action: "devices" }, { auth: true });
 export const removePanelDevice = (device_id) => callFunction("license", { action: "remove", device_id }, { auth: true });
 export const sendSupport = (form) => callFunction("support", form);

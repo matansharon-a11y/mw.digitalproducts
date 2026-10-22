@@ -201,7 +201,7 @@ CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The three products (wording from the home page) and the bundles (the home page's bundle cards)
 TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "A natural starting point for every wildlife photo", "mwp-presets", "MWP Presets: Lightroom presets for wildlife photography"),
-         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop plugin", "Panel", "Photoshop for wildlife. No Photoshop skills needed.", "mwp-panel", "MWP Panel: Photoshop plugin for wildlife photo editing"),
+         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop & Lightroom Classic", "Panel", "Wildlife editing made easy, in Photoshop and Lightroom Classic", "mwp-panel", "MWP Panel: Photoshop and Lightroom Classic plugin for wildlife photo editing"),
          ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "Know what to aim for before you press the shutter", "mwp-field-guides", "MWP Field Guides: nature photography guides in PDF")]
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", False),
            ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", False),
@@ -327,6 +327,14 @@ ACCOUNT_CSS = """
 .devices-box .h3{font-size:22px;font-weight:500}
 .acct-note{margin-top:26px;font-size:13px;color:#7E8A93}
 a.dl{text-decoration:none}
+.dl-stack{display:grid;gap:10px}.dl-stack .dl{justify-content:flex-start}
+.tuts{grid-column:1/-1;margin:2px 0 4px 0;padding:16px 0 0;border-top:1px solid rgba(254,251,241,.08)}
+.tuts-h{margin:0 0 10px;font-size:11.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9CB1C2}
+html[lang=he] .tuts-h{letter-spacing:.04em}
+.tut-list{display:flex;flex-wrap:wrap;gap:8px}
+.tut{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:64px;border:1px solid rgba(254,251,241,.14);color:#FEFBF1;font-size:14px;text-decoration:none;transition:border-color .25s,background .25s}
+.tut:hover{border-color:rgba(244,175,86,.6);background:rgba(244,175,86,.08)}
+.tut svg{color:#F4AF56;flex:none}.tut b{font-weight:700;white-space:nowrap}
 .lang-pick{display:grid;gap:10px;justify-items:start;max-width:320px}.lang-pick .meta{margin:0}.lang-btns{display:flex;flex-wrap:wrap;gap:10px}.lang-btns .dl{padding:0 20px}
 .details-box{margin-top:26px;padding:28px 30px;border-radius:24px;background:linear-gradient(180deg,rgba(254,251,241,.05),rgba(254,251,241,.015));border:1px solid rgba(254,251,241,.08);scroll-margin-top:96px}
 .details-box .h3{margin:0;font-size:22px;font-weight:500}.details-box .meta{margin:6px 0 22px}
@@ -342,6 +350,7 @@ a.dl{text-decoration:none}
 @media (max-width:820px){.terms-box{flex-direction:column;align-items:flex-start;padding:22px}}
 html[lang=he] .acct-kick,html[lang=he] .lib .tg{letter-spacing:.04em}
 @media (max-width:820px){.lang-pick{margin:0 10px;max-width:none}.lang-btns .dl{flex:1;margin:0}}
+@media (max-width:820px){.dl-stack{margin:0 10px}.dl-stack .dl{margin:0;justify-content:center}.tuts{margin:0 10px}}
 @media (max-width:820px){.lib{grid-template-columns:minmax(0,1fr);gap:18px;padding:14px 14px 22px}.lib .ph{aspect-ratio:16/9}.lib > div:nth-child(2),.lib .dl{margin:0 10px}.dl{justify-content:center}.who{flex-wrap:wrap}#signed-out.glass{padding:28px 22px}}
 @media (prefers-reduced-motion:reduce){.lib,.acct-hero .bg{animation:none;opacity:1;transform:none}}
 </style>"""
@@ -643,7 +652,7 @@ page("thank-you.html", "Thank you · MWP", "Your order is confirmed.",
       <div class="stack">
         <p class="kick">MWP</p>
         <h1 class="display">Thank you. Your order is confirmed.</h1>
-        <p class="lead">Your files are ready in My downloads. We've also emailed you a link<span id="sent-to-wrap" hidden> at <b id="sent-to"></b></span>.</p>
+        <p class="lead">Your files and video tutorials are ready in My downloads. We've also emailed you a link<span id="sent-to-wrap" hidden> at <b id="sent-to"></b></span>.</p>
       </div>
       <div class="row">
         <a class="btn" id="to-downloads" href="/account/">Go to my downloads</a>
@@ -651,8 +660,8 @@ page("thank-you.html", "Thank you · MWP", "Your order is confirmed.",
       </div>
       <ol class="steps">
         <li class="step"><span class="step__num">1</span><p class="step__title">Sign in</p><p class="muted">With the email you paid with.</p></li>
-        <li class="step"><span class="step__num">2</span><p class="step__title">Download</p><p class="muted">One .zip per product.</p></li>
-        <li class="step"><span class="step__num">3</span><p class="step__title">Install</p><p class="muted">Follow the guide inside the zip.</p></li>
+        <li class="step"><span class="step__num">2</span><p class="step__title">Download</p><p class="muted">Your files, and the video tutorials beside them.</p></li>
+        <li class="step"><span class="step__num">3</span><p class="step__title">Install</p><p class="muted">Follow the guide inside the zip, or watch the tutorial.</p></li>
       </ol>
     </div>
   </section>""", "thank-you.js", extra_head='\n  <meta name="robots" content="noindex">')

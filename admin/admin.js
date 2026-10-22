@@ -217,7 +217,7 @@ async function openEditor(id) {
   editing = null;
   if (id) {
     const { data, error } = await supabase.from("products")
-      .select("*, product_media(*), product_files(*)").eq("id", id).single();
+      .select("*, product_media(*), product_files(*), product_extra_files(*), product_tutorials(*)").eq("id", id).single();
     check(error);
     editing = data;
     const f = pf.elements;
@@ -278,7 +278,7 @@ pf.addEventListener("submit", async (e) => {
   const q = editing
     ? supabase.from("products").update(row).eq("id", editing.id)
     : supabase.from("products").insert(row);
-  const { data, error } = await q.select("*, product_media(*), product_files(*)").single();
+  const { data, error } = await q.select("*, product_media(*), product_files(*), product_extra_files(*), product_tutorials(*)").single();
   setBusy(btn, false);
   if (error) {
     const msg = error.code === "23505" ? "That slug or variant ID is already used by another product." : error.message;
@@ -318,7 +318,7 @@ async function uploadImage(file, label) {
 
 async function refreshEditing() {
   const { data, error } = await supabase.from("products")
-    .select("*, product_media(*), product_files(*)").eq("id", editing.id).single();
+    .select("*, product_media(*), product_files(*), product_extra_files(*), product_tutorials(*)").eq("id", editing.id).single();
   check(error);
   editing = data;
   renderMedia();
@@ -353,6 +353,15 @@ function renderMedia() {
   $("#file-info").textContent = file
     ? `Current file: ${file.path.split("/").pop()} · ${bytes(file.size_bytes)} · version ${file.version} · uploaded ${shortDate(file.uploaded_at)}`
     : "No file uploaded yet. The product can't go live without one.";
+  const extras = editing.product_extra_files || [];
+  $("#extra-files").innerHTML = extras.map((x) => `
+    <div class="row row--between"><p class="meta"><strong>${esc(x.label)}</strong> (${esc(x.file_key)}) · ${esc(x.path.split("/").pop())} · ${bytes(x.size_bytes)} · version ${esc(x.version)} · uploaded ${shortDate(x.uploaded_at)}</p>
+    <button class="btn btn--sm btn--ghost" type="button" data-del-extra="${esc(x.file_key)}">Remove</button></div>`).join("") || `<p class="meta">No extra downloads.</p>`;
+  const APP = { lightroom: "Lightroom", "lightroom-classic": "Lightroom Classic", photoshop: "Photoshop", other: "Other" };
+  const tuts = [...(editing.product_tutorials || [])].sort((a, b) => a.sort_order - b.sort_order);
+  $("#tutorials").innerHTML = tuts.map((t) => `
+    <div class="row row--between"><p class="meta"><strong>${esc(APP[t.app] || t.app)}</strong> · ${esc(t.title)}${t.title_he ? ` · <span dir="rtl">${esc(t.title_he)}</span>` : ""} · <a class="link" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.url)}</a> · order ${t.sort_order}</p>
+    <button class="btn btn--sm btn--ghost" type="button" data-del-tutorial="${t.id}">Remove</button></div>`).join("") || `<p class="meta">No tutorials yet.</p>`;
 }
 
 // Cover and hover images
@@ -464,6 +473,64 @@ $("#zip-form").addEventListener("submit", async (e) => {
   }
   bar.hidden = true;
   setBusy(btn, false);
+});
+
+// Extra downloads (e.g. MWP Panel's Lightroom Classic plugin): same private bucket, their own row each
+$("#extra-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget, f = form.elements;
+  const file = f.zip.files[0];
+  if (!file || !/\.zip$/i.test(file.name)) return toast("Please choose a .zip file.", { type: "error" });
+  const key = f.key.value.trim(), label = f.label.value.trim(), version = f.version.value.trim();
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(key)) return toast("Key: lowercase letters, numbers and dashes, e.g. lightroom-classic.", { type: "error" });
+  const btn = $("button[type=submit]", form);
+  setBusy(btn, true, "Uploading…");
+  try {
+    const safeName = file.name.replace(/[^A-Za-z0-9._-]+/g, "-");
+    const path = `${editing.slug}/${key}/v${version}/${safeName}`;
+    check((await supabase.storage.from("presets").upload(path, file, { contentType: "application/zip", upsert: true })).error);
+    check((await supabase.from("product_extra_files").upsert({
+      product_id: editing.id, file_key: key, label, path, size_bytes: file.size, version, uploaded_at: new Date().toISOString(),
+    })).error);
+    form.reset();
+    await refreshEditing();
+    toast(`${label} uploaded. Owners see it in My downloads now.`);
+  } catch (err) {
+    toast(err.message.includes("exceeded") ? "File is larger than your Supabase upload limit (see README, step 7)." : err.message, { type: "error", timeout: 8000 });
+  }
+  setBusy(btn, false);
+});
+
+$("#tutorial-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget, f = form.elements;
+  const url = f.url.value.trim();
+  if (!/^https:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//.test(url)) return toast("Please paste a YouTube link (https://youtu.be/… or https://www.youtube.com/…).", { type: "error" });
+  const btn = $("button[type=submit]", form);
+  setBusy(btn, true, "Saving…");
+  try {
+    check((await supabase.from("product_tutorials").insert({
+      product_id: editing.id, app: f.app.value, title: f.title.value.trim(), title_he: f.title_he.value.trim() || null,
+      url, sort_order: Number(f.sort_order.value) || 100,
+    })).error);
+    form.reset();
+    await refreshEditing();
+    toast("Tutorial added. Owners see it in My downloads.");
+  } catch (err) { toast(err.message, { type: "error", timeout: 8000 }); }
+  setBusy(btn, false);
+});
+
+$("#editor-media").addEventListener("click", async (e) => {
+  const extra = e.target.closest("[data-del-extra]"), tut = e.target.closest("[data-del-tutorial]");
+  if (!extra && !tut) return;
+  if (!confirm(extra ? "Remove this extra download? Owners stop seeing its button (the file itself stays in storage)." : "Remove this tutorial link?")) return;
+  try {
+    check((extra
+      ? await supabase.from("product_extra_files").delete().eq("product_id", editing.id).eq("file_key", extra.dataset.delExtra)
+      : await supabase.from("product_tutorials").delete().eq("id", tut.dataset.delTutorial)).error);
+    await refreshEditing();
+    toast("Removed.");
+  } catch (err) { toast(err.message, { type: "error" }); }
 });
 
 // ---------------------------------------------------------------- tables + CSV

@@ -21,9 +21,11 @@ Deno.serve(async (req) => {
   const user = auth?.user;
   if (!user?.email) return fail(req, "Please sign in again.", 401);
 
-  let slug = "", lang = "";
-  try { const body = await req.json(); slug = String(body.slug ?? ""); lang = String(body.lang ?? ""); } catch { /* handled below */ }
+  // file: one of the product's extra downloads (product_extra_files, e.g. MWP Panel's "lightroom-classic"); none = the main zip
+  let slug = "", lang = "", fileKey = "";
+  try { const body = await req.json(); slug = String(body.slug ?? ""); lang = String(body.lang ?? ""); fileKey = String(body.file ?? ""); } catch { /* handled below */ }
   if (!/^[a-z0-9-]{1,80}$/.test(slug)) return fail(req, "Unknown product.", 400);
+  if (fileKey && !/^[a-z0-9-]{1,40}$/.test(fileKey)) return fail(req, "Unknown file.", 400);
 
   const email = user.email.toLowerCase();
   const { data: customer } = await db.from("customers")
@@ -62,12 +64,14 @@ Deno.serve(async (req) => {
     return fail(req, "You've reached today's download limit for this pack. Please try tomorrow or contact support.", 429);
   }
 
-  const { data: file } = await db.from("product_files").select("path, version").eq("product_id", product.id).maybeSingle();
+  const { data: file } = fileKey
+    ? await db.from("product_extra_files").select("path, version").eq("product_id", product.id).eq("file_key", fileKey).maybeSingle()
+    : await db.from("product_files").select("path, version").eq("product_id", product.id).maybeSingle();
   if (!file) return fail(req, "This pack's file is being updated. Please try again shortly.", 503);
 
   // Presets and guides are downloaded as the buyer's own marked copy. If it isn't ready yet
   // (new purchase, or a new version was just uploaded), ask for it and tell the page to wait.
-  if (PERSONAL.includes(product.category)) {
+  if (PERSONAL.includes(product.category) && !fileKey) {
     const { data: mine } = await db.from("personal_files").select("path, version").eq("entitlement_id", ent.id).maybeSingle();
     // a one-language copy carries its language in the version, so it's made again if the choice changes
     const want = guideLang === "en" || guideLang === "he" ? `${file.version}:${guideLang}` : file.version;

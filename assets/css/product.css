@@ -280,3 +280,12 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .hero{align-items:flex-start}.hero .wrap{padding-top:var(--hero-top)}
 :root{--hero-top:clamp(110px,22vh,240px)}
 @media (max-width:700px){:root{--hero-top:clamp(100px,17vh,170px)}.hero{min-height:0}}
+
+/* MWP Panel in Lightroom Classic: the seven tabs as a numbered list */
+.tabs7{list-style:none;margin:clamp(28px,4vw,44px) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0;border:1px solid rgba(254,251,241,.08);border-radius:22px;overflow:hidden}
+.tabs7 li{padding:24px 24px 26px;box-shadow:1px 0 0 rgba(254,251,241,.08),0 1px 0 rgba(254,251,241,.08);transition:background .3s}
+.tabs7 li:hover{background:#13110f}
+.tabs7 .n{display:block;font-size:12px;font-weight:700;letter-spacing:.16em;color:#F4AF56}
+.tabs7 h3{margin:10px 0 6px;font-size:20px;font-weight:500;letter-spacing:-.01em}
+.tabs7 p{margin:0;color:rgba(254,251,241,.66);font-size:15px;line-height:1.55}
+#lightroom-classic .small{margin-top:18px}

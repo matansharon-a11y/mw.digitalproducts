@@ -66,6 +66,13 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - It runs instantly when the `PERSONALIZE_TOKEN` secret is set (a GitHub token that can trigger this repo's workflows), otherwise hourly. Uploading a new version of a product file makes everyone's copy again.
 - MWP Panel isn't stamped; its licence sign-in protects it.
 
+## MWP Panel for Lightroom Classic, and video tutorials (Oct 2026)
+- MWP Panel comes for Photoshop **and** Lightroom Classic in one purchase (no new product, no price change). The Lightroom Classic plugin (`MWP-Panel.lrplugin`, Lightroom Classic 13+, early access) is an **extra download**: `product_extra_files` (key `lightroom-classic`, button "Lightroom Classic"), uploaded in admin → product → Extra downloads. My downloads shows one button per app ("Photoshop" for the main zip, `MAIN_LABEL` in `account.js`); `get-download` takes `{ slug, file }`; buyers see labels through `my_extra_files()`, never the storage path. It has no licence sign-in (the Photoshop version does).
+- The customer zip holds the plugin folder and "Install MWP Panel for Lightroom Classic.txt" (install, update, help); the tester checklist from the test builds stays out of it.
+- **Video tutorials:** `product_tutorials` (app, title, optional Hebrew title, YouTube link, order), added in admin → product → Video tutorials. Only owners read them (RLS on entitlements, bundles included; a refund hides them) and My downloads lists them under the product. Use **Unlisted** YouTube videos: Private ones play only for invited accounts.
+- The Panel page has a Lightroom Classic section (`lrc` in `build_products.py`: seven tabs, `.tabs7` in `product.css`), linked from the product bar.
+- Migration `20261022000001_extra_files_and_tutorials.sql`.
+
 ## MWP Panel in Photoshop and Photoshop (Beta)
 - Both apps keep separate plugin storage, so `tools/panel-license/license.js` works out the device id from the computer, and the `license` function counts a computer already listed under the same name once. The plugin's manifest needs no `maxVersion` (see `tools/panel-license/README.md`).
 

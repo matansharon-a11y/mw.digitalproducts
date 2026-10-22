@@ -1,6 +1,6 @@
 // My downloads: magic-link sign-in, then the customer's library with secure download buttons.
 import { initChrome, toast } from "../lib/ui.js";
-import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, requestDownload, signedTerms, sendFeedback, panelDevices, removePanelDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
+import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, myExtras, requestDownload, signedTerms, sendFeedback, panelDevices, removePanelDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
 import { EMAIL_RE, setBusy, setStatus } from "./shared-forms.js";
 import { countLabel } from "../lib/catalog.js";
 
@@ -19,6 +19,10 @@ const COVERS = {
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"], // lioness: face
 };
 const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin", guide: "PDF field guides", bundle: "Bundle" };
+// A product with extra downloads (product_extra_files) shows one button per app: the main zip gets this label.
+const MAIN_LABEL = { "mwp-panel": "Photoshop" };
+const PLAY_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
+const APPS = { lightroom: "Lightroom", "lightroom-classic": "Lightroom Classic", photoshop: "Photoshop", other: "" };
 const DL_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
 
 // The Field Guides language the buyer chose ('both': bought before the choice existed)
@@ -38,7 +42,19 @@ function onePerProduct(items) {
   return items.filter((i) => best.get(i.products.slug) === i);
 }
 
-function libraryHTML(items) {
+// The video tutorials of one product: unlisted YouTube links, opened in a new tab.
+function tutorialsHTML(videos) {
+  if (!videos.length) return "";
+  const heb = document.documentElement.lang === "he";
+  const links = videos.map((v) => {
+    const app = APPS[v.app] ? `<b>${esc(APPS[v.app])}</b>` : "";
+    const title = heb && v.title_he ? v.title_he : v.title;
+    return `<a class="tut" href="${esc(v.url)}" target="_blank" rel="noopener">${PLAY_ICON}${app}<span data-no-i18n>${esc(title)}</span></a>`;
+  }).join("");
+  return `<div class="tuts"><p class="tuts-h">Video tutorials</p><div class="tut-list">${links}</div></div>`;
+}
+
+function libraryHTML(items, extras = { files: [], videos: [] }) {
   items = onePerProduct(items.filter((i) => i.products));   // a product that can't be shown is skipped, not fatal
   if (!items.length) {
     return `<div class="glass lib-empty stack">
@@ -49,11 +65,14 @@ function libraryHTML(items) {
   return items.map(({ granted_at, view_only: viewOnly, guide_lang: lang, products: p }, i) => {
     const [img, pos] = p.cover_path ? [mediaUrl(p.cover_path, { width: 600 }), "50% 40%"] : (COVERS[p.slug] || []);
     const count = countLabel(p);
+    const files = extras.files.filter((x) => x.slug === p.slug);
+    const videos = viewOnly ? [] : extras.videos.filter((v) => v.products?.slug === p.slug);
+    const tag = p.category === "plugin" && files.some((x) => x.file_key === "lightroom-classic") ? "Photoshop and Lightroom Classic plugin" : TAGS[p.category];
     return `
     <article class="lib" style="--i:${i}">
       <div class="ph">${img ? `<img src="${esc(img)}" alt="" loading="lazy" style="object-position:${pos}">` : ""}</div>
       <div>
-        <p class="tg">${esc(TAGS[p.category] || "")}</p>
+        <p class="tg">${esc(tag || "")}</p>
         <h3 class="nm" data-no-i18n>${esc(p.name)}${p.name_emphasis ? ` <span class="grad">${esc(p.name_emphasis)}</span>` : ""}</h3>
         <div class="chips"><span>Version ${esc(p.version)}</span>${count ? `<span>${esc(count)}</span>` : ""}<span>Added ${shortDate(granted_at)}</span>${LANGS[lang] ? `<span>${LANGS[lang]}</span>` : ""}</div>
       </div>
@@ -63,7 +82,11 @@ function libraryHTML(items) {
         ? `<div class="lang-pick"><p class="meta">Choose your language. Your copy comes in that language.</p>
             <div class="lang-btns"><button class="dl" type="button" data-download="${esc(p.slug)}" data-guide-lang="en">${DL_ICON}<span>English</span></button>
             <button class="dl" type="button" data-download="${esc(p.slug)}" data-guide-lang="he">${DL_ICON}<span>Hebrew</span></button></div></div>`
+        : files.length
+        ? `<div class="dl-stack"><button class="dl" type="button" data-download="${esc(p.slug)}">${DL_ICON}<span>${esc(MAIN_LABEL[p.slug] || "Download")}</span></button>
+            ${files.map((x) => `<button class="dl" type="button" data-download="${esc(p.slug)}" data-file="${esc(x.file_key)}">${DL_ICON}<span>${esc(x.label)}</span></button>`).join("")}</div>`
         : `<button class="dl" type="button" data-download="${esc(p.slug)}">${DL_ICON}<span>Download</span></button>`}
+      ${tutorialsHTML(videos)}
     </article>`;
   }).join("");
 }
@@ -99,8 +122,8 @@ async function showLibrary(user) {
   if (who) who.textContent = user.email;
   library.innerHTML = `<div class="skeleton" style="height:96px"></div>`;
   try {
-    const items = await myLibrary();
-    library.innerHTML = libraryHTML(items);
+    const [items, extras] = await Promise.all([myLibrary(), myExtras().catch(() => undefined)]);
+    library.innerHTML = libraryHTML(items, extras);
     if (items.some((i) => PANEL_SLUGS.includes(i.products?.slug))) showDevices();
     showSignedTerms();
     // ambassadors and testers (their Field Guides are read online) can send feedback to the team
@@ -230,13 +253,14 @@ library.addEventListener("click", async (e) => {
   try {
     const started = Date.now();
     const lang = btn.dataset.guideLang;   // the Field Guides language, the first time
-    let res = await requestDownload(btn.dataset.download, lang);
+    const file = btn.dataset.file;        // an extra download (e.g. the Lightroom Classic version)
+    let res = await requestDownload(btn.dataset.download, lang, file);
     if (res.preparing) {
       busy(true, he() ? "מכינים את העותק שלכם…" : "Making your copy…");
       toast(res.message, { timeout: 9000 });
       while (res.preparing && Date.now() - started < POLL_FOR_MS) {
         await wait(POLL_MS);
-        res = await requestDownload(btn.dataset.download, lang);
+        res = await requestDownload(btn.dataset.download, lang, file);
       }
       if (res.preparing) {
         toast("Your personal copy is still being made. Please come back in a little while and download it from here.", { timeout: 10000 });

@@ -180,6 +180,33 @@
           </form>
           <progress id="zip-progress" max="100" value="0" hidden></progress>
         </div>
+
+        <div class="panel stack">
+          <h2 class="admin-h2">Extra downloads (.zip)</h2>
+          <p class="meta">A second version of this product, shown in My downloads as its own button beside the main file. MWP Panel: the Lightroom Classic plugin (key <code>lightroom-classic</code>, button <em>Lightroom Classic</em>). Stored privately like the main zip; uploading again with the same key replaces it.</p>
+          <div id="extra-files" class="stack"></div>
+          <form class="form-grid" id="extra-form">
+            <div class="field"><label>Key</label><input class="input" name="key" value="lightroom-classic" pattern="[a-z0-9]+(-[a-z0-9]+)*" required></div>
+            <div class="field"><label>Button</label><input class="input" name="label" value="Lightroom Classic" maxlength="60" required></div>
+            <div class="field"><label>Version</label><input class="input" name="version" placeholder="1.4.3" required></div>
+            <div class="field"><label>File</label><input type="file" name="zip" accept=".zip,application/zip" required></div>
+            <button class="btn btn--sm" type="submit">Upload extra zip</button>
+          </form>
+        </div>
+
+        <div class="panel stack">
+          <h2 class="admin-h2">Video tutorials</h2>
+          <p class="meta">Shown only to the people who own this product, in My downloads (bundles included). Use <strong>Unlisted</strong> YouTube videos: a <em>Private</em> video only plays for the accounts you invite by email.</p>
+          <div id="tutorials" class="stack"></div>
+          <form class="form-grid" id="tutorial-form">
+            <div class="field"><label>App</label><select class="input" name="app"><option value="lightroom">Lightroom</option><option value="lightroom-classic">Lightroom Classic</option><option value="photoshop">Photoshop</option><option value="other">Other</option></select></div>
+            <div class="field"><label>Title</label><input class="input" name="title" maxlength="120" placeholder="Install and first edit" required></div>
+            <div class="field"><label>Title in Hebrew (optional)</label><input class="input" name="title_he" maxlength="120" dir="rtl"></div>
+            <div class="field"><label>YouTube link</label><input class="input" name="url" type="url" placeholder="https://youtu.be/…" required></div>
+            <div class="field"><label>Order</label><input class="input" name="sort_order" type="number" value="100"></div>
+            <button class="btn btn--sm" type="submit">Add tutorial</button>
+          </form>
+        </div>
       </div>
     </section>
 

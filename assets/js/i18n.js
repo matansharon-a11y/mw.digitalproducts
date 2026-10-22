@@ -28,6 +28,15 @@ const HE = {
   "Plugin": "פלאגין",
   "Guides & PDFs": "מדריכים ו-PDF",
   "Bundles": "חבילות",
+  // My downloads: extra downloads and video tutorials (Oct 2026)
+  "Video tutorials": "סרטוני הדרכה",
+  "Photoshop & Lightroom Classic": "פוטושופ ולייטרום קלאסיק",
+  "Wildlife editing made easy, in Photoshop and Lightroom Classic": "עריכת חיות בר בלי להסתבך, בפוטושופ ובלייטרום קלאסיק",
+  "MWP Panel: Photoshop and Lightroom Classic plugin for wildlife photo editing": "הפאנל של MWP: פלאגין לפוטושופ וללייטרום קלאסיק לעריכת צילומי חיות בר",
+  "Your files and video tutorials are ready in My downloads. We've also emailed you a link": "הקבצים וסרטוני ההדרכה מחכים בהורדות שלי. שלחנו גם קישור במייל",
+  "Your files, and the video tutorials beside them.": "הקבצים, וסרטוני ההדרכה לידם.",
+  "Follow the guide inside the zip, or watch the tutorial.": "לפי המדריך שבתוך קובץ ה-zip, או לפי סרטון ההדרכה.",
+  "Photoshop and Lightroom Classic plugin": "פלאגין לפוטושופ וללייטרום קלאסיק",
   // copy rewrite from the audience research (Oct 2026, drafts for Matan)
   "MWP · by wildlife photographer Matan Wild": "MWP · מאת צלם חיות הבר מתן וויילד",
   "Wildlife,": "חיות הבר,",
