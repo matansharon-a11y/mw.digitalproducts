@@ -143,6 +143,43 @@ document.querySelectorAll("[data-lrc]").forEach((box) => {
   });
 });
 
+// ---------------------------------------------------------------- MWP Panel in Photoshop: the live preview
+// Like the real panel: one chip picks what to edit, an effect adds an edit to it (the card shows it, the slider sets its
+// strength, "Your edits" counts it), undo takes back the last one, reset clears them, Before / After dims the controls.
+// Nothing is edited: it's a preview (tools/ps_preview.py).
+document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
+  const now = pw.querySelector("[data-pw-now]"), range = pw.querySelector(".pw-range"), count = pw.querySelector("[data-pw-count]");
+  const edits = [], undone = [];
+  const target = () => pw.querySelector(".pw-chip.on")?.dataset.pwTarget || "Subject";
+  const paint = () => {
+    const last = edits[edits.length - 1];
+    now.textContent = last ? `${last.target} · ${last.effect}` : "No edit yet";
+    range.disabled = !last; range.value = last ? last.strength : 0;
+    count.textContent = edits.length; count.classList.remove("bump"); void count.offsetWidth; count.classList.add("bump");
+    pw.querySelectorAll("[data-pw-effect]").forEach((b) => b.classList.toggle("on", !!last && b.dataset.pwEffect === last.effect));
+  };
+  pw.querySelectorAll(".pw-chip").forEach((c) => c.addEventListener("click", () => {
+    pw.querySelectorAll(".pw-chip").forEach((o) => o.classList.toggle("on", o === c));
+  }));
+  pw.querySelectorAll("[data-pw-effect]").forEach((b) => b.addEventListener("click", () => {
+    edits.push({ target: target(), effect: b.dataset.pwEffect, strength: 60 }); undone.length = 0; paint();
+    // bring the strength card into view inside the panel (not the page)
+    const sc = pw.querySelector(".pw-scroll"), card = pw.querySelector(".pw-card");
+    const below = card.offsetTop + card.offsetHeight - (sc.scrollTop + sc.clientHeight);
+    if (below > 0) sc.scrollTo({ top: sc.scrollTop + below + 12, behavior: reduce ? "auto" : "smooth" });
+  }));
+  range.addEventListener("input", () => { if (edits.length) edits[edits.length - 1].strength = +range.value; });
+  pw.querySelector('[data-pw="undo"]').addEventListener("click", () => { if (edits.length) { undone.push(edits.pop()); paint(); } });
+  pw.querySelector('[data-pw="redo"]').addEventListener("click", () => { if (undone.length) { edits.push(undone.pop()); paint(); } });
+  pw.querySelector('[data-pw="reset"]').addEventListener("click", () => { if (edits.length) { edits.length = 0; undone.length = 0; paint(); } });
+  const ba = pw.querySelector('[data-pw="ba"]');
+  ba.addEventListener("click", () => { ba.classList.toggle("on"); pw.classList.toggle("before", ba.classList.contains("on")); });
+  pw.querySelectorAll("[data-pw-tab]").forEach((t) => t.addEventListener("click", () => {
+    pw.querySelectorAll("[data-pw-tab]").forEach((o) => { const on = o === t; o.classList.toggle("on", on); o.setAttribute("aria-selected", String(on)); });
+    pw.querySelectorAll("[data-pw-pane]").forEach((pn) => { pn.hidden = pn.dataset.pwPane !== t.dataset.pwTab; });
+  }));
+});
+
 // ---------------------------------------------------------------- FAQ: one open at a time
 const faqs = [...document.querySelectorAll(".faq details")];
 faqs.forEach((d) => d.addEventListener("toggle", () => { if (d.open) faqs.forEach((o) => { if (o !== d) o.open = false; }); }));

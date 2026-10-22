@@ -11,6 +11,7 @@ Run: python3 tools/build_products.py
 import glob, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lrc_preview import window as lrc_window
+from ps_preview import window as ps_window
 from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -167,7 +168,7 @@ P["panel"] = dict(
         feat_points=["<strong>Every edit on its own layer.</strong> All edits sit in one MWP group. Your photo underneath stays locked.",
                      "<strong>One button, one undo.</strong> Ctrl+Z takes back a whole button. Before / After shows the original at any time.",
                      "<strong>Exports are new files.</strong> The panel never saves over your original file."],
-        feat_alt="MWP Panel open in Photoshop, the Edit tab",
+        feat_alt="MWP Panel open in Photoshop, the Edit tab", feat_live="Interactive preview of the Edit tab, button for button",
         lrc_kick="MWP Panel for Lightroom Classic", lrc_h=["Seven tabs,", "from the card to the post."],
         lrc_lead="From the first cull to the export, in one window. Included with MWP Panel, in early access with free updates. Click a tab to look inside.",
         lrc=[("Cull", "Turn a day of bursts into a short list. Nothing is ever deleted."),
@@ -220,7 +221,7 @@ P["panel"] = dict(
         feat_points=["<strong>כל עריכה בשכבה משלה.</strong> כל העריכות יושבות בקבוצת MWP אחת. התמונה שמתחת נשארת נעולה.",
                      "<strong>כפתור אחד, ביטול אחד.</strong> Ctrl+Z מבטל כפתור שלם. לפני / אחרי מראה את המקור בכל רגע.",
                      "<strong>הייצוא תמיד לקובץ חדש.</strong> הפאנל אף פעם לא שומר על הקובץ המקורי."],
-        feat_alt="הפאנל של MWP פתוח בפוטושופ, בלשונית העריכה",
+        feat_alt="הפאנל של MWP פתוח בפוטושופ, בלשונית העריכה", feat_live="תצוגה מקדימה אינטראקטיבית של לשונית העריכה, כפתור אחר כפתור",
         lrc_kick="הפאנל של MWP ללייטרום קלאסיק", lrc_h=["שבע לשוניות,", "מהכרטיס ועד הפרסום."],
         lrc_lead="מהמיון הראשון ועד הייצוא, בחלון אחד. כלול בפאנל של MWP, בגישה מוקדמת ועם עדכונים חינמיים. לחצו על לשונית כדי להציץ פנימה.",
         lrc=[("מיון", "הופכים יום של רצפים לרשימה קצרה. שום דבר לא נמחק."),
@@ -465,7 +466,7 @@ def page(folder, lang):
     ticks = "".join(f"<li>{CHECK}<span>{pt}</span></li>" for pt in c["feat_points"])
     parts.append(f'''<section class="sec">
 <div class="wrap feat{" flip" if p["feat_flip"] else ""}">
-<div class="ph{" tall" if p.get("feat_tall") else ""}" data-r><img src="{img(fimg)}" alt="{esc(c["feat_alt"])}" loading="lazy"></div>
+{f'<div class="ph live" data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["feat_live"])}</span></p>{ps_window("/assets/img/logo-mark.png")}</div>' if c.get("feat_live") else f'<div class="ph{" tall" if p.get("feat_tall") else ""}" data-r><img src="{img(fimg)}" alt="{esc(c["feat_alt"])}" loading="lazy"></div>'}
 <div data-r style="--d:.1s"><p class="kick">{esc(c["feat_kick"])}</p>{h(c["feat_h"])}<p class="lead">{esc(c["feat_lead"])}</p>{f'<ul class="ticks">{ticks}</ul>' if ticks else ""}</div>
 </div>
 </section>''')
