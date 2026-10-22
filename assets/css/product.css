@@ -281,14 +281,70 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 :root{--hero-top:clamp(110px,22vh,240px)}
 @media (max-width:700px){:root{--hero-top:clamp(100px,17vh,170px)}.hero{min-height:0}}
 
-/* MWP Panel in Lightroom Classic: the seven tabs as a numbered list */
-.tabs7{list-style:none;margin:clamp(28px,4vw,44px) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0;border:1px solid rgba(254,251,241,.08);border-radius:22px;overflow:hidden}
-.tabs7 li{padding:24px 24px 26px;box-shadow:1px 0 0 rgba(254,251,241,.08),0 1px 0 rgba(254,251,241,.08);transition:background .3s}
-.tabs7 li:hover{background:#13110f}
-.tabs7 .n{display:block;font-size:12px;font-weight:700;letter-spacing:.16em;color:#F4AF56}
-.tabs7 h3{margin:10px 0 6px;font-size:20px;font-weight:500;letter-spacing:-.01em}
-.tabs7 p{margin:0;color:rgba(254,251,241,.66);font-size:15px;line-height:1.55}
+/* MWP Panel in Lightroom Classic: the seven tabs (a list that picks the tab) beside a preview of the panel's window
+   (tools/lrc_preview.py). The window copies a Lightroom plugin dialog: dark grey, small controls. */
+.lrc{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:start;margin-top:clamp(28px,4vw,44px)}
+.lrc-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.lrc-list button{width:100%;display:flex;gap:16px;align-items:flex-start;padding:14px 16px;border:0;border-radius:16px;background:none;color:inherit;font:inherit;text-align:start;cursor:pointer;transition:background .3s}
+.lrc-list button:hover{background:rgba(254,251,241,.04)}
+.lrc-list button.on{background:rgba(244,175,86,.08);box-shadow:inset 3px 0 0 #F4AF56}
+[dir=rtl] .lrc-list button.on{box-shadow:inset -3px 0 0 #F4AF56}
+.lrc-list .n{flex:none;padding-top:3px;font-size:12px;font-weight:700;letter-spacing:.16em;color:rgba(244,175,86,.7)}
+.lrc-list button.on .n{color:#F4AF56}
+.lrc-list .t{display:grid;gap:3px}
+.lrc-list b{font-size:18px;font-weight:500;color:#FEFBF1}
+.lrc-list .t span{font-size:14.5px;line-height:1.5;color:rgba(254,251,241,.6)}
+.lrc-win{margin:0;position:sticky;top:150px}
+.lrc-win figcaption{margin-top:14px;font-size:13px;line-height:1.55;color:rgba(254,251,241,.5)}
 #lightroom-classic .small{margin-top:18px}
+@media (max-width:900px){.lrc{grid-template-columns:minmax(0,1fr)}.lrc-win{position:static;order:-1}}
+
+.lw{font:400 12.5px/1.35 "Google Sans","Heebo",sans-serif;color:#d6d6d6;background:#2a2a2a;border:1px solid #444;border-radius:12px;overflow:hidden;
+  box-shadow:0 60px 120px -50px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.4);text-align:left}
+.lw-bar{display:flex;align-items:center;gap:7px;height:34px;padding:0 12px;background:#1f1f1f;border-bottom:1px solid #383838}
+.lw-bar i{width:11px;height:11px;border-radius:50%;background:#4a4a4a}
+.lw-bar span{flex:1;margin-right:40px;text-align:center;font-size:12.5px;font-weight:500;color:#bdbdbd}
+.lw-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:2px;margin:10px 10px 0;padding:3px;background:#1f1f1f;border:1px solid #3c3c3c;border-radius:7px}
+.lw-tabs button{flex:1;min-width:0;padding:5px 6px;border:0;border-radius:5px;background:none;color:#c4c4c4;font:500 12px "Google Sans",sans-serif;cursor:pointer;white-space:nowrap}
+.lw-tabs button:hover{color:#fff}
+.lw-tabs button.on{background:#4b4b4b;color:#fff}
+.lw-body{margin:0 10px;padding:14px 12px;min-height:300px;border:1px solid #3c3c3c;border-top:0;border-radius:0 0 7px 7px;background:#2f2f2f}
+.lw-pane{display:grid;gap:9px}
+.lw-pane[hidden]{display:none}
+.lw-row{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.lw-grid{display:grid;grid-template-columns:repeat(var(--per),minmax(0,1fr));gap:6px}
+.lw-btn{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:3px 12px;border-radius:5px;background:linear-gradient(#5a5a5a,#4c4c4c);border:1px solid #2b2b2b;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);color:#f2f2f2;font-size:12px;white-space:nowrap;cursor:default}
+.lw-btn.full{width:100%}.lw-btn.sm{font-size:11px;padding:2px 6px;width:100%}
+.lw-grid .lw-btn{width:100%;overflow:hidden;text-overflow:ellipsis}
+.lw-in,.lw-menu{display:inline-flex;align-items:center;min-height:24px;padding:3px 9px;border-radius:5px;background:#1d1d1d;border:1px solid #474747;color:#8c8c8c;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lw-menu{background:linear-gradient(#585858,#4a4a4a);color:#f2f2f2;border-color:#2b2b2b;padding-right:24px;position:relative}
+.lw-menu::after{content:"";position:absolute;right:9px;top:50%;width:5px;height:5px;margin-top:-4px;border:solid #ddd;border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+select.lw-select{appearance:none;-webkit-appearance:none;font:inherit;font-size:12px;cursor:pointer;background:linear-gradient(#585858,#4a4a4a) padding-box;
+  background-image:linear-gradient(45deg,transparent 50%,#ddd 50%),linear-gradient(135deg,#ddd 50%,transparent 50%),linear-gradient(#585858,#4a4a4a);
+  background-position:calc(100% - 13px) 50%,calc(100% - 9px) 50%,0 0;background-size:4px 4px,4px 4px,100% 100%;background-repeat:no-repeat}
+.lw-in.full,.lw-menu.full{width:100%}.grow{flex:1;min-width:0}
+.lw-radio{display:inline-flex;align-items:center;gap:6px;color:#e2e2e2;font-size:12px}
+.lw-radio i{width:12px;height:12px;border-radius:50%;border:1px solid #6b6b6b;background:#1d1d1d}
+.lw-radio.on i{border:4px solid #4c8bf5;background:#fff}
+.lw-sl{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#e2e2e2}
+.lw-sl.wide{flex:1;width:100%}
+.lw-sl input{width:90px;accent-color:#c8c8c8;height:14px}
+.lw-sl.wide input{flex:1;width:auto;min-width:60px}
+.lw-sl output{min-width:30px;color:#bdbdbd;font-variant-numeric:tabular-nums}
+.lw-txt{color:#e2e2e2;font-size:12px}
+b.lw-txt{font-weight:700}
+.lw-note{margin:0;color:#8f8f8f;font-size:11.5px;line-height:1.45}
+.lw-sep{width:100%;margin:2px 0;border:0;border-top:1px solid #444}
+.lw-steps{display:grid;grid-template-columns:auto auto;justify-content:start;align-items:center;gap:7px 16px}
+.lw-step{color:#e2e2e2;font-size:12.5px;white-space:pre}
+.lw-steps .lw-btn{justify-self:stretch}
+.lw-looks{display:flex;flex-wrap:wrap;gap:8px}
+.lw-look{display:grid;gap:3px;width:80px}
+.lw-look[hidden]{display:none}
+.lw-look img{width:80px;height:50px;border-radius:3px;object-fit:cover;image-rendering:auto}
+.lw-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px 11px;color:#5fa8a5;font-size:11.5px}
+@media (max-width:480px){.lw-tabs button{flex:none;padding:5px 8px}.lw-grid{--per:2!important}}
 
 /* MWP Panel: the two versions (Photoshop, Lightroom Classic) side by side, right after the hero:
    a photo with the app's name on it, then its tabs as numbered chips */

@@ -10,6 +10,7 @@ Run: python3 tools/build_products.py
 """
 import glob, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from lrc_preview import window as lrc_window
 from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -177,6 +178,7 @@ P["panel"] = dict(
              ("Color", "Hue, saturation and luminance per colour, and ready fixes like Warm fur."),
              ("Export", "Instagram, web and print sizes, your watermark, and a competition check.")],
         lrc_note="Lightroom Classic 13 or newer, Mac and Windows.",
+        lrc_cap="A preview of the panel: its real tabs and buttons. Click a tab to look inside. In Lightroom Classic the window takes your system's look.",
         specs=[("", "Photoshop plugin", "Double-click to install. Mac and Windows."),
                ("", "Lightroom Classic plugin", "Early access. Add it once in the Plug-in Manager. Manual built in."),
                ("", "Video tutorials", "For Photoshop and Lightroom Classic, in My downloads."),
@@ -230,6 +232,7 @@ P["panel"] = dict(
              ("צבע", "גוון, רוויה ובהירות לכל צבע, ותיקונים מוכנים כמו פרווה חמה."),
              ("ייצוא", "גדלים לאינסטגרם, לאתר ולהדפסה, סימן המים שלכם ובדיקה לתחרויות.")],
         lrc_note="לייטרום קלאסיק 13 ומעלה, מק ו־ווינדוס.",
+        lrc_cap="תצוגה מקדימה של הפאנל: הלשוניות והכפתורים האמיתיים שלו, באנגלית כמו בתוסף. לחצו על לשונית כדי להציץ פנימה. בלייטרום קלאסיק החלון מקבל את המראה של המערכת שלכם.",
         specs=[("", "הפלאגין לפוטושופ", "לחיצה כפולה להתקנה. מק ו־ווינדוס."),
                ("", "הפלאגין ללייטרום קלאסיק", "גישה מוקדמת. מוסיפים אותו פעם אחת במנהל התוספים. מדריך מובנה."),
                ("", "סרטוני הדרכה", "לפוטושופ וללייטרום קלאסיק, בעמוד ההורדות שלי."),
@@ -447,12 +450,14 @@ def page(folder, lang):
 
     # a second app (MWP Panel in Lightroom Classic): the tabs as a numbered list, no photos
     if "lrc" in c:
-        tabs = "".join(f'<li data-r style="--d:{k * 0.05:.2f}s"><span class="n">{k + 1:02d}</span><h3>{esc(t)}</h3><p>{esc(d)}</p></li>'
+        keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
+        tabs = "".join(f'<li><button type="button" data-lrc-tab="{keys[k]}"{" class=on" if keys[k] == "looks" else ""}><span class="n">{k + 1:02d}</span><span class="t"><b>{esc(t)}</b><span>{esc(d)}</span></span></button></li>'
                        for k, (t, d) in enumerate(c["lrc"]))
         parts.append(f'''<section class="sec" id="lightroom-classic">
 <div class="wrap">
 <div class="head" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
-<ol class="tabs7">{tabs}</ol>
+<div class="lrc" data-lrc data-r><ol class="lrc-list">{tabs}</ol>
+<figure class="lrc-win">{lrc_window()}<figcaption>{esc(c["lrc_cap"])}</figcaption></figure></div>
 <p class="small" data-r>{esc(c["lrc_note"])}</p>
 </div>
 </section>''')
