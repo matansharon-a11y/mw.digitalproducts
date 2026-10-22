@@ -120,7 +120,7 @@ document.querySelectorAll("[data-rail]").forEach((wrap) => {
 });
 
 // ---------------------------------------------------------------- MWP Panel in Lightroom Classic: the window preview
-// The tab list beside it and the window's own tabs both switch the tab; the Looks category menu changes the tiles;
+// The window's tabs switch the tab (and the line under the window); the Looks category menu changes the tiles;
 // the sliders show their number. Nothing here edits a photo: it's a preview of the plugin (tools/lrc_preview.py).
 document.querySelectorAll("[data-lrc]").forEach((box) => {
   const tabs = [...box.querySelectorAll("[data-lrc-tab]")];
@@ -128,12 +128,11 @@ document.querySelectorAll("[data-lrc]").forEach((box) => {
   const show = (id) => {
     tabs.forEach((b) => { const on = b.dataset.lrcTab === id; b.classList.toggle("on", on); if (b.getAttribute("role") === "tab") b.setAttribute("aria-selected", String(on)); });
     panes.forEach((pn) => { pn.hidden = pn.dataset.lrcPane !== id; });
+    box.querySelectorAll("[data-lrc-desc]").forEach((d) => { d.hidden = d.dataset.lrcDesc !== id; });
   };
-  const win = box.querySelector(".lw");
   tabs.forEach((b) => b.addEventListener("click", () => {
     show(b.dataset.lrcTab);
-    // phones: the window sits above the list, so a tap on the list brings it into view
-    if (!b.closest(".lw") && win && win.getBoundingClientRect().bottom < 80) win.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    b.scrollIntoView({ block: "nearest", inline: "center", behavior: reduce ? "auto" : "smooth" });   // phones: the tab bar scrolls
   }));
   box.querySelector("[data-lrc-cat]")?.addEventListener("change", (e) => {
     box.querySelectorAll(".lw-look").forEach((t) => { t.hidden = t.dataset.cat !== e.target.value; });

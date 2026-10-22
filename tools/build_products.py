@@ -169,7 +169,7 @@ P["panel"] = dict(
                      "<strong>Exports are new files.</strong> The panel never saves over your original file."],
         feat_alt="MWP Panel open in Photoshop, the Edit tab",
         lrc_kick="MWP Panel for Lightroom Classic", lrc_h=["Seven tabs,", "from the card to the post."],
-        lrc_lead="The Lightroom Classic version follows a whole shoot, from the first cull to the export. It comes with MWP Panel at no extra cost, in early access: it works today and grows with free updates.",
+        lrc_lead="From the first cull to the export, in one window. Included with MWP Panel, in early access with free updates. Click a tab to look inside.",
         lrc=[("Cull", "Turn a day of bursts into a short list. Nothing is ever deleted."),
              ("Organize", "Trips, a collection per day, and 51,471 species for your keywords."),
              ("Expedition", "The edit we teach in camp, one step per line."),
@@ -177,8 +177,7 @@ P["panel"] = dict(
              ("Edit", "Subject, sky, background or people: pick an effect, set the strength."),
              ("Color", "Hue, saturation and luminance per colour, and ready fixes like Warm fur."),
              ("Export", "Instagram, web and print sizes, your watermark, and a competition check.")],
-        lrc_note="Lightroom Classic 13 or newer, Mac and Windows.",
-        lrc_cap="A preview of the panel: its real tabs and buttons. Click a tab to look inside. In Lightroom Classic the window takes your system's look.",
+        lrc_note="Interactive preview of the real tabs and buttons · Lightroom Classic 13 or newer, Mac and Windows",
         specs=[("", "Photoshop plugin", "Double-click to install. Mac and Windows."),
                ("", "Lightroom Classic plugin", "Early access. Add it once in the Plug-in Manager. Manual built in."),
                ("", "Video tutorials", "For Photoshop and Lightroom Classic, in My downloads."),
@@ -223,7 +222,7 @@ P["panel"] = dict(
                      "<strong>הייצוא תמיד לקובץ חדש.</strong> הפאנל אף פעם לא שומר על הקובץ המקורי."],
         feat_alt="הפאנל של MWP פתוח בפוטושופ, בלשונית העריכה",
         lrc_kick="הפאנל של MWP ללייטרום קלאסיק", lrc_h=["שבע לשוניות,", "מהכרטיס ועד הפרסום."],
-        lrc_lead="גרסת לייטרום קלאסיק מלווה צילום שלם, מהמיון הראשון ועד הייצוא. היא מגיעה עם הפאנל של MWP בלי תוספת תשלום, בגישה מוקדמת: היא עובדת כבר היום וגדלה עם עדכונים חינמיים.",
+        lrc_lead="מהמיון הראשון ועד הייצוא, בחלון אחד. כלול בפאנל של MWP, בגישה מוקדמת ועם עדכונים חינמיים. לחצו על לשונית כדי להציץ פנימה.",
         lrc=[("מיון", "הופכים יום של רצפים לרשימה קצרה. שום דבר לא נמחק."),
              ("ארגון", "טיולים, אוסף לכל יום, ו־51,471 מינים למילות המפתח שלכם."),
              ("משלחת", "העריכה שאנחנו מלמדים במחנה, צעד אחד בכל שורה."),
@@ -231,8 +230,7 @@ P["panel"] = dict(
              ("עריכה", "נושא, שמיים, רקע או אנשים: בוחרים אפקט וקובעים עוצמה."),
              ("צבע", "גוון, רוויה ובהירות לכל צבע, ותיקונים מוכנים כמו פרווה חמה."),
              ("ייצוא", "גדלים לאינסטגרם, לאתר ולהדפסה, סימן המים שלכם ובדיקה לתחרויות.")],
-        lrc_note="לייטרום קלאסיק 13 ומעלה, מק ו־ווינדוס.",
-        lrc_cap="תצוגה מקדימה של הפאנל: הלשוניות והכפתורים האמיתיים שלו, באנגלית כמו בתוסף. לחצו על לשונית כדי להציץ פנימה. בלייטרום קלאסיק החלון מקבל את המראה של המערכת שלכם.",
+        lrc_note="תצוגה מקדימה של הלשוניות והכפתורים האמיתיים, באנגלית כמו בתוסף · לייטרום קלאסיק 13 ומעלה, מק ו־ווינדוס",
         specs=[("", "הפלאגין לפוטושופ", "לחיצה כפולה להתקנה. מק ו־ווינדוס."),
                ("", "הפלאגין ללייטרום קלאסיק", "גישה מוקדמת. מוסיפים אותו פעם אחת במנהל התוספים. מדריך מובנה."),
                ("", "סרטוני הדרכה", "לפוטושופ וללייטרום קלאסיק, בעמוד ההורדות שלי."),
@@ -451,14 +449,15 @@ def page(folder, lang):
     # a second app (MWP Panel in Lightroom Classic): the tabs as a numbered list, no photos
     if "lrc" in c:
         keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
-        tabs = "".join(f'<li><button type="button" data-lrc-tab="{keys[k]}"{" class=on" if keys[k] == "looks" else ""}><span class="n">{k + 1:02d}</span><span class="t"><b>{esc(t)}</b><span>{esc(d)}</span></span></button></li>'
-                       for k, (t, d) in enumerate(c["lrc"]))
+        # under the window, one line for the tab that's open (the window's own tabs switch it)
+        descs = "".join(f'<p data-lrc-desc="{keys[k]}"{"" if keys[k] == "looks" else " hidden"}><span class="n">{k + 1:02d}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
+                        for k, (t, d) in enumerate(c["lrc"]))
         parts.append(f'''<section class="sec" id="lightroom-classic">
 <div class="wrap">
-<div class="head" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
-<div class="lrc" data-lrc data-r><ol class="lrc-list">{tabs}</ol>
-<figure class="lrc-win">{lrc_window()}<figcaption>{esc(c["lrc_cap"])}</figcaption></figure></div>
-<p class="small" data-r>{esc(c["lrc_note"])}</p>
+<div class="head c" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
+<div class="lrc" data-lrc data-r><div class="lrc-stage">{lrc_window()}</div>
+<div class="lrc-desc" aria-live="polite">{descs}</div></div>
+<p class="small lrc-note" data-r>{esc(c["lrc_note"])}</p>
 </div>
 </section>''')
 
