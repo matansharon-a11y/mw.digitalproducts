@@ -298,7 +298,7 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 @keyframes lrcpulse{70%{box-shadow:0 0 0 8px rgba(244,175,86,0)}100%{box-shadow:0 0 0 0 rgba(244,175,86,0)}}
 @media (prefers-reduced-motion:reduce){.lrc-label i{animation:none}}
 @media (max-width:600px){.lrc-label .req{display:none}}   /* phones: one line; the requirements are on the version card */
-#lightroom-classic{overflow-x:clip}   /* the glow behind the window never widens the page */
+#lightroom-classic,#inside{overflow-x:clip}   /* the glow behind the windows never widens the page */
 
 .lw{font:400 13.5px/1.4 "Google Sans","Heebo",sans-serif;color:#d6d6d6;background:#2a2a2a;border:1px solid #444;border-radius:12px;overflow:hidden;
   box-shadow:0 60px 120px -50px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.4);text-align:left}
