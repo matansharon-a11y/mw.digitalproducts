@@ -22,13 +22,13 @@ CHAPTERS = [
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files and 33 LUTs", "Install guide for every program"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
-    dict(step="Finish", tag="Photoshop plugin", name="Panel", slug="mwp-panel", href="panel/",
+    dict(step="Finish", tag="Photoshop & Lightroom Classic", name="Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
-         title="Photoshop, without the maze of menus",
-         body=["Pick the animal, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
-               "Your original stays locked, and one undo takes back a whole button."],
-         points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
-         cta="See MWP Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
+         title="Pick the animal. The panel does the masks.",
+         body=["In Photoshop or Lightroom Classic: pick the animal, the sky or the background, pick an effect, set the strength. The panel builds the masks for you.",
+               "Two versions in one purchase, and your original is never touched."],
+         points=["For Photoshop and Lightroom Classic", "11 looks and 4 painted lights", "Video tutorials included"],
+         cta="See MWP Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP · LIGHTROOM CLASSIC", sub="2 versions · 1 purchase"),
 ]
 
 HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("st-wait");var go=function(){{h.classList.remove("st-wait")}};setTimeout(go,1500);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go)}})();</script>
@@ -39,7 +39,7 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="wrap st-hero-in">
 <p class="kick st-in" style="--i:0">MWP · by wildlife photographer Matan Wild</p>
 <h1 class="st-h1"><span class="st-l"><span style="--i:1">Wildlife,</span></span> <span class="st-l"><span class="grad" style="--i:2">as you saw it.</span></span></h1>
-<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop plugin and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.</p>
+<p class="lead st-in" style="--i:3">Lightroom presets, a plugin for Photoshop and Lightroom Classic, and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout<span aria-hidden="true">·</span>Free updates</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Find your tool</a></div>
 </div>
@@ -67,7 +67,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
 <h2 class="h2">Three tools. <span class="b grad">Start where you get stuck.</span></h2>
-<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets. Photoshop feels like a maze of menus? MWP Panel.</p>
+<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets. Masks feel like a maze, in Photoshop or Lightroom Classic? MWP Panel.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

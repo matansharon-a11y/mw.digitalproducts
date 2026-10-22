@@ -190,12 +190,12 @@ html = f'''<!doctype html>
 {LANG_GUARD}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP</title>
-<meta name="description" content="Edit wildlife photos so they look the way you saw them: Lightroom presets, a Photoshop plugin and field guides by wildlife photographer Matan Wild. Instant download, free updates.">
+<meta name="description" content="Edit wildlife photos so they look the way you saw them: Lightroom presets, a plugin for Photoshop and Lightroom Classic, and field guides by wildlife photographer Matan Wild. Instant download, free updates.">
 <meta name="theme-color" content="#0A0908">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MWP">
 <meta property="og:title" content="Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP">
-<meta property="og:description" content="Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural.">
+<meta property="og:description" content="Lightroom presets, a plugin for Photoshop and Lightroom Classic, and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural.">
 <link rel="canonical" href="https://shop.mw.photography/">
 <link rel="alternate" hreflang="en" href="https://shop.mw.photography/"><link rel="alternate" hreflang="he" href="https://shop.mw.photography/he/"><link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/">
 <meta property="og:locale" content="en_US">
@@ -251,8 +251,8 @@ html = f'''<!doctype html>
 <div class="plans">
 {plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
 {plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", "field-guides/#buy")}
-{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", "panel/#buy")}
-{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
+{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: for Photoshop and Lightroom Classic", "User manual and install guide"], "Get the bundle", "panel/#buy")}
+{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: for Photoshop and Lightroom Classic", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>
 </section>
@@ -274,7 +274,8 @@ html = f'''<!doctype html>
 <h2 class="h2">FAQs</h2>
 </div>
 <div class="faq">
-<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Panel</a>.</div></details>
+<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you want to choose exactly what to edit, in Photoshop or Lightroom Classic, <a href="/panel/">MWP Panel</a>.</div></details>
+<details><summary>Does MWP Panel work in Lightroom?</summary><div>In Lightroom Classic, yes. MWP Panel comes for Photoshop and for Lightroom Classic, both in one purchase. It doesn't run in Lightroom (the cloud version) or on phones.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>
 <details><summary>Do I need an account?</summary><div>Yes. You create one with your email and a password before you pay, so your files and future updates are always waiting for you.</div></details>
