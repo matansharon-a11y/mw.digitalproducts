@@ -1,6 +1,7 @@
-# Upload an extra download (e.g. MWP Panel's Lightroom Classic plugin) without putting the file in this public repo:
-# the run prints a one-time upload link sealed with the public key you give it, waits for the file, then adds the
-# button to My downloads (product_extra_files). See tools/upload_extra.py. The admin's Extra downloads box does the same by hand.
+# Upload an extra download (e.g. MWP Panel's Lightroom Classic plugin) without the file being readable in this public
+# repo: the run pushes a public key to a temporary branch, receives the zip encrypted with it, uploads it to the private
+# bucket, adds the button to My downloads (product_extra_files) and deletes the branch. See tools/upload_extra.py.
+# The admin's Extra downloads box does the same by hand.
 name: Upload an extra download
 
 on:
@@ -11,10 +12,9 @@ on:
       label: { description: "Button in My downloads", default: "Lightroom Classic", required: true }
       version: { description: "Version", required: true }
       file_name: { description: "File name (.zip)", required: true }
-      public_key_b64: { description: "RSA public key (PEM, base64) that seals the upload link", required: true }
 
 permissions:
-  contents: read
+  contents: write   # the temporary upload-drop branch only
 
 env:
   SUPABASE_PROJECT_REF: tkkpxsyioetzexgbmbqy
@@ -48,5 +48,5 @@ jobs:
           LABEL: ${{ inputs.label }}
           VERSION: ${{ inputs.version }}
           FILE_NAME: ${{ inputs.file_name }}
-          PUBLIC_KEY_B64: ${{ inputs.public_key_b64 }}
+          REPO_URL: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
         run: python3 tools/upload_extra.py

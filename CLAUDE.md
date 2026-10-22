@@ -72,7 +72,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - **Video tutorials:** `product_tutorials` (app, title, optional Hebrew title, YouTube link, order), added in admin → product → Video tutorials. Only owners read them (RLS on entitlements, bundles included; a refund hides them) and My downloads lists them under the product. Use **Unlisted** YouTube videos: Private ones play only for invited accounts.
 - The Panel page has a Lightroom Classic section (`lrc` in `build_products.py`: seven tabs, `.tabs7` in `product.css`), linked from the product bar.
 - Migration `20261022000001_extra_files_and_tutorials.sql`.
-- Never commit a paid file: this repo is public. Besides the admin box, the "Upload an extra download" workflow (`upload-extra.yml`, `tools/upload_extra.py`) prints a one-time upload link sealed with a public key you pass it, waits for the file, then adds the row.
+- Never commit a paid file: this repo is public. Besides the admin box, the "Upload an extra download" workflow (`upload-extra.yml`, `tools/upload_extra.py`) pushes a public key to a temporary `upload-drop-<run id>` branch, receives the zip encrypted with it (`file.enc` + `key.enc`), uploads it, adds the row and deletes the branch.
 
 ## MWP Panel in Photoshop and Photoshop (Beta)
 - Both apps keep separate plugin storage, so `tools/panel-license/license.js` works out the device id from the computer, and the `license` function counts a computer already listed under the same name once. The plugin's manifest needs no `maxVersion` (see `tools/panel-license/README.md`).
