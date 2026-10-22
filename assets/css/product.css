@@ -385,10 +385,16 @@ html[lang=he] .ver-for{letter-spacing:.04em}
 .psw-bar i{width:11px;height:11px;border-radius:50%;background:#4a4a4a}
 .psw-bar span{flex:1;margin-right:40px;text-align:center;font:500 12.5px "Google Sans",sans-serif;color:#bdbdbd}
 .psw-main{display:flex;align-items:stretch}
-.psw-canvas{position:relative;flex:1;min-width:0;display:grid;place-items:center;padding:28px;background:#1d1d1d}
-.psw-canvas img{grid-area:1/1;width:100%;height:auto;max-height:100%;object-fit:contain;box-shadow:0 20px 50px -20px rgba(0,0,0,.8);transition:opacity .5s}
-.psw-before{opacity:0}
+.psw-canvas{position:relative;flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:28px 28px 40px;background:#1d1d1d}
+.psw-pic{position:relative;width:100%;line-height:0;box-shadow:0 20px 50px -20px rgba(0,0,0,.8)}
+.psw-pic img{display:block;width:100%;height:auto}
+.psw-before{position:absolute;inset:0;height:100%!important;opacity:0;transition:opacity .5s}
 .psw.before .psw-before{opacity:1}
+.psw-layers,.psw-layers > *,.psw-mask{position:absolute;inset:0}
+.psw-layers > *{background-size:100% 100%;transition:opacity .45s}
+.psw-mask{background:rgba(230,40,40,.55);opacity:0;transition:opacity .2s;pointer-events:none}
+.psw-mask.on{opacity:1}
+.psw-sim{position:absolute;left:28px;bottom:12px;color:#8a8a8a;font:400 11.5px "Google Sans",sans-serif}
 .psw-tag{position:absolute;top:14px;left:14px;padding:4px 10px;border-radius:64px;background:rgba(0,0,0,.6);color:#fff;font:600 11.5px "Google Sans",sans-serif;letter-spacing:.06em;opacity:0;transition:opacity .3s}
 .psw.before .psw-tag{opacity:1}
 .psw .pw{width:372px;height:auto;flex:none;border:0;border-left:1px solid #3d3d3d;border-radius:0;box-shadow:none;font-size:13px}
@@ -401,7 +407,7 @@ html[lang=he] .ver-for{letter-spacing:.04em}
 .psw .pw-scroll{overflow:visible}
 .pws .lrc-desc{margin-top:26px}
 .pws{max-width:1060px}
-@media (max-width:820px){.psw-canvas{display:none}.psw .pw{width:100%;border-left:0}.psw{max-width:400px;margin:0 auto}}
+@media (max-width:820px){.psw-main{flex-direction:column}.psw-canvas{padding:14px 14px 32px}.psw-sim{left:14px;bottom:10px;font-size:10.5px}.psw .pw{width:100%;border-left:0;border-top:1px solid #3d3d3d}.psw{max-width:460px;margin:0 auto}}
 .pw{width:min(100%,360px);height:560px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:#2b2b2b;border:1px solid #3d3d3d;
   box-shadow:0 40px 80px -30px rgba(0,0,0,.9);font:400 13.5px/1.35 "Google Sans","Heebo",sans-serif;color:#e6e6e6;text-align:left}
 .pw-top{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 14px;border-bottom:1px solid #3a3a3a}

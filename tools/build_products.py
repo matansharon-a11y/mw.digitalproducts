@@ -434,7 +434,7 @@ def page(folder, lang):
 <div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
 <div class="lrc pws" data-pws data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["ps_label"].split(" · ")[0])}<span class="req"> · {esc(c["ps_label"].split(" · ")[1])}</span></span></p>
 <div class="lrc-stage"><div class="psw" lang="en" dir="ltr" data-no-i18n><div class="psw-bar"><i></i><i></i><i></i><span>Photoshop</span></div>
-<div class="psw-main"><div class="psw-canvas"><img class="psw-after" src="{img(fa)}" alt="{esc(c["pairs"][0])}" loading="lazy"><img class="psw-before" src="{img(ba)}" alt="" loading="lazy"><span class="psw-tag">Before</span></div>
+<div class="psw-main"><div class="psw-canvas"><div class="psw-pic"><img class="psw-after" src="{img(fa)}" alt="{esc(c["pairs"][0])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div><img class="psw-before" src="{img(ba)}" alt="" loading="lazy"></div><span class="psw-tag">Before</span><span class="psw-sim">Simulated on this page · in Photoshop the panel builds real masks</span></div>
 {ps_window("/assets/img/logo-mark.png")}</div></div></div>
 <div class="lrc-desc" aria-live="polite">{descs}</div></div>
 </div>

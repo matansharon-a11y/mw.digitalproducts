@@ -146,16 +146,53 @@ document.querySelectorAll("[data-lrc]").forEach((box) => {
 // ---------------------------------------------------------------- MWP Panel in Photoshop: the live preview
 // Like the real panel: one chip picks what to edit, an effect adds an edit to it (the card shows it, the slider sets its
 // strength, "Your edits" counts it), undo takes back the last one, reset clears them, Before / After shows the RAW on the canvas.
-// Nothing is edited: it's a preview (tools/ps_preview.py).
+// The photo shows each edit as a layer limited to a drawn area (PW_AREA): a simulation, as the photo says. (tools/ps_preview.py)
+// What each target covers on the example photo (a herd on a plain, mountains, a bright sky) and what each effect does.
+// A web page can't build Photoshop's AI masks, so these are drawn areas: the photo says it's simulated.
+const PW_AREA = {
+  Subject: "radial-gradient(ellipse 34% 5.5% at 52% 70%, #000 60%, transparent 100%)",
+  Eye: "radial-gradient(ellipse 20% 3% at 52% 68%, #000 50%, transparent 100%)",
+  Sky: "linear-gradient(180deg, #000 0 26%, transparent 42%)",
+  Background: "linear-gradient(180deg, #000 0 58%, transparent 63% 77%, #000 83%)",
+  Lights: "linear-gradient(180deg, #000 0 34%, transparent 56%)",
+  Darks: "linear-gradient(180deg, transparent 0 70%, #000 84%)",
+};
+const PW_EFFECT = {
+  Pop: { filter: "contrast(1.3) saturate(1.45)" },
+  Brighten: { filter: "brightness(1.45)" },
+  Darken: { filter: "brightness(.55)" },
+  Warm: { tint: "#ff8a2a", blend: "soft-light" },
+  Cool: { tint: "#2f6bff", blend: "soft-light" },
+  Glow: { filter: "blur(10px) brightness(1.35)", blend: "screen" },
+  Blur: { filter: "blur(5px)" },
+  Sharpen: { filter: "contrast(1.25) brightness(1.04)" },
+};
+
 document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
   const now = pw.querySelector("[data-pw-now]"), range = pw.querySelector(".pw-range"), count = pw.querySelector("[data-pw-count]");
   const edits = [], undone = [];
+  // the photo of the window around the panel: each edit is a layer over it, limited to its area
+  const box = pw.closest("[data-pws]");
+  const pic = box?.querySelector(".psw-pic"), layers = box?.querySelector(".psw-layers"), maskEl = box?.querySelector(".psw-mask");
+  const layerFor = (e) => {
+    const im = pic?.querySelector(".psw-after"), src = im?.currentSrc || im?.src;
+    const fx = PW_EFFECT[e.effect] || {}, el = document.createElement("div");
+    if (fx.tint) el.style.background = fx.tint; else el.style.backgroundImage = `url("${src}")`;
+    if (fx.filter) el.style.filter = fx.filter;
+    if (fx.blend) el.style.mixBlendMode = fx.blend;
+    const area = PW_AREA[e.target];   // colours, Pick: the whole photo
+    if (area) { el.style.maskImage = area; el.style.webkitMaskImage = area; }
+    el.style.opacity = String(e.strength / 100);
+    return el;
+  };
+  const drawLayers = () => { if (layers) layers.replaceChildren(...edits.map((e) => (e.el ??= layerFor(e)))); };
   const target = () => pw.querySelector(".pw-chip.on")?.dataset.pwTarget || "Subject";
   const paint = () => {
     const last = edits[edits.length - 1];
     now.textContent = last ? `${last.target} · ${last.effect}` : "No edit yet";
     range.disabled = !last; range.value = last ? last.strength : 0;
     count.textContent = edits.length; count.classList.remove("bump"); void count.offsetWidth; count.classList.add("bump");
+    drawLayers();
     pw.querySelectorAll("[data-pw-effect]").forEach((b) => b.classList.toggle("on", !!last && b.dataset.pwEffect === last.effect));
   };
   pw.querySelectorAll(".pw-chip").forEach((c) => c.addEventListener("click", () => {
@@ -168,7 +205,23 @@ document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
     const below = card.offsetTop + card.offsetHeight - (sc.scrollTop + sc.clientHeight);
     if (below > 0) sc.scrollTo({ top: sc.scrollTop + below + 12, behavior: reduce ? "auto" : "smooth" });
   }));
-  range.addEventListener("input", () => { if (edits.length) edits[edits.length - 1].strength = +range.value; });
+  range.addEventListener("input", () => {
+    const last = edits[edits.length - 1];
+    if (last) { last.strength = +range.value; if (last.el) last.el.style.opacity = String(last.strength / 100); }
+  });
+  // hold a chip: its area shows in red on the photo, as in the real panel
+  pw.querySelectorAll(".pw-chip").forEach((c) => {
+    let t = null;
+    const hide = () => { clearTimeout(t); maskEl?.classList.remove("on"); };
+    c.addEventListener("pointerdown", () => {
+      t = setTimeout(() => {
+        if (!maskEl) return;
+        const area = PW_AREA[c.dataset.pwTarget] || "none";
+        maskEl.style.maskImage = area; maskEl.style.webkitMaskImage = area; maskEl.classList.add("on");
+      }, 250);
+    });
+    ["pointerup", "pointerleave", "pointercancel"].forEach((ev) => c.addEventListener(ev, hide));
+  });
   pw.querySelector('[data-pw="undo"]').addEventListener("click", () => { if (edits.length) { undone.push(edits.pop()); paint(); } });
   pw.querySelector('[data-pw="redo"]').addEventListener("click", () => { if (undone.length) { edits.push(undone.pop()); paint(); } });
   pw.querySelector('[data-pw="reset"]').addEventListener("click", () => { if (edits.length) { edits.length = 0; undone.length = 0; paint(); } });
