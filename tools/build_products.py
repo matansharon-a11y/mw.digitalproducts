@@ -159,6 +159,10 @@ P["panel"] = dict(
     slug="mwp-panel", hero_img="866c1bdb", hero_pos="58% 40%", final_img="99ef2d40",
     proof_type="ba", pairs_from=[("c339384f", "52e0c3d2"), ("af0d1799", "95e05791")],
     cards=["4a2055a1", "8929f94d", "2cfa033c", "99ef2d40"], feat_img="2cfa033c", feat_flip=True, feat_first=True, ps_show=True,
+    # the showcase photo, tested against the ibex, elephants, lion, lynx, eagle and donkeys: every edit reads clearly on it.
+    # Its areas are real cut-outs (assets/pages/img/ps/, made with an AI subject mask); no RAW: Before hides the edits.
+    ps_photo=(None, "8929f94d", {k: f"url(/assets/pages/img/ps/8929f94d-{k.lower()}.png)" for k in ("Subject", "Sky", "Background", "Lights", "Darks")}
+              | {"Eye": "radial-gradient(ellipse 4% 3% at 46.3% 29.2%, #000 55%, transparent 100%), radial-gradient(ellipse 4% 3% at 59.6% 29.2%, #000 55%, transparent 100%)"}, True),
     bundle="presets-panel",
     en=dict(
         name="MWP Panel", name_html='MWP <span class="grad">Panel</span>',
@@ -183,7 +187,7 @@ P["panel"] = dict(
         feat_points=["<strong>Every edit on its own layer.</strong> All edits sit in one MWP group. Your photo underneath stays locked.",
                      "<strong>One button, one undo.</strong> Ctrl+Z takes back a whole button. Before / After shows the original at any time.",
                      "<strong>Exports are new files.</strong> The panel never saves over your original file."],
-        feat_alt="Lion walking, black and white", ps_label="Interactive preview of the real panel · the Edit tab, button for button",
+        feat_alt="Lion walking, black and white", ps_label="Interactive preview of the real panel · the Edit tab, button for button", ps_alt="Young red fox looking at the camera",
         specs=[("", "Photoshop plugin", "Double-click to install. Mac and Windows."),
                ("21", "User Manual · PDF", "21 pages. Every button, step by step, for complete beginners."),
                ("", "Installation Guide · PDF", "Setup step by step, with fixes for common problems."),
@@ -218,7 +222,7 @@ P["panel"] = dict(
         feat_points=["<strong>כל עריכה בשכבה משלה.</strong> כל העריכות יושבות בקבוצת MWP אחת. התמונה שמתחת נשארת נעולה.",
                      "<strong>כפתור אחד, ביטול אחד.</strong> Ctrl+Z מבטל כפתור שלם. לפני / אחרי מראה את המקור בכל רגע.",
                      "<strong>הייצוא תמיד לקובץ חדש.</strong> הפאנל אף פעם לא שומר על הקובץ המקורי."],
-        feat_alt="אריה הולך, בשחור-לבן", ps_label="תצוגה מקדימה אינטראקטיבית של הפאנל האמיתי, באנגלית כמו בתוסף · לשונית העריכה, כפתור אחר כפתור",
+        feat_alt="אריה הולך, בשחור-לבן", ps_label="תצוגה מקדימה אינטראקטיבית של הפאנל האמיתי, באנגלית כמו בתוסף · לשונית העריכה, כפתור אחר כפתור", ps_alt="שועל אדום צעיר מביט במצלמה",
         specs=[("", "הפלאגין לפוטושופ", "לחיצה כפולה להתקנה. מק ו־ווינדוס."),
                ("21", "מדריך למשתמש · PDF", "21 עמודים. כל כפתור, צעד אחרי צעד, גם למתחילים גמורים."),
                ("", "מדריך התקנה · PDF", "התקנה צעד אחרי צעד, עם פתרונות לבעיות נפוצות."),
@@ -426,7 +430,7 @@ def page(folder, lang):
                     for k, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
     lead = f'<p class="lead">{esc(c["inside_lead"])}</p>' if c["inside_lead"] else ""
     if p.get("ps_show"):   # MWP Panel: Photoshop as one centred showcase, like the Lightroom Classic one
-        ba, fa = p["pairs_from"][0]
+        ba, fa, areas, tall = p["ps_photo"]
         descs = "".join(f'<p data-pw-desc="{esc(t2)}"{"" if k == 1 else " hidden"}><span class="n">0{k + 1}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
                         for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Style", "Export"))))
         parts.append(f'''<section class="sec tint" id="{inside_id}">
@@ -434,7 +438,7 @@ def page(folder, lang):
 <div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
 <div class="lrc pws" data-pws data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["ps_label"].split(" · ")[0])}<span class="req"> · {esc(c["ps_label"].split(" · ")[1])}</span></span></p>
 <div class="lrc-stage"><div class="psw" lang="en" dir="ltr" data-no-i18n><div class="psw-bar"><i></i><i></i><i></i><span>Photoshop</span></div>
-<div class="psw-main"><div class="psw-canvas"><div class="psw-pic"><img class="psw-after" src="{img(fa)}" alt="{esc(c["pairs"][0])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div><img class="psw-before" src="{img(ba)}" alt="" loading="lazy"></div><span class="psw-tag">Before</span><span class="psw-sim">Simulated on this page · in Photoshop the panel builds real masks</span></div>
+<div class="psw-main"><div class="psw-canvas" data-areas="{esc(json.dumps(areas))}"><div class="psw-pic{" tall" if tall else ""}"><img class="psw-after" src="{img(fa)}" alt="{esc(c["ps_alt"])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div>{f'<img class="psw-before" src="{img(ba)}" alt="" loading="lazy">' if ba else ""}</div><span class="psw-tag">Before</span><span class="psw-sim">Simulated on this page · in Photoshop the panel builds real masks</span></div>
 {ps_window("/assets/img/logo-mark.png")}</div></div></div>
 <div class="lrc-desc" aria-live="polite">{descs}</div></div>
 </div>

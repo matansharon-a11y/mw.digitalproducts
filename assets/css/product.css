@@ -390,6 +390,11 @@ html[lang=he] .ver-for{letter-spacing:.04em}
 .psw-pic img{display:block;width:100%;height:auto}
 .psw-before{position:absolute;inset:0;height:100%!important;opacity:0;transition:opacity .5s}
 .psw.before .psw-before{opacity:1}
+.psw.before .psw-layers{opacity:0}   /* Before: the photo without the panel's edits (and the RAW, when the photo has one) */
+.psw-layers{transition:opacity .45s}
+.psw-pic.tall{width:auto;height:min(600px,70vh)}   /* portrait photos: as tall as the panel, not as wide as the canvas */
+.psw-pic.tall img{width:auto;height:100%}
+@media (max-width:820px){.psw-pic.tall{height:min(380px,48vh)}}
 .psw-layers,.psw-layers > *,.psw-mask{position:absolute;inset:0}
 .psw-layers > *{background-size:100% 100%;transition:opacity .45s}
 .psw-mask{background:rgba(230,40,40,.55);opacity:0;transition:opacity .2s;pointer-events:none}

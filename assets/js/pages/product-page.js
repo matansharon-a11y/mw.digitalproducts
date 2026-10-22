@@ -168,11 +168,20 @@ const PW_EFFECT = {
   Sharpen: { filter: "contrast(1.25) brightness(1.04)" },
 };
 
+// an area is a CSS gradient or a mask image (url(…), the photo's own cut-out, stretched over the photo)
+const setMask = (el, area) => {
+  el.style.maskImage = area; el.style.webkitMaskImage = area;
+  el.style.maskSize = el.style.webkitMaskSize = "100% 100%";
+  el.style.maskRepeat = el.style.webkitMaskRepeat = "no-repeat";
+};
+
 document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
   const now = pw.querySelector("[data-pw-now]"), range = pw.querySelector(".pw-range"), count = pw.querySelector("[data-pw-count]");
   const edits = [], undone = [];
   // the photo of the window around the panel: each edit is a layer over it, limited to its area
   const box = pw.closest("[data-pws]");
+  // the photo's own areas (data-areas on the canvas, fitted to it in build_products.py), else the defaults
+  const areas = () => { try { return { ...PW_AREA, ...JSON.parse(box?.querySelector(".psw-canvas")?.dataset.areas || "{}") }; } catch { return PW_AREA; } };
   const pic = box?.querySelector(".psw-pic"), layers = box?.querySelector(".psw-layers"), maskEl = box?.querySelector(".psw-mask");
   const layerFor = (e) => {
     const im = pic?.querySelector(".psw-after"), src = im?.currentSrc || im?.src;
@@ -180,8 +189,8 @@ document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
     if (fx.tint) el.style.background = fx.tint; else el.style.backgroundImage = `url("${src}")`;
     if (fx.filter) el.style.filter = fx.filter;
     if (fx.blend) el.style.mixBlendMode = fx.blend;
-    const area = PW_AREA[e.target];   // colours, Pick: the whole photo
-    if (area) { el.style.maskImage = area; el.style.webkitMaskImage = area; }
+    const area = areas()[e.target];   // colours, Pick: the whole photo
+    if (area) setMask(el, area);
     el.style.opacity = String(e.strength / 100);
     return el;
   };
@@ -216,8 +225,7 @@ document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
     c.addEventListener("pointerdown", () => {
       t = setTimeout(() => {
         if (!maskEl) return;
-        const area = PW_AREA[c.dataset.pwTarget] || "none";
-        maskEl.style.maskImage = area; maskEl.style.webkitMaskImage = area; maskEl.classList.add("on");
+        setMask(maskEl, areas()[c.dataset.pwTarget] || "none"); maskEl.classList.add("on");
       }, 250);
     });
     ["pointerup", "pointerleave", "pointercancel"].forEach((ev) => c.addEventListener(ev, hide));
