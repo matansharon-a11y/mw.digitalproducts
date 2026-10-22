@@ -107,7 +107,7 @@ SAMPLER_FORM = """<form class="stack" id="sampler-form" data-source="free-sample
 
 page("index.html",
  "MWP · Presets, guides and tools by Matan Wild",
- "Lightroom presets, a plugin for Photoshop and Lightroom Classic, and editing guides from wildlife photographer Matan Wild. Instant download, secure checkout.",
+ "Lightroom presets, a Photoshop plugin and editing guides from wildlife photographer Matan Wild. Instant download, secure checkout.",
  f"""  <section class="hero-shop" aria-labelledby="hero-title">
     <div class="container hero-shop__inner">
       <div>
@@ -201,11 +201,11 @@ CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The three products (wording from the home page) and the bundles (the home page's bundle cards)
 TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "A natural starting point for every wildlife photo", "mwp-presets", "MWP Presets: Lightroom presets for wildlife photography"),
-         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop & Lightroom Classic", "Panel", "Wildlife editing made easy, in Photoshop and Lightroom Classic", "mwp-panel", "MWP Panel: Photoshop and Lightroom Classic plugin for wildlife photo editing"),
+         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop plugin", "Panel", "Photoshop for wildlife. No Photoshop skills needed.", "mwp-panel", "MWP Panel: Photoshop plugin for wildlife photo editing"),
          ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "Know what to aim for before you press the shutter", "mwp-field-guides", "MWP Field Guides: nature photography guides in PDF")]
-BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", False),
-           ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: for Photoshop and Lightroom Classic", "User manual and install guide"], "Get the bundle", False),
-           ("The full set", "From the shot to the share", "full-set", ["MWP Presets: 50 presets and 33 LUTs", "MWP Panel: for Photoshop and Lightroom Classic", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
+BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: presets, LUTs and the Lightroom Classic panel", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", False),
+           ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["MWP Presets: presets, LUTs and the Lightroom Classic panel", "MWP Panel: the Photoshop plugin", "User manual and install guide"], "Get the bundle", False),
+           ("The full set", "From the shot to the share", "full-set", ["MWP Presets: presets, LUTs and the Lightroom Classic panel", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
 
 
 def _img(prefix):
@@ -228,7 +228,7 @@ def _bundle(name, sub, slug, pts, cta, hi):
 
 
 page("shop.html", "Shop Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP",
- "All MWP products in one place: Lightroom presets, a plugin for Photoshop and Lightroom Classic, and nature photography field guides by Matan Wild, alone or in bundles. Instant download, free updates.",
+ "All MWP products in one place: Lightroom presets, a Photoshop plugin and nature photography field guides by Matan Wild, alone or in bundles. Instant download, free updates.",
  f"""  <section class="page-hero">
     <div class="container">
       <p class="kick">The collection</p>
@@ -589,7 +589,7 @@ page("testers.html", "Testers · MWP",
         <div class="library" id="t-lib" aria-live="polite"></div>
         <div class="terms-box">
           <div><h2 class="h3">MWP Panel</h2>
-          <p class="meta">In Photoshop, open MWP Panel and sign in with this email. It works on up to 2 computers. The Lightroom Classic version needs no sign-in.</p></div>
+          <p class="meta">In Photoshop, open MWP Panel and sign in with this email. It works on up to 2 computers.</p></div>
         </div>
         <p class="acct-note">Your copies are made for you and carry your name. Please don't share them. Download links work for 5 minutes. Trouble? <a class="link" href="/support/">Contact support</a>.</p>
       </div>
@@ -712,7 +712,7 @@ page("404.html", "Page not found · MWP", "This page doesn't exist.",
         <p class="lead">The link may be old or mistyped. Everything in the shop is one click away.</p>
       </div>
       <div class="row"><a class="btn" href="/shop/">Browse all products</a><a class="btn btn--ghost" href="/">Home</a></div>
-      <p class="muted"><a class="link" href="/presets/">Lightroom presets</a> · <a class="link" href="/panel/">Editing plugin</a> · <a class="link" href="/field-guides/">Photography guides</a></p>
+      <p class="muted"><a class="link" href="/presets/">Lightroom presets</a> · <a class="link" href="/panel/">Photoshop plugin</a> · <a class="link" href="/field-guides/">Photography guides</a></p>
     </div>
   </section>""", "static.js")
 print("pages written")

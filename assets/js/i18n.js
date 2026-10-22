@@ -30,6 +30,14 @@ const HE = {
   "Bundles": "חבילות",
   // My downloads: extra downloads and video tutorials (Oct 2026)
   "Video tutorials": "סרטוני הדרכה",
+  // The Lightroom Classic panel comes with MWP Presets (Oct 2026)
+  "MWP Presets: presets, LUTs and the Lightroom Classic panel": "הפריסטים של MWP: פריסטים, קובצי LUT והפאנל ללייטרום קלאסיק",
+  "A panel for Lightroom Classic": "פאנל ללייטרום קלאסיק",
+  "Lightroom presets and panel": "פריסטים ופאנל ללייטרום",
+  "Lightroom Classic panel": "פאנל ללייטרום קלאסיק",
+  "Is there anything for Lightroom Classic?": "יש משהו ללייטרום קלאסיק?",
+  "Yes.": "כן.",
+  "come with a panel for Lightroom Classic 13 or newer: cull, organise, edit and export a whole shoot in one window. It's in early access, with free updates.": "מגיעים עם פאנל ללייטרום קלאסיק 13 ומעלה: מיון, ארגון, עריכה וייצוא של צילום שלם, בחלון אחד. הוא בגישה מוקדמת, עם עדכונים חינמיים.",
   // MWP Panel for Photoshop and Lightroom Classic, said everywhere (Oct 2026)
   "Pick the animal. The panel does the masks.": "בוחרים את החיה. הפאנל עושה את המסכות.",
   "In Photoshop or Lightroom Classic: pick the animal, the sky or the background, pick an effect, set the strength. The panel builds the masks for you.": "בפוטושופ או בלייטרום קלאסיק: בוחרים את החיה, את השמיים או את הרקע, בוחרים אפקט וקובעים עוצמה. הפאנל בונה בשבילכם את המסכות.",
