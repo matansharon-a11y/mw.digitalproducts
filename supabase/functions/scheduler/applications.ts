@@ -129,7 +129,7 @@ function welcome(lang: "en" | "he", name: string, acceptUrl: string) {
 <ul>
 <li><b>הצעד הראשון:</b> <a href="${acceptUrl}">קוראים ומאשרים את תנאי תוכנית השגרירים</a>. ברגע שמאשרים, הכלים שלכם מוכנים.</li>
 <li><b>הכלים:</b> אחרי האישור נכנסים ל<a href="${ACCOUNT}?lang=he">הורדות שלי</a> עם המייל הזה (או פותחים איתו חשבון) ומורידים את הפריסטים של MWP ואת הפאנל של MWP. בפוטושופ פותחים את הפאנל ומתחברים עם אותו מייל. הרישיון לכל החיים, כולל כל העדכונים, על עד 2 מכשירים.</li>
-<li><b>חדש: הפלאגין של MWP ללייטרום קלאסיק.</b> הוא מגיע בחינם עם הפריסטים ומחכה לכם ב<a href="${ACCOUNT}?lang=he">הורדות שלי</a>: לוחצים על הפלאגין ללייטרום קלאסיק מתחת לפריסטים של MWP, ומוסיפים אותו בלייטרום קלאסיק דרך File › Plug-in Manager. עובד בלייטרום קלאסיק 13 ומעלה, במק ובווינדוס.</li>
+<li><b>חדש: הפלאגין של MWP ללייטרום קלאסיק.</b> כשגרירים הוא שלכם בחינם, ומחכה לכם ב<a href="${ACCOUNT}?lang=he">הורדות שלי</a> כמוצר נפרד: מורידים את הפלאגין ללייטרום קלאסיק, ומוסיפים אותו בלייטרום קלאסיק דרך File › Plug-in Manager. עובד בלייטרום קלאסיק 13 ומעלה, במק ובווינדוס.</li>
 <li><b>סרטוני הדרכה, כדאי לצפות לפני שמתחילים:</b><br>הפאנל לפוטושופ: <a href="https://youtu.be/3tCNcjvVFII">בעברית</a> · <a href="https://youtu.be/TyVnLIjf84Y">באנגלית</a><br>הפלאגין ללייטרום קלאסיק: <a href="https://youtu.be/HJxW_lF0eLM">לצפייה</a><br>הסרטונים נמצאים גם ב"הורדות שלי", מתחת לכל מוצר.</li>
 <li><b>שלושת החודשים הראשונים:</b> 3 פוסטים בחודש ורילס אחד אם תרצו, וגם סטורי אחד בשבוע.</li>
 <li><b>תיוג:</b> @mw_phototours באינסטגרם ו-Matan Wild בפייסבוק, עם #mwppanel #mwppresets #jointhewildsideofphotography. חשוב לסמן את הפוסטים בתווית "שותפות בתשלום" או ב-#פרסומת.</li>
@@ -148,7 +148,7 @@ function welcome(lang: "en" | "he", name: string, acceptUrl: string) {
 <ul>
 <li><b>First step:</b> <a href="${acceptUrl}">read and accept the Ambassador Program terms</a>. As soon as you accept, your tools are ready.</li>
 <li><b>Your tools:</b> then sign in to <a href="${ACCOUNT}">My downloads</a> with this email (or create your account with it) and download the MWP - Signature Preset Pack and the MWP - PS Panel. In Photoshop, open the panel and sign in with the same email. Your license is for life, with all future updates, on up to 2 devices.</li>
-<li><b>New: the MWP plugin for Lightroom Classic.</b> It comes free with your presets and is waiting in <a href="${ACCOUNT}">My downloads</a>: click "Lightroom Classic plugin" under MWP Presets, then add it in Lightroom Classic under File › Plug-in Manager. It needs Lightroom Classic 13 or newer, on Mac or Windows.</li>
+<li><b>New: the MWP plugin for Lightroom Classic.</b> As an ambassador it's yours free, waiting in <a href="${ACCOUNT}">My downloads</a> as its own product: download the Lightroom Classic plugin, then add it in Lightroom Classic under File › Plug-in Manager. It needs Lightroom Classic 13 or newer, on Mac or Windows.</li>
 <li><b>Video tutorials, worth watching before you start:</b><br>Photoshop panel: <a href="https://youtu.be/TyVnLIjf84Y">English</a> · <a href="https://youtu.be/3tCNcjvVFII">Hebrew</a><br>Lightroom Classic plugin: <a href="https://youtu.be/HJxW_lF0eLM">watch it here</a><br>You'll also find them in My downloads, under each product.</li>
 <li><b>Your first 3 months:</b> 3 posts and 1 optional reel a month, plus 1 story a week.</li>
 <li><b>Tagging:</b> @mw_phototours on Instagram and Matan Wild on Facebook, with #mwppanel #mwppresets #jointhewildsideofphotography. Please mark posts with the "Paid partnership" label or #ad.</li>
