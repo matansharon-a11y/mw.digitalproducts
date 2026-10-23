@@ -61,6 +61,11 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - Checkout needs an account: every checkout link carries `data-checkout`, and `cart.js` shows "Create your account first" in the cart until they're signed in, then sends them to checkout with their account email.
 - Approved ambassadors create their account on My downloads with the email they applied with (the welcome email says so); if it already has an account, the tools simply appear in it.
 
+## Customer reviews (Oct 2026)
+- Screenshots of real reviews live in `assets/reviews/` with `reviews.json` (one entry each: image, width, height, products `presets` / `plugin` / `panel` / `guides`, alt, source, source_he, lang, featured). How to add: `assets/reviews/README.md` (drop the files in, run `python3 tools/reviews.py`, fill in the entries). No rebuild: the pages read the JSON (`assets/js/lib/reviews.js`).
+- One section (`tools/reviews_section.py`, styles `assets/css/reviews.css`) on the home page (after the Shoot · Edit · Finish story, before the bundles: up to 6 featured, "See all reviews"), the shop (all, chips per product, before Compare) and every product page (only that product's reviews, before the FAQs). Hidden while it has nothing to show. Masonry of whole screenshots in their own shape; very tall ones show to a set height with "Read it all"; every one opens full size in a viewer (arrows, swipe, Esc). Each language's own reviews first.
+- `?reviews=preview` on any page shows labelled design placeholders. Never invent reviews, names or ratings; hide a customer's name, photo and handle unless they agreed. The section's class is `reviews` (the home page's reveal animation already uses `.rv`).
+
 ## Personal copies (Presets and Field Guides)
 - Each buyer and beta member downloads their own marked copy: their name, email and licence ID on every PDF page, and in a comment inside every .xmp and .cube file (`tools/personalize/personalize.py`).
 - The "Personal copies" workflow (`.github/workflows/personalize.yml`, `tools/personalize/worker.py`) makes missing or outdated copies into `presets/personal/<entitlement>/` and records them in `personal_files`. Until a copy exists, `get-download` answers 202 "preparing" and My downloads waits for it.

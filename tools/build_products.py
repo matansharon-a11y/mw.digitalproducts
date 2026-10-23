@@ -14,12 +14,14 @@ from lrc_preview import window as lrc_window
 from ps_preview import window as ps_window
 import presets_layout
 import plugin_layout
+from reviews_section import section as reviews_section
 from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://shop.mw.photography"
 import hashlib
 CSS_V = hashlib.sha1(open(os.path.join(ROOT, "assets/css/product.css"), "rb").read()).hexdigest()[:8]   # fresh CSS after every change
+RV_V = hashlib.sha1(open(os.path.join(ROOT, "assets/css/reviews.css"), "rb").read()).hexdigest()[:8]
 FAQS = json.load(open(os.path.join(ROOT, "tools/pages/faqs.json"), encoding="utf-8"))
 
 
@@ -647,6 +649,10 @@ def page(folder, lang):
 </div>
 </section>''')
 
+    # customer reviews of this product (hidden until assets/reviews/reviews.json has some), just before the FAQs
+    review_key = {"presets": "presets", "lightroom-classic": "plugin", "panel": "panel", "field-guides": "guides"}[folder]
+    parts.append(reviews_section(lang, product=review_key, cls=dict(head="head c")))
+
     # FAQs
     qa = "".join(f'<details><summary>{esc(f["q"])}<i aria-hidden="true"></i></summary><div class="a"><p>{esc(f["a"])}</p></div></details>' for f in FAQS[folder][lang])
     parts.append(f'''<section class="sec" id="faq">
@@ -707,6 +713,7 @@ def page(folder, lang):
 <script type="application/json" id="mwp-product">{json.dumps({"slug": slug, "name": c["name"], "description": c["desc"], "image": SITE + img(p["hero_img"]), "url": url}, ensure_ascii=False).replace("</", "<" + chr(92) + "/")}</script>
 <link rel="preload" as="image" href="{img(p["hero_img"])}" fetchpriority="high">
 <link rel="stylesheet" href="/assets/css/product.css?v={CSS_V}">
+<link rel="stylesheet" href="/assets/css/reviews.css?v={RV_V}">
 <style id="site-nav">{NAV_CSS}{SITE_CSS}</style>
 {FONTS}
 </head>

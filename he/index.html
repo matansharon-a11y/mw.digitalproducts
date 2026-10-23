@@ -807,6 +807,7 @@ html .plans .plan .price .deal s{margin:0;font-size:15px;font-weight:400;color:#
 @media (prefers-reduced-motion:reduce){.card,.card .ph img,.trust > div,.trust .ti,.trust .ti svg{transition:none;animation:none!important}}
 
 </style>
+<link rel="stylesheet" href="assets/css/reviews.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700&family=Heebo:wght@300..900&display=swap">
 <style id="mwp-fonts">
 html body,html body *:not(svg):not(svg *){font-family:"Google Sans","Heebo",system-ui,-apple-system,"Segoe UI",sans-serif!important}
@@ -1026,6 +1027,14 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 </div>
 </section>
 
+<section class="sec reviews" id="reviews" data-reviews data-featured aria-labelledby="reviews-h" hidden>
+<div class="wrap">
+<div class="head rv-head"><p class="kick">מהלקוחות שלנו</p><h2 class="h2" id="reviews-h">צלמים אמיתיים. <span class="b grad">מילים אמיתיות.</span></h2><p class="lead">הודעות וביקורות מצלמים שעובדים עם הכלים של MWP, כצילומי מסך של מה ששלחו לנו.</p></div>
+<div class="rv-grid" role="list"></div>
+<p class="rv-tap">הקישו על ביקורת כדי לקרוא אותה במלואה.</p>
+<div class="rv-foot"><a class="rv-all" href="/shop/he/#reviews">לכל הביקורות</a><a class="rv-send" href="/support/">קניתם אצלנו? שלחו לנו ביקורת</a></div>
+</div>
+</section>
 
 <section class="sec" id="bundles">
 <div class="wrap">
@@ -1270,5 +1279,6 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
   initCart();
   initPrices();
 </script>
+<script type="module" src="assets/js/lib/reviews.js"></script>
 </body>
 </html>

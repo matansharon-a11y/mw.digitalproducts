@@ -16,6 +16,7 @@ ba_css += "\n@media (max-width:600px){.ba{aspect-ratio:4/5;border-radius:18px}.r
 
 IMG = "assets/pages/img/"
 import home_fx, home_story
+from reviews_section import section as reviews_section
 import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(__file__))
 from brand import NAV_CSS, FONTS, SITE_CSS, site_links, menu_button, site_footer, use_webp, BRAND, ICONS, LANG_GUARD
 CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F2A541" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>'
@@ -220,6 +221,7 @@ html = f'''<!doctype html>
 {home_story.CSS}
 {home_css}
 </style>
+<link rel="stylesheet" href="assets/css/reviews.css">
 {FONTS}
 </head>
 <body>
@@ -240,6 +242,7 @@ html = f'''<!doctype html>
 
 {home_story.STORY}
 
+{reviews_section(featured=True, cls=dict(grad="b grad"))}
 
 <section class="sec" id="bundles">
 <div class="wrap">
@@ -319,6 +322,7 @@ html = f'''<!doctype html>
   initCart();
   initPrices();
 </script>
+<script type="module" src="assets/js/lib/reviews.js"></script>
 </body>
 </html>
 '''

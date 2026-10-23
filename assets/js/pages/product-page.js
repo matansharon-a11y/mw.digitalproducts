@@ -2,6 +2,7 @@
 // slider, the guide page viewer and the card rail. Built by tools/build_products.py.
 import { initCart } from "../lib/cart.js";
 import { initPrices } from "../lib/prices.js";
+import "../lib/reviews.js";
 
 initCart();
 initPrices();

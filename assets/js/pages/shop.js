@@ -2,6 +2,7 @@
 // here the header, the prices set in the admin, the cart and the filter by app.
 import { initChrome } from "../lib/ui.js";
 import { initPrices } from "../lib/prices.js";
+import "../lib/reviews.js";
 
 initChrome();
 initPrices();

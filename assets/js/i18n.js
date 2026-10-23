@@ -908,6 +908,14 @@ const HE = {
   "Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, with a Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.": "לא בטוחים מה עושה צילום חיות בר חזק? מתחילים במדריכי השטח. לייטרום מבלבל? הפריסטים של MWP, עם תוסף ללייטרום קלאסיק. פוטושופ מרגיש כמו מבוך של תפריטים? הפאנל של MWP.",
   "Yes. MWP Presets come with our": "כן. הפריסטים של MWP מגיעים עם ה",
   "(Lightroom Classic 13 or newer): cull, organise, edit and export a whole shoot in one window. It's in early access, with free updates.": "(לייטרום קלאסיק 13 ומעלה): מיון, ארגון, עריכה וייצוא של צילום שלם, בחלון אחד. הוא בגישה מוקדמת, עם עדכונים חינמיים.",
+  "From our customers": "מהלקוחות שלנו",
+  "Real photographers.": "צלמים אמיתיים.",
+  "Real words.": "מילים אמיתיות.",
+  "Messages and reviews from photographers who use MWP tools, shown as screenshots of what they sent us.": "הודעות וביקורות מצלמים שעובדים עם הכלים של MWP, כצילומי מסך של מה ששלחו לנו.",
+  "See all reviews": "לכל הביקורות",
+  "Bought from us? Send us your review": "קניתם אצלנו? שלחו לנו ביקורת",
+  "Tap a review to read it in full.": "הקישו על ביקורת כדי לקרוא אותה במלואה.",
+  "Show reviews for": "הצגת ביקורות על",
 };
 
 // Text built from numbers or names.

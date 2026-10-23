@@ -1,6 +1,7 @@
 """Generates the MWP's static pages with one shared head, header and footer."""
 import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from reviews_section import section as reviews_section
 from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
@@ -39,6 +40,7 @@ def head(title, desc, path, extra="", early=""):
   {ICONS}
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/reviews.css">
   {SITE_HEAD}{extra}
 {FONTS}
 </head>"""
@@ -333,6 +335,7 @@ page("shop.html", "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photosh
       <ul class="sp-trust"><li>Instant download</li><li>Secure checkout</li><li>Free updates</li><li>Help or a refund within 14 days</li></ul>
     </div>
   </section>
+  {reviews_section(filters=True, cls=dict(sec="section", wrap="container", head="", h2="display sp-h2"))}
   <section class="section" id="compare" aria-labelledby="compare-h">
     <div class="container">
       <p class="kick">Compare</p>

@@ -23,6 +23,7 @@
   <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicon-192.png"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/reviews.css">
   <style id="site-nav">
 html .nav{position:sticky;top:0;z-index:40;background:rgba(10,9,8,0);border-bottom:1px solid rgba(254,251,241,0);backdrop-filter:none;-webkit-backdrop-filter:none;transition:background .35s ease,border-color .35s ease,backdrop-filter .35s ease}
 html.nav-scrolled .nav{background:rgba(10,9,8,.66);border-bottom-color:rgba(254,251,241,.08);backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px)}
@@ -119,6 +120,14 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
       <ul class="sp-trust"><li>Instant download</li><li>Secure checkout</li><li>Free updates</li><li>Help or a refund within 14 days</li></ul>
     </div>
   </section>
+  <section class="section reviews" id="reviews" data-reviews aria-labelledby="reviews-h" hidden>
+<div class="container">
+<div class=" rv-head"><p class="kick">From our customers</p><h2 class="display sp-h2" id="reviews-h">Real photographers. <span class="grad">Real words.</span></h2><p class="lead">Messages and reviews from photographers who use MWP tools, shown as screenshots of what they sent us.</p></div>
+<div class="rv-filter" role="group" aria-label="Show reviews for" hidden><button type="button" data-rv-filter="all" aria-pressed="true">All</button><button type="button" data-rv-filter="presets" aria-pressed="false" hidden>Presets</button><button type="button" data-rv-filter="plugin" aria-pressed="false" hidden>Lightroom Classic Plugin</button><button type="button" data-rv-filter="panel" aria-pressed="false" hidden>Photoshop Panel</button><button type="button" data-rv-filter="guides" aria-pressed="false" hidden>Field Guides</button></div><div class="rv-grid" role="list"></div>
+<p class="rv-tap">Tap a review to read it in full.</p>
+<div class="rv-foot"><a class="rv-send" href="/support/">Bought from us? Send us your review</a></div>
+</div>
+</section>
   <section class="section" id="compare" aria-labelledby="compare-h">
     <div class="container">
       <p class="kick">Compare</p>
@@ -145,6 +154,6 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</div>
 </div>
 </footer>
-<script type="module" src="assets/js/pages/shop.js?v=3473b0c5"></script>
+<script type="module" src="assets/js/pages/shop.js?v=817cb9e6"></script>
 </body>
 </html>
