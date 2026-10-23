@@ -66,8 +66,8 @@ def _chapter_text(i, c):
 STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
-<h2 class="h2">Three tools. <span class="b grad">Start where you get stuck.</span></h2>
-<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets. Photoshop feels like a maze of menus? MWP Panel.</p>
+<h2 class="h2">Four tools. <span class="b grad">Start where you get stuck.</span></h2>
+<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, with a Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

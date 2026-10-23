@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lrc_preview import window as lrc_window
 from ps_preview import window as ps_window
 import presets_layout
+import plugin_layout
 from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,7 +131,7 @@ P["presets"] = dict(
                      ("Also included", [("", "Lightroom Classic plugin", "Early access. Add it once in Lightroom's Plug-in Manager; the manual is built in"),
                                         ("", "Video tutorials", "Installing and using the presets and the panel, in My downloads"),
                                         ("1", "Install guide", "A page for each program, step by step")])],
-        spec_note="Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+. The panel needs Lightroom Classic 13 or newer, on Mac or Windows.",
+        spec_note="Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+. The plugin needs Lightroom Classic 13 or newer, on Mac or Windows.",
         final_kick="MWP Presets", final_h=["Start", "your next edit."],
         final_lead="50 presets, the Lightroom Classic plugin, 50 mobile files, 33 LUTs and an install guide. Free updates, kept in your account.",
         plan=("MWP Presets", "Lightroom presets and LUTs", ["50 Lightroom presets, desktop and mobile", "33 LUTs for photo and video", "Lightroom Classic plugin included"], "Get MWP Presets"),
@@ -199,7 +200,7 @@ P["presets"] = dict(
                      ("כלול גם", [("", "תוסף ללייטרום קלאסיק", "גישה מוקדמת. מוסיפים אותו פעם אחת במנהל התוספים של לייטרום; המדריך מובנה בו"),
                                         ("", "סרטוני הדרכה", "התקנה ושימוש בפריסטים ובפאנל, בעמוד ההורדות שלי"),
                                         ("1", "מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד")])],
-        spec_note="הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה. הפאנל דורש לייטרום קלאסיק 13 ומעלה, במק או בווינדוס.",
+        spec_note="הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה. התוסף דורש לייטרום קלאסיק 13 ומעלה, במק או בווינדוס.",
         final_kick="הפריסטים של MWP", final_h=["התחילו", "את העריכה הבאה."],
         final_lead="50 פריסטים, התוסף ללייטרום קלאסיק, 50 קבצים לנייד, 33 קובצי LUT ומדריך התקנה. עדכונים בחינם, והכול נשמר בחשבון שלכם.",
         plan=("הפריסטים של MWP", "פריסטים ללייטרום וקובצי LUT", ["50 פריסטים ללייטרום, למחשב ולנייד", "33 קובצי LUT לתמונות ולווידאו", "כולל תוסף ללייטרום קלאסיק"], "לרכישת הפריסטים של MWP"),
@@ -364,6 +365,92 @@ P["field-guides"] = dict(
 )
 
 
+P["lightroom-classic"] = dict(
+    # the fourth product: no price of its own, it comes with every copy of MWP Presets, so every buy here adds mwp-presets
+    slug="mwp-presets", hero_img="86b95f19", hero_pos="88% 45%", final_img="d73281c0",
+    layout="plugin",   # its own layout: tools/plugin_layout.py
+    bundle="presets-panel",
+    en=dict(
+        name="Lightroom Classic Plugin", name_html='Lightroom Classic <span class="grad">Plugin</span>',
+        title="Lightroom Classic Plugin for Wildlife Photographers · MWP",
+        desc="A Lightroom Classic plugin for wildlife photographers: cull bursts, keyword trips and species, edit the animal, the sky or the background, and export for Instagram, web and print. Included with MWP Presets.",
+        hero_alt="A wildlife photographer behind a long lens in the mountains, photographed by Matan Wild",
+        kick="Lightroom Classic plugin · included with MWP Presets", h1=["From the card", "to the post."],
+        lead="One window inside Lightroom Classic for the whole shoot: cull the bursts, keyword the species, edit the animal, export the post. It comes with every copy of MWP Presets.",
+        cta="Get it with MWP Presets",
+        facts=["Lightroom Classic 13 or newer", "Mac and Windows", "Early access · free updates"],
+        inside_kick="Look inside", inside_h=["Seven tabs,", "one window."],
+        inside_lead="These are the plugin's real tabs and buttons. Click a tab to open it.",
+        lrc=P["presets"]["en"]["lrc"],
+        lrc_note="Interactive preview of the real tabs and buttons · Lightroom Classic 13 or newer, Mac and Windows",
+        flow_kick="How it fits your shoot", flow_h=["Sort it. Edit it.", "Share it."],
+        flow_lead="The tabs follow the order of a real day in the field, from a full card to a finished post.",
+        phases=[("Sort the shoot", "Hundreds of frames down to the few worth editing.", [0, 1]),
+                ("Edit the photo", "The animal, the sky and the colour, one tab at a time.", [2, 3, 4, 5]),
+                ("Share it", "The right size for each place, with your watermark.", [6])],
+        get=dict(kick="How you get it", h=["Included with", "MWP Presets."],
+                 lead="The plugin has no price of its own. Every copy of MWP Presets comes with it, and its updates arrive in My downloads at no cost.",
+                 points=["Everything it does is ordinary Lightroom settings, masks and collections. Nothing is locked in.",
+                         "Culling never deletes a photo.",
+                         "Early access: it works today, and new features arrive as free updates."],
+                 img="6fbe4f2a", alt="Lioness in golden grass",
+                 box_kick="One purchase", box_h="MWP Presets",
+                 box=[("50", "Lightroom presets, desktop and mobile"), ("33", "LUTs for Photoshop and video"),
+                      ("1", "Lightroom Classic plugin"), ("+", "Video tutorials and an install guide")],
+                 box_cta="Get MWP Presets", more="See the presets", more_href="/presets/"),
+        specs=[("", "Lightroom Classic plugin", "Add it once in Lightroom Classic: File › Plug-in Manager › Add"),
+               ("", "Built-in help", "A Help button in the window and a tip on every step"),
+               ("", "Install note", "Installing, updating and getting help, in the download"),
+               ("", "Video tutorials", "Installing and using the plugin, in My downloads")],
+        spec_note="Needs Lightroom Classic 13 or newer on Mac or Windows. Not for Lightroom (the cloud app), Lightroom Mobile or Photoshop.",
+        final_kick="Lightroom Classic Plugin", final_h=["Get it with", "MWP Presets."],
+        final_lead="The plugin comes with MWP Presets: 50 Lightroom presets, 33 LUTs, video tutorials and free updates.",
+        plan=("MWP Presets", "Includes the Lightroom Classic plugin", ["Lightroom Classic plugin, Mac and Windows", "50 Lightroom presets, desktop and mobile", "33 LUTs for photo and video"], "Get MWP Presets"),
+        plan2=("Presets + Panel", "Lightroom and Photoshop", ["Everything in MWP Presets, with the plugin", "MWP Panel: the Photoshop panel", "The same look in both apps"], "Get the bundle"),
+        bar=[("inside", "Look inside"), ("workflow", "How it works"), ("get", "How you get it"), ("faq", "FAQs")],
+    ),
+    he=dict(
+        name="התוסף ללייטרום קלאסיק", name_html='התוסף ללייטרום <span class="grad">קלאסיק</span>',
+        title="תוסף ללייטרום קלאסיק לצלמי חיות בר · MWP",
+        desc="תוסף ללייטרום קלאסיק לצלמי חיות בר: מיון רצפים, מילות מפתח לטיולים ולמינים, עריכה של החיה, השמיים או הרקע, וייצוא לאינסטגרם, לאתר ולהדפסה. כלול בפריסטים של MWP.",
+        hero_alt="צלם חיות בר מאחורי עדשה ארוכה בהרים, צילום: מתן וויילד",
+        kick="תוסף ללייטרום קלאסיק · כלול בפריסטים של MWP", h1=["מהכרטיס", "ועד הפרסום."],
+        lead="חלון אחד בתוך לייטרום קלאסיק לכל הצילום: ממיינים את הרצפים, מתייגים את המינים, עורכים את החיה ומייצאים לפרסום. הוא מגיע עם כל עותק של הפריסטים של MWP.",
+        cta="לקבלה עם הפריסטים",
+        facts=["לייטרום קלאסיק 13 ומעלה", "מק ו־ווינדוס", "גישה מוקדמת · עדכונים חינם"],
+        inside_kick="הצצה פנימה", inside_h=["שבע לשוניות,", "חלון אחד."],
+        inside_lead="אלה הלשוניות והכפתורים האמיתיים של התוסף. לחצו על לשונית כדי לפתוח אותה.",
+        lrc=P["presets"]["he"]["lrc"],
+        lrc_note="תצוגה מקדימה של הלשוניות והכפתורים האמיתיים, באנגלית כמו בתוסף · לייטרום קלאסיק 13 ומעלה, מק ו־ווינדוס",
+        flow_kick="איך זה משתלב בצילום", flow_h=["ממיינים. עורכים.", "משתפים."],
+        flow_lead="הלשוניות בנויות לפי סדר של יום אמיתי בשטח, מכרטיס מלא ועד פוסט מוכן.",
+        phases=[("ממיינים את הצילום", "מאות פריימים, עד המעטים ששווה לערוך.", [0, 1]),
+                ("עורכים את התמונה", "החיה, השמיים והצבע, לשונית אחר לשונית.", [2, 3, 4, 5]),
+                ("משתפים", "הגודל הנכון לכל מקום, עם סימן המים שלכם.", [6])],
+        get=dict(kick="איך מקבלים אותו", h=["כלול", "בפריסטים של MWP."],
+                 lead="לתוסף אין מחיר משלו. כל עותק של הפריסטים של MWP מגיע איתו, והעדכונים שלו מגיעים לעמוד ההורדות שלי בלי תשלום.",
+                 points=["כל מה שהוא עושה הוא הגדרות, מסכות ואוספים רגילים של לייטרום. שום דבר לא נעול.",
+                         "המיון אף פעם לא מוחק תמונה.",
+                         "גישה מוקדמת: הוא עובד כבר היום, ותכונות חדשות מגיעות כעדכונים חינמיים."],
+                 img="6fbe4f2a", alt="לביאה בעשב זהוב",
+                 box_kick="רכישה אחת", box_h="הפריסטים של MWP",
+                 box=[("50", "פריסטים ללייטרום, למחשב ולנייד"), ("33", "קובצי LUT לפוטושופ ולווידאו"),
+                      ("1", "תוסף ללייטרום קלאסיק"), ("+", "סרטוני הדרכה ומדריך התקנה")],
+                 box_cta="לרכישת הפריסטים של MWP", more="לעמוד הפריסטים", more_href="/presets/he/"),
+        specs=[("", "תוסף ללייטרום קלאסיק", "מוסיפים אותו פעם אחת בלייטרום קלאסיק: File › Plug-in Manager › Add"),
+               ("", "עזרה מובנית", "כפתור עזרה בחלון וטיפ לכל צעד"),
+               ("", "הוראות התקנה", "התקנה, עדכון וקבלת עזרה, בתוך ההורדה"),
+               ("", "סרטוני הדרכה", "התקנה ושימוש בתוסף, בעמוד ההורדות שלי")],
+        spec_note="דורש לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. לא ללייטרום (גרסת הענן), ללייטרום מובייל או לפוטושופ.",
+        final_kick="התוסף ללייטרום קלאסיק", final_h=["מקבלים אותו", "עם הפריסטים של MWP."],
+        final_lead="התוסף מגיע עם הפריסטים של MWP: ‏50 פריסטים ללייטרום, 33 קובצי LUT, סרטוני הדרכה ועדכונים בחינם.",
+        plan=("הפריסטים של MWP", "כולל את התוסף ללייטרום קלאסיק", ["תוסף ללייטרום קלאסיק, מק ו־ווינדוס", "50 פריסטים ללייטרום, למחשב ולנייד", "33 קובצי LUT לתמונות ולווידאו"], "לרכישת הפריסטים של MWP"),
+        plan2=("הפריסטים + הפאנל", "לייטרום ופוטושופ", ["כל מה שיש בפריסטים של MWP, עם התוסף", "הפאנל של MWP לפוטושופ", "אותו מראה בשתי התוכנות"], "לקבלת החבילה"),
+        bar=[("inside", "הצצה פנימה"), ("workflow", "איך זה עובד"), ("get", "איך מקבלים"), ("faq", "שאלות נפוצות")],
+    ),
+)
+
+
 # ---------------------------------------------------------------- the template
 def h(lines, tag="h2", cls="h2"):
     a, b = lines
@@ -407,7 +494,7 @@ def page(folder, lang):
     he = lang == "he"
     slug = p["slug"]
     url = f"{SITE}/{folder}/{'he/' if he else ''}"
-    proof_id = "compare" if p["proof_type"] == "ba" else "inside"
+    proof_id = "compare" if p.get("proof_type") == "ba" else "inside"
     parts = []
 
     # hero
@@ -424,124 +511,128 @@ def page(folder, lang):
 </div>
 </section>''')
 
-    # two versions of one product (MWP Panel: Photoshop and Lightroom Classic), right after the hero
-    if "versions" in c:
-        cards = "".join(f'''<a class="ver" href="#{href}" data-r style="--d:{k * 0.08:.2f}s">
-<div class="ver-ph"><img src="{img(p["versions_img"][k][0])}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["versions_img"][k][1]}"><div class="ver-top"><p class="ver-for">{esc(c.get("versions_for", [u["for"]] * 2)[k])}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
-<div class="ver-body"><p>{esc(line)}</p><ol class="ver-tabs">{"".join(f'<li><b>{i + 1}</b>{esc(t)}</li>' for i, t in enumerate(tabs))}</ol><p class="ver-req">{esc(req)}</p><span class="ver-go">{esc(go)} {ARROW}</span></div></a>'''
-                        for k, (app, badge, line, req, go, href, tabs, alt) in enumerate(c["versions"]))
-        parts.append(f'''<section class="sec" id="versions">
-<div class="wrap">
-<div class="head c" data-r><p class="kick">{esc(c["versions_kick"])}</p>{h(c["versions_h"])}<p class="lead">{esc(c["versions_lead"])}</p></div>
-<div class="vers">{cards}</div>
-</div>
-</section>''')
-
-    # the proof
-    # the proof: a gallery of slides, the next one peeking in from the edge (no tabs, nothing on the photo)
-    def gallery(slides, caps):
-        n = len(slides)
-        bar = (f'<div class="gal-bar"><p class="cap" aria-live="polite">{esc(caps[0])}</p>'
-               f'<div class="gal-nav"><span class="count"><b>01</b> / {n:02d}</span>'
-               f'<button class="gbtn" type="button" data-prev aria-label="{u["prev"]}" disabled>{BACK}</button>'
-               f'<button class="gbtn" type="button" data-nextg aria-label="{u["next"]}">{ARROW}</button></div></div>') if n > 1 else ""
-        caps_attr = esc(json.dumps(caps, ensure_ascii=False))
-        return (f'<div class="gal" data-gal data-caps="{caps_attr}" data-r><div class="gal-track">'
-                + "".join(f'<figure class="slide{" on" if k == 0 else ""}" data-k="{k}">{sl}</figure>' for k, sl in enumerate(slides))
-                + f'</div>{bar}</div>')
-    if p["proof_type"] == "ba":
-        slides = [f'''<div class="ba">
-<img class="before" src="{img(b)}" alt="{esc(c["name"])}, {esc(lab)}: {u["raw_alt"]}" loading="lazy">
-<img class="after" src="{img(a)}" alt="{esc(c["name"])}, {esc(lab)}: {u["final_alt"]}" loading="lazy">
-<span class="tag t1">{u["raw"]}</span><span class="tag t2">{u["final"]}</span>
-<span class="line"></span><span class="knob">{GRIP}</span>
-<input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
-</div>''' for (b, a), lab in zip(p["pairs_from"], c["pairs"])]
-        parts.append(f'''<section class="sec" id="compare">
-<div class="wrap">
-<div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
-{gallery(slides, c["pairs"])}
-</div>
-</section>''')
+    # the Lightroom Classic Plugin has its own layout (tools/plugin_layout.py): the hero, then its sections
+    if p.get("layout") == "plugin":
+        parts += plugin_layout.sections(p, c, u, lang, h, esc, img, lrc_window, CHECK, ARROW, price)
     else:
-        pages = p["pages"][lang]
-        slides = [f'<div class="pg"><img src="{img(x)}" alt="{esc(c["page_alts"][k])}" loading="lazy"></div>' for k, x in enumerate(pages)]
-        caps = ["" for _ in pages]   # the counter says it all
-        parts.append(f'''<section class="sec" id="inside">
-<div class="wrap">
-<div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
-{gallery(slides, caps)}
-</div>
-</section>''')
+        # two versions of one product (MWP Panel: Photoshop and Lightroom Classic), right after the hero
+        if "versions" in c:
+            cards = "".join(f'''<a class="ver" href="#{href}" data-r style="--d:{k * 0.08:.2f}s">
+    <div class="ver-ph"><img src="{img(p["versions_img"][k][0])}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["versions_img"][k][1]}"><div class="ver-top"><p class="ver-for">{esc(c.get("versions_for", [u["for"]] * 2)[k])}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
+    <div class="ver-body"><p>{esc(line)}</p><ol class="ver-tabs">{"".join(f'<li><b>{i + 1}</b>{esc(t)}</li>' for i, t in enumerate(tabs))}</ol><p class="ver-req">{esc(req)}</p><span class="ver-go">{esc(go)} {ARROW}</span></div></a>'''
+                            for k, (app, badge, line, req, go, href, tabs, alt) in enumerate(c["versions"]))
+            parts.append(f'''<section class="sec" id="versions">
+    <div class="wrap">
+    <div class="head c" data-r><p class="kick">{esc(c["versions_kick"])}</p>{h(c["versions_h"])}<p class="lead">{esc(c["versions_lead"])}</p></div>
+    <div class="vers">{cards}</div>
+    </div>
+    </section>''')
 
-    after_proof = len(parts)   # where the feature goes when it comes first (feat_first)
+        # the proof
+        # the proof: a gallery of slides, the next one peeking in from the edge (no tabs, nothing on the photo)
+        def gallery(slides, caps):
+            n = len(slides)
+            bar = (f'<div class="gal-bar"><p class="cap" aria-live="polite">{esc(caps[0])}</p>'
+                   f'<div class="gal-nav"><span class="count"><b>01</b> / {n:02d}</span>'
+                   f'<button class="gbtn" type="button" data-prev aria-label="{u["prev"]}" disabled>{BACK}</button>'
+                   f'<button class="gbtn" type="button" data-nextg aria-label="{u["next"]}">{ARROW}</button></div></div>') if n > 1 else ""
+            caps_attr = esc(json.dumps(caps, ensure_ascii=False))
+            return (f'<div class="gal" data-gal data-caps="{caps_attr}" data-r><div class="gal-track">'
+                    + "".join(f'<figure class="slide{" on" if k == 0 else ""}" data-k="{k}">{sl}</figure>' for k, sl in enumerate(slides))
+                    + f'</div>{bar}</div>')
+        if p["proof_type"] == "ba":
+            slides = [f'''<div class="ba">
+    <img class="before" src="{img(b)}" alt="{esc(c["name"])}, {esc(lab)}: {u["raw_alt"]}" loading="lazy">
+    <img class="after" src="{img(a)}" alt="{esc(c["name"])}, {esc(lab)}: {u["final_alt"]}" loading="lazy">
+    <span class="tag t1">{u["raw"]}</span><span class="tag t2">{u["final"]}</span>
+    <span class="line"></span><span class="knob">{GRIP}</span>
+    <input type="range" min="0" max="100" value="50" step="0.1" aria-label="{u["hint"]}">
+    </div>''' for (b, a), lab in zip(p["pairs_from"], c["pairs"])]
+            parts.append(f'''<section class="sec" id="compare">
+    <div class="wrap">
+    <div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
+    {gallery(slides, c["pairs"])}
+    </div>
+    </section>''')
+        else:
+            pages = p["pages"][lang]
+            slides = [f'<div class="pg"><img src="{img(x)}" alt="{esc(c["page_alts"][k])}" loading="lazy"></div>' for k, x in enumerate(pages)]
+            caps = ["" for _ in pages]   # the counter says it all
+            parts.append(f'''<section class="sec" id="inside">
+    <div class="wrap">
+    <div class="head c" data-r><p class="kick">{esc(c["proof_kick"])}</p>{h(c["proof_h"])}<p class="lead">{esc(c["proof_lead"])}</p></div>
+    {gallery(slides, caps)}
+    </div>
+    </section>''')
 
-    # what's inside: photo cards
-    inside_id = "contents" if p["proof_type"] == "pages" else "inside"
-    cards = "".join(f'''<article class="card" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"><span class="no">0{k + 1}</span></div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>'''
-                    for k, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
-    lead = f'<p class="lead">{esc(c["inside_lead"])}</p>' if c["inside_lead"] else ""
-    if p.get("ps_show"):   # MWP Panel: Photoshop as one centred showcase, like the Lightroom Classic one
-        ba, fa, areas, tall = p["ps_photo"]
-        descs = "".join(f'<p data-pw-desc="{esc(t2)}"{"" if k == 1 else " hidden"}><span class="n">0{k + 1}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
-                        for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Style", "Export"))))
-        parts.append(f'''<section class="sec tint" id="{inside_id}">
-<div class="wrap">
-<div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
-<div class="lrc pws" data-pws data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["ps_label"].split(" · ")[0])}<span class="req"> · {esc(c["ps_label"].split(" · ")[1])}</span></span></p>
-<div class="lrc-stage"><div class="psw" lang="en" dir="ltr" data-no-i18n><div class="psw-bar"><i></i><i></i><i></i><span>Photoshop</span></div>
-<div class="psw-main"><div class="psw-canvas" data-areas="{esc(json.dumps(areas))}"><div class="psw-pic{" tall" if tall else ""}"><img class="psw-after" src="{img(fa)}" alt="{esc(c["ps_alt"])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div>{f'<img class="psw-before" src="{img(ba)}" alt="" loading="lazy">' if ba else ""}</div><span class="psw-tag">Before</span><span class="psw-sim">Simulated on this page · in Photoshop the panel builds real masks</span></div>
-{ps_window("/assets/img/logo-mark.png")}</div></div></div>
-<div class="lrc-desc" aria-live="polite">{descs}</div></div>
-</div>
-</section>''')
-    else:
-        parts.append(f'''<section class="sec tint" id="{inside_id}">
-<div class="wrap" data-rail>
-<div class="rail-top"><div class="head" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
-<div class="rail-nav"><button type="button" aria-label="{u["prev"]}">{BACK}</button><button type="button" aria-label="{u["next"]}">{ARROW}</button></div></div>
-<div class="rail{" n3" if len(p["cards"]) == 3 else ""}">{cards}</div>
-</div>
-</section>''')
+        after_proof = len(parts)   # where the feature goes when it comes first (feat_first)
 
-    # a second app (MWP Panel in Lightroom Classic): the tabs as a numbered list, no photos
-    if "lrc" in c:
-        keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
-        # under the window, one line for the tab that's open (the window's own tabs switch it)
-        descs = "".join(f'<p data-lrc-desc="{keys[k]}"{"" if keys[k] == "looks" else " hidden"}><span class="n">{k + 1:02d}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
-                        for k, (t, d) in enumerate(c["lrc"]))
-        parts.append(f'''<section class="sec" id="lightroom-classic">
-<div class="wrap">
-<div class="head c" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
-<div class="lrc" data-lrc data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["lrc_note"].split(" · ")[0])}<span class="req"> · {esc(c["lrc_note"].split(" · ")[1])}</span></span></p><div class="lrc-stage">{lrc_window()}</div>
-<div class="lrc-desc" aria-live="polite">{descs}</div></div>
-</div>
-</section>''')
+        # what's inside: photo cards
+        inside_id = "contents" if p["proof_type"] == "pages" else "inside"
+        cards = "".join(f'''<article class="card" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"><span class="no">0{k + 1}</span></div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>'''
+                        for k, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
+        lead = f'<p class="lead">{esc(c["inside_lead"])}</p>' if c["inside_lead"] else ""
+        if p.get("ps_show"):   # MWP Panel: Photoshop as one centred showcase, like the Lightroom Classic one
+            ba, fa, areas, tall = p["ps_photo"]
+            descs = "".join(f'<p data-pw-desc="{esc(t2)}"{"" if k == 1 else " hidden"}><span class="n">0{k + 1}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
+                            for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Style", "Export"))))
+            parts.append(f'''<section class="sec tint" id="{inside_id}">
+    <div class="wrap">
+    <div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
+    <div class="lrc pws" data-pws data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["ps_label"].split(" · ")[0])}<span class="req"> · {esc(c["ps_label"].split(" · ")[1])}</span></span></p>
+    <div class="lrc-stage"><div class="psw" lang="en" dir="ltr" data-no-i18n><div class="psw-bar"><i></i><i></i><i></i><span>Photoshop</span></div>
+    <div class="psw-main"><div class="psw-canvas" data-areas="{esc(json.dumps(areas))}"><div class="psw-pic{" tall" if tall else ""}"><img class="psw-after" src="{img(fa)}" alt="{esc(c["ps_alt"])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div>{f'<img class="psw-before" src="{img(ba)}" alt="" loading="lazy">' if ba else ""}</div><span class="psw-tag">Before</span><span class="psw-sim">Simulated on this page · in Photoshop the panel builds real masks</span></div>
+    {ps_window("/assets/img/logo-mark.png")}</div></div></div>
+    <div class="lrc-desc" aria-live="polite">{descs}</div></div>
+    </div>
+    </section>''')
+        else:
+            parts.append(f'''<section class="sec tint" id="{inside_id}">
+    <div class="wrap" data-rail>
+    <div class="rail-top"><div class="head" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
+    <div class="rail-nav"><button type="button" aria-label="{u["prev"]}">{BACK}</button><button type="button" aria-label="{u["next"]}">{ARROW}</button></div></div>
+    <div class="rail{" n3" if len(p["cards"]) == 3 else ""}">{cards}</div>
+    </div>
+    </section>''')
 
-    # signature feature
-    fimg = p["feat_img"][lang] if isinstance(p["feat_img"], dict) else p["feat_img"]
-    ticks = "".join(f"<li>{CHECK}<span>{pt}</span></li>" for pt in c["feat_points"])
-    parts.append(f'''<section class="sec">
-<div class="wrap feat{" flip" if p["feat_flip"] else ""}">
-{f'<div class="ph live" data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["feat_live"])}</span></p>{ps_window("/assets/img/logo-mark.png")}</div>' if c.get("feat_live") else f'<div class="ph{" tall" if p.get("feat_tall") else ""}" data-r><img src="{img(fimg)}" alt="{esc(c["feat_alt"])}" loading="lazy"></div>'}
-<div data-r style="--d:.1s"><p class="kick">{esc(c["feat_kick"])}</p>{h(c["feat_h"])}<p class="lead">{esc(c["feat_lead"])}</p>{f'<ul class="ticks">{ticks}</ul>' if ticks else ""}</div>
-</div>
-</section>''')
-    if p.get("feat_first"):   # the feature right after the proof, before what's inside
-        parts.insert(after_proof, parts.pop())
+        # a second app (MWP Panel in Lightroom Classic): the tabs as a numbered list, no photos
+        if "lrc" in c:
+            keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
+            # under the window, one line for the tab that's open (the window's own tabs switch it)
+            descs = "".join(f'<p data-lrc-desc="{keys[k]}"{"" if keys[k] == "looks" else " hidden"}><span class="n">{k + 1:02d}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
+                            for k, (t, d) in enumerate(c["lrc"]))
+            parts.append(f'''<section class="sec" id="lightroom-classic">
+    <div class="wrap">
+    <div class="head c" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
+    <div class="lrc" data-lrc data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["lrc_note"].split(" · ")[0])}<span class="req"> · {esc(c["lrc_note"].split(" · ")[1])}</span></span></p><div class="lrc-stage">{lrc_window()}</div>
+    <div class="lrc-desc" aria-live="polite">{descs}</div></div>
+    </div>
+    </section>''')
 
-    # three steps (Field Guides)
-    if "steps" in p:
-        steps = "".join(f'''<div class="step" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"></div><span class="n">0{k + 1}</span><h3>{esc(t)}</h3><p>{esc(d)}</p></div>'''
-                        for k, (im, (t, d, alt)) in enumerate(zip(p["steps"][lang], c["steps"])))
-        parts.append(f'''<section class="sec" id="how">
-<div class="wrap"><div class="head" data-r><p class="kick">{esc(c["steps_kick"])}</p>{h(c["steps_h"])}</div><div class="steps">{steps}</div></div>
-</section>''')
+        # signature feature
+        fimg = p["feat_img"][lang] if isinstance(p["feat_img"], dict) else p["feat_img"]
+        ticks = "".join(f"<li>{CHECK}<span>{pt}</span></li>" for pt in c["feat_points"])
+        parts.append(f'''<section class="sec">
+    <div class="wrap feat{" flip" if p["feat_flip"] else ""}">
+    {f'<div class="ph live" data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["feat_live"])}</span></p>{ps_window("/assets/img/logo-mark.png")}</div>' if c.get("feat_live") else f'<div class="ph{" tall" if p.get("feat_tall") else ""}" data-r><img src="{img(fimg)}" alt="{esc(c["feat_alt"])}" loading="lazy"></div>'}
+    <div data-r style="--d:.1s"><p class="kick">{esc(c["feat_kick"])}</p>{h(c["feat_h"])}<p class="lead">{esc(c["feat_lead"])}</p>{f'<ul class="ticks">{ticks}</ul>' if ticks else ""}</div>
+    </div>
+    </section>''')
+        if p.get("feat_first"):   # the feature right after the proof, before what's inside
+            parts.insert(after_proof, parts.pop())
 
-    # MWP Presets has its own layout (tools/presets_layout.py): the hero, then its collections, in place of the template's middle
-    if p.get("layout") == "collections":
-        p["grip"] = GRIP
-        parts = parts[:1] + presets_layout.sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW)
+        # three steps (Field Guides)
+        if "steps" in p:
+            steps = "".join(f'''<div class="step" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"></div><span class="n">0{k + 1}</span><h3>{esc(t)}</h3><p>{esc(d)}</p></div>'''
+                            for k, (im, (t, d, alt)) in enumerate(zip(p["steps"][lang], c["steps"])))
+            parts.append(f'''<section class="sec" id="how">
+    <div class="wrap"><div class="head" data-r><p class="kick">{esc(c["steps_kick"])}</p>{h(c["steps_h"])}</div><div class="steps">{steps}</div></div>
+    </section>''')
+
+        # MWP Presets has its own layout (tools/presets_layout.py): the hero, then its collections, in place of the template's middle
+        if p.get("layout") == "collections":
+            p["grip"] = GRIP
+            parts = parts[:1] + presets_layout.sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW)
 
     # what's in the download
     def spec_rows(specs):
@@ -585,9 +676,8 @@ def page(folder, lang):
 </section>''')
 
     # product bar
-    bar_links = [(proof_id, c["proof_label"]), (inside_id, c.get("bar_inside", u["inside"])), ("faq", u["faq"])]
-    if "bar" in c:   # a page with its own layout lists its own sections
-        bar_links = c["bar"]
+    # a page with its own layout lists its own sections
+    bar_links = c["bar"] if "bar" in c else [(proof_id, c["proof_label"]), (inside_id, c.get("bar_inside", u["inside"])), ("faq", u["faq"])]
     bar = (f'<div class="pbar" aria-label="{esc(c["name"])}"><div class="wrap"><span class="nm" data-no-i18n>{c["name_html"]}</span>'
            f'<nav>{"".join(f"<a href=#{i}>{esc(t)}</a>" for i, t in bar_links)}</nav>'
            f'<span class="pp">{price(slug, lang)}</span><a class="btn sm" href="#buy" data-add-to-cart="{slug}">{u["buy"]}</a></div></div>')

@@ -661,3 +661,31 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 .mk-off *,.mk-off *::before{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){.mk *,.mk *::before{animation:none!important}.mk-raw{clip-path:inset(0 50% 0 0)}.mk-wipe{left:50%}}
 @media (max-width:600px){.mk{font-size:7.5px}.mk-lr{grid-template-columns:24% 1fr}.mk-r{display:none}.pc-media:has(.mk){aspect-ratio:auto;padding:26px 22px 18px}}
+
+/* Lightroom Classic Plugin page (tools/plugin_layout.py): the tabs by phase, and how you get it */
+.pl-phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:clamp(36px,5vw,56px)}
+.pl-phase{padding:32px 30px 28px;border-radius:var(--r);background:linear-gradient(180deg,rgba(254,251,241,.05),rgba(254,251,241,.012));border:1px solid var(--line)}
+.pl-n{margin:0;font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--gold)}
+.pl-phase h3{margin:14px 0 0;font-size:24px;font-weight:500;letter-spacing:-.015em;line-height:1.2}
+.pl-line{margin:8px 0 0;color:var(--mute);font-size:15px;line-height:1.5}
+.pl-phase ul{list-style:none;margin:22px 0 0;padding:0}
+.pl-phase li{padding:14px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.5;color:var(--ink2)}
+.pl-phase li b{display:block;color:var(--ink);font-weight:600;font-size:16px;margin-bottom:2px}
+.pl-get{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(36px,6vw,88px);align-items:center}
+.pl-box{border-radius:28px;overflow:hidden;background:linear-gradient(180deg,rgba(254,251,241,.06),rgba(254,251,241,.015));border:1px solid rgba(244,175,86,.28);box-shadow:0 40px 90px -45px rgba(244,175,86,.35)}
+.pl-box-ph{aspect-ratio:16/7;overflow:hidden}
+.pl-box-ph img{width:100%;height:100%;object-fit:cover;object-position:40% 45%}
+.pl-box-in{padding:28px 30px 30px}
+.pl-box-k{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+[dir=rtl] .pl-box-k{letter-spacing:.06em}
+.pl-box h3{margin:8px 0 0;font-size:28px;font-weight:500;letter-spacing:-.02em}
+.pl-box-l{list-style:none;margin:18px 0 0;padding:0}
+.pl-box-l li{display:grid;grid-template-columns:44px 1fr;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--line);color:var(--ink2);font-size:15px}
+.pl-box-l b{color:var(--gold2);font-size:20px;font-weight:500}
+.pl-box-buy{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
+.pl-box-pr{font-size:30px;letter-spacing:-.02em}
+.pl-box-more{display:inline-flex;align-items:center;gap:4px;margin-top:16px;color:var(--gold2);font-size:14.5px;font-weight:600;text-decoration:none}
+.pl-box-more svg{width:16px;height:16px}
+[dir=rtl] .pl-box-more svg{transform:scaleX(-1)}
+@media (max-width:900px){.pl-phases{grid-template-columns:1fr}.pl-get{grid-template-columns:1fr}}
+@media (max-width:600px){.pl-phase{padding:26px 22px 20px}.pl-box-in{padding:24px 22px}.pl-box-buy .btn{width:100%;justify-content:center}}

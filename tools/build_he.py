@@ -96,7 +96,7 @@ def walk(n, skip=False):
     yield n, skip
     if isinstance(n, El):
         cls = n.classes()
-        skip = skip or n.tag in RAW or "brand" in cls or "site-brand" in cls or "only-en" in cls
+        skip = skip or n.tag in RAW or "brand" in cls or "site-brand" in cls or "only-en" in cls or "ui-en" in cls   # ui-en: a drawn app window, in English like the app
         for k in list(n.kids):
             yield from walk(k, skip)
 

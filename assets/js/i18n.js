@@ -831,6 +831,83 @@ const HE = {
   "MWP Presets: Lightroom presets for wildlife photography": "הפריסטים של MWP: פריסטים ללייטרום לצילום חיות בר",
   "MWP Panel: Photoshop plugin for wildlife photo editing": "הפאנל של MWP: פלאגין לפוטושופ לעריכת צילומי חיות בר",
   "MWP Field Guides: nature photography guides in PDF": "מדריכי השטח של MWP: מדריכי צילום טבע ב-PDF",
+  "The MWP shop": "החנות של MWP",
+  "Four tools,": "ארבעה כלים,",
+  "one way of seeing.": "דרך אחת לראות.",
+  "Field guides for the shoot, presets and a Lightroom Classic plugin for the edit, a panel for Photoshop. Start with the app you use.": "מדריכי שטח לצילום, פריסטים ותוסף ללייטרום קלאסיק לעריכה, ופאנל לפוטושופ. התחילו מהתוכנה שאתם עובדים בה.",
+  "Show products for": "הצגת מוצרים עבור",
+  "All": "הכול",
+  "Video": "וידאו",
+  "PDF guides": "מדריכי PDF",
+  "Lightroom presets and LUTs": "פריסטים ללייטרום וקובצי LUT",
+  "Natural colour for wildlife photos, from Matan Wild's own edits.": "צבע טבעי לצילומי חיות בר, מתוך העריכות של מתן וויילד עצמו.",
+  "Works in": "עובד עם",
+  "50 Lightroom presets, 12 of them adaptive": "50 פריסטים ללייטרום, 12 מהם אדפטיביים",
+  "33 LUTs for Photoshop and video": "33 קובצי LUT לפוטושופ ולווידאו",
+  "Desktop and mobile files": "קבצים למחשב ולנייד",
+  "See the presets": "לעמוד הפריסטים",
+  "Cull, keyword, edit and export a whole shoot from one window.": "מיון, מילות מפתח, עריכה וייצוא של צילום שלם, מחלון אחד.",
+  "Lightroom Classic 13 or newer": "לייטרום קלאסיק 13 ומעלה",
+  "Seven tabs, from the card to the post": "שבע לשוניות, מהכרטיס ועד הפרסום",
+  "Culling never deletes a photo": "המיון אף פעם לא מוחק תמונה",
+  "Early access, with free updates": "גישה מוקדמת, עם עדכונים חינם",
+  "Included": "כלול",
+  "with MWP Presets": "בפריסטים של MWP",
+  "See the plugin": "לעמוד התוסף",
+  "Get it with Presets": "לקבלה עם הפריסטים",
+  "Pick the animal, the sky or the background, then an effect. The panel does the masks.": "בוחרים את החיה, את השמיים או את הרקע, ואז אפקט. הפאנל בונה את המסכות.",
+  "Photoshop 2023 or newer": "פוטושופ 2023 ומעלה",
+  "Four tabs: Prepare, Edit, Style, Export": "ארבע לשוניות: הכנה, עריכה, סגנון, ייצוא",
+  "Every edit on its own layer": "כל עריכה בשכבה משלה",
+  "User Manual and Installation Guide (PDF)": "מדריך למשתמש ומדריך התקנה (PDF)",
+  "See the panel": "לעמוד הפאנל",
+  "Know what to aim for before you press the shutter.": "לדעת למה לכוון, עוד לפני שלוחצים על הכפתור.",
+  "Any PDF reader, in English or Hebrew": "כל קורא PDF, באנגלית או בעברית",
+  "4 guides, 137 one-page lessons": "4 מדריכים, 137 שיעורים של עמוד אחד",
+  "Drills, a checklist and a cheat sheet": "תרגילים, רשימת בדיקה ודף עזר",
+  "See the guides": "לעמוד המדריכים",
+  "Nothing for that app yet.": "עדיין אין מוצר לתוכנה הזאת.",
+  "Show all four": "להצגת כל הארבעה",
+  "Help or a refund within 14 days": "עזרה או החזר תוך 14 יום",
+  "Compare": "השוואה",
+  "Which one is": "מה",
+  "for you?": "מתאים לכם?",
+  "The four side by side: what each one is, where it works and what's in the download.": "ארבעתם זה לצד זה: מה כל אחד, איפה הוא עובד ומה יש בהורדה.",
+  "Swipe the table to see all four.": "החליקו את הטבלה כדי לראות את כל הארבעה.",
+  "Lightroom Classic Plugin": "התוסף ללייטרום קלאסיק",
+  "What it is": "מה זה",
+  "Presets and LUTs: a finished look in one click": "פריסטים וקובצי LUT: מראה מוגמר בלחיצה אחת",
+  "A plugin: a window of tools inside Lightroom Classic": "תוסף: חלון כלים בתוך לייטרום קלאסיק",
+  "A panel: a window of tools inside Photoshop": "פאנל: חלון כלים בתוך פוטושופ",
+  "PDF guides: lessons for the shoot itself": "מדריכי PDF: שיעורים לצילום עצמו",
+  "Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors": "לייטרום, לייטרום קלאסיק, לייטרום מובייל, קאמרה ראו; קובצי LUT בפוטושופ ובתוכנות וידאו",
+  "Any PDF reader: computer, tablet or phone": "כל קורא PDF: מחשב, טאבלט או טלפון",
+  "Mac and Windows": "מק ו־ווינדוס",
+  "Yes, plus iPhone, iPad and Android": "כן, וגם אייפון, אייפד ואנדרואיד",
+  "Yes, and any phone or tablet": "כן, וגם כל טלפון או טאבלט",
+  "Best if you": "מתאים אם אתם",
+  "edit in Lightroom and want a strong start for every photo": "עורכים בלייטרום ורוצים נקודת פתיחה חזקה לכל תמונה",
+  "sort, keyword and edit whole shoots in Lightroom Classic": "ממיינים, מתייגים ועורכים צילומים שלמים בלייטרום קלאסיק",
+  "finish your best photos in Photoshop": "מסיימים את התמונות הטובות שלכם בפוטושופ",
+  "want to come home with better photos": "רוצים לחזור הביתה עם תמונות טובות יותר",
+  "50 presets, 50 mobile files, 33 LUTs": "50 פריסטים, 50 קבצים לנייד, 33 קובצי LUT",
+  "The plugin, built-in help, video tutorials": "התוסף, עזרה מובנית, סרטוני הדרכה",
+  "The panel, a 21-page User Manual, an Installation Guide": "הפאנל, מדריך למשתמש של 21 עמודים, מדריך התקנה",
+  "4 guides, 137 lessons, in English or Hebrew": "4 מדריכים, 137 שיעורים, באנגלית או בעברית",
+  "Price": "מחיר",
+  "Every bundle with MWP Presets includes the Lightroom Classic plugin.": "כל חבילה עם הפריסטים של MWP כוללת את התוסף ללייטרום קלאסיק.",
+  "Three ibex at dusk, edited with MWP Presets": "שלושה יעלים בדמדומים, ערוכים עם הפריסטים של MWP",
+  "A wildlife photographer behind a long lens in the mountains": "צלם חיות בר מאחורי עדשה ארוכה בהרים",
+  "Young red fox looking at the camera": "שועל אדום צעיר מביט במצלמה",
+  "A page from MWP Field Guides: Clean background": "עמוד מתוך מדריכי השטח של MWP: רקע נקי",
+  "Compare the four products": "השוואה בין ארבעת המוצרים",
+  "Lightroom Plugin": "תוסף ללייטרום",
+  "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photoshop Panel & Guides · MWP Shop": "פריסטים ללייטרום, תוסף ללייטרום קלאסיק, פאנל לפוטושופ ומדריכים לצילום חיות בר · החנות של MWP",
+  "Four tools for wildlife photographers by Matan Wild: Lightroom presets and LUTs, a Lightroom Classic plugin, a Photoshop panel and PDF field guides. Compare them, or save with a bundle.": "ארבעה כלים לצלמי חיות בר מאת מתן וויילד: פריסטים ללייטרום וקובצי LUT, תוסף ללייטרום קלאסיק, פאנל לפוטושופ ומדריכי שטח ב-PDF. השוו ביניהם, או חסכו עם חבילה.",
+  "Four tools.": "ארבעה כלים.",
+  "Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, with a Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.": "לא בטוחים מה עושה צילום חיות בר חזק? מתחילים במדריכי השטח. לייטרום מבלבל? הפריסטים של MWP, עם תוסף ללייטרום קלאסיק. פוטושופ מרגיש כמו מבוך של תפריטים? הפאנל של MWP.",
+  "Yes. MWP Presets come with our": "כן. הפריסטים של MWP מגיעים עם ה",
+  "(Lightroom Classic 13 or newer): cull, organise, edit and export a whole shoot in one window. It's in early access, with free updates.": "(לייטרום קלאסיק 13 ומעלה): מיון, ארגון, עריכה וייצוא של צילום שלם, בחלון אחד. הוא בגישה מוקדמת, עם עדכונים חינמיים.",
 };
 
 // Text built from numbers or names.
@@ -852,7 +929,7 @@ const PATTERNS = [
     (m) => `הרישיון אישי: הפאנל עובד כשמתחברים אליו עם המייל הזה. אפשר להשתמש בו בעד ${m[1]} מחשבים בו־זמנית. החלפתם מחשב? הסירו את הישן כאן.`],
 ];
 
-const SALES = { "presets/": "presets/he/", "panel/": "panel/he/", "field-guides/": "field-guides/he/" };
+const SALES = { "presets/": "presets/he/", "lightroom-classic/": "lightroom-classic/he/", "panel/": "panel/he/", "field-guides/": "field-guides/he/" };
 
 function translate(text) {
   const core = text.replace(/\s+/g, " ").trim();
@@ -949,7 +1026,7 @@ function productName(el) {
 function walk(root) {
   if (root.nodeType === 3) {
     const el = root.parentElement;
-    if (!el || el.closest(".brand, .site-brand, script, style, .only-en")) return;
+    if (!el || el.closest(".brand, .site-brand, script, style, .only-en, .ui-en")) return;
     const t = hebrew(root.nodeValue);
     if (t !== root.nodeValue) root.nodeValue = t;
     return;
@@ -962,7 +1039,7 @@ function walk(root) {
       if (t) root.setAttribute("aria-label", t.trim());
       return;
     }
-    if (root.closest(".only-en")) return;   // the English copy, hidden on the Hebrew site
+    if (root.closest(".only-en, .ui-en")) return;   // the English copy, hidden on the Hebrew site; a drawn app window, in English like the app
     if (productName(root)) return;
     for (const a of ATTRS) {
       const v = root.getAttribute(a);

@@ -1,5 +1,5 @@
 """Generates the MWP's static pages with one shared head, header and footer."""
-import re, os, sys
+import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD
 ROOT = sys.argv[1]
@@ -199,10 +199,7 @@ page("index.html",
 
 CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
-# The three products (wording from the home page) and the bundles (the home page's bundle cards)
-TILES = [("presets/", "6fbe4f2a5b5d7d1f0f7c3a1c9fb2e0a5", "Lightroom presets", "Presets", "A natural starting point for every wildlife photo", "mwp-presets", "MWP Presets: Lightroom presets for wildlife photography"),
-         ("panel/", "866c1bdb5cf29c21c1a04f6fc87b03e9", "Photoshop panel", "Panel", "Photoshop for wildlife. No Photoshop skills needed.", "mwp-panel", "MWP Panel: Photoshop plugin for wildlife photo editing"),
-         ("field-guides/", "5275cc7bcd4fb7560d8f7163592e3122", "PDF field guides", "Field Guides", "Know what to aim for before you press the shutter", "mwp-field-guides", "MWP Field Guides: nature photography guides in PDF")]
+# The bundles (the home page's bundle cards)
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: presets, LUTs and the Lightroom Classic plugin", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", False),
            ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["MWP Presets: presets, LUTs and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "User manual and install guide"], "Get the bundle", False),
            ("The full set", "From the shot to the share", "full-set", ["MWP Presets: presets, LUTs and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
@@ -213,10 +210,102 @@ def _img(prefix):
     return "assets/pages/img/" + os.path.basename(sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix[:8] + "*")))[0])
 
 
-def _tile(href, im, tag, name, line, slug, alt):
-    return (f'<a class="tile" href="/{href}"><img src="{_img(im)}" alt="{alt}" loading="lazy"><p class="kick">{tag}</p>'
-            f'<h2 data-no-i18n>MWP <span class="grad">{name}</span></h2><p>{line}</p>'
-            f'<div class="foot"><span class="price"><span data-price="{slug}" data-no-i18n>$0.00</span></span><span class="go">Explore {GO}</span></div></a>')
+# The four products (Oct 2026 makeover). Each card says what the product is, which app it works in and what's in it,
+# with a small product mockup made of real material: the RAW and final of one photo, the plugin's own tabs and looks,
+# the Photoshop panel's own buttons, a real guide page. The Lightroom Classic plugin has no price of its own: it comes
+# with MWP Presets, so its button adds MWP Presets (Jeinna, 22 Oct 2026).
+# Filters by app (data-apps) in shop.js; "Compare" lines the four up; the bundles follow.
+PRODUCTS = [
+    dict(key="presets", href="presets/", slug="mwp-presets", type="Lightroom presets and LUTs", name="Presets",
+         line="Natural colour for wildlife photos, from Matan Wild's own edits.",
+         apps=["lightroom", "classic", "mobile", "video"], works="Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw",
+         pts=["50 Lightroom presets, 12 of them adaptive", "33 LUTs for Photoshop and video", "Desktop and mobile files"],
+         cta="Add to cart", more="See the presets"),
+    dict(key="plugin", href="lightroom-classic/", slug="mwp-presets", type="Lightroom Classic plugin", name="Lightroom Classic Plugin",
+         line="Cull, keyword, edit and export a whole shoot from one window.",
+         apps=["classic"], works="Lightroom Classic 13 or newer",
+         pts=["Seven tabs, from the card to the post", "Culling never deletes a photo", "Early access, with free updates"],
+         cta="Get it with Presets", more="See the plugin", included=True),
+    dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop panel", name="Panel",
+         line="Pick the animal, the sky or the background, then an effect. The panel does the masks.",
+         apps=["photoshop"], works="Photoshop 2023 or newer",
+         pts=["Four tabs: Prepare, Edit, Style, Export", "Every edit on its own layer", "User Manual and Installation Guide (PDF)"],
+         cta="Add to cart", more="See the panel"),
+    dict(key="guides", href="field-guides/", slug="mwp-field-guides", type="PDF field guides", name="Field Guides",
+         line="Know what to aim for before you press the shutter.",
+         apps=["pdf"], works="Any PDF reader, in English or Hebrew",
+         pts=["4 guides, 137 one-page lessons", "Composition, colour, light and planning", "Drills, a checklist and a cheat sheet"],
+         cta="Add to cart", more="See the guides"),
+]
+FILTERS = [("all", "All"), ("lightroom", "Lightroom"), ("classic", "Lightroom Classic"), ("photoshop", "Photoshop"), ("video", "Video"), ("pdf", "PDF guides")]
+LOOK = ["bw", "moody", "golden", "bluehour"]
+
+
+def _media(k):
+    if k == "presets":   # the RAW and Matan's final of the same photo, split down the middle
+        return (f'<div class="sp-ba"><img src="{_img("fbaf19ae")}" alt="Three ibex at dusk, edited with MWP Presets" loading="lazy">'
+                f'<img class="raw" src="{_img("3c14b23d")}" alt="" loading="lazy"><i></i>'
+                f'<span class="t l" data-no-i18n>RAW</span><span class="t r" data-no-i18n>FINAL</span></div>')
+    if k == "plugin":    # the plugin's window (its words stay in English, like the plugin)
+        tabs = "".join(f'<b{" class=on" if t == "Looks" else ""}>{t}</b>' for t in ("Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"))
+        looks = "".join(f'<img src="assets/pages/img/lrc/look_{x}.png" alt="" loading="lazy">' for x in LOOK)
+        return (f'<div class="sp-scene"><img class="bg" src="{_img("86b95f19")}" alt="A wildlife photographer behind a long lens in the mountains" loading="lazy">'
+                f'<div class="sp-win ui-en" lang="en" dir="ltr" data-no-i18n aria-hidden="true"><p class="bar"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></p>'
+                f'<p class="tabs">{tabs}</p><div class="looks">{looks}</div><p class="sl"><i></i></p></div></div>')
+    if k == "panel":     # the photo with the panel docked beside it
+        chips = "".join(f'<b{" class=on" if t == "Subject" else ""}>{t}</b>' for t in ("Subject", "Eye", "Sky", "Background"))
+        fx = "".join(f'<b{" class=on" if t == "Pop" else ""}>{t}</b>' for t in ("Pop", "Brighten", "Darken", "Warm", "Cool", "Glow"))
+        return (f'<div class="sp-scene ps"><img class="bg" src="{_img("8929f94d")}" alt="Young red fox looking at the camera" loading="lazy">'
+                f'<div class="sp-win dock ui-en" lang="en" dir="ltr" data-no-i18n aria-hidden="true"><p class="bar"><span>MWP Panel · Photoshop</span></p>'
+                f'<p class="h">1 · What to edit</p><p class="chips">{chips}</p><p class="h">2 · Effect</p><p class="grid">{fx}</p><p class="sl"><i></i></p></div></div>')
+    return (f'<div class="sp-pages"><img class="p2" src="{_img("4b0264b3")}" alt="" loading="lazy">'
+            f'<img class="p1" src="{_img("ad1aed91")}" alt="A page from MWP Field Guides: Clean background" loading="lazy"></div>')
+
+
+def _card(d, n):
+    pts = "".join(f"<li>{CHECK_G}<span>{x}</span></li>" for x in d["pts"])
+    name = (f'<h2 data-no-i18n>MWP <span class="grad">{d["name"]}</span></h2>' if d["key"] != "plugin"
+            # the Hebrew name runs the other way ("התוסף ללייטרום קלאסיק"), so it has its own copy, shown only on the Hebrew page
+            else '<h2 class="only-en">Lightroom Classic <span class="grad">Plugin</span></h2>'
+                 '<h2 class="only-he" lang="he" data-no-i18n>התוסף ללייטרום <span class="grad">קלאסיק</span></h2>')
+    if d.get("included"):
+        price = ('<div class="sp-price inc"><span class="inc-t">Included</span><span class="inc-s">with MWP Presets</span></div>')
+    else:
+        price = f'<div class="sp-price"><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></div>'
+    return (f'<article class="sp-card" id="{d["key"]}" data-apps="{" ".join(d["apps"])}" style="--i:{n}">'
+            f'<a class="sp-media" href="{d["href"]}" tabindex="-1" aria-hidden="true">{_media(d["key"])}</a>'
+            f'<div class="sp-body"><p class="sp-type"><span class="sp-n">0{n + 1}</span><span>{d["type"]}</span></p>'
+            f'<a class="sp-name" href="{d["href"]}">{name}</a><p class="sp-line">{d["line"]}</p>'
+            f'<p class="sp-works"><span>Works in</span> <b>{d["works"]}</b></p><ul class="sp-pts">{pts}</ul>'
+            f'<div class="sp-foot">{price}<div class="sp-acts"><a class="sp-more" href="{d["href"]}">{d["more"]}</a>'
+            f'<a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">{d["cta"]}</a></div></div></div></article>')
+
+
+# The comparison: one row per question a buyer asks, one column per product
+COMPARE = [
+    ("What it is", ["Presets and LUTs: a finished look in one click", "A plugin: a window of tools inside Lightroom Classic", "A panel: a window of tools inside Photoshop", "PDF guides: lessons for the shoot itself"]),
+    ("Works in", ["Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Any PDF reader: computer, tablet or phone"]),
+    ("Mac and Windows", ["Yes, plus iPhone, iPad and Android", "Yes", "Yes", "Yes, and any phone or tablet"]),
+    ("Best if you", ["edit in Lightroom and want a strong start for every photo", "sort, keyword and edit whole shoots in Lightroom Classic", "finish your best photos in Photoshop", "want to come home with better photos"]),
+    ("What you get", ["50 presets, 50 mobile files, 33 LUTs", "The plugin, built-in help, video tutorials", "The panel, a 21-page User Manual, an Installation Guide", "4 guides, 137 lessons, in English or Hebrew"]),
+]
+
+
+def _compare():
+    cols = "".join(f'<th scope="col"><a href="{d["href"]}">{("MWP " + d["name"]) if d["key"] != "plugin" else "Lightroom Classic Plugin"}</a><span>{d["type"]}</span></th>' for d in PRODUCTS)
+    rows = "".join(f'<tr><th scope="row">{q}</th>{"".join(f"<td>{a}</td>" for a in ans)}</tr>' for q, ans in COMPARE)
+    price = ("<tr class=\"pr\"><th scope=\"row\">Price</th>"
+             + "".join(('<td><b>Included</b><span>with MWP Presets</span></td>' if d.get("included")
+                        else f'<td><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b></td>') for d in PRODUCTS) + "</tr>")
+    return f'<div class="sp-table" tabindex="0" role="region" aria-label="Compare the four products"><table><thead><tr><td></td>{cols}</tr></thead><tbody>{rows}{price}</tbody></table></div>'
+
+
+def _itemlist():
+    """schema.org ItemList of the four product pages, for search engines."""
+    data = {"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [
+        {"@type": "ListItem", "position": n + 1, "url": f"https://shop.mw.photography/{d['href']}",
+         "name": ("MWP " + d["name"]) if d["key"] != "plugin" else "MWP Lightroom Classic Plugin"} for n, d in enumerate(PRODUCTS)]}
+    return '<script type="application/ld+json">' + json.dumps(data) + "</script>"
 
 
 def _bundle(name, sub, slug, pts, cta, hi):
@@ -227,27 +316,41 @@ def _bundle(name, sub, slug, pts, cta, hi):
             f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
 
 
-page("shop.html", "Shop Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP",
- "All MWP products in one place: Lightroom presets, a Photoshop plugin and nature photography field guides by Matan Wild, alone or in bundles. Instant download, free updates.",
- f"""  <section class="page-hero">
+page("shop.html", "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photoshop Panel &amp; Guides · MWP Shop",
+ "Four tools for wildlife photographers by Matan Wild: Lightroom presets and LUTs, a Lightroom Classic plugin, a Photoshop panel and PDF field guides. Compare them, or save with a bundle.",
+ f"""  <section class="page-hero sp-hero">
     <div class="container">
-      <p class="kick">The collection</p>
-      <h1 class="display" id="shop-title">All products</h1>
-      <p class="lead">Tools for wildlife and nature photographers, from the shoot to the share.</p>
+      <p class="kick">The MWP shop</p>
+      <h1 class="display" id="shop-title">Four tools, <span class="grad">one way of seeing.</span></h1>
+      <p class="lead">Field guides for the shoot, presets and a Lightroom Classic plugin for the edit, a panel for Photoshop. Start with the app you use.</p>
+      <div class="sp-filter" role="group" aria-label="Show products for">{"".join(f'<button type="button" data-filter="{k}" aria-pressed="{str(k == 'all').lower()}">{t}</button>' for k, t in FILTERS)}</div>
     </div>
   </section>
-  <section class="section--tight" aria-labelledby="shop-title">
+  <section class="section--tight sp-grid-sec" aria-labelledby="shop-title">
     <div class="container">
-      <div class="shop-tiles">{"".join(_tile(*t) for t in TILES)}</div>
+      <div class="sp-grid">{"".join(_card(d, n) for n, d in enumerate(PRODUCTS))}</div>
+      <p class="sp-none" hidden>Nothing for that app yet. <button type="button" data-filter="all">Show all four</button></p>
+      <ul class="sp-trust"><li>Instant download</li><li>Secure checkout</li><li>Free updates</li><li>Help or a refund within 14 days</li></ul>
+    </div>
+  </section>
+  <section class="section" id="compare" aria-labelledby="compare-h">
+    <div class="container">
+      <p class="kick">Compare</p>
+      <h2 class="display sp-h2" id="compare-h">Which one is <span class="grad">for you?</span></h2>
+      <p class="lead">The four side by side: what each one is, where it works and what's in the download.</p>
+      <p class="sp-swipe">Swipe the table to see all four.</p>
+      {_compare()}
     </div>
   </section>
   <section class="section" id="bundles" aria-labelledby="bundles-h">
     <div class="container">
       <p class="kick">Bundles</p>
-      <h2 class="display" id="bundles-h" style="font-size:clamp(34px,4.4vw,64px)">Shoot with the guides. <span class="grad">Finish with the tools.</span></h2>
+      <h2 class="display sp-h2" id="bundles-h">Shoot with the guides. <span class="grad">Finish with the tools.</span></h2>
+      <p class="lead">Every bundle with MWP Presets includes the Lightroom Classic plugin.</p>
       <div class="bundles">{"".join(_bundle(*b) for b in BUNDLES)}</div>
     </div>
-  </section>""", "shop.js",
+  </section>
+  {_itemlist()}""", "shop.js",
  extra_head='\n  <link rel="alternate" hreflang="en" href="https://shop.mw.photography/shop/"><link rel="alternate" hreflang="he" href="https://shop.mw.photography/shop/he/"><link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/shop/">',
  early='\n  <script>try{if(localStorage.getItem("mwp_lang")==="he")location.replace("/shop/he/"+location.search+location.hash)}catch(e){}</script>')
 
