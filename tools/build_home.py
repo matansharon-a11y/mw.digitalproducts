@@ -24,6 +24,7 @@ EXT = '<svg class="ext" width="16" height="16" viewBox="0 0 24 24" fill="none" s
 ARROW = '<svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 
 home_css = """
+.faq-head .h2{margin-top:0}   /* the FAQs heading alone, no label above it */
 /* ---- home only ---- */
 .skip{position:absolute;inset-inline-start:16px;top:-60px;background:#FEFBF1;color:#0A0908;padding:10px 16px;border-radius:64px;font-weight:700;z-index:50}
 .skip:focus{top:12px}
@@ -272,12 +273,11 @@ html = f'''<!doctype html>
 
 <section class="sec" id="faq">
 <div class="wrap">
-<div class="head">
-<p class="kick">Before you buy</p>
+<div class="head faq-head">
 <h2 class="h2">FAQs</h2>
 </div>
 <div class="faq">
-<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/lightroom-classic/">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It's sold on its own, and every bundle with MWP Presets includes it.</div></details>
+<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/presets/#plugin">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It's sold on its own, and every bundle with MWP Presets includes it.</div></details>
 <details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Panel</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>

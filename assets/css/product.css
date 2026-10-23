@@ -748,3 +748,21 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 :is(#look,#collections,#luts,#plugin,#inside,#workflow,#get) .lead{margin-top:12px;font-size:16px}
 #adaptive .pc-feat-h{font-size:clamp(28px,3vw,40px)}
 .pl-phases{margin-top:clamp(26px,3vw,40px)}
+/* FAQs: a heading alone, no label above it (23 Oct 2026) */
+.faq-head .h2{margin-top:0}
+/* The Lightroom page (23 Oct 2026): two separate products. #choose shows them side by side, each with its own
+   price and button; each product's part of the page opens with a strip of its own (name, price, button). */
+#choose{padding-top:clamp(40px,5vw,72px)}
+.pc-pick .pc-body{gap:10px}
+.pc-meta{margin:0;font-size:13.5px;color:var(--mute)}
+.pc-buy{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:10px}
+.pc-buy-pr{font-size:28px;letter-spacing:-.02em}
+.pc-buy-pr:has(> [data-price]:empty){display:none}
+.pc-pick .pc-cta{margin-top:4px;padding-top:0}
+#presets,#plugin{padding:clamp(40px,5vw,64px) 0 0}
+.pc-strip{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px 32px;padding-bottom:clamp(20px,2.5vw,28px);border-bottom:1px solid var(--line)}
+.pc-strip .kick{color:var(--gold2)}
+.pc-strip-h{margin:8px 0 0;font-size:clamp(32px,3.6vw,52px);font-weight:400;letter-spacing:-.03em;line-height:1.05}
+.pc-strip .pc-buy{margin-top:0}
+#presets + #look,#plugin + #inside{padding-top:clamp(40px,5vw,64px)}
+@media (max-width:600px){.pc-strip{align-items:flex-start;flex-direction:column}.pc-buy .btn{flex:1;justify-content:center}}

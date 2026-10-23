@@ -224,7 +224,7 @@ PRODUCTS = [
          line="50 presets from Matan Wild's own edits, for desktop and phone.",
          works="Lightroom · Lightroom Classic · Mobile · Camera Raw",
          alone="No plugin needed.", cta="Add MWP Presets to cart", more="Details"),
-    dict(key="plugin", href="lightroom-classic/", slug="mwp-lightroom-plugin", type="Plugin · Lightroom Classic 13 or newer", name="Lightroom Classic Plugin",
+    dict(key="plugin", href="presets/#plugin", slug="mwp-lightroom-plugin", type="Plugin · Lightroom Classic 13 or newer", name="Lightroom Classic Plugin",
          line="Cull, keyword, edit and export a whole shoot in one window.",
          works="Lightroom Classic 13+ · Mac and Windows",
          alone="No presets needed.", cta="Add the plugin to cart", more="Details"),
@@ -328,7 +328,6 @@ page("shop.html", "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photosh
   <section class="section--tight sp-top" aria-labelledby="shop-title">
     <div class="container">
       <div class="sp-duo">{_cards(["presets", "plugin"])}</div>
-      <p class="sp-both"><span>Want both?</span> Every bundle with MWP Presets includes the plugin. <a href="#bundles">See the bundles</a></p>
     </div>
   </section>
   <section class="section sp-more-sec" id="more" aria-labelledby="more-h">

@@ -97,7 +97,7 @@ function bindGallery(slides) {
 async function load() {
   if (!slug) { location.replace("/shop/"); return; }
   // The four MWP products have their own pages; bundles are on the shop page.
-  const HOME = { "mwp-presets": "/presets/", "mwp-lightroom-plugin": "/lightroom-classic/", "mwp-panel": "/panel/", "mwp-field-guides": "/field-guides/",
+  const HOME = { "mwp-presets": "/presets/", "mwp-lightroom-plugin": "/presets/#plugin", "mwp-panel": "/panel/", "mwp-field-guides": "/field-guides/",
     "presets-field-guides": "/shop/#bundles", "presets-panel": "/shop/#bundles", "field-guides-panel": "/shop/#bundles", "full-set": "/shop/#bundles" };
   if (HOME[slug]) { location.replace(HOME[slug]); return; }
   try {

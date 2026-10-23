@@ -694,6 +694,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 }
 
 
+.faq-head .h2{margin-top:0}   /* the FAQs heading alone, no label above it */
 /* ---- home only ---- */
 .skip{position:absolute;inset-inline-start:16px;top:-60px;background:#FEFBF1;color:#0A0908;padding:10px 16px;border-radius:64px;font-weight:700;z-index:50}
 .skip:focus{top:12px}
@@ -822,7 +823,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <nav class="nav site-header" aria-label="ראשי">
 <div class="wrap container">
 <a class="brand" href="/he/" aria-label="MWP, דף הבית"><img src="/assets/img/logo-mark.png" alt="MWP" width="36" height="38"></a>
-<div class="links"><a href="/presets/he/">פריסטים ללייטרום</a><a href="/lightroom-classic/he/">תוסף ללייטרום</a><a href="/panel/he/">פאנל לפוטושופ</a><a href="/field-guides/he/">מדריכי השטח</a><a href="/shop/he/">השוואה</a><a href="/he/#bundles">חבילות</a><a href="/he/#about">על מתן</a></div>
+<div class="links"><a href="/presets/he/">לייטרום</a><a href="/panel/he/">פאנל לפוטושופ</a><a href="/field-guides/he/">מדריכי השטח</a><a href="/shop/he/">השוואה</a><a href="/he/#bundles">חבילות</a><a href="/he/#about">על מתן</a></div>
 <div class="navr"></div>
 <button class="nav-menu" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="site-links"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/></path><path class="m2" d="M4 16h16"/></path></svg></button>
 </div>
@@ -1067,12 +1068,11 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
 
 <section class="sec" id="faq">
 <div class="wrap">
-<div class="head">
-<p class="kick">לפני שקונים</p>
+<div class="head faq-head">
 <h2 class="h2">שאלות נפוצות</h2>
 </div>
 <div class="faq">
-<details><summary>יש משהו ללייטרום קלאסיק?</summary><div>כן. ה<a href="/lightroom-classic/he/">תוסף ללייטרום קלאסיק</a> שלנו (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילום שלם בחלון אחד. הוא נמכר בנפרד, וכל חבילה עם הפריסטים של MWP כוללת אותו.</div></details>
+<details><summary>יש משהו ללייטרום קלאסיק?</summary><div>כן. ה<a href="/presets/he/#plugin">תוסף ללייטרום קלאסיק</a> שלנו (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילום שלם בחלון אחד. הוא נמכר בנפרד, וכל חבילה עם הפריסטים של MWP כוללת אותו.</div></details>
 <details><summary>במה כדאי להתחיל?</summary><div>אם אתם רוצים לצלם טוב יותר, התחילו עם <a href="/field-guides/he/">מדריכי השטח של MWP</a>. אם אתם עורכים בלייטרום, <a href="/presets/he/">הפריסטים של MWP</a>. אם אתם מסיימים את התמונות בפוטושופ, <a href="/panel/he/">הפאנל של MWP</a>.</div></details>
 <details><summary>איך מקבלים את הקבצים אחרי התשלום?</summary><div>מקבלים מייל מיד. פותחים את <a href="/account/">ההורדות שלי</a>, נכנסים לחשבון MWP שלכם, וכל מה שקניתם נמצא שם.</div></details>
 <details><summary>אפשר להוריד שוב אחר כך?</summary><div>כן. נכנסים להורדות שלי מתי שרוצים, גם בשביל עדכונים עתידיים למוצרים שכבר קניתם.</div></details>
@@ -1106,7 +1106,7 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
 <footer class="site-foot">
 <div class="wrap container">
 <div class="sf-brand">אם־דבליו פוטו טורס</div>
-<nav class="sf-links" aria-label="קישורים"><a href="/presets/he/">פריסטים ללייטרום</a><a href="/lightroom-classic/he/">תוסף ללייטרום קלאסיק</a><a href="/panel/he/">פאנל לפוטושופ</a><a href="/field-guides/he/">מדריכי צילום</a><a href="/shop/he/">כל המוצרים</a><a href="/account/">ההורדות שלי</a><a href="/support/">פנייה לתמיכה</a><a href="/legal/#refunds">החזרים</a><a href="/legal/#terms">תנאים</a><a href="/legal/#privacy">פרטיות</a></nav>
+<nav class="sf-links" aria-label="קישורים"><a href="/presets/he/">פריסטים ללייטרום</a><a href="/presets/he/#plugin">תוסף ללייטרום קלאסיק</a><a href="/panel/he/">פאנל לפוטושופ</a><a href="/field-guides/he/">מדריכי צילום</a><a href="/shop/he/">כל המוצרים</a><a href="/account/">ההורדות שלי</a><a href="/support/">פנייה לתמיכה</a><a href="/legal/#refunds">החזרים</a><a href="/legal/#terms">תנאים</a><a href="/legal/#privacy">פרטיות</a></nav>
 <div class="sf-credit">כל הצילומים: מתן וויילד · contact@matanwildphotography.com</div>
 </div>
 </footer>
