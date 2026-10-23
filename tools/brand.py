@@ -102,7 +102,7 @@ html[lang=he] .plans .plan .small,html[lang=he] .plans .plan .tagx,html[lang=he]
 # ---------------------------------------------------------------- one header and footer for the whole site
 # The same menu on every page (home, sales pages, shop pages), in the home page's look. Absolute links, so
 # they work from any folder; the English sales pages send Hebrew visitors to their Hebrew page by themselves.
-SITE_LINKS = [("/presets/", "Presets", "פריסטים"), ("/panel/", "Panel", "פאנל"), ("/field-guides/", "Field Guides", "מדריכי השטח"),
+SITE_LINKS = [("/presets/", "Presets", "פריסטים"), ("/panel/", "Photoshop Panel", "פאנל לפוטושופ"), ("/field-guides/", "Field Guides", "מדריכי השטח"),
               ("/#bundles", "Bundles", "חבילות"), ("/#about", "About Matan", "על מתן")]
 MENU_ICON = ('<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" '
              'stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg>')
@@ -129,7 +129,7 @@ def menu_button(lang="en"):
     return f'<button class="nav-menu" type="button" aria-label="{label}" aria-expanded="false" aria-controls="site-links">{MENU_ICON}</button>'
 
 
-FOOTER_LINKS = [("/presets/", "Lightroom presets", "פריסטים ללייטרום"), ("/panel/", "Photoshop plugin", "פלאגין לפוטושופ"),
+FOOTER_LINKS = [("/presets/", "Lightroom presets", "פריסטים ללייטרום"), ("/panel/", "Photoshop panel", "פאנל לפוטושופ"),
                 ("/field-guides/", "Photography guides", "מדריכי צילום"), ("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
                 ("/support/", "Contact support", "פנייה לתמיכה"), ("/legal/#refunds", "Refunds", "החזרים"),
                 ("/legal/#terms", "Terms", "תנאים"), ("/legal/#privacy", "Privacy", "פרטיות")]

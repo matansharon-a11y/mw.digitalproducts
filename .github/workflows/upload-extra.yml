@@ -9,7 +9,7 @@ on:
     inputs:
       slug: { description: "Product slug", default: "mwp-presets", required: true }
       file_key: { description: "Key", default: "lightroom-classic", required: true }
-      label: { description: "Button in My downloads", default: "Lightroom Classic panel", required: true }
+      label: { description: "Button in My downloads", default: "Lightroom Classic plugin", required: true }
       version: { description: "Version", required: true }
       file_name: { description: "File name (.zip)", required: true }
 

@@ -20,9 +20,9 @@ CHAPTERS = [
          title="A natural starting point for every photo",
          body=["50 Lightroom presets made from Matan Wild's own wildlife and landscape edits. 12 are adaptive: they find the animal, the sky and the background and treat each one on its own.",
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
-         points=["50 Lightroom presets, 12 adaptive", "A panel for Lightroom Classic", "50 mobile files and 33 LUTs"],
+         points=["50 Lightroom presets, 12 adaptive", "A Lightroom Classic plugin", "50 mobile files and 33 LUTs"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
-    dict(step="Finish", tag="Photoshop plugin", name="Panel", slug="mwp-panel", href="panel/",
+    dict(step="Finish", tag="Photoshop panel", name="Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Photoshop, without the maze of menus",
          body=["Pick the animal, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
@@ -39,7 +39,7 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="wrap st-hero-in">
 <p class="kick st-in" style="--i:0">MWP · by wildlife photographer Matan Wild</p>
 <h1 class="st-h1"><span class="st-l"><span style="--i:1">Wildlife,</span></span> <span class="st-l"><span class="grad" style="--i:2">as you saw it.</span></span></h1>
-<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop plugin and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.</p>
+<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop panel and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout<span aria-hidden="true">·</span>Free updates</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Find your tool</a></div>
 </div>

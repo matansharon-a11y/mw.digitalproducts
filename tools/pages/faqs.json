@@ -10,12 +10,12 @@
     "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro."
    },
    {
-    "q": "What is the Lightroom Classic panel?",
-    "a": "A panel that comes with MWP Presets and works inside Lightroom Classic 13 or newer, on Mac or Windows. It follows a whole shoot: cull bursts, organise trips and species, edit the animal, the sky or the background, and export. It's in early access: it works today, and new features arrive as free updates in My downloads. Everything it does is ordinary Lightroom settings, masks and collections, so nothing is locked in."
+    "q": "What is the Lightroom Classic plugin?",
+    "a": "A plugin that comes with MWP Presets and works inside Lightroom Classic 13 or newer, on Mac or Windows. It follows a whole shoot: cull bursts, organise trips and species, edit the animal, the sky or the background, and export. It's in early access: it works today, and new features arrive as free updates in My downloads. Everything it does is ordinary Lightroom settings, masks and collections, so nothing is locked in. Once installed, its window in Lightroom is titled MWP Panel."
    },
    {
     "q": "Presets or Panel: which do I need?",
-    "a": "If you edit in Lightroom, MWP Presets: 50 presets, plus a panel for Lightroom Classic. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
+    "a": "If you edit in Lightroom, MWP Presets: 50 presets, plus a Lightroom Classic plugin. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
    },
    {
     "q": "Can I use them on my phone only?",
@@ -52,12 +52,12 @@
     "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו."
    },
    {
-    "q": "מה זה הפאנל ללייטרום קלאסיק?",
-    "a": "פאנל שמגיע עם הפריסטים של MWP ועובד בתוך לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא מלווה צילום שלם: מיון רצפים, ארגון טיולים ומינים, עריכה של החיה, השמיים או הרקע, וייצוא. הוא בגישה מוקדמת: הוא עובד כבר היום, ותכונות חדשות מגיעות כעדכונים חינמיים בעמוד ההורדות שלי. כל מה שהוא עושה הוא הגדרות, מסכות ואוספים רגילים של לייטרום, כך ששום דבר לא נעול."
+    "q": "מה זה התוסף ללייטרום קלאסיק?",
+    "a": "תוסף שמגיע עם הפריסטים של MWP ועובד בתוך לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא מלווה צילום שלם: מיון רצפים, ארגון טיולים ומינים, עריכה של החיה, השמיים או הרקע, וייצוא. הוא בגישה מוקדמת: הוא עובד כבר היום, ותכונות חדשות מגיעות כעדכונים חינמיים בעמוד ההורדות שלי. כל מה שהוא עושה הוא הגדרות, מסכות ואוספים רגילים של לייטרום, כך ששום דבר לא נעול. אחרי ההתקנה, החלון שלו בלייטרום נקרא MWP Panel."
    },
    {
     "q": "פריסטים או פאנל: מה אני צריך?",
-    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP: ‏50 פריסטים, ועוד פאנל ללייטרום קלאסיק. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
+    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP: ‏50 פריסטים, ועוד תוסף ללייטרום קלאסיק. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
    },
    {
     "q": "אפשר להשתמש רק בטלפון?",
@@ -93,7 +93,7 @@
    },
    {
     "q": "Presets or Panel: which do I need?",
-    "a": "If you edit in Lightroom, MWP Presets: 50 presets, plus a panel for Lightroom Classic. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
+    "a": "If you edit in Lightroom, MWP Presets: 50 presets, plus a Lightroom Classic plugin. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
    },
    {
     "q": "Which Photoshop do I need?",
@@ -131,7 +131,7 @@
    },
    {
     "q": "פריסטים או פאנל: מה אני צריך?",
-    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP: ‏50 פריסטים, ועוד פאנל ללייטרום קלאסיק. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
+    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP: ‏50 פריסטים, ועוד תוסף ללייטרום קלאסיק. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
    },
    {
     "q": "איזה פוטושופ צריך?",

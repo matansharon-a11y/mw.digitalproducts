@@ -1,10 +1,10 @@
 """The MWP Presets page's own layout (build_products.py calls sections() for P["presets"], layout="collections").
 
 One page, two collections and one purchase:
-  collections      two product cards: Collection 01 · Lightroom Presets, Collection 02 · Adobe Presets (the LUTs)
+  collections      two product cards: Collection 01 · Lightroom Presets, Collection 02 · LUTs (the LUTs)
   lightroom        Collection 01: before / after, the five preset collections, the adaptive presets, desktop and mobile
   adobe            Collection 02: the LUTs in a video editor frame, where they work, how to load them
-  included         also in the download: the Lightroom Classic panel (interactive preview); tutorials and guide in its lead
+  included         also in the download: the Lightroom Classic plugin (interactive preview); tutorials and guide in its lead
 Each fact appears once: files and apps on the cards, the full list in What's in the download.
 Facts come from the download and the FAQs (tools/pages/faqs.json); the content lives in P["presets"][lang]["col"].
 Styles: .pc-* in assets/css/product.css.
@@ -87,10 +87,10 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW):
 </div>
 </section>''')
 
-    # ---------------------------------------------------------------- Collection 02 · Adobe Presets (the LUTs)
+    # ---------------------------------------------------------------- Collection 02 · LUTs (the LUTs)
     A = k["ad"]
     steps = "".join(f'<li><span>{n + 1}</span>{esc(s)}</li>' for n, s in enumerate(A["steps"]))
-    out.append(f'''<section class="sec tint pc-col" id="adobe-presets">
+    out.append(f'''<section class="sec tint pc-col" id="luts">
 <div class="wrap">
 {col_head("02", k["cards"][1], A["lead"])}
 <div class="pc-block pc-adobe">
@@ -101,7 +101,7 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW):
 </div>
 </section>''')
 
-    # ---------------------------------------------------------------- also included: the Lightroom Classic panel and tutorials
+    # ---------------------------------------------------------------- also included: the Lightroom Classic plugin and tutorials
     I = k["inc"]
     keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]
     descs = "".join(f'<p data-lrc-desc="{keys[n]}"{"" if keys[n] == "looks" else " hidden"}><span class="n">{n + 1:02d}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
