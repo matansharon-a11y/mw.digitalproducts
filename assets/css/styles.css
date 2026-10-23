@@ -625,8 +625,8 @@ html[lang="he"] .only-en { display: none; }
 .sp-table td { color: #CDD7DD; }
 .sp-table tr > :first-child { position: sticky; inset-inline-start: 0; z-index: 1; background: #121110; }
 .sp-table tr:last-child > * { border-bottom: 0; }
-.sp-table .pr b { display: block; color: #FEFBF1; font-size: 22px; font-weight: 500; }
-.sp-table .pr td span:not([data-price]) { font-size: 13px; color: #9CB1C2; }
+.sp-table .prices b { display: block; color: #FEFBF1; font-size: 22px; font-weight: 500; }
+.sp-table .prices td span:not([data-price]) { font-size: 13px; color: #9CB1C2; }
 @media (max-width: 600px) {
   .sp-body { padding: 22px 20px 24px; }
   .sp-foot { flex-direction: column; align-items: stretch; }
@@ -667,3 +667,8 @@ html[lang="he"] .only-en { display: none; }
 .sp-line { max-width: 440px; }
 .sp-foot { padding-top: 28px; }
 @media (max-width: 600px) { .sp-body { padding: 24px 22px 26px; } }
+/* The shop is the comparison table and the bundles (23 Oct 2026): each product its own button in the table */
+.sp-top .sp-table { margin-top: clamp(20px, 3vw, 32px); }
+.sp-table .buy td { padding-top: 6px; padding-bottom: 24px; }
+.sp-table .buy .sp-buy { min-height: 42px; padding: 0 18px; font-size: 14px; white-space: nowrap; }
+.sp-table .buy .sp-more { display: block; margin-top: 12px; font-size: 14px; }

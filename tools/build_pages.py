@@ -212,13 +212,10 @@ def _img(prefix):
     return "assets/pages/img/" + os.path.basename(sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix[:8] + "*")))[0])
 
 
-# The four products (Oct 2026 makeover). Each card says what the product is, which app it works in and what's in it,
-# with a small product mockup made of real material: the RAW and final of one photo, the plugin's own tabs and looks,
-# the Photoshop panel's own buttons, a real guide page. Four separate purchases (Jeinna, 23 Oct 2026): the Lightroom
+# The four products (Oct 2026 makeover). Four separate purchases (Jeinna, 23 Oct 2026): the Lightroom
 # Classic plugin is sold on its own; every bundle with MWP Presets includes it.
-# The top of the page (researched: separate cards with a gap, a type label, a different picture, its own price and its
-# own named button; no shared frame, "+" or shared button, which read as a package) introduces the two Lightroom
-# products; the bundle is a separate offer under them; then the Photoshop panel and the guides.
+# The shop is the comparison table (each product its own price, Add to cart and Details) and the bundles; the product
+# cards came off on 23 Oct 2026 (Jeinna). The products themselves are presented on their pages.
 PRODUCTS = [
     dict(key="presets", href="presets/", slug="mwp-presets", type="Preset pack · Lightroom and Camera Raw", name="Presets",
          line="50 presets from Matan Wild's own edits, for desktop and phone.",
@@ -237,51 +234,6 @@ PRODUCTS = [
          works="4 PDF guides · English or Hebrew",
          cta="Add to cart", more="See the guides"),
 ]
-LOOK = ["bw", "moody", "golden", "bluehour"]
-
-
-def _media(k):
-    if k == "presets":   # the RAW and Matan's final of the same photo, split down the middle
-        return (f'<div class="sp-ba"><img src="{_img("fbaf19ae")}" alt="Three ibex at dusk, edited with MWP Presets" loading="lazy">'
-                f'<img class="raw" src="{_img("3c14b23d")}" alt="" loading="lazy"><i></i>'
-                f'<span class="t l" data-no-i18n>RAW</span><span class="t r" data-no-i18n>FINAL</span></div>')
-    if k == "plugin":    # the plugin's window (its words stay in English, like the plugin)
-        tabs = "".join(f'<b{" class=on" if t == "Looks" else ""}>{t}</b>' for t in ("Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"))
-        looks = "".join(f'<img src="assets/pages/img/lrc/look_{x}.png" alt="" loading="lazy">' for x in LOOK)
-        return (f'<div class="sp-scene"><img class="bg" src="{_img("86b95f19")}" alt="A wildlife photographer behind a long lens in the mountains" loading="lazy">'
-                f'<div class="sp-win ui-en" lang="en" dir="ltr" data-no-i18n aria-hidden="true"><p class="bar"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></p>'
-                f'<p class="tabs">{tabs}</p><div class="looks">{looks}</div><p class="sl"><i></i></p></div></div>')
-    if k == "panel":     # the photo with the panel docked beside it
-        chips = "".join(f'<b{" class=on" if t == "Subject" else ""}>{t}</b>' for t in ("Subject", "Eye", "Sky", "Background"))
-        fx = "".join(f'<b{" class=on" if t == "Pop" else ""}>{t}</b>' for t in ("Pop", "Brighten", "Darken", "Warm", "Cool", "Glow"))
-        return (f'<div class="sp-scene ps"><img class="bg" src="{_img("8929f94d")}" alt="Young red fox looking at the camera" loading="lazy">'
-                f'<div class="sp-win dock ui-en" lang="en" dir="ltr" data-no-i18n aria-hidden="true"><p class="bar"><span>MWP Panel · Photoshop</span></p>'
-                f'<p class="h">1 · What to edit</p><p class="chips">{chips}</p><p class="h">2 · Effect</p><p class="grid">{fx}</p><p class="sl"><i></i></p></div></div>')
-    return (f'<div class="sp-pages"><img class="p2" src="{_img("4b0264b3")}" alt="" loading="lazy">'
-            f'<img class="p1" src="{_img("ad1aed91")}" alt="A page from MWP Field Guides: Clean background" loading="lazy"></div>')
-
-
-def _card(d, n):
-    name = (f'<h2 data-no-i18n>MWP <span class="grad">{d["name"]}</span></h2>' if d["key"] != "plugin"
-            # the Hebrew name runs the other way ("התוסף ללייטרום קלאסיק"), so it has its own copy, shown only on the Hebrew page
-            else '<h2 class="only-en">Lightroom Classic <span class="grad">Plugin</span></h2>'
-                 '<h2 class="only-he" lang="he" data-no-i18n>התוסף ללייטרום <span class="grad">קלאסיק</span></h2>')
-    alone = f'<p class="sp-alone">{d["alone"]}</p>' if d.get("alone") else ""
-    return (f'<article class="sp-card" id="{d["key"]}" style="--i:{n}">'
-            f'<a class="sp-media" href="{d["href"]}" tabindex="-1" aria-hidden="true">{_media(d["key"])}</a>'
-            f'<div class="sp-body"><p class="sp-type"><span>{d["type"]}</span></p>'
-            f'<a class="sp-name" href="{d["href"]}">{name}</a><p class="sp-line">{d["line"]}</p>'
-            f'<p class="sp-meta">{d["works"]}</p>{alone}'
-            f'<div class="sp-foot"><div class="sp-price"><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></div>'
-            f'<div class="sp-acts"><a class="sp-more" href="{d["href"]}">{d["more"]}</a>'
-            f'<a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">{d["cta"]}</a></div></div></div></article>')
-
-
-def _cards(keys, start=0):
-    by = {d["key"]: d for d in PRODUCTS}
-    return "".join(_card(by[k], start + n) for n, k in enumerate(keys))
-
-
 # The comparison: one row per question a buyer asks, one column per product
 COMPARE = [
     ("What it is", ["Presets and LUTs: a finished look in one click", "A plugin: a window of tools inside Lightroom Classic", "A panel: a window of tools inside Photoshop", "PDF guides: lessons for the shoot itself"]),
@@ -294,8 +246,9 @@ COMPARE = [
 def _compare():
     cols = "".join(f'<th scope="col"><a href="{d["href"]}">{("MWP " + d["name"]) if d["key"] != "plugin" else "Lightroom Classic Plugin"}</a><span>{d["type"]}</span></th>' for d in PRODUCTS)
     rows = "".join(f'<tr><th scope="row">{q}</th>{"".join(f"<td>{a}</td>" for a in ans)}</tr>' for q, ans in COMPARE)
-    price = ("<tr class=\"pr\"><th scope=\"row\">Price</th>"
-             + "".join(f'<td><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b></td>' for d in PRODUCTS) + "</tr>")
+    price = ("<tr class=\"prices\"><th scope=\"row\">Price</th>"
+             + "".join(f'<td><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b></td>' for d in PRODUCTS) + "</tr>"
+             + '<tr class="buy"><td></td>' + "".join(f'<td><a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">Add to cart</a><a class="sp-more" href="{d["href"]}">Details</a></td>' for d in PRODUCTS) + "</tr>")
     return (f'<div class="sp-table" tabindex="0" role="region" aria-label="Compare the four products"><table><thead>'
             f'<tr><td></td>{cols}</tr></thead><tbody>{rows}{price}</tbody></table></div>')
 
@@ -320,33 +273,19 @@ page("shop.html", "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photosh
  "Four tools for wildlife photographers by Matan Wild: Lightroom presets and LUTs, a Lightroom Classic plugin, a Photoshop panel and PDF field guides. Compare them, or save with a bundle.",
  f"""  <section class="page-hero sp-hero">
     <div class="container">
-      <p class="kick">The MWP shop · for Lightroom</p>
-      <h1 class="display" id="shop-title">Presets or a plugin. <span class="grad">Two separate tools.</span></h1>
-      <p class="lead">Presets for the look. A plugin for the workflow. Each sold on its own.</p>
+      <p class="kick">The MWP shop</p>
+      <h1 class="display" id="shop-title">Four tools. <span class="grad">Pick yours.</span></h1>
+      <p class="lead">Each one sold on its own, or together in a bundle.</p>
     </div>
   </section>
-  <section class="section--tight sp-top" aria-labelledby="shop-title">
+  <section class="section--tight sp-top" id="compare" aria-labelledby="shop-title">
     <div class="container">
-      <div class="sp-duo">{_cards(["presets", "plugin"])}</div>
-    </div>
-  </section>
-  <section class="section sp-more-sec" id="more" aria-labelledby="more-h">
-    <div class="container">
-      <p class="kick">Also from MWP</p>
-      <h2 class="display sp-h2" id="more-h">For Photoshop, <span class="grad">and for the shoot.</span></h2>
-      <div class="sp-duo">{_cards(["panel", "guides"], 2)}</div>
+      <p class="sp-swipe">Swipe the table to see all four.</p>
+      {_compare()}
       <ul class="sp-trust"><li>Instant download</li><li>Secure checkout</li><li>Free updates</li><li>Help or a refund within 14 days</li></ul>
     </div>
   </section>
   {reviews_section(filters=True, cls=dict(sec="section", wrap="container", head="", h2="display sp-h2"))}
-  <section class="section" id="compare" aria-labelledby="compare-h">
-    <div class="container">
-      <p class="kick">Compare</p>
-      <h2 class="display sp-h2" id="compare-h">Which one is <span class="grad">for you?</span></h2>
-      <p class="sp-swipe">Swipe the table to see all four.</p>
-      {_compare()}
-    </div>
-  </section>
   <section class="section" id="bundles" aria-labelledby="bundles-h">
     <div class="container">
       <p class="kick">Bundles</p>

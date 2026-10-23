@@ -966,6 +966,8 @@ const HE = {
   "No plugin needed.": "לא צריך את התוסף.",
   "No presets needed.": "לא צריך פריסטים.",
   "Presets for the look. A plugin for the workflow. Each sold on its own.": "פריסטים למראה. תוסף לתהליך העבודה. כל אחד נמכר בנפרד.",
+  "Pick yours.": "בחרו את שלכם.",
+  "Each one sold on its own, or together in a bundle.": "כל אחד נמכר בנפרד, או יחד בחבילה.",
 };
 
 // Text built from numbers or names.
