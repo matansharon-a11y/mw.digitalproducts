@@ -431,7 +431,7 @@ html[lang=he] .rd-page:not(.ok)::after{content:"טוען…"}
 .rd-pick::after{content:"";position:absolute;top:50%;inset-inline-end:18px;width:8px;height:8px;border-right:2px solid #F4AF56;border-bottom:2px solid #F4AF56;transform:translateY(-70%) rotate(45deg);pointer-events:none}
 .rd-pick select{width:100%;min-height:46px;padding:0 44px 0 18px;border-radius:64px;border:1px solid rgba(244,175,86,.45);background:rgba(254,251,241,.04);color:#FEFBF1;font:inherit;font-size:15px;font-weight:600;appearance:none;-webkit-appearance:none;cursor:pointer;text-overflow:ellipsis}
 html[dir=rtl] .rd-pick select{padding:0 18px 0 44px}
-.rd-pick select option{background:#15130f;color:#FEFBF1}
+.rd-pick select{color-scheme:light}.rd-pick select option{background:#fff;color:#15130f}   /* the open list is the system's (light on a Mac): dark text */
 .rd-modes{display:flex;padding:4px;border-radius:64px;background:rgba(254,251,241,.04);border:1px solid rgba(254,251,241,.12)}
 .rd-modes button{min-height:38px;padding:0 16px;border:0;border-radius:64px;background:none;color:#AEB9C1;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
 .rd-modes button[aria-pressed=true]{background:linear-gradient(90deg,#E4AA7C,#F4AF56);color:#0A0908}

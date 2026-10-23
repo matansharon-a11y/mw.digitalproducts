@@ -324,6 +324,7 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 select.lw-select{appearance:none;-webkit-appearance:none;font:inherit;font-size:12px;cursor:pointer;background:linear-gradient(#585858,#4a4a4a) padding-box;
   background-image:linear-gradient(45deg,transparent 50%,#ddd 50%),linear-gradient(135deg,#ddd 50%,transparent 50%),linear-gradient(#585858,#4a4a4a);
   background-position:calc(100% - 13px) 50%,calc(100% - 9px) 50%,0 0;background-size:4px 4px,4px 4px,100% 100%;background-repeat:no-repeat}
+select.lw-select option{background:#fff;color:#1a1a1a}   /* the open list is the system's (light on a Mac): dark text */
 .lw-in.full,.lw-menu.full{width:100%}.grow{flex:1;min-width:0}
 .lw-radio{display:inline-flex;align-items:center;gap:6px;color:#e2e2e2;font-size:12px}
 .lw-radio i{width:12px;height:12px;border-radius:50%;border:1px solid #6b6b6b;background:#1d1d1d}

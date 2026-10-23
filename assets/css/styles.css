@@ -462,6 +462,15 @@ main { flex: 1; }
   color: #FEFBF1; font-size: 16px; transition: border-color .2s, box-shadow .2s, background .2s; }
 .input:hover, .select:hover, .textarea:hover { border-color: rgba(254, 251, 241, .24); }
 .input:focus, .select:focus, .textarea:focus { border-color: #F2A541; background: rgba(254, 251, 241, .05); box-shadow: 0 0 0 4px rgba(242, 165, 65, .14); }
+/* dropdowns: the open list is drawn by the system (on a Mac always light, whatever background is set), so the
+   page's light text vanished on it. Dark text on a light list reads everywhere. */
+select.input, select.select { color-scheme: light; appearance: none; -webkit-appearance: none; cursor: pointer; padding-inline-end: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23F4AF56' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 18px center; }
+select.input:focus, select.select:focus { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23F4AF56' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 18px center; }   /* the focus rule above resets the background */
+[dir="rtl"] select.input, [dir="rtl"] select.select { background-position: left 18px center; }
+select.input option, select.select option { background: #FFFFFF; color: #15130f; }
 .textarea { min-height: 160px; padding-block: 14px; }
 .empty { border: 1px solid rgba(254, 251, 241, .09); border-radius: 24px; background: rgba(254, 251, 241, .03); }
 .prose h2 { font-size: clamp(26px, 2.4vw, 34px); letter-spacing: -.02em; scroll-margin-top: 100px; }
