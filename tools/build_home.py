@@ -30,7 +30,7 @@ home_css = """
 .skip:focus{top:12px}
 .nav .wrap{justify-content:flex-start}.nav .links{margin-inline:auto}.navr{margin-inline-start:auto}.nav .links + .navr{margin-inline-start:0}.navr + .lang-toggle{margin-inline-start:-6px}
 .lang-toggle{display:inline-flex;align-items:center;flex:none;height:34px;padding:3px;border-radius:64px;border:1px solid rgba(156,177,194,.35);direction:ltr}
-.lang-toggle span,.lang-toggle button{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:26px;padding:0 10px;border:0;border-radius:64px;background:none;font:600 12px/1 Montserrat,Heebo,sans-serif;letter-spacing:.06em;color:#9CB1C2;cursor:pointer}
+.lang-toggle span,.lang-toggle button{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:26px;padding:0 10px;border:0;border-radius:64px;background:none;font:600 12px/1 "Google Sans",Heebo,sans-serif;letter-spacing:.06em;color:#9CB1C2;cursor:pointer}
 .lang-toggle button:hover{color:#FEFBF1}
 .lang-toggle .on{background:#FEFBF1;color:#0A0908;cursor:default}
 .navr a.nl{color:#CDD7DD;text-decoration:none;font-weight:600;font-size:15px}
@@ -56,7 +56,7 @@ home_css = """
 .card .act .btn,.card .act .ghost{width:100%;white-space:nowrap;min-height:46px;padding:0 16px;font-size:15px}
 [dir="rtl"] .arrow{transform:scaleX(-1)}
 [dir="rtl"] .kick,[dir="rtl"] .card .tg,[dir="rtl"] .stat .t{letter-spacing:normal}
-[dir="rtl"] .pg{font-family:Heebo,Montserrat,system-ui,sans-serif}
+[dir="rtl"] .pg{font-family:Heebo,system-ui,sans-serif}
 
 .band{position:relative;overflow:hidden;border:0;background:radial-gradient(50% 80% at 50% 0%,rgba(242,165,65,.11),rgba(242,165,65,0) 70%),radial-gradient(60% 110% at 0% 100%,rgba(16,66,58,.6),rgba(12,41,37,0) 70%),radial-gradient(60% 110% at 100% 100%,rgba(16,66,58,.6),rgba(12,41,37,0) 70%),#0A0908}
 .band::before,.band::after{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(242,165,65,0),rgba(242,165,65,.45),rgba(242,165,65,0));pointer-events:none}
@@ -211,7 +211,6 @@ html = f'''<!doctype html>
 {ICONS}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&amp;family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
 <style>
 {base_css}
 /* before / after (from the Presets page) */

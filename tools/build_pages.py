@@ -616,7 +616,7 @@ page("testers.html", "Testers · MWP",
     <div class="container container--text">
       <p class="acct-kick">Testers</p>
       <h1 class="acct-h1">Test the <span class="grad">tools</span></h1>
-      <p class="acct-lead">Enter your name, email and tester code, and your downloads are ready.</p>
+      <p class="acct-lead">Enter your name, email and tester code. We'll email you a link that opens your downloads.</p>
     </div>
   </section>
   <section class="acct">
@@ -626,7 +626,7 @@ page("testers.html", "Testers · MWP",
           <div class="field"><label for="t-name">Name</label><input class="input" id="t-name" name="name" autocomplete="name" required></div>
           <div class="field"><label for="t-email">Email</label><input class="input" id="t-email" name="email" type="email" dir="ltr" autocomplete="email" required></div>
           <div class="field"><label for="t-code">Tester code</label><input class="input" id="t-code" name="code" dir="ltr" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
-          <button class="btn" type="submit">Sign in</button>
+          <button class="btn" type="submit">Email me my link</button>
           <p class="form-status" role="status"></p>
         </form>
         <div class="auth-view auth-sent" id="t-sent" hidden>
@@ -777,4 +777,7 @@ print("pages written")
 # The not-found page is served at any address (e.g. /old/path/), so its links must resolve from the site root.
 _p = os.path.join(ROOT, "404.html")
 _h = open(_p).read().replace('<meta charset="utf-8">', '<meta charset="utf-8">\n  <base href="/">', 1)
+# …and it isn't a page of its own: no canonical address (it would point at /404/), never indexed
+_h = re.sub(r'\s*<link rel="canonical"[^>]*>', "", _h, count=1)
+_h = _h.replace('<base href="/">', '<base href="/">\n  <meta name="robots" content="noindex">', 1)
 open(_p, "w").write(_h)

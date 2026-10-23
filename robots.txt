@@ -1,16 +1,9 @@
 # Launched 20 Oct 2026: search engines may index the shop.
-# Private pages (admin, accounts, the link-only Ambassador and testers pages, the reader) stay out.
+# The admin and the link-only Ambassador page stay out. My downloads, thank-you, testers and the reader carry
+# noindex instead: blocking them here would stop search engines from seeing it (and list the bare address).
 User-agent: *
 Disallow: /admin/
-Disallow: /account
-Disallow: /account.html
-Disallow: /thank-you
-Disallow: /thank-you.html
 Disallow: /beta/
-Disallow: /testers
-Disallow: /testers.html
-Disallow: /read
-Disallow: /read.html
 Disallow: /product
 Disallow: /product.html
 

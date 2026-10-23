@@ -796,6 +796,7 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 .lr-both-h{margin:8px 0 0;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;line-height:1.15}
 /* each product's part */
 .lr-sec{scroll-margin-top:110px}
+#faq{scroll-margin-top:130px}   /* below the header and the product bar, like the other sections */
 .lr-sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px}
 .lr-sh-h{margin:10px 0 0;font-size:clamp(34px,4vw,56px);font-weight:400;letter-spacing:-.03em;line-height:1.04}
 .lr-sh-line{margin:10px 0 0;color:var(--ink2);font-size:17px}

@@ -209,7 +209,7 @@ def build(src_path, out_path, en_url, he_url, here, base=False):
     head_he(t, nodes, en_url, he_url)
     out = write(t.root)
     # the Hebrew page remembers the choice, carries both addresses, and (home) resolves its links from the root
-    extra = REMEMBER + ALT.format(en=en_url, he=he_url) + ('<meta property="og:locale" content="he_IL">' if 'og:locale' not in out else "")
+    extra = REMEMBER + (ALT.format(en=en_url, he=he_url) if 'hreflang=' not in out else "") + ('<meta property="og:locale" content="he_IL">' if 'og:locale' not in out else "")
     if base and "<base " not in out:
         extra = '<base href="/">' + extra
     out = out.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + extra, 1)

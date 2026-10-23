@@ -14,8 +14,8 @@ const SVG = {
 };
 
 const CSS = `
-.nav-icons,.cart-panel,.cart-panel button{font-family:Montserrat,"Google Sans Flex",Heebo,system-ui,sans-serif}
-[dir=rtl] .cart-panel,[dir=rtl] .cart-panel button,[dir=rtl] .nav-icons{font-family:Heebo,Montserrat,system-ui,sans-serif}
+.nav-icons,.cart-panel,.cart-panel button{font-family:"Google Sans",Heebo,system-ui,sans-serif}
+[dir=rtl] .cart-panel,[dir=rtl] .cart-panel button,[dir=rtl] .nav-icons{font-family:Heebo,system-ui,sans-serif}
 .nav-icons{display:inline-flex;align-items:center;gap:4px;flex:none}
 .nav-ico{position:relative;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:0;background:none;color:inherit;cursor:pointer;text-decoration:none;padding:0;-webkit-tap-highlight-color:transparent}
 .nav-ico:hover,.nav-ico.show-tip{background:rgba(254,251,241,.08)}

@@ -24,9 +24,12 @@ RV_V = hashlib.sha1(open(os.path.join(ROOT, "assets/css/reviews.css"), "rb").rea
 FAQS = json.load(open(os.path.join(ROOT, "tools/pages/faqs.json"), encoding="utf-8"))
 
 
-def img(prefix):
-    """/assets/pages/img/<file> from the first characters of its name (the files are named by their hash)."""
+def img(prefix, webp=True):
+    """/assets/pages/img/<file> from the first characters of its name (the files are named by their hash).
+    webp=False: the JPEG/PNG copy, for link previews (some apps don't show WebP)."""
     found = sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix + "*")), key=lambda f: not f.endswith(".webp"))   # the smaller WebP copy first
+    if not webp:
+        found = [f for f in found if not f.endswith(".webp")] or found
     if not found:
         raise SystemExit(f"no image starting with {prefix}")
     return "/assets/pages/img/" + os.path.basename(found[0])
@@ -248,7 +251,7 @@ P["panel"] = dict(
                ("", "Video tutorials", "Installing and using the panel, in My downloads.")],
         spec_note="Works with Photoshop 2023 (24.2) or newer on Mac and Windows. Not for Lightroom, iPad or phones.",
         final_kick="MWP Panel", final_h=["Edit with", "confidence."],
-        final_lead="The plugin with both PDF guides and free updates. Or together with MWP Presets, for Lightroom and Photoshop in the same look.",
+        final_lead="The panel with both PDF guides and free updates. Or together with MWP Presets, for Lightroom and Photoshop in the same look.",
         plan=("MWP Panel", "Photoshop panel", ["Photoshop panel, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get MWP Panel"),
         plan2=("MWP Panel + MWP Presets", "Photoshop and Lightroom", ["Everything in MWP Panel", "50 Lightroom presets in the same look", "The Lightroom Classic plugin too"], "Get the bundle"),
     ),
@@ -578,7 +581,7 @@ def page(folder, lang):
     <div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
     <div class="lrc pws" data-pws data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["ps_label"].split(" · ")[0])}<span class="req"> · {esc(c["ps_label"].split(" · ")[1])}</span></span></p>
     <div class="lrc-stage"><div class="psw" lang="en" dir="ltr" data-no-i18n><div class="psw-bar"><i></i><i></i><i></i><span>Photoshop</span></div>
-    <div class="psw-main"><div class="psw-canvas" data-areas="{esc(json.dumps(areas))}"><div class="psw-pic{" tall" if tall else ""}"><img class="psw-after" src="{img(fa)}" alt="{esc(c["ps_alt"])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div>{f'<img class="psw-before" src="{img(ba)}" alt="" loading="lazy">' if ba else ""}</div><span class="psw-tag">Before</span><span class="psw-sim">Simulated on this page · in Photoshop the panel builds real masks</span></div>
+    <div class="psw-main"><div class="psw-canvas" data-areas="{esc(json.dumps(areas))}"><div class="psw-pic{" tall" if tall else ""}"><img class="psw-after" src="{img(fa)}" alt="{esc(c["ps_alt"])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div>{f'<img class="psw-before" src="{img(ba)}" alt="" loading="lazy">' if ba else ""}</div><span class="psw-tag">{"לפני" if lang == "he" else "Before"}</span><span class="psw-sim">{"הדמיה בעמוד הזה · בפוטושופ הפאנל בונה מסכות אמיתיות" if lang == "he" else "Simulated on this page · in Photoshop the panel builds real masks"}</span></div>
     {ps_window("/assets/img/logo-mark.png")}</div></div></div>
     <div class="lrc-desc" aria-live="polite">{descs}</div></div>
     </div>
@@ -705,7 +708,7 @@ def page(folder, lang):
 <meta name="theme-color" content="#0A0908">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MWP">
 <meta property="og:title" content="{esc(c["title"])}"><meta property="og:description" content="{esc(c["desc"])}">
-<meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}{img(p["hero_img"])}">
+<meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}{img(p["hero_img"], webp=False)}">
 <meta property="og:image:alt" content="{esc(c["hero_alt"])}"><meta property="og:locale" content="{"he_IL" if he else "en_US"}">
 <meta name="twitter:card" content="summary_large_image">
 {ICONS}

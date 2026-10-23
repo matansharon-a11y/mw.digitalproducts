@@ -263,3 +263,12 @@ if ("IntersectionObserver" in window) {
 // ---------------------------------------------------------------- FAQ: one open at a time
 const faqs = [...document.querySelectorAll(".faq details")];
 faqs.forEach((d) => d.addEventListener("toggle", () => { if (d.open) faqs.forEach((o) => { if (o !== d) o.open = false; }); }));
+
+// ---------------------------------------------------------------- arriving at #faq (or another section)
+// The browser jumps before the images and mockups above have their size, so on phones the heading ended up under
+// the sticky bars. Jump again once the page has laid out.
+if (location.hash.length > 1) {
+  addEventListener("load", () => setTimeout(() => {
+    try { document.querySelector(decodeURIComponent(location.hash))?.scrollIntoView({ block: "start" }); } catch { /* not a valid selector */ }
+  }, 300), { once: true });
+}
