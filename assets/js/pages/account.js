@@ -15,10 +15,12 @@ const who = document.getElementById("who");
 // Each with its focus point, so the crop always keeps the animal's head and body in frame.
 const COVERS = {
   "mwp-presets": ["assets/pages/img/c88e041b857fb964607aaec43ad1753d.jpg", "45% 6%"],   // eagle: head and chest
+  "mwp-lightroom-plugin": ["assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg", "60% 45%"],   // photographer behind a long lens
   "mwp-panel": ["assets/pages/img/8f730b9bb76b93ca707cae719a309479.jpg", "50% 40%"],     // tiger: face and stride
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"], // lioness: face
 };
 const TAGS = { preset: "Lightroom presets", plugin: "Photoshop panel", guide: "PDF field guides", bundle: "Bundle" };
+const SLUG_TAGS = { "mwp-lightroom-plugin": "Lightroom Classic plugin" };   // a plugin that isn't the Photoshop panel
 // A product with extra downloads (product_extra_files) shows one button per app: the main zip gets this label.
 const MAIN_LABEL = { "mwp-presets": "Presets" };   // beside it: "Lightroom Classic plugin"
 const PLAY_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
@@ -67,7 +69,7 @@ function libraryHTML(items, extras = { files: [], videos: [] }) {
     const count = countLabel(p);
     const files = extras.files.filter((x) => x.slug === p.slug);
     const videos = viewOnly ? [] : extras.videos.filter((v) => v.products?.slug === p.slug);
-    const tag = p.category === "preset" && files.some((x) => x.file_key === "lightroom-classic") ? "Lightroom presets and plugin" : TAGS[p.category];
+    const tag = SLUG_TAGS[p.slug] || TAGS[p.category];
     return `
     <article class="lib" style="--i:${i}">
       <div class="ph">${img ? `<img src="${esc(img)}" alt="" loading="lazy" style="object-position:${pos}">` : ""}</div>

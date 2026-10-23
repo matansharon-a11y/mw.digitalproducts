@@ -1,6 +1,6 @@
 // Prices on the home and sales pages. Every price spot is <span data-price="slug"> (plus data-was for a
 // struck-out "before" price). They read the prices set in the admin; until a product has a price there,
-// the spot shows 0.00. English shows dollars, Hebrew shows shekels.
+// the spot stays empty (never 0.00). English shows dollars, Hebrew shows shekels.
 import { CONFIG } from "../config.js";
 
 let rows = null;
@@ -19,10 +19,10 @@ function textFor(el) {
   const was = el.hasAttribute("data-was");
   if (he()) {
     const c = r ? (was ? r.compare_at_ils_cents : r.price_ils_cents) : null;
-    return was && !c ? "" : fmt(c, "ILS");   // no "before" price set: show nothing
+    return !c ? "" : fmt(c, "ILS");   // no price (or "before" price) set: show nothing, never ₪0.00
   }
   const c = r ? (was ? r.compare_at_cents : r.price_cents) : null;
-  if (was && !c) return "";
+  if (!c) return "";   // no price set yet (a new product): show nothing, never $0.00
   return fmt(c, r?.currency || "USD");
 }
 

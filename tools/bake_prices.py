@@ -32,9 +32,9 @@ def price(slug, was, he):
     r = rows.get(slug)
     if he:
         c = (r or {}).get("compare_at_ils_cents" if was else "price_ils_cents")
-        return "" if was and not c else fmt(c, "ILS")
+        return "" if not c else fmt(c, "ILS")   # no price set yet: nothing, never ₪0.00
     c = (r or {}).get("compare_at_cents" if was else "price_cents")
-    return "" if was and not c else fmt(c, (r or {}).get("currency") or "USD")
+    return "" if not c else fmt(c, (r or {}).get("currency") or "USD")
 
 
 def save(slug, he):

@@ -642,32 +642,28 @@ html[lang="he"] .only-en { display: none; }
 .sp-pages .p1 { left: 14%; } .sp-pages .p2 { left: 32%; }
 @media (max-width: 900px) { .sp-swipe { display: block; } }
 
-/* Shop by app (23 Oct 2026): Lightroom in one frame (the presets you buy + the plugin that comes with them), then
-   Photoshop and Field Guides side by side. Jump links in the hero. */
-.sp-jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
-.sp-jump a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(254, 251, 241, .16); background: rgba(254, 251, 241, .03); color: #CDD7DD; font-size: 14px; font-weight: 600; text-decoration: none; transition: border-color .25s, color .25s; }
-.sp-jump a:hover { border-color: rgba(244, 175, 86, .5); color: #FEFBF1; }
-.sp-cat { scroll-margin-top: 90px; }
-.sp-cat-head .kick { color: #F4AF56; }
-.sp-cat-head h2 { margin: 10px 0 0; font-size: clamp(28px, 3vw, 40px); font-weight: 400; letter-spacing: -.025em; line-height: 1.1; }
-.sp-cat-head p:not(.kick) { margin: 8px 0 0; color: #9CB1C2; font-size: 16px; }
-.sp-cat-grid { display: grid; gap: 24px; margin-top: 24px; }
-.sp-cat-lightroom .sp-cat-grid { position: relative; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 18px; border-radius: 34px; border: 1px solid rgba(244, 175, 86, .28);
-  background: linear-gradient(180deg, rgba(244, 175, 86, .06), rgba(244, 175, 86, .01)); }
-.sp-cat-lightroom .sp-cat-grid::after { content: "+"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
-  background: linear-gradient(90deg, #E4AA7C, #F4AF56); color: #0A0908; font-size: 26px; font-weight: 500; box-shadow: 0 10px 30px -8px rgba(244, 175, 86, .6); z-index: 2; }
-.sp-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: clamp(56px, 7vw, 88px); }
-.sp-badge { position: absolute; top: 16px; inset-inline-start: 16px; z-index: 2; padding: 6px 12px; border-radius: 999px; background: linear-gradient(90deg, #E4AA7C, #F4AF56); color: #0A0908; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
-[dir="rtl"] .sp-badge { letter-spacing: .04em; }
-.sp-card.inc { border-color: rgba(244, 175, 86, .3); }
-.sp-table .grp th { padding: 16px 20px 0; font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #F4AF56; text-align: start; border-bottom: 0; }
-.sp-table .grp th.lr { background: rgba(244, 175, 86, .06); border-radius: 14px 14px 0 0; }
-[dir="rtl"] .sp-table .grp th { letter-spacing: .04em; }
-@media (max-width: 900px) {
-  .sp-cat-lightroom .sp-cat-grid, .sp-pair { grid-template-columns: minmax(0, 1fr); }
-  .sp-cat-lightroom .sp-cat-grid { padding: 12px; border-radius: 28px; }
-  .sp-cat-lightroom .sp-cat-grid::after { display: none; }
-  .sp-pair { gap: 56px; }
-}
-@media (max-width: 600px) { .sp-jump { flex-wrap: nowrap; overflow-x: auto; margin-inline: -24px; padding-inline: 24px; scrollbar-width: none; } .sp-jump::-webkit-scrollbar { display: none; } .sp-jump a { flex: none; } }
-.sp-cat-lightroom { margin-top: clamp(24px, 4vw, 48px); }
+/* Shop top (23 Oct 2026): the two Lightroom products as two separate purchases. Separate cards with a clear gap, each
+   with its type label, its own picture, price and named button; no shared frame or "+" (researched: those read as a
+   package). The bundle is a separate line under them. Then the Photoshop panel and the guides, the same way. */
+.sp-hero { padding-bottom: 0; }
+.sp-hero .lead { max-width: 640px; }
+.sp-top { padding-top: clamp(28px, 4vw, 44px); }
+.sp-duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 3vw, 40px); }
+.sp-more-sec .sp-duo { margin-top: clamp(28px, 4vw, 44px); }
+.sp-type { color: #F4AF56; }
+.sp-alone { margin: 14px 0 0; font-size: 14px; color: #9CB1C2; }
+.sp-alone::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-inline-end: 8px; border-radius: 50%; background: #9CB1C2; vertical-align: middle; }
+.sp-both { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; margin: clamp(24px, 3vw, 36px) 0 0; padding: 16px 20px; border-radius: 999px;
+  border: 1px solid rgba(254, 251, 241, .1); color: #CDD7DD; font-size: 15px; text-align: center; }
+.sp-both span { color: #FEFBF1; font-weight: 600; }
+.sp-both a { color: #F4AF56; font-weight: 600; text-decoration: none; }
+.sp-both a:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 900px) { .sp-duo { grid-template-columns: minmax(0, 1fr); } .sp-both { border-radius: 20px; } }
+/* Minimal cards (23 Oct 2026): one line, one quiet spec line, then price and button */
+.sp-meta { margin: 14px 0 0; font-size: 13.5px; color: #9CB1C2; letter-spacing: .01em; }
+.sp-alone { margin: 6px 0 0; font-size: 13.5px; }
+.sp-alone::before { display: none; }
+.sp-body { padding: 30px 34px 32px; }
+.sp-line { max-width: 440px; }
+.sp-foot { padding-top: 28px; }
+@media (max-width: 600px) { .sp-body { padding: 24px 22px 26px; } }

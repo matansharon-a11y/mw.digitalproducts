@@ -925,6 +925,47 @@ const HE = {
   "Included free": "כלול בחינם",
   "Presets and a Lightroom Classic plugin for Lightroom, a panel for Photoshop, and field guides for the shoot. Start with the app you use.": "פריסטים ותוסף ללייטרום קלאסיק ללייטרום, פאנל לפוטושופ, ומדריכי שטח לצילום עצמו. התחילו מהתוכנה שאתם עובדים בה.",
   "Jump to": "מעבר אל",
+  "The MWP shop · for Lightroom": "החנות של MWP · ללייטרום",
+  "Presets or a plugin.": "פריסטים או תוסף.",
+  "Two separate tools.": "שני כלים נפרדים.",
+  "Two products for Lightroom, each bought on its own. Presets give every photo its finished look; the plugin runs a whole shoot inside Lightroom Classic. Neither needs the other.": "שני מוצרים ללייטרום, כל אחד נקנה בנפרד. הפריסטים נותנים לכל תמונה את המראה המוגמר שלה; התוסף מנהל צילום שלם בתוך לייטרום קלאסיק. אף אחד מהם לא צריך את השני.",
+  "Preset pack · Lightroom and Camera Raw": "חבילת פריסטים · לייטרום וקאמרה ראו",
+  "Plugin · Lightroom Classic 13 or newer": "תוסף · לייטרום קלאסיק 13 ומעלה",
+  "50 Lightroom presets that give each wildlife photo its finished look, from Matan Wild's own edits.": "50 פריסטים ללייטרום שנותנים לכל צילום חיות בר את המראה המוגמר שלו, מתוך העריכות של מתן וויילד עצמו.",
+  "A window inside Lightroom Classic that culls, keywords, edits and exports a whole shoot.": "חלון בתוך לייטרום קלאסיק שממיין, מתייג, עורך ומייצא צילום שלם.",
+  "Lightroom Classic 13 or newer, Mac and Windows": "לייטרום קלאסיק 13 ומעלה, מק ו־ווינדוס",
+  "50 mobile files": "50 קבצים לנייד",
+  "Works on its own: no plugin needed.": "עובד לבד: לא צריך את התוסף.",
+  "Works on its own: no presets needed.": "עובד לבד: לא צריך פריסטים.",
+  "Add MWP Presets to cart": "הוספת הפריסטים של MWP לעגלה",
+  "Add the plugin to cart": "הוספת התוסף לעגלה",
+  "Details": "פרטים",
+  "Want both?": "רוצים את שניהם?",
+  "Every bundle with MWP Presets includes the plugin.": "כל חבילה עם הפריסטים של MWP כוללת את התוסף.",
+  "See the bundles": "לחבילות",
+  "Compare all four": "השוואה בין ארבעתם",
+  "Also from MWP": "עוד מ-MWP",
+  "For Photoshop,": "לפוטושופ,",
+  "and for the shoot.": "ולצילום עצמו.",
+  "How you buy it": "איך קונים",
+  "On its own, or in a bundle": "בנפרד, או בחבילה",
+  "On its own, or in any bundle with MWP Presets": "בנפרד, או בכל חבילה עם הפריסטים של MWP",
+  "The Lightroom Classic plugin": "התוסף ללייטרום קלאסיק",
+  "MWP Presets and the Lightroom Classic plugin": "הפריסטים של MWP והתוסף ללייטרום קלאסיק",
+  "Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.": "לא בטוחים מה עושה צילום חיות בר חזק? מתחילים במדריכי השטח. לייטרום מבלבל? הפריסטים של MWP, או התוסף שלנו ללייטרום קלאסיק. פוטושופ מרגיש כמו מבוך של תפריטים? הפאנל של MWP.",
+  "Yes. Our": "כן. ה",
+  "(Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It's sold on its own, and every bundle with MWP Presets includes it.": "שלנו (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילום שלם בחלון אחד. הוא נמכר בנפרד, וכל חבילה עם הפריסטים של MWP כוללת אותו.",
+  "Lightroom Presets": "פריסטים ללייטרום",
+  "50 presets from Matan Wild's own edits, for desktop and phone.": "50 פריסטים מתוך העריכות של מתן וויילד עצמו, למחשב ולטלפון.",
+  "Lightroom · Lightroom Classic · Mobile · Camera Raw": "לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו",
+  "Cull, keyword, edit and export a whole shoot in one window.": "מיון, תיוג, עריכה וייצוא של צילום שלם, בחלון אחד.",
+  "Lightroom Classic 13+ · Mac and Windows": "לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס",
+  "Pick the animal, the sky or the background. The panel does the masks.": "בוחרים את החיה, את השמיים או את הרקע. הפאנל בונה את המסכות.",
+  "Photoshop 2023+ · Mac and Windows": "פוטושופ 2023 ומעלה · מק ו־ווינדוס",
+  "4 PDF guides · English or Hebrew": "4 מדריכי PDF · באנגלית או בעברית",
+  "No plugin needed.": "לא צריך את התוסף.",
+  "No presets needed.": "לא צריך פריסטים.",
+  "Presets for the look. A plugin for the workflow. Each sold on its own.": "פריסטים למראה. תוסף לתהליך העבודה. כל אחד נמכר בנפרד.",
 };
 
 // Text built from numbers or names.
@@ -946,7 +987,7 @@ const PATTERNS = [
     (m) => `הרישיון אישי: הפאנל עובד כשמתחברים אליו עם המייל הזה. אפשר להשתמש בו בעד ${m[1]} מחשבים בו־זמנית. החלפתם מחשב? הסירו את הישן כאן.`],
 ];
 
-const SALES = { "presets/": "presets/he/", "panel/": "panel/he/", "field-guides/": "field-guides/he/" };
+const SALES = { "presets/": "presets/he/", "lightroom-classic/": "lightroom-classic/he/", "panel/": "panel/he/", "field-guides/": "field-guides/he/" };
 
 function translate(text) {
   const core = text.replace(/\s+/g, " ").trim();

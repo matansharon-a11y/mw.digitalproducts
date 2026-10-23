@@ -15,6 +15,7 @@ const T = (en, hb) => (he() ? hb : en);
 const $ = (id) => document.getElementById(id);
 const COVERS = {
   "mwp-presets": ["assets/pages/img/c88e041b857fb964607aaec43ad1753d.jpg", "45% 6%"],
+  "mwp-lightroom-plugin": ["assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg", "60% 45%"],   // photographer behind a long lens
   "mwp-panel": ["assets/pages/img/8f730b9bb76b93ca707cae719a309479.jpg", "50% 40%"],
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"],
 };

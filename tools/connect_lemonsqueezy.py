@@ -59,6 +59,8 @@ def slug_for(name):
     t = name.lower()
     if "full set" in t or "full-set" in t:
         return "full-set"
+    if "lightroom classic" in t or "plugin" in t:   # the Lightroom Classic plugin (MWP Panel is the Photoshop panel)
+        return "mwp-lightroom-plugin"
     parts = frozenset(p for p, w in (("presets", "preset"), ("panel", "panel"), ("guides", "guide")) if w in t)
     return {frozenset({"presets"}): "mwp-presets", frozenset({"panel"}): "mwp-panel", frozenset({"guides"}): "mwp-field-guides",
             frozenset({"presets", "panel"}): "presets-panel", frozenset({"presets", "guides"}): "presets-field-guides",

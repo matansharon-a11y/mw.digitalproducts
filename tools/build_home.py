@@ -253,9 +253,9 @@ html = f'''<!doctype html>
 </div>
 <div class="plans">
 {plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
-{plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["MWP Presets: presets, LUTs and the Lightroom Classic plugin", "MWP Field Guides: 4 PDF guides, 137 lessons", "Composition, colour, light and planning"], "Get the bundle", "field-guides/#buy")}
-{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: presets, LUTs and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "User manual and install guide"], "Get the bundle", "panel/#buy")}
-{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets: presets, LUTs and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
+{plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "field-guides/#buy")}
+{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Panel: the Photoshop panel"], "Get the bundle", "panel/#buy")}
+{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>
 </section>
@@ -277,7 +277,7 @@ html = f'''<!doctype html>
 <h2 class="h2">FAQs</h2>
 </div>
 <div class="faq">
-<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. MWP Presets come with our <a href="/presets/#lightroom-classic-plugin">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer): cull, organise, edit and export a whole shoot in one window. It's in early access, with free updates.</div></details>
+<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/lightroom-classic/">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It's sold on its own, and every bundle with MWP Presets includes it.</div></details>
 <details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Panel</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>

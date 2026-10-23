@@ -102,7 +102,8 @@ html[lang=he] .plans .plan .small,html[lang=he] .plans .plan .tagx,html[lang=he]
 # ---------------------------------------------------------------- one header and footer for the whole site
 # The same menu on every page (home, sales pages, shop pages), in the home page's look. Absolute links, so
 # they work from any folder; the English sales pages send Hebrew visitors to their Hebrew page by themselves.
-SITE_LINKS = [("/presets/", "Lightroom", "לייטרום"), ("/panel/", "Photoshop", "פוטושופ"), ("/field-guides/", "Field Guides", "מדריכי השטח"),
+SITE_LINKS = [("/presets/", "Lightroom Presets", "פריסטים ללייטרום"), ("/lightroom-classic/", "Lightroom Plugin", "תוסף ללייטרום"),
+              ("/panel/", "Photoshop Panel", "פאנל לפוטושופ"), ("/field-guides/", "Field Guides", "מדריכי השטח"),
               ("/shop/", "Compare", "השוואה"), ("/#bundles", "Bundles", "חבילות"), ("/#about", "About Matan", "על מתן")]
 MENU_ICON = ('<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" '
              'stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg>')
@@ -113,7 +114,7 @@ def he_href(href):
     redirect (a second page load that shows as a flicker)."""
     if href.startswith("/#") or href == "/":
         return "/he" + href
-    if href in ("/shop/", "/presets/", "/panel/", "/field-guides/"):
+    if href in ("/shop/", "/presets/", "/lightroom-classic/", "/panel/", "/field-guides/"):
         return href + "he/"
     return href
 
@@ -129,7 +130,7 @@ def menu_button(lang="en"):
     return f'<button class="nav-menu" type="button" aria-label="{label}" aria-expanded="false" aria-controls="site-links">{MENU_ICON}</button>'
 
 
-FOOTER_LINKS = [("/presets/", "Lightroom presets and plugin", "פריסטים ותוסף ללייטרום"), ("/panel/", "Photoshop panel", "פאנל לפוטושופ"),
+FOOTER_LINKS = [("/presets/", "Lightroom presets", "פריסטים ללייטרום"), ("/lightroom-classic/", "Lightroom Classic plugin", "תוסף ללייטרום קלאסיק"), ("/panel/", "Photoshop panel", "פאנל לפוטושופ"),
                 ("/field-guides/", "Photography guides", "מדריכי צילום"), ("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
                 ("/support/", "Contact support", "פנייה לתמיכה"), ("/legal/#refunds", "Refunds", "החזרים"),
                 ("/legal/#terms", "Terms", "תנאים"), ("/legal/#privacy", "Privacy", "פרטיות")]
@@ -146,6 +147,7 @@ def site_footer(lang="en"):
 SITE_CSS = """
 html:not(.prices-on) [data-price]{visibility:hidden}
 html:not(.prices-on) .btn .pr{display:none}   /* a buy button reads "Get …" until its price is in, never "Get … ·" */
+.pr:has([data-price]:empty){display:none}   /* …and stays so for a product whose price isn't set yet */
 html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
 html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
 html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}

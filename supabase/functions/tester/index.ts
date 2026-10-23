@@ -12,7 +12,7 @@ import { admin, clientIp, cors, EMAIL_RE, fail, json, safeEqual, sha256Hex } fro
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
 const MAX_LINKS_PER_HOUR = 5;   // per IP
-const SLUGS = ["mwp-presets", "mwp-panel", "mwp-field-guides"];
+const SLUGS = ["mwp-presets", "mwp-lightroom-plugin", "mwp-panel", "mwp-field-guides"];
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: cors(req) });

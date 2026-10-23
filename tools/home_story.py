@@ -20,7 +20,7 @@ CHAPTERS = [
          title="A natural starting point for every photo",
          body=["50 Lightroom presets made from Matan Wild's own wildlife and landscape edits. 12 are adaptive: they find the animal, the sky and the background and treat each one on its own.",
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
-         points=["50 Lightroom presets, 12 adaptive", "A Lightroom Classic plugin", "50 mobile files and 33 LUTs"],
+         points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
     dict(step="Finish", tag="Photoshop panel", name="Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
@@ -67,7 +67,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
 <h2 class="h2">Four tools. <span class="b grad">Start where you get stuck.</span></h2>
-<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, with a Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.</p>
+<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

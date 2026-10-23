@@ -10,28 +10,12 @@
     "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro."
    },
    {
-    "q": "What is the Lightroom Classic plugin?",
-    "a": "A plugin that comes free with every copy of MWP Presets; it isn't sold on its own. It follows a whole shoot inside Lightroom Classic: cull bursts, organise trips and species, edit the animal, the sky or the background, and export. It's in early access: it works today, and new features arrive as free updates in My downloads."
-   },
-   {
-    "q": "Which Lightroom does the plugin work in?",
-    "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's MWP Panel."
-   },
-   {
-    "q": "Why is the plugin's window called MWP Panel?",
-    "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with MWP Panel for Photoshop, which is a separate product."
-   },
-   {
-    "q": "Will the plugin change or delete my photos?",
-    "a": "Culling never deletes a photo. Everything the plugin does is ordinary Lightroom settings, masks, keywords and collections, so you can undo it or change it by hand, and nothing is locked in."
-   },
-   {
-    "q": "How do I install the plugin?",
-    "a": "Download it from My downloads and unzip it. In Lightroom Classic, open File › Plug-in Manager, click Add and choose the MWP-Panel.lrplugin folder. The download includes a note with these steps, and there's a video tutorial in My downloads."
+    "q": "Do I need the Lightroom Classic plugin?",
+    "a": "No. The presets work on their own in Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw. The Lightroom Classic plugin is a separate product for Lightroom Classic 13 or newer: one window to cull, keyword, edit and export a whole shoot. Every bundle with MWP Presets includes it."
    },
    {
     "q": "Presets or Panel: which do I need?",
-    "a": "If you edit in Lightroom, MWP Presets: 50 presets, plus a Lightroom Classic plugin. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
+    "a": "If you edit in Lightroom, MWP Presets. For sorting and finishing whole shoots in Lightroom Classic, the Lightroom Classic plugin, sold separately. If you open your photos in Photoshop, MWP Panel. If you use both apps, the Presets + Panel bundle gives you the same look in each, includes the plugin, and costs less than buying them separately."
    },
    {
     "q": "Can I use them on my phone only?",
@@ -44,6 +28,10 @@
    {
     "q": "Can I use the LUTs on video?",
     "a": "Yes. They carry the colour and tone of presets 01 to 33 and are built for standard Rec.709 footage. With LOG footage, convert to Rec.709 first, then apply the LUT."
+   },
+   {
+    "q": "How do I use the LUTs in Photoshop?",
+    "a": "Add a Color Lookup adjustment layer, choose Load 3D LUT, pick an MWP LUT, then set the layer's opacity."
    },
    {
     "q": "How do I get and install the files?",
@@ -68,28 +56,12 @@
     "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו."
    },
    {
-    "q": "מה זה התוסף ללייטרום קלאסיק?",
-    "a": "תוסף שמגיע בחינם עם כל עותק של הפריסטים של MWP; הוא לא נמכר בנפרד. הוא מלווה צילום שלם בתוך לייטרום קלאסיק: מיון רצפים, ארגון טיולים ומינים, עריכה של החיה, השמיים או הרקע, וייצוא. הוא בגישה מוקדמת: הוא עובד כבר היום, ותכונות חדשות מגיעות כעדכונים חינמיים בעמוד ההורדות שלי."
-   },
-   {
-    "q": "באיזה לייטרום התוסף עובד?",
-    "a": "לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את הפאנל של MWP."
-   },
-   {
-    "q": "למה החלון של התוסף נקרא MWP Panel?",
-    "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם הפאנל של MWP לפוטושופ, שהוא מוצר נפרד."
-   },
-   {
-    "q": "התוסף ישנה או ימחק לי תמונות?",
-    "a": "המיון אף פעם לא מוחק תמונה. כל מה שהתוסף עושה הוא הגדרות, מסכות, מילות מפתח ואוספים רגילים של לייטרום, כך שאפשר לבטל או לשנות הכול ידנית, ושום דבר לא נעול."
-   },
-   {
-    "q": "איך מתקינים את התוסף?",
-    "a": "מורידים אותו מעמוד ההורדות שלי ופותחים את הקובץ. בלייטרום קלאסיק פותחים File › Plug-in Manager, לוחצים Add ובוחרים את התיקייה MWP-Panel.lrplugin. בהורדה יש הוראות עם הצעדים האלה, ובעמוד ההורדות שלי יש סרטון הדרכה."
+    "q": "צריך את התוסף ללייטרום קלאסיק?",
+    "a": "לא. הפריסטים עובדים לבד בלייטרום קלאסיק, בלייטרום, בלייטרום מובייל ובקאמרה ראו. התוסף ללייטרום קלאסיק הוא מוצר נפרד ללייטרום קלאסיק 13 ומעלה: חלון אחד למיון, תיוג, עריכה וייצוא של צילום שלם. כל חבילה עם הפריסטים של MWP כוללת אותו."
    },
    {
     "q": "פריסטים או פאנל: מה אני צריך?",
-    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP: ‏50 פריסטים, ועוד תוסף ללייטרום קלאסיק. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
+    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP. למיון ולעריכה של צילומים שלמים בלייטרום קלאסיק, התוסף ללייטרום קלאסיק, שנמכר בנפרד. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשתי התוכנות, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתיהן, כוללת את התוסף, ועולה פחות מלקנות כל אחד בנפרד."
    },
    {
     "q": "אפשר להשתמש רק בטלפון?",
@@ -102,6 +74,10 @@
    {
     "q": "אפשר להשתמש ב-LUT בווידאו?",
     "a": "כן. הם נושאים את הצבע והטון של פריסטים 01 עד 33 ובנויים לצילום וידאו רגיל. בצילום לוג (שטוח) ממירים קודם לצבע רגיל, ואז מחילים את ה-LUT."
+   },
+   {
+    "q": "איך משתמשים בקובצי ה-LUT בפוטושופ?",
+    "a": "מוסיפים שכבת התאמה Color Lookup, בוחרים Load 3D LUT, בוחרים LUT של MWP ומכוונים את האטימות של השכבה."
    },
    {
     "q": "איך מקבלים ומתקינים את הקבצים?",
@@ -125,7 +101,7 @@
    },
    {
     "q": "Presets or Panel: which do I need?",
-    "a": "If you edit in Lightroom, MWP Presets: 50 presets, plus a Lightroom Classic plugin. If you open your photos in Photoshop, MWP Panel. If you use both, the Presets + Panel bundle gives you the same look in each and costs less than buying them separately."
+    "a": "If you edit in Lightroom, MWP Presets. For sorting and finishing whole shoots in Lightroom Classic, the Lightroom Classic plugin, sold separately. If you open your photos in Photoshop, MWP Panel. If you use both apps, the Presets + Panel bundle gives you the same look in each, includes the plugin, and costs less than buying them separately."
    },
    {
     "q": "Which Photoshop do I need?",
@@ -163,7 +139,7 @@
    },
    {
     "q": "פריסטים או פאנל: מה אני צריך?",
-    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP: ‏50 פריסטים, ועוד תוסף ללייטרום קלאסיק. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשניהם, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתי התוכנות, ועולה פחות מלקנות כל אחד בנפרד."
+    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP. למיון ולעריכה של צילומים שלמים בלייטרום קלאסיק, התוסף ללייטרום קלאסיק, שנמכר בנפרד. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשתי התוכנות, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתיהן, כוללת את התוסף, ועולה פחות מלקנות כל אחד בנפרד."
    },
    {
     "q": "איזה פוטושופ צריך?",
@@ -254,6 +230,68 @@
    {
     "q": "מה מדיניות ההחזרים והשימוש בקבצים?",
     "a": "אם המדריכים לא מתאימים לכם, כתבו לתמיכה תוך 14 יום מהרכישה. נעזור, ואם לא נצליח, נחזיר לכם את הכסף. הקבצים לשימוש שלכם בלבד: אין לשתף, למכור או להעביר אותם. התנאים המלאים בעמוד התנאים."
+   }
+  ]
+ },
+ "lightroom-classic": {
+  "en": [
+   {
+    "q": "Do I need MWP Presets to use the plugin?",
+    "a": "No. The plugin is a product of its own, with its own looks inside, and it works without the presets. MWP Presets are a separate product. If you'd like both, every bundle with MWP Presets includes the plugin."
+   },
+   {
+    "q": "Which Lightroom does it work in?",
+    "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's MWP Panel."
+   },
+   {
+    "q": "Why is its window called MWP Panel?",
+    "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with MWP Panel for Photoshop, which is a separate product."
+   },
+   {
+    "q": "What does early access mean?",
+    "a": "The plugin works today. New features and fixes arrive as free updates in My downloads, and we'd like to hear what you think through support."
+   },
+   {
+    "q": "Will it change or delete my photos?",
+    "a": "Culling never deletes a photo. Everything the plugin does is ordinary Lightroom settings, masks, keywords and collections, so you can undo it or change it by hand, and nothing is locked in."
+   },
+   {
+    "q": "How do I install it?",
+    "a": "Download it from My downloads and unzip it. In Lightroom Classic, open File › Plug-in Manager, click Add and choose the MWP-Panel.lrplugin folder. The download includes a note with these steps, and there's a video tutorial in My downloads."
+   },
+   {
+    "q": "Can I get a refund?",
+    "a": "If the plugin doesn't work for you, write to support within 14 days of purchase with your order number. We'll help you get it working, and if we can't, we'll refund you. The full terms are on our Terms page."
+   }
+  ],
+  "he": [
+   {
+    "q": "צריך את הפריסטים של MWP כדי להשתמש בתוסף?",
+    "a": "לא. התוסף הוא מוצר בפני עצמו, עם לוקים משלו, והוא עובד בלי הפריסטים. הפריסטים של MWP הם מוצר נפרד. אם תרצו את שניהם, כל חבילה עם הפריסטים של MWP כוללת את התוסף."
+   },
+   {
+    "q": "באיזה לייטרום הוא עובד?",
+    "a": "לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את הפאנל של MWP."
+   },
+   {
+    "q": "למה החלון שלו נקרא MWP Panel?",
+    "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם הפאנל של MWP לפוטושופ, שהוא מוצר נפרד."
+   },
+   {
+    "q": "מה זה גישה מוקדמת?",
+    "a": "התוסף עובד כבר היום. תכונות חדשות ותיקונים מגיעים כעדכונים חינמיים בעמוד ההורדות שלי, ונשמח לשמוע מה אתם חושבים דרך התמיכה."
+   },
+   {
+    "q": "הוא ישנה או ימחק לי תמונות?",
+    "a": "המיון אף פעם לא מוחק תמונה. כל מה שהתוסף עושה הוא הגדרות, מסכות, מילות מפתח ואוספים רגילים של לייטרום, כך שאפשר לבטל או לשנות הכול ידנית, ושום דבר לא נעול."
+   },
+   {
+    "q": "איך מתקינים אותו?",
+    "a": "מורידים אותו מעמוד ההורדות שלי ופותחים את הקובץ. בלייטרום קלאסיק פותחים File › Plug-in Manager, לוחצים Add ובוחרים את התיקייה MWP-Panel.lrplugin. בהורדה יש הוראות עם הצעדים האלה, ובעמוד ההורדות שלי יש סרטון הדרכה."
+   },
+   {
+    "q": "אפשר לקבל החזר?",
+    "a": "אם התוסף לא עובד לכם, כתבו לתמיכה תוך 14 יום מהרכישה, עם מספר ההזמנה. נעזור לכם להפעיל אותו, ואם לא נצליח, נחזיר לכם את הכסף. התנאים המלאים בעמוד התנאים."
    }
   ]
  }

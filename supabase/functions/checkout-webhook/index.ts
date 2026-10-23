@@ -66,12 +66,13 @@ Deno.serve(async (req) => {
   }
 });
 
-// Bundle slug -> the products it unlocks (slugs as set in the admin).
+// Bundle slug -> the products it unlocks (slugs as set in the admin). Every bundle with MWP Presets includes the
+// Lightroom Classic plugin, which is otherwise sold on its own (Jeinna, 23 Oct 2026).
 const BUNDLES: Record<string, string[]> = {
-  "presets-field-guides": ["mwp-presets", "mwp-field-guides"],
-  "presets-panel": ["mwp-presets", "mwp-panel"],
+  "presets-field-guides": ["mwp-presets", "mwp-lightroom-plugin", "mwp-field-guides"],
+  "presets-panel": ["mwp-presets", "mwp-lightroom-plugin", "mwp-panel"],
   "field-guides-panel": ["mwp-field-guides", "mwp-panel"],
-  "full-set": ["mwp-presets", "mwp-panel", "mwp-field-guides"],
+  "full-set": ["mwp-presets", "mwp-lightroom-plugin", "mwp-panel", "mwp-field-guides"],
 };
 
 async function handlePaid(
