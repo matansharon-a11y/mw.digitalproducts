@@ -1,11 +1,14 @@
 // Prices on the home and sales pages. Every price spot is <span data-price="slug"> (plus data-was for a
 // struck-out "before" price). They read the prices set in the admin; until a product has a price there,
-// the spot stays empty (never 0.00). English shows dollars, Hebrew shows shekels.
+// the spot stays empty (never 0.00). Every page shows dollars, the currency checkout charges: shekel prices (set in
+// the admin) show on the Hebrew pages only once there's a shekel checkout (SHOW_ILS, also in cart.js and
+// tools/bake_prices.py). Launch audit, 24 Oct 2026: a Hebrew visitor saw ₪179 and was charged $59.99.
 import { CONFIG } from "../config.js";
 
 let rows = null;
 
-const he = () => document.documentElement.lang === "he";
+const SHOW_ILS = false;
+const he = () => SHOW_ILS && document.documentElement.lang === "he";
 const fmt = (cents, cur) => {
   const n = (cents || 0) / 100;
   const num = n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -32,7 +35,7 @@ function saveFor(el) {
   if (!r) return "";
   const [now, was, cur] = he() ? [r.price_ils_cents, r.compare_at_ils_cents, "ILS"] : [r.price_cents, r.compare_at_cents, r.currency || "USD"];
   if (!was || !now || was <= now) return "";
-  return (he() ? "חוסכים " : "Save ") + fmt(was - now, cur);
+  return (document.documentElement.lang === "he" ? "חוסכים " : "Save ") + fmt(was - now, cur);
 }
 
 function paint(root = document) {

@@ -53,10 +53,10 @@ Deno.serve(async (req) => {
 
   // Give whoever answers the context: what this person owns and how often they've downloaded.
   const { data: customer } = await db.from("customers")
-    .select("id, name, entitlements(revoked_at, products(name), downloads(count))")
+    .select("id, name, entitlements(revoked_at, products(name, name_emphasis), downloads(count))")
     .eq("email", ticket.email).maybeSingle();
   const owned = (customer?.entitlements ?? []).map((e: any) => ({
-    product: e.products?.name, revoked: !!e.revoked_at, downloads: e.downloads?.[0]?.count ?? 0,
+    product: [e.products?.name, e.products?.name_emphasis].filter(Boolean).join(" "), revoked: !!e.revoked_at, downloads: e.downloads?.[0]?.count ?? 0,
   }));
 
   await notifyMake("MAKE_SUPPORT_WEBHOOK", {

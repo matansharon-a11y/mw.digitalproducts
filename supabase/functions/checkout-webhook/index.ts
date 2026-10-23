@@ -3,12 +3,15 @@
 // Deploy with JWT verification OFF (the checkout provider can't send a Supabase token):
 //   supabase functions deploy checkout-webhook --no-verify-jwt
 // Events handled: order_created (status paid) and order_refunded.
+// Test-mode orders (Lemon Squeezy's test card) unlock nothing, unless the buyer is the admin (to try the whole flow)
+// or ALLOW_TEST_ORDERS=true is set: a test checkout link that reached the live site must never give products away.
 // Idempotent: each event is recorded in webhook_events after it succeeds, and a
 // repeat delivery of the same event returns 200 without doing anything twice.
 // ============================================================================
 import { requestPersonalCopies, admin, hmacHex, notifyMake, plain, safeEqual } from "../_shared/http.ts";
 
 const SECRET = Deno.env.get("CHECKOUT_WEBHOOK_SECRET") ?? "";
+const ALLOW_TEST_ORDERS = Deno.env.get("ALLOW_TEST_ORDERS") === "true";
 
 type LsOrder = {
   meta: { event_name: string; test_mode?: boolean; custom_data?: Record<string, string> };
@@ -53,7 +56,9 @@ Deno.serve(async (req) => {
       if (a.status !== "paid") return text(`ignored status ${a.status}`);
       await handlePaid(db, orderId, a, body.meta.custom_data ?? {}, body.meta.test_mode === true);
     } else if (event === "order_refunded") {
-      await handleRefund(db, orderId, a.refunded !== false, a, body.meta.test_mode === true);
+      // Lemon Squeezy marks the order "refunded" (all of it) or "partial_refund" (a goodwill credit: access stays)
+      const full = a.status === "refunded" || (a.status !== "partial_refund" && a.refunded === true && (a.refunded_amount ?? a.total) >= a.total);
+      await handleRefund(db, orderId, full, a, body.meta.test_mode === true);
     } else {
       return text(`ignored ${event}`);
     }
@@ -79,18 +84,31 @@ const BUNDLES: Record<string, string[]> = {
 async function handlePaid(
   db: ReturnType<typeof admin>, orderId: string, a: LsOrder["data"]["attributes"], custom: Record<string, string>, testMode: boolean,
 ) {
-  const email = a.user_email.trim().toLowerCase();
+  // The purchase belongs to the account that started the checkout (cart.js sends its user id), even when the buyer
+  // typed another email at checkout; otherwise to the email they paid with.
+  let email = a.user_email.trim().toLowerCase();
+  if (/^[0-9a-f-]{36}$/i.test(custom.user_id ?? "")) {
+    const { data: u } = await db.auth.admin.getUserById(custom.user_id);
+    const accountEmail = u?.user?.email_confirmed_at ? u.user.email?.trim().toLowerCase() : "";
+    if (accountEmail) email = accountEmail;
+  }
+
+  if (testMode && !ALLOW_TEST_ORDERS) {
+    const { data: isAdmin } = await db.from("admin_allowlist").select("email").eq("email", email).maybeSingle();
+    if (!isAdmin) { console.warn(`test-mode order ${orderId} from ${email}: nothing unlocked`); return; }
+  }
 
   const { data: product, error: pErr } = await db.from("products")
     .select("id, name, name_emphasis, slug")
     .eq("checkout_variant_id", String(a.first_order_item.variant_id)).maybeSingle();
   if (pErr) throw pErr;
-  if (!product) throw new Error(`no product for variant ${a.first_order_item.variant_id}`);
 
+  // the customer's own name (My details) is kept; the checkout name only fills an empty one
   const { data: customer, error: cErr } = await db.from("customers")
-    .upsert({ email, name: a.user_name || null }, { onConflict: "email" })
+    .upsert({ email }, { onConflict: "email" })
     .select("id, email, name, created_at").single();
   if (cErr) throw cErr;
+  if (!customer.name && a.user_name) await db.from("customers").update({ name: a.user_name }).eq("id", customer.id);
 
   const { data: order, error: oErr } = await db.from("orders").upsert({
     checkout_order_id: orderId,
@@ -101,9 +119,26 @@ async function handlePaid(
     total_cents: a.total,
     currency: a.currency,
     status: "paid",
+    test_mode: testMode,
     source: custom.source?.slice(0, 64) ?? null,
   }, { onConflict: "checkout_order_id" }).select("id").single();
   if (oErr) throw oErr;
+
+  // Paid for something the shop doesn't know (a variant the connect script hasn't linked, or a product bought from
+  // the Lemon Squeezy storefront): keep the order and raise it in monday, instead of failing until the retries stop.
+  if (!product) {
+    console.error(`order ${orderId}: no product for variant ${a.first_order_item.variant_id}`);
+    await notifyMake("MAKE_ORDER_WEBHOOK", {
+      type: "order", order_id: order.id, checkout_order_id: orderId, order_number: String(a.order_number),
+      order_date: (a.created_at ?? new Date().toISOString()).slice(0, 10), test_mode: testMode,
+      status_label: "Paid, NOT DELIVERED: product not linked", email, name: plain(a.user_name),
+      product: plain(`UNMATCHED: ${a.first_order_item.product_name} (variant ${a.first_order_item.variant_id})`),
+      product_slug: "", subtotal: a.subtotal / 100, discount: (a.discount_total ?? 0) / 100, tax: a.tax / 100,
+      total: a.total / 100, currency: a.currency, receipt_url: a.urls?.receipt ?? null, source: plain(custom.source),
+      repeat_customer: false, downloads_url: "",
+    });
+    return;
+  }
 
   const { error: iErr } = await db.from("order_items")
     .upsert({ order_id: order.id, product_id: product.id, price_cents: a.subtotal }, { onConflict: "order_id,product_id" });
@@ -122,9 +157,11 @@ async function handlePaid(
     const { data: partRows, error: ppErr } = await db.from("products").select("id, slug").in("slug", parts);
     if (ppErr) throw ppErr;
     for (const part of partRows ?? []) {
-      const { data: owned } = await db.from("entitlements").select("id, revoked_at, view_only")
+      const { data: owned } = await db.from("entitlements").select("id, order_id, revoked_at, view_only")
         .eq("customer_id", customer.id).eq("product_id", part.id).maybeSingle();
-      if (owned && !owned.revoked_at && !owned.view_only) continue;   // an ambassador's read-only guides become a download
+      // bought before: it keeps its own order. Free access (ambassador / tester) becomes paid access, so ending
+      // the program never takes back what they paid for; read-only guides become a download.
+      if (owned && owned.order_id && !owned.revoked_at && !owned.view_only) continue;
       const { error: bErr } = await db.from("entitlements").upsert(
         { customer_id: customer.id, product_id: part.id, order_id: order.id, revoked_at: null, view_only: false },
         { onConflict: "customer_id,product_id" });
@@ -169,7 +206,10 @@ async function handleRefund(
     .update({ status: full ? "refunded" : "partially_refunded", refunded_at: new Date().toISOString() })
     .eq("checkout_order_id", orderId).select("id, order_number, customer_id").maybeSingle();
   if (error) throw error;
-  if (!order) throw new Error(`refund for unknown order ${orderId}`); // retried until the order exists
+  if (!order) {
+    if (testMode) return;   // a test order that unlocked nothing
+    throw new Error(`refund for unknown order ${orderId}`); // retried until the order exists
+  }
 
   if (full) {
     const { error: rErr } = await db.from("entitlements")

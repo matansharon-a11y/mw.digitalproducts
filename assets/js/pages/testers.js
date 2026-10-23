@@ -3,7 +3,7 @@
 // MWP Panel and the Field Guides.
 // Same protection as buyers: get-download gives stamped personal copies on 5-minute links, with a daily limit.
 import { initChrome, toast } from "../lib/ui.js";
-import { supabase, currentUser, signOut, requestDownload, testerJoin, testerMe, esc } from "../lib/api.js";
+import { currentUser, signOut, requestDownload, testerJoin, testerMe, esc } from "../lib/api.js";
 import { EMAIL_RE, setBusy, setStatus } from "./shared-forms.js";
 
 // a sign-in link sent from the Hebrew page brings them back in Hebrew
@@ -46,22 +46,15 @@ $("t-form").addEventListener("submit", async (e) => {
   if (!name) { setStatus(status, T("Please enter your name.", "נא למלא שם."), "error"); return; }
   if (!code) { setStatus(status, T("Please enter your tester code.", "נא למלא את קוד הבודקים."), "error"); return; }
   const btn = form.querySelector("button[type=submit]");
-  setBusy(btn, true, T("Signing in…", "נכנסים…"));
+  setBusy(btn, true, T("Checking…", "בודקים…"));
   setStatus(status, T("Checking your code…", "בודקים את הקוד…"), "");
   try {
     const lang = he() ? "he" : "en";
-    // the code signs them in right here: no email step
+    // the code makes them a tester; the emailed link proves the email is theirs and signs them in
     const r = await testerJoin({ name, email, code, lang });
-    if (r.token_hash) {
-      setStatus(status, T("Opening your downloads…", "פותחים את ההורדות שלכם…"), "");
-      const { error } = await supabase.auth.verifyOtp({ token_hash: r.token_hash, type: "magiclink" });
-      if (error) throw error;
-      location.replace("/account/");   // they're a tester now: no need to ask again
-      return;
-    }
-    // an email that already has a protected account (admin, buyer, ambassador): an emailed link instead
-    $("t-sent-text").textContent = T("This email already has an MWP account, so for its safety we've emailed you a sign-in link. Open it on this device.",
-      "למייל הזה כבר יש חשבון MWP, אז לשמירה עליו שלחנו לכם במייל קישור כניסה. פתחו אותו במכשיר הזה.");
+    if (!r.emailed) throw new Error(T("Something went wrong. Please try again.", "משהו השתבש. נסו שוב."));
+    $("t-sent-text").textContent = T("You're in. We've emailed you a sign-in link: open it on this device to get your downloads.",
+      "נכנסתם. שלחנו לכם במייל קישור כניסה: פתחו אותו במכשיר הזה כדי להגיע להורדות.");
     form.hidden = true; $("t-sent").hidden = false;
   } catch (err) {
     setStatus(status, err.message, "error");

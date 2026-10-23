@@ -86,9 +86,28 @@ function save(items) {
   refresh();
 }
 let memory = null;
-// sold only with another product: a cart saved before 23 Oct 2026 may still hold the plugin on its own
+// sold only with another product: a cart saved before 23 Oct 2026 may still hold the plugin on its own (it becomes
+// MWP Presets, which includes it; refreshCart() fills in its name and price)
 const SOLD_WITH = { "mwp-lightroom-plugin": "mwp-presets" };
-const items = () => memory || (memory = getCart().filter((i) => !SOLD_WITH[i.slug]));
+const items = () => memory || (memory = getCart().map((i) => SOLD_WITH[i.slug] ? { ...i, slug: SOLD_WITH[i.slug] } : i)
+  .filter((i, n, all) => all.findIndex((j) => j.slug === i.slug) === n));
+
+// A cart keeps what it had when each item was added. Bring names, prices and checkout links up to date from the
+// live price list (a cart filled before launch had no checkout links yet; a price may have changed since).
+let refreshed = false;
+async function refreshCart() {
+  if (refreshed || !items().length) return;
+  let rows;
+  try { rows = await priceList(); } catch { return; }   // offline: keep what's saved, try again next page
+  refreshed = true;
+  const next = items().map((i) => {
+    const r = rows[i.slug];
+    return r ? { ...i, name: [r.name, r.name_emphasis].filter(Boolean).join(" ") || i.name, price_cents: r.price_cents,
+      currency: r.currency || "USD", price_ils_cents: r.price_ils_cents, checkout_url: r.checkout_url || null } : i;
+  });
+  if (JSON.stringify(next) !== JSON.stringify(items())) save(next);
+}
+
 
 export function addToCart(p) {
   const list = items().filter((i) => i.slug !== p.slug);
@@ -105,8 +124,11 @@ function money(cents, cur) {
   catch { return (cents / 100).toFixed(2) + " " + cur; }
 }
 
+// The cart shows the currency checkout charges: dollars, on the Hebrew site too, until there's a shekel checkout
+// (then set SHOW_ILS here and in prices.js / bake_prices.py). Matan's call; see the 24 Oct 2026 launch audit.
+const SHOW_ILS = false;
 function priceOf(i) {
-  return he() && i.price_ils_cents != null ? money(i.price_ils_cents, "ILS") : money(i.price_cents, i.currency);
+  return SHOW_ILS && he() && i.price_ils_cents != null ? money(i.price_ils_cents, "ILS") : money(i.price_cents, i.currency);
 }
 
 function render() {
@@ -125,7 +147,7 @@ function render() {
       <div><div class="nm" data-no-i18n>${esc(i.name)}</div><div class="pr">${priceOf(i)}</div></div>
       <div class="acts">${several && i.checkout_url ? `<a class="pay" data-checkout href="${esc(i.checkout_url)}">${T("Pay", "לתשלום")}</a>` : ""}<button type="button" data-remove="${esc(i.slug)}">${T("Remove", "הסרה")}</button></div>
     </div>`).join("");
-  const ils = he() && list.every((i) => i.price_ils_cents != null);   // Hebrew shows shekels, like the pages
+  const ils = SHOW_ILS && he() && list.every((i) => i.price_ils_cents != null);
   const cur = ils ? "ILS" : list[0].currency;
   const known = list.every((i) => (ils ? i.price_ils_cents : i.price_cents) != null);
   const total = list.reduce((s, i) => s + ((ils ? i.price_ils_cents : i.price_cents) || 0), 0);
@@ -231,9 +253,14 @@ function showGate() {
 async function goToCheckout(link) {
   const { user } = await accountUser();
   if (!user) { showGate(); return; }
-  // Checkout uses the account's email, so the purchase lands in this account.
+  // Checkout uses the account's email, and carries the account's id: the purchase lands in this account even if
+  // they type another email at checkout (checkout-webhook). The visit's utm_source goes along for the reports.
   const url = new URL(link.href, location.href);
   url.searchParams.set("checkout[email]", user.email);
+  url.searchParams.set("checkout[custom][user_id]", user.id);
+  let utm = null;
+  try { utm = sessionStorage.getItem("utm_source") || new URLSearchParams(location.search).get("utm_source"); } catch { /* blocked */ }
+  if (utm) url.searchParams.set("checkout[custom][source]", utm.slice(0, 64));
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
   else location.href = url.toString();
 }
@@ -252,6 +279,7 @@ export function openCart() {
   document.documentElement.classList.add("cart-open");
   document.querySelector(".cart-panel")?.removeAttribute("inert");
   render();
+  refreshCart();
   document.querySelector(".cart-x")?.focus();
 }
 function closeCart() {
@@ -285,7 +313,7 @@ async function accountUser() {
 function menuHTML(user) {
   const b = base();
   const who = user
-    ? `<div class="who"><span class="av">${(user.email || "?")[0]}</span><div><small>${T("Signed in as", "מחוברים בתור")}</small><b>${user.email}</b></div></div>`
+    ? `<div class="who"><span class="av">${(user.email || "?")[0]}</span><div><small>${T("Signed in as", "מחוברים בתור")}</small><b>${esc(user.email)}</b></div></div>`
     : `<div class="who"><span class="av out">${SVG.user}</span><div><small>${T("Not signed in", "לא מחוברים")}</small><b>${T("Your MWP account", "החשבון שלכם ב-MWP")}</b></div></div>`;
   return `${who}
     <a href="/account/" role="menuitem">${SVG.dl}<span>${T("My downloads", "ההורדות שלי")}</span></a>
@@ -402,7 +430,11 @@ export function initCart() {
     }
   }, true);
   window.addEventListener("storage", (e) => { if (e.key === KEY) { memory = null; refresh(); } });
+  // My downloads takes what the buyer now owns out of the saved cart (account.js), then tells the cart here
+  window.addEventListener("mwp-cart-changed", () => { memory = null; refresh(); });
   refresh();
+  // where the visitor came from (…?utm_source=…), kept for the visit and sent with the checkout
+  try { const src = new URLSearchParams(location.search).get("utm_source"); if (src) sessionStorage.setItem("utm_source", src.slice(0, 64)); } catch { /* blocked */ }
   // Back from signing in for checkout (…?cart=1): open the cart where they left off.
   const q = new URLSearchParams(location.search);
   if (q.get("cart") === "1") {

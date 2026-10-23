@@ -48,7 +48,6 @@ mwp-presets/
 └── supabase/
     ├── config.toml
     ├── migrations/        001 schema · 002 security · 003 admin reporting
-    ├── functions-dashboard/   the same four functions as single files, to paste into the Supabase dashboard
     └── functions/
         ├── _shared/http.ts        CORS, responses, service client, Make.com forwarding, HMAC
         ├── checkout-webhook/      Paid and refunded orders

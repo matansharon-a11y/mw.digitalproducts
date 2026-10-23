@@ -171,7 +171,8 @@ type OrderRow = {
 async function ordersBetween(db: Db, from: Date, to: Date): Promise<OrderRow[]> {
   const { data, error } = await db.from("orders")
     .select("checkout_order_id, total_cents, tax_cents, currency, status, created_at, refunded_at, customer_id, order_items(products(name, name_emphasis))")
-    .gte("created_at", from.toISOString()).lt("created_at", to.toISOString());
+    .gte("created_at", from.toISOString()).lt("created_at", to.toISOString())
+    .eq("test_mode", false);   // test-mode checkouts aren't sales
   if (error) throw error;
   return (data ?? []) as unknown as OrderRow[];
 }

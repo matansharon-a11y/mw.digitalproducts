@@ -3,7 +3,7 @@
 
 Reads the public page_prices view with the public (anon) key from assets/js/config.js, then fills every
 <span data-price="slug"> (data-was: the struck-out "before" price) and <span data-save="slug"> the same way
-assets/js/lib/prices.js does: dollars on English pages, shekels on Hebrew ones. The page's <html> gets the
+assets/js/lib/prices.js does: dollars on every page (shekels on the Hebrew ones only with SHOW_ILS, once checkout charges shekels). The page's <html> gets the
 prices-on class so the spots aren't hidden while loading. prices.js still asks for the live prices on every
 visit and corrects anything changed in the admin since the last deploy.
 If the prices can't be read, nothing is changed: the pages behave as before.
@@ -37,15 +37,17 @@ def price(slug, was, he):
     return "" if not c else fmt(c, (r or {}).get("currency") or "USD")
 
 
-def save(slug, he):
+def save(slug, he, hebrew=False):
     r = rows.get(slug)
     if not r:
         return ""
     now, was, cur = (r.get("price_ils_cents"), r.get("compare_at_ils_cents"), "ILS") if he else (r.get("price_cents"), r.get("compare_at_cents"), r.get("currency") or "USD")
     if not was or not now or was <= now:
         return ""
-    return ("חוסכים " if he else "Save ") + fmt(was - now, cur)
+    return ("חוסכים " if hebrew else "Save ") + fmt(was - now, cur)
 
+
+SHOW_ILS = False   # the same switch as in assets/js/lib/prices.js and cart.js
 
 PRICE = re.compile(r'<span([^>]*\bdata-price="([a-z0-9-]+)"[^>]*)>[^<]*</span>')
 SAVE = re.compile(r'<span([^>]*\bdata-save="([a-z0-9-]+)"[^>]*)>[^<]*</span>')
@@ -54,11 +56,12 @@ for f in root.rglob("*.html"):
     s = f.read_text(encoding="utf-8")
     if "data-price=" not in s:
         continue
-    he = bool(re.search(r'<html[^>]*\blang="he"', s))
+    hebrew = bool(re.search(r'<html[^>]*\blang="he"', s))
+    he = SHOW_ILS and hebrew
     s = PRICE.sub(lambda m: f'<span{m.group(1)}>{price(m.group(2), "data-was" in m.group(1), he)}</span>', s)
 
     def fill_save(m):
-        t = save(m.group(2), he)
+        t = save(m.group(2), he, hebrew)
         attrs = re.sub(r"\s+hidden(?=[\s>]|$)", "", m.group(1)) if t else m.group(1)
         return f"<span{attrs}>{t}</span>"
     s = SAVE.sub(fill_save, s)

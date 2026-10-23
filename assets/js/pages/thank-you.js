@@ -4,6 +4,9 @@ import { EMAIL_RE } from "./shared-forms.js";
 
 initChrome();
 
+// My downloads waits a few minutes for this order if it hasn't arrived yet (account.js justBought)
+try { sessionStorage.setItem("mwp_just_bought", String(Date.now())); } catch { /* blocked */ }
+
 const email = new URLSearchParams(location.search).get("email");
 const link = document.getElementById("to-downloads");
 if (email && EMAIL_RE.test(email)) {

@@ -37,7 +37,8 @@ export function admin(): SupabaseClient {
   });
 }
 
-export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+// Strict on purpose: emails go into JSON that Make builds for monday, where a quote or backslash breaks the run.
+export const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 export function clientIp(req: Request): string {
   return (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim();

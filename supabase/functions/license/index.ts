@@ -39,7 +39,7 @@ Deno.serve(async (req) => {
 
   // The Panel entitlement: MWP Panel itself, or a bundle that includes it.
   const { data: ents } = await db.from("entitlements")
-    .select("id, revoked_at, granted_at, products!inner(slug)")
+    .select("id, order_id, revoked_at, granted_at, products!inner(slug)")
     .eq("customer_id", customer.id).in("products.slug", PANEL_SLUGS)
     .order("granted_at", { ascending: true });
   const active = (ents ?? []).filter((e) => !e.revoked_at);
@@ -49,11 +49,12 @@ Deno.serve(async (req) => {
   }
   const ent = active[0];
 
-  // Ambassadors (the free program) get 2 computers; buyers get 3.
-  // Testers too (they get the same free access, for trying it).
-  const { data: ambassador } = await db.from("beta_members").select("id").eq("customer_id", customer.id).maybeSingle();
+  // Ambassadors (the free program) get 2 computers; buyers get 3. Testers too (the same free access, for trying it).
+  // Whoever paid for MWP Panel (alone or in a bundle) gets the buyer's 3, ambassador or not.
+  const paid = active.some((e) => e.order_id);
+  const { data: ambassador } = await db.from("beta_members").select("id").eq("customer_id", customer.id).eq("status", "active").maybeSingle();
   const { data: tester } = await db.from("testers").select("id").eq("customer_id", customer.id).is("removed_at", null).maybeSingle();
-  const MAX_DEVICES = ambassador || tester ? AMBASSADOR_MAX_DEVICES : BUYER_MAX_DEVICES;
+  const MAX_DEVICES = !paid && (ambassador || tester) ? AMBASSADOR_MAX_DEVICES : BUYER_MAX_DEVICES;
 
   const devices = async () => (await db.from("license_devices")
     .select("device_id, device_name, created_at, last_seen_at")

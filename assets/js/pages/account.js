@@ -57,7 +57,8 @@ function tutorialsHTML(videos) {
 }
 
 function libraryHTML(items, extras = { files: [], videos: [] }) {
-  items = onePerProduct(items.filter((i) => i.products));   // a product that can't be shown is skipped, not fatal
+  // a product that can't be shown is skipped, not fatal; a bundle shows as the products in it (its own row has no file)
+  items = onePerProduct(items.filter((i) => i.products && i.products.category !== "bundle"));
   if (!items.length) {
     return `<div class="glass lib-empty stack">
       <p>Nothing on this email yet.</p>
@@ -118,14 +119,43 @@ async function showDevices() {
   catch { box.hidden = true; }
 }
 
+// thank-you.js notes the time of a checkout; My downloads waits for that order for a few minutes after it
+function justBought() {
+  try { return Date.now() - Number(sessionStorage.getItem("mwp_just_bought") || 0) < 15 * 60 * 1000; } catch { return false; }
+}
+
+// What they own leaves the saved cart, so nobody pays twice for the same thing (cart.js keeps it in mwp_cart)
+function forgetOwned(items) {
+  const own = new Set(items.filter((i) => !i.view_only && !i.revoked_at).map((i) => i.products?.slug).filter(Boolean));
+  try {
+    const cart = JSON.parse(localStorage.getItem("mwp_cart") || "[]");
+    const left = Array.isArray(cart) ? cart.filter((i) => !own.has(i.slug)) : [];
+    if (Array.isArray(cart) && left.length !== cart.length) {
+      localStorage.setItem("mwp_cart", JSON.stringify(left));
+      window.dispatchEvent(new Event("mwp-cart-changed"));
+    }
+  } catch { /* storage blocked: nothing saved to tidy */ }
+}
+
 async function showLibrary(user) {
   signedOut.hidden = true;
   signedIn.hidden = false;
   if (who) who.textContent = user.email;
   library.innerHTML = `<div class="skeleton" style="height:96px"></div>`;
   try {
-    const [items, extras] = await Promise.all([myLibrary(), myExtras().catch(() => undefined)]);
+    let [items, extras] = await Promise.all([myLibrary(), myExtras().catch(() => undefined)]);
+    // Just back from checkout and nothing here yet: the payment's confirmation can take a moment to arrive.
+    // Wait for it (every 10 seconds, up to 3 minutes) instead of saying there's nothing.
+    const owned = () => items.some((i) => i.products && !i.view_only && i.products.category !== "bundle");
+    if (!owned() && justBought()) {
+      library.innerHTML = `<div class="glass lib-empty stack"><p>Adding your order…</p><p class="meta">Your payment went through. Your downloads appear here in a moment.</p></div>`;
+      for (let n = 0; n < 18 && !owned(); n++) {
+        await new Promise((r) => setTimeout(r, 10000));
+        [items, extras] = await Promise.all([myLibrary(), myExtras().catch(() => undefined)]);
+      }
+    }
     library.innerHTML = libraryHTML(items, extras);
+    forgetOwned(items);
     if (items.some((i) => PANEL_SLUGS.includes(i.products?.slug))) showDevices();
     showSignedTerms();
     // ambassadors and testers (their Field Guides are read online) can send feedback to the team

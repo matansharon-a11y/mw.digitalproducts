@@ -134,6 +134,11 @@ jobs:
             -d '{"mailer_autoconfirm": false, "password_min_length": 8}')
           if [ "$code" != "200" ]; then echo "::error title=Account safety settings::Supabase answered $code"; exit 1; fi
           echo "Email confirmation required: $(jq -r '.mailer_autoconfirm == false' /tmp/auth.json), minimum password length: $(jq -r '.password_min_length' /tmp/auth.json)"
+          # Account emails (confirm, reset, sign-in links): Supabase's built-in sender allows only a few an hour, too
+          # few for a launch. Report whether the project has its own email server (the host only, never the password).
+          smtp=$(jq -r '.smtp_host // ""' /tmp/auth.json)
+          echo "Account emails per hour: $(jq -r '.rate_limit_email_sent' /tmp/auth.json), own email server: ${smtp:+yes ($smtp)}${smtp:-no}"
+          [ -n "$smtp" ] || echo "::warning title=Account emails::No custom SMTP server: Supabase's built-in sender allows only a few account emails an hour. Set one under Supabase > Authentication > Emails > SMTP Settings before launch."
 
       - name: Deploy server functions
         # JWT settings per function come from supabase/config.toml
