@@ -1,6 +1,6 @@
 // Shared helpers for every Edge Function: CORS, JSON responses, admin client,
 // Make.com forwarding, hashing and constant-time comparison.
-import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
+import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.118.0";   // pinned: the same version as the site (assets/js/vendor)
 
 // Browsers may call these functions only from the shop's own address.
 // ALLOWED_ORIGINS is optional: without it, the origin of SITE_URL is used.

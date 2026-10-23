@@ -137,7 +137,7 @@ jobs:
           # Account emails (confirm, reset, sign-in links): Supabase's built-in sender allows only a few an hour, too
           # few for a launch. Report whether the project has its own email server (the host only, never the password).
           smtp=$(jq -r '.smtp_host // ""' /tmp/auth.json)
-          echo "Account emails per hour: $(jq -r '.rate_limit_email_sent' /tmp/auth.json), own email server: ${smtp:+yes ($smtp)}${smtp:-no}"
+          echo "Account emails per hour: $(jq -r '.rate_limit_email_sent' /tmp/auth.json), own email server: ${smtp:-none}"
           [ -n "$smtp" ] || echo "::warning title=Account emails::No custom SMTP server: Supabase's built-in sender allows only a few account emails an hour. Set one under Supabase > Authentication > Emails > SMTP Settings before launch."
 
       - name: Deploy server functions
