@@ -21,7 +21,7 @@ if ("IntersectionObserver" in window && !reduce) {
 
 // ---------------------------------------------------------------- product bar: shows once the hero is gone
 const bar = document.querySelector(".pbar");
-const hero = document.querySelector(".hero");
+const hero = document.querySelector(".hero, .lr-top");   // the Lightroom page opens with its two products instead of a hero
 if (bar && hero) {
   const onScroll = () => bar.classList.toggle("on", hero.getBoundingClientRect().bottom < 80);
   addEventListener("scroll", onScroll, { passive: true });

@@ -2,56 +2,40 @@
  "presets": {
   "en": [
    {
-    "q": "Will they work on my photos, not only on yours?",
-    "a": "The 12 adaptive presets use Lightroom's AI masks to find the subject, the sky and the background in each photo, so they adjust to your frame. Every photo is different: expect to set white balance and exposure after the preset, as in the examples on this page."
+    "q": "Do I need both?",
+    "a": "No. MWP Presets and the Lightroom Classic plugin are two separate products, each bought on its own, and neither needs the other. The presets work in Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw; the plugin works in Lightroom Classic 13 or newer."
    },
    {
     "q": "Which programs do they work in?",
-    "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro."
-   },
-   {
-    "q": "Do I need both?",
-    "a": "No. MWP Presets and the Lightroom Classic plugin are two separate products, each bought on its own, and neither needs the other. The presets work in Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw; the plugin works in Lightroom Classic 13 or newer."
+    "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro. The 12 adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+."
    },
    {
     "q": "Which Lightroom does the plugin work in?",
     "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's MWP Panel."
    },
    {
-    "q": "Why is the plugin's window called MWP Panel?",
-    "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with MWP Panel for Photoshop, which is a separate product."
+    "q": "What's in each download?",
+    "a": "MWP Presets: 50 desktop presets (.xmp) for Lightroom Classic, Lightroom and Camera Raw, 50 mobile files (.dng) for Lightroom Mobile, 33 LUTs (.cube), video tutorials and an install guide. The Lightroom Classic plugin: the plugin for Lightroom Classic 13 or newer, with built-in help and a video tutorial."
    },
    {
-    "q": "Will the plugin change or delete my photos?",
-    "a": "Culling never deletes a photo. Everything the plugin does is ordinary Lightroom settings, masks, keywords and collections, so you can undo it or change it by hand, and nothing is locked in."
-   },
-   {
-    "q": "How do I install the plugin?",
-    "a": "Download it from My downloads and unzip it. In Lightroom Classic, open File › Plug-in Manager, click Add and choose the MWP-Panel.lrplugin folder. The download includes a note with these steps, and there's a video tutorial in My downloads."
-   },
-   {
-    "q": "Presets or Panel: which do I need?",
-    "a": "If you edit in Lightroom, MWP Presets. For sorting and finishing whole shoots in Lightroom Classic, the Lightroom Classic plugin, sold separately. If you open your photos in Photoshop, MWP Panel. If you use both apps, the Presets + Panel bundle gives you the same look in each, includes the plugin, and costs less than buying them separately."
+    "q": "Will they work on my photos, not only on yours?",
+    "a": "The 12 adaptive presets use Lightroom's AI masks to find the subject, the sky and the background in each photo, so they adjust to your frame. Every photo is different: expect to set white balance and exposure after the preset, as in the examples on this page."
    },
    {
     "q": "Can I use them on my phone only?",
     "a": "Yes. The pack includes 50 DNG files for Lightroom Mobile on iPhone, iPad and Android. If you also use Lightroom on desktop, install there and they sync to your phone."
    },
    {
-    "q": "Do they work on JPEG?",
-    "a": "Yes. They shine on RAW files, which give them the most room to work, and on JPEGs they give a gentler version of the look."
-   },
-   {
     "q": "Can I use the LUTs on video?",
     "a": "Yes. They carry the colour and tone of presets 01 to 33 and are built for standard Rec.709 footage. With LOG footage, convert to Rec.709 first, then apply the LUT."
    },
    {
-    "q": "How do I use the LUTs in Photoshop?",
-    "a": "Add a Color Lookup adjustment layer, choose Load 3D LUT, pick an MWP LUT, then set the layer's opacity."
+    "q": "How do I get and install the files?",
+    "a": "Right after payment they're waiting in My downloads, in your MWP account, with a video tutorial. The pack includes an install guide with a page for each program. Most installs take a couple of minutes. The plugin is added once in Lightroom Classic: File › Plug-in Manager › Add."
    },
    {
-    "q": "How do I get and install the files?",
-    "a": "Right after payment they're waiting in My downloads, in your MWP account, with a video tutorial. The pack includes an install guide with a page for each program. Most installs take a couple of minutes."
+    "q": "Why is the plugin's window called MWP Panel?",
+    "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with MWP Panel for Photoshop, which is a separate product."
    },
    {
     "q": "What can I do with the files?",
@@ -64,56 +48,40 @@
   ],
   "he": [
    {
-    "q": "הם יעבדו על התמונות שלי, ולא רק על שלכם?",
-    "a": "12 הפריסטים האדפטיביים משתמשים במסכות ה-AI של לייטרום כדי למצוא בכל תמונה את הנושא, את השמיים ואת הרקע, ולכן הם מתאימים את עצמם לפריים שלכם. כל תמונה שונה: אחרי הפריסט קובעים איזון לבן וחשיפה, כמו בדוגמאות בעמוד הזה."
+    "q": "צריך את שניהם?",
+    "a": "לא. הפריסטים של MWP והתוסף ללייטרום קלאסיק הם שני מוצרים נפרדים, כל אחד נקנה בפני עצמו, ואף אחד מהם לא צריך את השני. הפריסטים עובדים בלייטרום קלאסיק, בלייטרום, בלייטרום מובייל ובקאמרה ראו; התוסף עובד בלייטרום קלאסיק 13 ומעלה."
    },
    {
     "q": "באילו תוכנות הם עובדים?",
-    "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו."
-   },
-   {
-    "q": "צריך את שניהם?",
-    "a": "לא. הפריסטים של MWP והתוסף ללייטרום קלאסיק הם שני מוצרים נפרדים, כל אחד נקנה בפני עצמו, ואף אחד מהם לא צריך את השני. הפריסטים עובדים בלייטרום קלאסיק, בלייטרום, בלייטרום מובייל ובקאמרה ראו; התוסף עובד בלייטרום קלאסיק 13 ומעלה."
+    "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו. 12 הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה."
    },
    {
     "q": "באיזה לייטרום התוסף עובד?",
     "a": "לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את הפאנל של MWP."
    },
    {
-    "q": "למה החלון של התוסף נקרא MWP Panel?",
-    "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם הפאנל של MWP לפוטושופ, שהוא מוצר נפרד."
+    "q": "מה יש בכל הורדה?",
+    "a": "הפריסטים של MWP: ‏50 פריסטים למחשב (‎.xmp) ללייטרום קלאסיק, ללייטרום ולקאמרה ראו, 50 קבצים לנייד (‎.dng) ללייטרום מובייל, 33 קובצי LUT (‎.cube), סרטוני הדרכה ומדריך התקנה. התוסף ללייטרום קלאסיק: התוסף ללייטרום קלאסיק 13 ומעלה, עם עזרה מובנית וסרטון הדרכה."
    },
    {
-    "q": "התוסף ישנה או ימחק לי תמונות?",
-    "a": "המיון אף פעם לא מוחק תמונה. כל מה שהתוסף עושה הוא הגדרות, מסכות, מילות מפתח ואוספים רגילים של לייטרום, כך שאפשר לבטל או לשנות הכול ידנית, ושום דבר לא נעול."
-   },
-   {
-    "q": "איך מתקינים את התוסף?",
-    "a": "מורידים אותו מעמוד ההורדות שלי ופותחים את הקובץ. בלייטרום קלאסיק פותחים File › Plug-in Manager, לוחצים Add ובוחרים את התיקייה MWP-Panel.lrplugin. בהורדה יש הוראות עם הצעדים האלה, ובעמוד ההורדות שלי יש סרטון הדרכה."
-   },
-   {
-    "q": "פריסטים או פאנל: מה אני צריך?",
-    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP. למיון ולעריכה של צילומים שלמים בלייטרום קלאסיק, התוסף ללייטרום קלאסיק, שנמכר בנפרד. אם אתם פותחים את התמונות בפוטושופ, הפאנל של MWP. אם אתם עובדים בשתי התוכנות, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתיהן, כוללת את התוסף, ועולה פחות מלקנות כל אחד בנפרד."
+    "q": "הם יעבדו על התמונות שלי, ולא רק על שלכם?",
+    "a": "12 הפריסטים האדפטיביים משתמשים במסכות ה-AI של לייטרום כדי למצוא בכל תמונה את הנושא, את השמיים ואת הרקע, ולכן הם מתאימים את עצמם לפריים שלכם. כל תמונה שונה: אחרי הפריסט קובעים איזון לבן וחשיפה, כמו בדוגמאות בעמוד הזה."
    },
    {
     "q": "אפשר להשתמש רק בטלפון?",
     "a": "כן. בחבילה יש 50 קובצי DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד. אם אתם משתמשים גם בלייטרום במחשב, מתקינים שם והפריסטים מסתנכרנים לטלפון."
    },
    {
-    "q": "הם עובדים גם על JPEG?",
-    "a": "כן. הם מבריקים על קובצי RAW, שנותנים להם הכי הרבה מרחב, ועל JPEG הם נותנים גרסה עדינה יותר של המראה."
-   },
-   {
     "q": "אפשר להשתמש ב-LUT בווידאו?",
     "a": "כן. הם נושאים את הצבע והטון של פריסטים 01 עד 33 ובנויים לצילום וידאו רגיל. בצילום לוג (שטוח) ממירים קודם לצבע רגיל, ואז מחילים את ה-LUT."
    },
    {
-    "q": "איך משתמשים בקובצי ה-LUT בפוטושופ?",
-    "a": "מוסיפים שכבת התאמה Color Lookup, בוחרים Load 3D LUT, בוחרים LUT של MWP ומכוונים את האטימות של השכבה."
+    "q": "איך מקבלים ומתקינים את הקבצים?",
+    "a": "מיד אחרי התשלום הם מחכים לכם בעמוד ההורדות שלי, בחשבון ה-MWP שלכם, יחד עם סרטון הדרכה. בחבילה יש מדריך התקנה עם עמוד לכל תוכנה. רוב ההתקנות לוקחות כמה דקות. את התוסף מוסיפים פעם אחת בלייטרום קלאסיק: File › Plug-in Manager › Add."
    },
    {
-    "q": "איך מקבלים ומתקינים את הקבצים?",
-    "a": "מיד אחרי התשלום הם מחכים לכם בעמוד ההורדות שלי, בחשבון ה-MWP שלכם, יחד עם סרטון הדרכה. בחבילה יש מדריך התקנה עם עמוד לכל תוכנה. רוב ההתקנות לוקחות כמה דקות."
+    "q": "למה החלון של התוסף נקרא MWP Panel?",
+    "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם הפאנל של MWP לפוטושופ, שהוא מוצר נפרד."
    },
    {
     "q": "מה מותר לעשות עם הקבצים?",

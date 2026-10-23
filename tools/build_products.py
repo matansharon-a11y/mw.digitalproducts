@@ -69,7 +69,7 @@ P["presets"] = dict(
     card_focus=["38% 50%", "66% 50%", "50% 22%", "50% 30%", "38% 45%"], feat_focus="50% 18%",
     layout="collections", adobe_img="0015a37d",   # its own layout: tools/presets_layout.py
     # the Lightroom page: two separate products, MWP Presets and the Lightroom Classic plugin (each its own price and button)
-    slug_b="mwp-lightroom-plugin", bundle="mwp-lightroom-plugin",
+    slug_b="mwp-lightroom-plugin", bundle="mwp-lightroom-plugin", own_page=True,
     en=dict(
         name="MWP for Lightroom", name_html='MWP <span class="grad">for Lightroom</span>',
         title="Lightroom Presets & Lightroom Classic Plugin for Wildlife · MWP",
@@ -83,11 +83,16 @@ P["presets"] = dict(
         proof_lead="Each example shows the RAW file beside the same file with one preset, plus white balance and exposure.",
         pairs=["Light and Scene · Blue Hour", "Light and Scene · Macro Ground"],
         m=dict(choose=[dict(type="Preset pack", name="Lightroom Presets", line="50 presets from Matan Wild's own edits, 12 that adapt to every photo. With 33 LUTs.",
-                            meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", cta="Add the presets to cart", more="See the presets",
+                            meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", cta="Add to cart", more="Learn more",
                             alt="Three ibex at dusk, from RAW to final with an MWP preset"),
                        dict(type="Plugin", name="Lightroom Classic Plugin", line="Cull, keyword, edit and export a whole shoot, in one window inside Lightroom Classic.",
-                            meta="Lightroom Classic 13+ · Mac and Windows", cta="Add the plugin to cart", more="See the plugin",
+                            meta="Lightroom Classic 13+ · Mac and Windows", cta="Add to cart", more="Learn more",
                             alt="The Lightroom Classic plugin's window over a wildlife photo")],
+               top=dict(kick="MWP for Lightroom", h1=["Two tools.", "Bought separately."]),
+               pre=dict(line="A finished look on every wildlife photo, in one click.",
+                        three=[("50", "presets in five collections"), ("12", "adapt to each photo"), ("33", "LUTs for Photoshop and video")],
+                        sets_cap="Five collections"),
+               plug=dict(line="Your whole shoot in one window, from the card to the post.", cap="The plugin's real window. Click a tab."),
                look_kick="From RAW to final", look_h=["One click.", "A finished look."],
                sets_kick="50 presets", sets_h=["Five collections,", "every kind of light."],
                feat_line="They find the animal, the sky and the background, and adjust each one on its own.",
@@ -144,11 +149,16 @@ P["presets"] = dict(
         proof_lead="בכל דוגמה רואים את קובץ ה-RAW לצד אותו קובץ עם פריסט אחד, איזון לבן וחשיפה.",
         pairs=["אור וסצנה · שעה כחולה", "אור וסצנה · קרקע במאקרו"],
         m=dict(choose=[dict(type="חבילת פריסטים", name="פריסטים ללייטרום", line="50 פריסטים מתוך העריכות של מתן וויילד עצמו, 12 מהם מתאימים את עצמם לכל תמונה. עם 33 קובצי LUT.",
-                            meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", cta="הוספת הפריסטים לעגלה", more="לפריסטים",
+                            meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", cta="הוספה לעגלה", more="לפרטים",
                             alt="שלושה יעלים בדמדומים, מ-RAW לתמונה הסופית עם פריסט של MWP"),
                        dict(type="תוסף", name="התוסף ללייטרום קלאסיק", line="מיון, תיוג, עריכה וייצוא של צילום שלם, בחלון אחד בתוך לייטרום קלאסיק.",
-                            meta="לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס", cta="הוספת התוסף לעגלה", more="לתוסף",
+                            meta="לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס", cta="הוספה לעגלה", more="לפרטים",
                             alt="החלון של התוסף ללייטרום קלאסיק מעל צילום חיות בר")],
+               top=dict(kick="MWP ללייטרום", h1=["שני כלים.", "כל אחד נקנה בנפרד."]),
+               pre=dict(line="מראה מוגמר לכל צילום חיות בר, בלחיצה אחת.",
+                        three=[("50", "פריסטים בחמישה אוספים"), ("12", "מתאימים את עצמם לכל תמונה"), ("33", "קובצי LUT לפוטושופ ולווידאו")],
+                        sets_cap="חמישה אוספים"),
+               plug=dict(line="כל הצילום בחלון אחד, מהכרטיס ועד הפרסום.", cap="החלון האמיתי של התוסף. לחצו על לשונית."),
                look_kick="מ-RAW לתמונה הסופית", look_h=["לחיצה אחת.", "מראה מוגמר."],
                sets_kick="50 פריסטים", sets_h=["חמישה אוספים,", "לכל סוג של אור."],
                feat_line="הם מוצאים את החיה, את השמיים ואת הרקע, ומכוונים כל אחד בנפרד.",
@@ -615,7 +625,8 @@ def page(folder, lang):
     # MWP Presets has its own layout (tools/presets_layout.py): the hero, then its collections, in place of the template's middle
     if p.get("layout") == "collections":
         p["grip"] = GRIP
-        parts = parts[:1] + presets_layout.sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, price, P["lightroom-classic"][lang])
+        own = presets_layout.sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, price, P["lightroom-classic"][lang])
+        parts = own if p.get("own_page") else parts[:1] + own   # own_page: the layout makes its own top, in place of the hero
 
     # what's in the download
     def spec_rows(specs):
@@ -623,7 +634,8 @@ def page(folder, lang):
     rows = ("".join(f'<p class="spec-group">{esc(g)}</p>' + spec_rows(sp) for g, sp in c["spec_groups"]) if "spec_groups" in c
             else spec_rows(c["specs"]))
     note = f'<p class="note">{esc(c["spec_note"])}</p>' if c["spec_note"] else ""
-    parts.append(f'''<section class="sec tint" id="specs">
+    if not p.get("own_page"):   # the Lightroom page keeps the contents in one FAQ answer
+        parts.append(f'''<section class="sec tint" id="specs">
 <div class="wrap specs">
 <div class="head" data-r><p class="kick">{u["spec_kick"]}</p><h2 class="h2">{u["spec_h"]}</h2></div>
 <div data-r style="--d:.1s"><dl>{rows}</dl>{note}</div>
@@ -653,7 +665,8 @@ def page(folder, lang):
         return (f'<div class="plan{" hi" if hi else ""}" data-r>{f"<span class=badge>{badge}</span>" if badge else ""}<h3>{esc(name)}</h3><p class="sub">{esc(sub)}</p>'
                 f'<div class="amt">{price(s, lang)}</div>{deal}<ul>{li}</ul>'
                 f'<a class="{"btn" if hi else "ghost"}" href="#buy" data-add-to-cart="{s}">{esc(cta)}</a></div>')
-    parts.append(f'''<section class="final" id="buy">
+    if not p.get("own_page"):   # the Lightroom page: each product is bought from its card and its own head
+        parts.append(f'''<section class="final" id="buy">
 <img src="{img(p["final_img"])}" alt="" loading="lazy">
 <div class="wrap">
 <div class="head c" data-r><p class="kick">{esc(c["final_kick"])}</p>{h(c["final_h"])}<p class="lead">{esc(c["final_lead"])}</p></div>
@@ -667,8 +680,8 @@ def page(folder, lang):
     bar_links = c["bar"] if "bar" in c else [(proof_id, c["proof_label"]), (inside_id, c.get("bar_inside", u["inside"])), ("faq", u["faq"])]
     bar = (f'<div class="pbar" aria-label="{esc(c["name"])}"><div class="wrap"><span class="nm" data-no-i18n>{c["name_html"]}</span>'
            f'<nav>{"".join(f"<a href=#{i}>{esc(t)}</a>" for i, t in bar_links)}</nav>'
-           # a page with two products (the Lightroom page) shows no single price: Buy goes to both price cards
-           + (f'<a class="btn sm" href="#buy">{u["buy"]}</a></div></div>' if p.get("slug_b") else
+           # a page with two products (the Lightroom page) shows no price or Buy: its links are the two products
+           + ('</div></div>' if p.get("slug_b") else
               f'<span class="pp">{price(slug, lang)}</span><a class="btn sm" href="#buy" data-add-to-cart="{slug}">{u["buy"]}</a></div></div>'))
 
     redirect = ("" if he else
