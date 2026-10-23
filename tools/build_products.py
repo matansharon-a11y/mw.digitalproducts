@@ -12,6 +12,7 @@ import glob, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lrc_preview import window as lrc_window
 from ps_preview import window as ps_window
+import presets_layout
 from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,30 +63,59 @@ P["presets"] = dict(
     slug="mwp-presets", hero_img="6fbe4f2a", hero_pos="62% 40%", final_img="fbaf19ae",
     proof_type="ba", pairs_from=[("3c14b23d", "fbaf19ae"), ("7c359a77", "84c2340d")],
     cards=["6fbe4f2a", "e83b1947", "f424f86b", "e55ba138", "ff95ea5c"], feat_img="e55ba138", feat_flip=False, feat_first=True,
-    versions_img=[("8cb56471", "50% 18%"), ("0015a37d", "52% 45%")],
-    versions_mock=True,   # the overview cards show a laptop with each part on screen (laptop() below)
+    layout="collections", adobe_img="0015a37d",   # its own layout: tools/presets_layout.py
     bundle="full-set",
     en=dict(
         name="MWP Presets", name_html='MWP <span class="grad">Presets</span>',
         title="Lightroom Presets for Wildlife Photography · MWP Presets",
         desc="50 Lightroom presets for wildlife and nature photos. 12 adaptive presets find the animal, the sky and the background, so the look fits your photo. With a panel for Lightroom Classic, 50 mobile DNGs and 33 video LUTs.",
         hero_alt="Lioness in golden grass, photographed by Matan Wild",
-        kick="MWP Presets · Lightroom presets for wildlife", h1=["Natural edits,", "for wildlife."],
-        lead="50 Lightroom presets from Matan Wild's own edits. 12 adapt to each photo: they find the animal, the sky and the background, and treat each on its own.",
+        kick="MWP Presets · Lightroom and Adobe presets for wildlife", h1=["Natural edits,", "for wildlife."],
+        lead="Two collections from Matan Wild's own edits: 50 Lightroom presets for your photos, 12 of them adaptive, and 33 Adobe presets for Photoshop and Premiere Pro.",
         cta="Get MWP Presets", cta2="Compare RAW and final",
-        facts=["50 presets, 12 of them adaptive", "A panel for Lightroom Classic", "33 LUTs for video"],
+        facts=["50 Lightroom presets", "33 Adobe presets for Photoshop and Premiere Pro", "Lightroom Classic panel included"],
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The same photo,", "before and after."],
         proof_lead="Each example shows the RAW file beside the same file with one preset, plus white balance and exposure.",
         pairs=["Light and Scene · Blue Hour", "Light and Scene · Macro Ground"],
-        versions_kick="Two parts, one purchase", versions_h=["Lightroom presets,", "and a panel for Lightroom Classic."],
-        versions_lead="MWP Presets come in two parts: the presets that give your photo its look, and a panel that works inside Lightroom Classic. Both are in the same download.",
-        versions_for=["Part 01", "Part 02"],
-        versions=[("Lightroom Presets", "", "50 presets in five collections, made from Matan Wild's own edits. 12 adapt to each photo.", "Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw", "See the presets", "part-presets",
-                   ["Signature", "Light & Scene", "Mono", "Adaptive", "Tools"], "Golden eagle on a rock"),
-                  ("Lightroom Classic Panel", "Early access", "A panel inside Lightroom Classic that follows a whole shoot, from the card to the post.", "Lightroom Classic 13 or newer · Mac and Windows", "See the panel", "part-panel",
-                   ["Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"], "Two elephants at sunset")],
-        parts=[("01", "part-presets", "Part 01 · 50 presets", "Lightroom Presets", "Five collections for wildlife and nature, for every kind of light. Desktop, mobile and video."),
-               ("02", "part-panel", "Part 02 · Early access", "Lightroom Classic Panel", "A panel inside Lightroom Classic: cull, organize, edit and export a whole shoot in one window.")],
+        col=dict(
+            kick="Two collections, one purchase", h=["Presets for every edit,", "in Lightroom and Adobe apps."],
+            lead="MWP Presets hold two collections of the same MWP colour: Lightroom Presets for your photos, and Adobe Presets (LUTs) for Photoshop and Premiere Pro. You get both.",
+            one="Both collections, the Lightroom Classic panel and the video tutorials come in one download.",
+            cards=[dict(eyebrow="Collection 01", title="Lightroom Presets", count="50", count_label="presets · 12 adaptive",
+                        desc="Five collections for wildlife and nature, made from Matan Wild's own edits. On desktop and on your phone.",
+                        rows=[("Files", ".xmp desktop · .dng mobile"), ("Works in", "Lightroom Classic, Lightroom, Lightroom Mobile, Camera Raw"), ("Best for", "Photos, RAW or JPEG")],
+                        cta="Explore Lightroom Presets", href="lightroom-presets", alt="Three ibex on a rocky slope at dusk"),
+                   dict(eyebrow="Collection 02", title="Adobe Presets", count="33", count_label="LUTs · presets 01 to 33",
+                        desc="The colour and tone of presets 01 to 33 as LUTs, for Photoshop, Premiere Pro and other editors that read .cube files.",
+                        rows=[("Files", ".cube LUTs"), ("Works in", "Photoshop, Premiere Pro, DaVinci Resolve, Final Cut Pro"), ("Best for", "Video, and photos in Photoshop")],
+                        cta="Explore Adobe Presets", href="adobe-presets", alt="Two elephants at sunset")],
+            lr=dict(lead="50 presets in five collections, every one started from Matan's own edits. 12 of them adapt to each photo.",
+                    meta=["50 desktop presets (.xmp)", "50 mobile presets (.dng)", "Lightroom Classic · Lightroom · Lightroom Mobile · Camera Raw"],
+                    ba_h="One preset, before and after", sets_h="Five collections",
+                    devices=[("50", "On desktop", "XMP presets for Lightroom Classic, Lightroom and Camera Raw."),
+                             ("50", "On your phone", "DNG files for Lightroom Mobile on iPhone, iPad and Android.")]),
+            ad=dict(lead="33 LUTs that carry the colour and tone of presets 01 to 33, so a video or a Photoshop file gets the same MWP look as your photos.",
+                    meta=["33 LUTs (.cube)", "Photoshop · Premiere Pro", "DaVinci Resolve · Final Cut Pro"],
+                    apps_h="Where they work",
+                    apps=[("Photoshop", "On photos, as a Color Lookup layer"), ("Premiere Pro", "On video"), ("DaVinci Resolve", "On video"), ("Final Cut Pro", "On video")],
+                    steps_h="In Photoshop",
+                    steps=["Add a Color Lookup adjustment layer", "Choose Load 3D LUT", "Pick an MWP LUT, then set the layer's opacity"],
+                    note="Built for standard Rec.709 footage. With LOG footage, convert to Rec.709 first, then apply the LUT."),
+            which=dict(kick="Which collection is for you?", h=["Lightroom or Adobe?", "You don't have to choose."],
+                       lead="Both collections come in the same purchase. Here's what each one is for.",
+                       rows=[("You edit in", "Lightroom Classic, Lightroom, Lightroom Mobile or Camera Raw", "Photoshop, Premiere Pro, DaVinci Resolve or Final Cut Pro"),
+                             ("You're editing", "Photos, RAW or JPEG", "Video, and photos in Photoshop"),
+                             ("You get", "50 presets, 12 adaptive", "33 LUTs"),
+                             ("Files", ".xmp and .dng", ".cube"),
+                             ("On your phone", "Yes, 50 mobile presets", "No")],
+                       foot="Edit photos in Lightroom and video in Premiere Pro? The same MWP colour in both."),
+            inc=dict(kick="Also included", h=["A panel for Lightroom Classic,", "and video tutorials."],
+                     lead="Every copy of MWP Presets comes with these, at no extra cost.",
+                     extras=[("Lightroom Classic panel", "Early access. Cull, organise, edit and export a whole shoot in one window."),
+                             ("Video tutorials", "Installing and using the presets and the panel, in My downloads."),
+                             ("Install guide", "A page for each program, step by step.")]),
+        ),
+        bar=[("lightroom-presets", "Lightroom Presets"), ("adobe-presets", "Adobe Presets"), ("which", "Compare"), ("included", "Included"), ("faq", "FAQs")],
         inside_kick="Five collections", inside_h=["Five collections,", "for every kind of light."],
         inside_lead="Golden backlight, blue hour, desert sun, soft shade and black and white. Every preset starts from the settings in Matan's own edits.",
         cards=[("Signature", "The MWP look and its variations, from soft to deep.", "Lioness in golden grass"),
@@ -108,16 +138,17 @@ P["presets"] = dict(
         feat_points=["Subject: shadows and whites lifted on the animal", "Sky: highlights held, deeper and calmer",
                      "Background: gently darker, so the animal stands out"], feat_alt="Red fox looking at the camera",
         specs=[],
-        spec_groups=[("Part 01 · Lightroom Presets", [("50", "Desktop presets", "XMP for Lightroom Classic, Lightroom and Camera Raw"),
+        spec_groups=[("Collection 01 · Lightroom Presets", [("50", "Desktop presets", "XMP for Lightroom Classic, Lightroom and Camera Raw"),
                ("50", "Mobile files", "DNG for Lightroom Mobile on iPhone, iPad and Android"),
-               ("33", "LUTs", ".cube for Photoshop and video editors: Premiere Pro, DaVinci Resolve and Final Cut Pro"),
-               ("1", "Install guide", "A page for each program, step by step")]),
-                     ("Part 02 · Lightroom Classic Panel", [("", "The panel", "Early access. Add it once in Lightroom's Plug-in Manager; the manual is built in")]),
-                     ("For both", [("", "Video tutorials", "Installing and using the presets and the panel, in My downloads")])],
+               ]),
+                     ("Collection 02 · Adobe Presets", [("33", "LUTs", ".cube for Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro")]),
+                     ("Also included", [("", "Lightroom Classic panel", "Early access. Add it once in Lightroom's Plug-in Manager; the manual is built in"),
+                                        ("", "Video tutorials", "Installing and using the presets and the panel, in My downloads"),
+                                        ("1", "Install guide", "A page for each program, step by step")])],
         spec_note="Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+. The panel needs Lightroom Classic 13 or newer, on Mac or Windows.",
         final_kick="MWP Presets", final_h=["Start", "your next edit."],
         final_lead="50 presets, the Lightroom Classic panel, 50 mobile files, 33 LUTs and an install guide. Free updates, kept in your account.",
-        plan=("MWP Presets", "Edit in Lightroom", ["50 Lightroom presets, 12 adaptive", "A panel for Lightroom Classic", "50 mobile files and 33 LUTs"], "Get MWP Presets"),
+        plan=("MWP Presets", "Lightroom and Adobe presets", ["50 Lightroom presets, desktop and mobile", "33 Adobe presets (LUTs)", "Lightroom Classic panel included"], "Get MWP Presets"),
         plan2=("The full set", "From the shot to the share", ["MWP Presets: presets, LUTs and the Lightroom Classic panel", "MWP Panel: the Photoshop plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
     ),
     he=dict(
@@ -125,22 +156,52 @@ P["presets"] = dict(
         title="פריסטים ללייטרום לצילום חיות בר · הפריסטים של MWP",
         desc="50 פריסטים ללייטרום לצילומי חיות בר וטבע. 12 פריסטים אדפטיביים מוצאים את החיה, את השמיים ואת הרקע, כך שהמראה מתאים לתמונה שלכם. עם פאנל ללייטרום קלאסיק, 50 קובצי DNG לנייד ו־33 קובצי LUT לווידאו.",
         hero_alt="לביאה בעשב זהוב, צילום: מתן וויילד",
-        kick="הפריסטים של MWP · פריסטים ללייטרום לחיות בר", h1=["עריכה טבעית,", "לחיות בר."],
-        lead="50 פריסטים ללייטרום מתוך העריכות של מתן וויילד עצמו. 12 מהם מתאימים את עצמם לכל תמונה: מוצאים את החיה, את השמיים ואת הרקע, ומטפלים בכל אחד בנפרד.",
+        kick="הפריסטים של MWP · פריסטים ללייטרום ולאדובי לחיות בר", h1=["עריכה טבעית,", "לחיות בר."],
+        lead="שני אוספים מתוך העריכות של מתן וויילד עצמו: 50 פריסטים ללייטרום לתמונות שלכם, 12 מהם אדפטיביים, ו־33 פריסטים לאדובי, לפוטושופ ולפרמייר פרו.",
         cta="לרכישת הפריסטים של MWP", cta2="מ-RAW לתמונה הסופית",
-        facts=["50 פריסטים, 12 מהם אדפטיביים", "פאנל ללייטרום קלאסיק", "33 קובצי LUT לווידאו"],
+        facts=["50 פריסטים ללייטרום", "33 פריסטים לאדובי, לפוטושופ ולפרמייר פרו", "כולל פאנל ללייטרום קלאסיק"],
         proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["אותה תמונה,", "לפני ואחרי."],
         proof_lead="בכל דוגמה רואים את קובץ ה-RAW לצד אותו קובץ עם פריסט אחד, איזון לבן וחשיפה.",
         pairs=["אור וסצנה · שעה כחולה", "אור וסצנה · קרקע במאקרו"],
-        versions_kick="שני חלקים, רכישה אחת", versions_h=["פריסטים ללייטרום,", "ופאנל ללייטרום קלאסיק."],
-        versions_lead="הפריסטים של MWP מגיעים בשני חלקים: הפריסטים שנותנים לתמונה את המראה שלה, ופאנל שעובד בתוך לייטרום קלאסיק. שניהם באותה הורדה.",
-        versions_for=["חלק 01", "חלק 02"],
-        versions=[("פריסטים ללייטרום", "", "50 פריסטים בחמישה אוספים, מתוך העריכות של מתן וויילד עצמו. 12 מהם מתאימים את עצמם לכל תמונה.", "לייטרום קלאסיק, לייטרום, לייטרום מובייל וקאמרה ראו", "לפריסטים", "part-presets",
-                   ["חתימה", "אור וסצנה", "מונו", "אדפטיבי", "כלים"], "עיט זהוב על סלע"),
-                  ("פאנל ללייטרום קלאסיק", "גישה מוקדמת", "פאנל בתוך לייטרום קלאסיק שמלווה צילום שלם, מהכרטיס ועד הפרסום.", "לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס", "לפאנל", "part-panel",
-                   ["מיון", "ארגון", "משלחת", "לוקים", "עריכה", "צבע", "ייצוא"], "שני פילים בשקיעה")],
-        parts=[("01", "part-presets", "חלק 01 · ‏50 פריסטים", "פריסטים ללייטרום", "חמישה אוספים לחיות בר ולטבע, לכל סוג של אור. למחשב, לנייד ולווידאו."),
-               ("02", "part-panel", "חלק 02 · גישה מוקדמת", "פאנל ללייטרום קלאסיק", "פאנל בתוך לייטרום קלאסיק: מיון, ארגון, עריכה וייצוא של צילום שלם, בחלון אחד.")],
+        col=dict(
+            kick="שני אוספים, רכישה אחת", h=["פריסטים לכל עריכה,", "בלייטרום ובתוכנות של אדובי."],
+            lead="בפריסטים של MWP יש שני אוספים באותו צבע של MWP: פריסטים ללייטרום לתמונות שלכם, ופריסטים לאדובי (קובצי LUT) לפוטושופ ולפרמייר פרו. מקבלים את שניהם.",
+            one="שני האוספים, הפאנל ללייטרום קלאסיק וסרטוני ההדרכה מגיעים בהורדה אחת.",
+            cards=[dict(eyebrow="אוסף 01", title="פריסטים ללייטרום", count="50", count_label="פריסטים · 12 אדפטיביים",
+                        desc="חמישה אוספים לחיות בר ולטבע, מתוך העריכות של מתן וויילד עצמו. במחשב ובטלפון.",
+                        rows=[("קבצים", "‎.xmp למחשב · ‎.dng לנייד"), ("עובד ב", "לייטרום קלאסיק, לייטרום, לייטרום מובייל, קאמרה ראו"), ("מתאים ל", "תמונות, RAW או JPEG")],
+                        cta="לפריסטים ללייטרום", href="lightroom-presets", alt="שלושה יעלים במדרון סלעי בדמדומים"),
+                   dict(eyebrow="אוסף 02", title="פריסטים לאדובי", count="33", count_label="קובצי LUT · פריסטים 01 עד 33",
+                        desc="הצבע והטון של פריסטים 01 עד 33 כקובצי LUT, לפוטושופ, לפרמייר פרו ולתוכנות אחרות שקוראות קובצי ‎.cube.",
+                        rows=[("קבצים", "קובצי LUT בפורמט ‎.cube"), ("עובד ב", "פוטושופ, פרמייר פרו, דה־וינצ׳י ריזולב, פיינל קאט פרו"), ("מתאים ל", "וידאו, ותמונות בפוטושופ")],
+                        cta="לפריסטים לאדובי", href="adobe-presets", alt="שני פילים בשקיעה")],
+            lr=dict(lead="50 פריסטים בחמישה אוספים, כל אחד מתחיל מהעריכות של מתן עצמו. 12 מהם מתאימים את עצמם לכל תמונה.",
+                    meta=["50 פריסטים למחשב (XMP)", "50 פריסטים לנייד (DNG)", "לייטרום קלאסיק · לייטרום · לייטרום מובייל · קאמרה ראו"],
+                    ba_h="פריסט אחד, לפני ואחרי", sets_h="חמישה אוספים",
+                    devices=[("50", "במחשב", "פריסטים בפורמט XMP ללייטרום קלאסיק, ללייטרום ולקאמרה ראו."),
+                             ("50", "בטלפון", "קובצי DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד.")]),
+            ad=dict(lead="33 קובצי LUT שנושאים את הצבע והטון של פריסטים 01 עד 33, כך שסרטון או קובץ פוטושופ מקבלים את אותו מראה של MWP כמו התמונות שלכם.",
+                    meta=["33 קובצי LUT (‎.cube)", "פוטושופ · פרמייר פרו", "דה־וינצ׳י ריזולב · פיינל קאט פרו"],
+                    apps_h="איפה הם עובדים",
+                    apps=[("פוטושופ", "על תמונות, כשכבת Color Lookup"), ("פרמייר פרו", "על וידאו"), ("דה־וינצ׳י ריזולב", "על וידאו"), ("פיינל קאט פרו", "על וידאו")],
+                    steps_h="בפוטושופ",
+                    steps=["מוסיפים שכבת התאמה Color Lookup", "בוחרים Load 3D LUT", "בוחרים LUT של MWP ומכוונים את האטימות של השכבה"],
+                    note="בנויים לצילומי וידאו רגילים ב-Rec.709. עם צילומי LOG, ממירים קודם ל-Rec.709 ואז מחילים את ה-LUT."),
+            which=dict(kick="איזה אוסף מתאים לכם?", h=["לייטרום או אדובי?", "לא צריך לבחור."],
+                       lead="שני האוספים מגיעים באותה רכישה. הנה למה כל אחד מתאים.",
+                       rows=[("עורכים ב", "לייטרום קלאסיק, לייטרום, לייטרום מובייל או קאמרה ראו", "פוטושופ, פרמייר פרו, דה־וינצ׳י ריזולב או פיינל קאט פרו"),
+                             ("עורכים", "תמונות, RAW או JPEG", "וידאו, ותמונות בפוטושופ"),
+                             ("מקבלים", "50 פריסטים, 12 אדפטיביים", "33 קובצי LUT"),
+                             ("קבצים", "XMP ו-DNG", "‎.cube"),
+                             ("בטלפון", "כן, 50 פריסטים לנייד", "לא")],
+                       foot="עורכים תמונות בלייטרום ווידאו בפרמייר פרו? אותו צבע של MWP בשניהם."),
+            inc=dict(kick="כלול גם", h=["פאנל ללייטרום קלאסיק,", "וסרטוני הדרכה."],
+                     lead="כל עותק של הפריסטים של MWP מגיע עם אלה, בלי תוספת תשלום.",
+                     extras=[("פאנל ללייטרום קלאסיק", "גישה מוקדמת. מיון, ארגון, עריכה וייצוא של צילום שלם, בחלון אחד."),
+                             ("סרטוני הדרכה", "התקנה ושימוש בפריסטים ובפאנל, בעמוד ההורדות שלי."),
+                             ("מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד.")]),
+        ),
+        bar=[("lightroom-presets", "פריסטים ללייטרום"), ("adobe-presets", "פריסטים לאדובי"), ("which", "השוואה"), ("included", "כלול"), ("faq", "שאלות נפוצות")],
         inside_kick="חמישה אוספים", inside_h=["חמישה אוספים,", "לכל סוג של אור."],
         inside_lead="אור זהוב מאחור, שעה כחולה, שמש מדברית, צל רך ושחור-לבן. כל פריסט מתחיל מההגדרות שבעריכות של מתן עצמו.",
         cards=[("חתימה", "המראה של MWP והגרסאות שלו, מרך ועד עמוק.", "לביאה בעשב זהוב"),
@@ -163,16 +224,17 @@ P["presets"] = dict(
         feat_points=["נושא: הצללים והלבנים עולים על החיה", "שמיים: האור נשמר, עמוק ורגוע יותר", "רקע: כהה מעט, כך שהחיה בולטת"],
         feat_alt="שועל אדום מביט במצלמה",
         specs=[],
-        spec_groups=[("חלק 01 · פריסטים ללייטרום", [("50", "פריסטים למחשב", "XMP ללייטרום קלאסיק, ללייטרום ולקאמרה ראו"),
+        spec_groups=[("אוסף 01 · פריסטים ללייטרום", [("50", "פריסטים למחשב", "XMP ללייטרום קלאסיק, ללייטרום ולקאמרה ראו"),
                ("50", "קבצים לנייד", "DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד"),
-               ("33", "קובצי LUT", "בפורמט ‎.cube לפוטושופ ולתוכנות וידאו: פרמייר פרו, דה־וינצ׳י ריזולב ופיינל קאט פרו"),
-               ("1", "מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד")]),
-                     ("חלק 02 · פאנל ללייטרום קלאסיק", [("", "הפאנל", "גישה מוקדמת. מוסיפים אותו פעם אחת במנהל התוספים של לייטרום; המדריך מובנה בו")]),
-                     ("לשניהם", [("", "סרטוני הדרכה", "התקנה ושימוש בפריסטים ובפאנל, בעמוד ההורדות שלי")])],
+               ]),
+                     ("אוסף 02 · פריסטים לאדובי", [("33", "קובצי LUT", "בפורמט ‎.cube לפוטושופ ולתוכנות וידאו: פרמייר פרו, דה־וינצ׳י ריזולב ופיינל קאט פרו")]),
+                     ("כלול גם", [("", "פאנל ללייטרום קלאסיק", "גישה מוקדמת. מוסיפים אותו פעם אחת במנהל התוספים של לייטרום; המדריך מובנה בו"),
+                                        ("", "סרטוני הדרכה", "התקנה ושימוש בפריסטים ובפאנל, בעמוד ההורדות שלי"),
+                                        ("1", "מדריך התקנה", "עמוד לכל תוכנה, צעד אחר צעד")])],
         spec_note="הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה. הפאנל דורש לייטרום קלאסיק 13 ומעלה, במק או בווינדוס.",
         final_kick="הפריסטים של MWP", final_h=["התחילו", "את העריכה הבאה."],
         final_lead="50 פריסטים, הפאנל ללייטרום קלאסיק, 50 קבצים לנייד, 33 קובצי LUT ומדריך התקנה. עדכונים בחינם, והכול נשמר בחשבון שלכם.",
-        plan=("הפריסטים של MWP", "עורכים בלייטרום", ["50 פריסטים ללייטרום, 12 אדפטיביים", "פאנל ללייטרום קלאסיק", "50 קבצים לנייד ו-33 קובצי LUT"], "לרכישת הפריסטים של MWP"),
+        plan=("הפריסטים של MWP", "פריסטים ללייטרום ולאדובי", ["50 פריסטים ללייטרום, למחשב ולנייד", "33 פריסטים לאדובי (קובצי LUT)", "כולל פאנל ללייטרום קלאסיק"], "לרכישת הפריסטים של MWP"),
         plan2=("הסט המלא", "מהצילום ועד השיתוף", ["הפריסטים של MWP: פריסטים, קובצי LUT והפאנל ללייטרום קלאסיק", "הפאנל של MWP: הפלאגין לפוטושופ", "מדריכי השטח של MWP: ‏4 מדריכי PDF, ‏137 שיעורים"], "לסט המלא"),
     ),
 )
@@ -394,24 +456,10 @@ def page(folder, lang):
 </div>
 </section>''')
 
-    # MWP Presets' overview cards: a laptop with each part on its screen. Part 01: a Lightroom-like view with the presets'
-    # example photo and the five collections; part 02: the Lightroom Classic panel's own window (the same as in part 02).
-    def laptop(k):
-        if k == 0:
-            cols = "".join(f'<li{" class=on" if i == 0 else ""}>{t}</li>' for i, t in enumerate(("Signature", "Light &amp; Scene", "Mono", "Adaptive", "Tools")))   # as in the download (English)
-            screen = (f'<div class="lr"><div class="lr-side"><p>Presets</p><ul>{cols}</ul></div>'
-                      f'<div class="lr-main"><img src="{img(p["pairs_from"][0][1])}" alt="" loading="lazy"></div>'
-                      f'<div class="lr-right"><p>Amount</p><i class="lr-sl"><b style="width:72%"></b></i><p>Exposure</p><i class="lr-sl"><b style="width:55%"></b></i>'
-                      f'<p>Contrast</p><i class="lr-sl"><b style="width:62%"></b></i><p>Texture</p><i class="lr-sl"><b style="width:48%"></b></i></div></div>')
-        else:
-            screen = f'<div class="lap-lrc">{lrc_window()}</div>'
-        return (f'<div class="ver-mock" aria-hidden="true" inert lang="en" dir="ltr" data-no-i18n><div class="lap"><div class="lap-lid"><div class="lap-screen">{screen}</div></div>'
-                f'<div class="lap-base"></div></div></div>')
-
     # two versions of one product (MWP Panel: Photoshop and Lightroom Classic), right after the hero
     if "versions" in c:
         cards = "".join(f'''<a class="ver" href="#{href}" data-r style="--d:{k * 0.08:.2f}s">
-<div class="ver-ph{" mock" if p.get("versions_mock") else ""}">{laptop(k) if p.get("versions_mock") else f'<img src="{img(p["versions_img"][k][0])}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["versions_img"][k][1]}">'}<div class="ver-top"><p class="ver-for">{esc(c.get("versions_for", [u["for"]] * 2)[k])}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
+<div class="ver-ph"><img src="{img(p["versions_img"][k][0])}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["versions_img"][k][1]}"><div class="ver-top"><p class="ver-for">{esc(c.get("versions_for", [u["for"]] * 2)[k])}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
 <div class="ver-body"><p>{esc(line)}</p><ol class="ver-tabs">{"".join(f'<li><b>{i + 1}</b>{esc(t)}</li>' for i, t in enumerate(tabs))}</ol><p class="ver-req">{esc(req)}</p><span class="ver-go">{esc(go)} {ARROW}</span></div></a>'''
                         for k, (app, badge, line, req, go, href, tabs, alt) in enumerate(c["versions"]))
         parts.append(f'''<section class="sec" id="versions">
@@ -420,14 +468,6 @@ def page(folder, lang):
 <div class="vers">{cards}</div>
 </div>
 </section>''')
-
-    # a product in two parts (MWP Presets: the presets, and the Lightroom Classic panel): a band opens each part
-    def part_band(k):
-        n, pid, kick, title, lead = c["parts"][k]
-        return (f'<section class="part" id="{pid}"><div class="wrap"><div class="part-in" data-r><span class="part-n">{n}</span>'
-                f'<div><p class="kick">{esc(kick)}</p><h2 class="part-h">{esc(title)}</h2><p class="part-lead">{esc(lead)}</p></div></div></div></section>')
-    if "parts" in c:
-        parts.append(part_band(0))
 
     # the proof
     # the proof: a gallery of slides, the next one peeking in from the edge (no tabs, nothing on the photo)
@@ -502,8 +542,6 @@ def page(folder, lang):
         # under the window, one line for the tab that's open (the window's own tabs switch it)
         descs = "".join(f'<p data-lrc-desc="{keys[k]}"{"" if keys[k] == "looks" else " hidden"}><span class="n">{k + 1:02d}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
                         for k, (t, d) in enumerate(c["lrc"]))
-        if "parts" in c:
-            parts.append(part_band(1))
         parts.append(f'''<section class="sec" id="lightroom-classic">
 <div class="wrap">
 <div class="head c" data-r><p class="kick">{esc(c["lrc_kick"])}</p>{h(c["lrc_h"])}<p class="lead">{esc(c["lrc_lead"])}</p></div>
@@ -531,6 +569,11 @@ def page(folder, lang):
         parts.append(f'''<section class="sec" id="how">
 <div class="wrap"><div class="head" data-r><p class="kick">{esc(c["steps_kick"])}</p>{h(c["steps_h"])}</div><div class="steps">{steps}</div></div>
 </section>''')
+
+    # MWP Presets has its own layout (tools/presets_layout.py): the hero, then its collections, in place of the template's middle
+    if p.get("layout") == "collections":
+        p["grip"] = GRIP
+        parts = parts[:1] + presets_layout.sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW)
 
     # what's in the download
     def spec_rows(specs):
@@ -575,8 +618,8 @@ def page(folder, lang):
 
     # product bar
     bar_links = [(proof_id, c["proof_label"]), (inside_id, c.get("bar_inside", u["inside"])), ("faq", u["faq"])]
-    if "parts" in c:   # a product in two parts: the bar links each part
-        bar_links = [(pid, title) for _, pid, _, title, _ in c["parts"]] + [("specs", u["spec_kick"]), ("faq", u["faq"])]
+    if "bar" in c:   # a page with its own layout lists its own sections
+        bar_links = c["bar"]
     bar = (f'<div class="pbar" aria-label="{esc(c["name"])}"><div class="wrap"><span class="nm" data-no-i18n>{c["name_html"]}</span>'
            f'<nav>{"".join(f"<a href=#{i}>{esc(t)}</a>" for i, t in bar_links)}</nav>'
            f'<span class="pp">{price(slug, lang)}</span><a class="btn sm" href="#buy" data-add-to-cart="{slug}">{u["buy"]}</a></div></div>')
