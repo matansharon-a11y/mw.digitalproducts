@@ -569,3 +569,33 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 @media (max-width:1000px){.pc-sets{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:860px){.pc-cards,.pc-feat,.pc-adobe,.pc-devs,.pc-extras{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:600px){.pc-sets{grid-template-columns:repeat(2,minmax(0,1fr))}.pc-colhead{grid-template-columns:minmax(0,1fr);gap:4px}.pc-dl > div{grid-template-columns:80px minmax(0,1fr)}.pc-table th,.pc-table td{padding:14px 14px;font-size:14px}.pc-table thead th{font-size:16px}}
+
+/* ---------------------------------------------------------------- Presets page, balanced (23 Oct 2026)
+   One alignment: every head is centred. One rhythm: 72-96px between blocks. Image / text pairs share one height,
+   the text centred against the image. */
+.pc-colhead{display:block;max-width:760px;margin:0 auto;padding-bottom:0;border-bottom:0;text-align:center}
+.pc-num{margin:0 0 6px;font-size:clamp(56px,6vw,84px)}
+.pc-lead{margin:14px auto 0}
+.pc-block{margin-top:clamp(64px,7vw,96px)}
+.pc-sub{display:block;max-width:640px;margin:0 auto 28px;text-align:center}
+.pc-sub h3{font-size:clamp(24px,2.4vw,30px)}
+.pc-sub p{margin:10px auto 0;max-width:560px}
+/* five collections: one 4:5 frame each, every photo framed on its subject (card_focus) */
+.pc-sets{gap:18px}
+.pc-set-ph{aspect-ratio:4/5;border-radius:18px}
+.pc-set{gap:4px}
+.pc-set p{min-height:3em}
+/* the adaptive presets: a portrait photo beside text of the same height */
+.pc-feat{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;gap:clamp(40px,6vw,96px);max-width:1040px;margin-inline:auto}
+.pc-feat-ph{aspect-ratio:4/5;border-radius:22px}
+.pc-feat-p{margin:18px 0 0;color:var(--ink2);font-size:17px;line-height:1.6}
+.pc-feat-tx .ticks{margin-top:24px}
+/* Adobe Presets: the editor frame and the steps, the same height, centred against each other */
+.pc-adobe{grid-template-columns:minmax(0,6fr) minmax(0,5fr);align-items:center;gap:clamp(40px,6vw,88px);max-width:1080px;margin-inline:auto}
+.pc-adobe-tx .pc-sub-h{margin:10px 0 0;font-size:clamp(26px,2.6vw,34px);font-weight:400;letter-spacing:-.02em;line-height:1.1}
+.pc-steps{margin-top:24px;gap:14px}
+/* Also included: the head straight onto the window */
+#included .head{margin-bottom:clamp(28px,4vw,44px)}
+@media (max-width:860px){.pc-feat,.pc-adobe{grid-template-columns:minmax(0,1fr)}.pc-feat-ph{aspect-ratio:4/3}}
+@media (max-width:600px){.pc-set p{min-height:0}}
+@media (max-width:600px){.pc-sets{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin-inline:-24px;padding:0 24px 6px;scrollbar-width:none}.pc-sets::-webkit-scrollbar{display:none}.pc-set{flex:0 0 68%;scroll-snap-align:start}}   /* phones: the five swipe in one row, no lone last card */
