@@ -253,6 +253,12 @@ document.querySelectorAll(".lap-lrc").forEach((scr) => {
   if ("ResizeObserver" in window) new ResizeObserver(fit).observe(scr); else addEventListener("resize", fit);
 });
 
+// ---------------------------------------------------------------- mockups: animate only while on screen
+if ("IntersectionObserver" in window) {
+  const mio = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("mk-off", !e.isIntersecting)), { rootMargin: "80px" });
+  document.querySelectorAll(".mk").forEach((m) => { m.classList.add("mk-off"); mio.observe(m); });
+}
+
 // ---------------------------------------------------------------- FAQ: one open at a time
 const faqs = [...document.querySelectorAll(".faq details")];
 faqs.forEach((d) => d.addEventListener("toggle", () => { if (d.open) faqs.forEach((o) => { if (o !== d) o.open = false; }); }));

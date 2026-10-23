@@ -24,13 +24,21 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW):
 
     # ---------------------------------------------------------------- the two collections as product cards
     raw, fin = p["pairs_from"][0]
+    # the two cards show each collection as a product mockup, with slow motion (styles .mk-*, paused off screen and
+    # for reduced motion by product-page.js / CSS). Only real material moves: the RAW and Matan's final of one photo;
+    # the video clip pans and the playhead runs, with no invented "LUT before / after".
+    sets_list = "".join(f'<li{" class=on" if t == "Light & Scene" else ""}>{esc(t)}</li>' for t in ("Signature", "Light & Scene", "Mono", "Adaptive", "Tools"))
     media = [
-        # Lightroom Presets: a real RAW / final split of the same photo
-        f'<div class="pc-split"><img src="{img(fin)}" alt="{esc(k["cards"][0]["alt"])}" loading="lazy">'
-        f'<img class="pc-raw" src="{img(raw)}" alt="" loading="lazy"><span class="pc-tag l">{u["raw"]}</span><span class="pc-tag r">{u["final"]}</span><i></i></div>',
-        # Adobe Presets: a photo in a video editor frame (illustration: the timeline, not a LUT result)
-        f'<div class="pc-video" lang="en" dir="ltr" data-no-i18n><img src="{img(p["adobe_img"])}" alt="{esc(k["cards"][1]["alt"])}" loading="lazy">'
-        f'<div class="pc-tl"><span class="pc-play"></span><i class="pc-track v"><b></b><b></b><b></b></i><i class="pc-track a"></i><span class="pc-lut">.cube</span></div></div>',
+        f'''<div class="mk mk-lap" lang="en" dir="ltr" data-no-i18n><div class="mk-lid"><div class="mk-scr"><div class="mk-lr">
+<aside><p>Presets</p><ul>{sets_list}</ul><p class="mk-pre">{esc(c["pairs"][0])}</p></aside>
+<div class="mk-view"><div class="mk-photo"><img src="{img(fin)}" alt="{esc(k["cards"][0]["alt"])}" loading="lazy"><img class="mk-raw" src="{img(raw)}" alt="" loading="lazy"><i class="mk-wipe"></i>
+<span class="mk-tag l">RAW</span><span class="mk-tag r">FINAL</span></div></div>
+<aside class="mk-r"><p>Amount</p><i class="mk-sl"><b></b></i><p>Exposure</p><i class="mk-sl s2"><b></b></i><p>Contrast</p><i class="mk-sl s3"><b></b></i></aside>
+</div></div></div><div class="mk-base"></div></div>''',
+        f'''<div class="mk mk-mon" lang="en" dir="ltr" data-no-i18n><div class="mk-disp"><div class="mk-ed">
+<div class="mk-clip"><img src="{img(p["adobe_img"])}" alt="{esc(k["cards"][1]["alt"])}" loading="lazy"><span class="mk-rec">00:00:0<b>4</b>:12</span></div>
+<div class="mk-tl"><span class="mk-play"></span><div class="mk-tracks"><i class="mk-fx">.cube LUT</i><i class="mk-v"><b></b><b></b><b></b></i><i class="mk-a"></i><span class="mk-head"></span></div></div>
+</div></div><div class="mk-stand"></div></div>''',
     ]
     cards = ""
     for n, (cd, m) in enumerate(zip(k["cards"], media)):
