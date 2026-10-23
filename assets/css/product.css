@@ -766,3 +766,7 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 .pc-strip .pc-buy{margin-top:0}
 #presets + #look,#plugin + #inside{padding-top:clamp(40px,5vw,64px)}
 @media (max-width:600px){.pc-strip{align-items:flex-start;flex-direction:column}.pc-buy .btn{flex:1;justify-content:center}}
+/* The two Lightroom cards line up: two lines for the description, the price and buttons at the same height */
+.pc-pick .pc-desc{min-height:calc(1.6em * 2)}
+.pc-pick .pc-buy{margin-top:auto;padding-top:10px}
+.pc-pick .pc-cta{margin-top:0}
