@@ -1,33 +1,35 @@
-"""The MWP Presets page's own layout (build_products.py calls sections() for P["presets"], layout="collections").
+"""The Lightroom page: MWP Presets, its own layout (build_products.py calls sections() for P["presets"], layout="collections").
 
-One page, two collections and one purchase:
-  collections      two product cards: Collection 01 · Lightroom Presets, Collection 02 · LUTs (the LUTs)
-  lightroom        Collection 01: before / after, the five preset collections, the adaptive presets, desktop and mobile
-  adobe            Collection 02: the LUTs in a video editor frame, where they work, how to load them
-  included         also in the download: the Lightroom Classic plugin (interactive preview); tutorials and guide in its lead
-Each fact appears once: files and apps on the cards, the full list in What's in the download.
-Facts come from the download and the FAQs (tools/pages/faqs.json); the content lives in P["presets"][lang]["col"].
-Styles: .pc-* in assets/css/product.css.
+One purchase, two Lightroom tools (Jeinna, 23 Oct 2026, after research: a tool that can't be bought on its own belongs
+on the page of the product it comes with, as a clearly labelled "included" section, not on a page of its own):
+  lightroom                 the two tools as product cards (01 Lightroom Presets: what you buy; 02 Lightroom Classic
+                            Plugin: included), then "Which Lightroom do you use?": what works where
+  lightroom-presets         01 · before / after, the five collections, the adaptive presets, then the 33 LUTs (#luts),
+                            which are part of the preset pack
+  lightroom-classic-plugin  02 · included: the plugin's interactive window, its seven tabs by phase, what it never does
+The template then adds What's in the download, reviews, FAQs and the price cards.
+Facts come from the download and the FAQs (tools/pages/faqs.json); the content lives in P["presets"][lang]["lr"].
+Styles: .pc-* and .mk-* in assets/css/product.css. /lightroom-classic/ forwards to #lightroom-classic-plugin.
 """
 
 
 def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW):
-    k = c["col"]
+    k = c["lr"]
     out = []
+    keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
 
-    def head(kick, title, lead, center=True):
-        return (f'<div class="head{" c" if center else ""}" data-r><p class="kick">{esc(kick)}</p>{h(title)}'
+    def head(kick, title, lead):
+        return (f'<div class="head c" data-r><p class="kick">{esc(kick)}</p>{h(title)}'
                 f'{f"<p class=lead>{esc(lead)}</p>" if lead else ""}</div>')
 
-    def chips(items, cls="pc-chips"):
-        return f'<ul class="{cls}">' + "".join(f"<li>{esc(x)}</li>" for x in items) + "</ul>"
-
-    # ---------------------------------------------------------------- the two collections as product cards
+    # ---------------------------------------------------------------- the two Lightroom tools
     raw, fin = p["pairs_from"][0]
-    # the two cards show each collection as a product mockup, with slow motion (styles .mk-*, paused off screen and
-    # for reduced motion by product-page.js / CSS). Only real material moves: the RAW and Matan's final of one photo;
-    # the video clip pans and the playhead runs, with no invented "LUT before / after".
     sets_list = "".join(f'<li{" class=on" if t == "Light & Scene" else ""}>{esc(t)}</li>' for t in ("Signature", "Light & Scene", "Mono", "Adaptive", "Tools"))
+    tabs = "".join(f'<b{" class=on" if t == "Looks" else ""}>{t}</b>' for t in ("Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"))
+    looks = "".join(f'<span><img src="/assets/pages/img/lrc/look_{x}.png" alt="" loading="lazy"><i>{t}</i></span>'
+                    for x, t in (("bw", "B&W"), ("moody", "Moody"), ("golden", "Golden"), ("bluehour", "Blue hour")))
+    # each mockup is real material: the RAW and Matan's final of one photo in a Lightroom-like screen; the plugin's
+    # own window (its words stay in English, like the plugin) over the same photo in Lightroom Classic
     media = [
         f'''<div class="mk mk-lap" lang="en" dir="ltr" data-no-i18n><div class="mk-lid"><div class="mk-scr"><div class="mk-lr">
 <aside><p>Presets</p><ul>{sets_list}</ul><p class="mk-pre">{esc(c["pairs"][0])}</p></aside>
@@ -35,37 +37,45 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW):
 <span class="mk-tag l">RAW</span><span class="mk-tag r">FINAL</span></div></div>
 <aside class="mk-r"><p>Amount</p><i class="mk-sl"><b></b></i><p>Exposure</p><i class="mk-sl s2"><b></b></i><p>Contrast</p><i class="mk-sl s3"><b></b></i></aside>
 </div></div></div><div class="mk-base"></div></div>''',
-        f'''<div class="mk mk-mon" lang="en" dir="ltr" data-no-i18n><div class="mk-disp"><div class="mk-ed">
-<div class="mk-clip"><img src="{img(p["adobe_img"])}" alt="{esc(k["cards"][1]["alt"])}" loading="lazy"><span class="mk-rec">00:00:0<b>4</b>:12</span></div>
-<div class="mk-tl"><span class="mk-play"></span><div class="mk-tracks"><i class="mk-fx">.cube LUT</i><i class="mk-v"><b></b><b></b><b></b></i><i class="mk-a"></i><span class="mk-head"></span></div></div>
-</div></div><div class="mk-stand"></div></div>''',
+        f'''<div class="mk mk-lap" lang="en" dir="ltr" data-no-i18n><div class="mk-lid"><div class="mk-scr"><div class="mk-plug">
+<img class="mk-plug-bg" src="{img(fin)}" alt="{esc(k["cards"][1]["alt"])}" loading="lazy">
+<div class="mk-pw"><p class="mk-pw-bar"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></p><p class="mk-pw-tabs">{tabs}</p>
+<div class="mk-pw-looks">{looks}</div><p class="mk-pw-sl"><i></i></p></div>
+</div></div></div><div class="mk-base"></div></div>''',
     ]
     cards = ""
     for n, (cd, m) in enumerate(zip(k["cards"], media)):
         rows = "".join(f'<div><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>' for a, b in cd["rows"])
-        cards += (f'<article class="pc-card" data-r style="--d:{n * .08:.2f}s"><div class="pc-media">{m}</div>'
-                  f'<div class="pc-body"><p class="pc-eyebrow">{esc(cd["eyebrow"])}</p><h3 class="pc-title">{esc(cd["title"])}</h3>'
+        cards += (f'<article class="pc-card{" inc" if n else ""}" data-r style="--d:{n * .08:.2f}s"><div class="pc-media">{m}<span class="pc-badge{" inc" if n else ""}">{esc(cd["badge"])}</span></div>'
+                  f'<div class="pc-body"><p class="pc-eyebrow">{esc(cd["n"])} · {esc(cd["type"])}</p><h3 class="pc-title">{esc(cd["title"])}</h3>'
                   f'<p class="pc-count"><b>{esc(cd["count"])}</b> {esc(cd["count_label"])}</p>'
                   f'<p class="pc-desc">{esc(cd["desc"])}</p><dl class="pc-dl">{rows}</dl>'
                   f'<a class="pc-cta" href="#{cd["href"]}">{esc(cd["cta"])} {ARROW}</a></div></article>')
-    out.append(f'''<section class="sec" id="collections">
+    F = k["fit"]
+    yes = f'<span class="fit-y">{CHECK}<span>{esc(F["yes"])}</span></span>'
+    no = f'<span class="fit-n"><i aria-hidden="true">–</i><span>{esc(F["no"])}</span></span>'
+    fit_rows = "".join(f'<tr><th scope="row"><b>{esc(app)}</b><span>{esc(where)}</span></th><td>{yes if a else no}</td><td>{yes if b else no}</td></tr>'
+                       for app, where, a, b in F["rows"])
+    out.append(f'''<section class="sec" id="lightroom">
 <div class="wrap">
 {head(k["kick"], k["h"], k["lead"])}
 <div class="pc-cards">{cards}</div>
-<p class="pc-one" data-r>{esc(k["one"])}</p>
+<div class="pc-fit" data-r><div class="pc-fit-head"><p class="kick">{esc(F["kick"])}</p><h3>{esc(F["h"])}</h3></div>
+<table><thead><tr><td></td>{"".join(f'<th scope="col">{esc(x)}</th>' for x in F["cols"])}</tr></thead><tbody>{fit_rows}</tbody></table>
+<p class="pc-fit-note">{esc(F["note"])}</p></div>
 </div>
 </section>''')
 
-    # ---------------------------------------------------------------- collection header (shared by 01 and 02)
-    def col_head(n, cd, lead):
-        return (f'<header class="pc-colhead" data-r><p class="pc-num">{esc(n)}</p><p class="kick">{esc(cd["eyebrow"])}</p>'
-                f'<h2 class="pc-h">{esc(cd["title"])}</h2><p class="pc-lead">{esc(lead)}</p></header>')
+    # ---------------------------------------------------------------- section header for 01 and 02
+    def col_head(cd, lead, extra=""):
+        return (f'<header class="pc-colhead" data-r><p class="pc-num">{esc(cd["n"])}</p><p class="kick">{esc(cd["type"])}</p>'
+                f'<h2 class="pc-h">{esc(cd["title"])}</h2>{extra}<p class="pc-lead">{esc(lead)}</p></header>')
 
-    def sub(title, text):   # a block's own small heading, centred like every section head
+    def sub(title, text):
         return f'<div class="pc-sub" data-r><h3>{esc(title)}</h3>{f"<p>{esc(text)}</p>" if text else ""}</div>'
 
-    # ---------------------------------------------------------------- Collection 01 · Lightroom Presets
-    L = k["lr"]
+    # ---------------------------------------------------------------- 01 · Lightroom Presets (with the LUTs)
+    L = k["pre"]
     slides = [f'''<div class="ba">
 <img class="before" src="{img(b)}" alt="{esc(lab)}: {u["raw_alt"]}" loading="lazy">
 <img class="after" src="{img(a)}" alt="{esc(lab)}: {u["final_alt"]}" loading="lazy">
@@ -77,40 +87,43 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW):
 <p class="pc-set-n">{n + 1:02d}</p><h4>{esc(t)}</h4><p>{esc(d)}</p></article>'''
                    for n, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
     ticks = "".join(f"<li>{CHECK}<span>{esc(pt)}</span></li>" for pt in c["feat_points"])
+    A = k["luts"]
+    steps = "".join(f'<li><span>{n + 1}</span>{esc(s)}</li>' for n, s in enumerate(A["steps"]))
     out.append(f'''<section class="sec pc-col" id="lightroom-presets">
 <div class="wrap">
-{col_head("01", k["cards"][0], L["lead"])}
+{col_head(k["cards"][0], L["lead"], f'<p class="pc-pill">{esc(k["cards"][0]["badge"])}</p>')}
 <div class="pc-block">{sub(L["ba_h"], c["proof_lead"])}{gallery(slides, c["pairs"])}</div>
 <div class="pc-block">{sub(L["sets_h"], c["inside_lead"])}<div class="pc-sets">{sets}</div></div>
 <div class="pc-block pc-feat"><div class="pc-feat-ph" data-r><img src="{img(p["feat_img"])}" alt="{esc(c["feat_alt"])}" loading="lazy" style="object-position:{p["feat_focus"]}"></div>
 <div class="pc-feat-tx" data-r style="--d:.1s"><p class="kick">{esc(c["feat_kick"])}</p>{h(c["feat_h"], "h3", "pc-feat-h")}<p class="pc-feat-p">{esc(c["feat_lead"])}</p><ul class="ticks">{ticks}</ul></div></div>
-</div>
-</section>''')
-
-    # ---------------------------------------------------------------- Collection 02 · LUTs (the LUTs)
-    A = k["ad"]
-    steps = "".join(f'<li><span>{n + 1}</span>{esc(s)}</li>' for n, s in enumerate(A["steps"]))
-    out.append(f'''<section class="sec tint pc-col" id="luts">
-<div class="wrap">
-{col_head("02", k["cards"][1], A["lead"])}
-<div class="pc-block pc-adobe">
-<div class="pc-video big" data-r lang="en" dir="ltr" data-no-i18n><img src="{img(p["adobe_img"])}" alt="{esc(k["cards"][1]["alt"])}" loading="lazy">
+<div class="pc-block pc-luts" id="luts">{sub(A["h"], A["lead"])}
+<div class="pc-adobe">
+<div class="pc-video big" data-r lang="en" dir="ltr" data-no-i18n><img src="{img(p["adobe_img"])}" alt="{esc(A["alt"])}" loading="lazy">
 <div class="pc-tl"><span class="pc-play"></span><i class="pc-track v"><b></b><b></b><b></b></i><i class="pc-track a"></i><span class="pc-lut">.cube</span></div></div>
-<div class="pc-adobe-tx" data-r style="--d:.1s"><p class="kick">{esc(A["steps_kick"])}</p><h3 class="pc-sub-h">{esc(A["steps_h"])}</h3><ol class="pc-steps">{steps}</ol><p class="pc-note">{esc(A["note"])}</p></div>
-</div>
+<div class="pc-adobe-tx" data-r style="--d:.1s"><p class="kick">{esc(A["kick"])}</p><h3 class="pc-sub-h">{esc(A["steps_h"])}</h3><ol class="pc-steps">{steps}</ol><p class="pc-note">{esc(A["note"])}</p></div>
+</div></div>
 </div>
 </section>''')
 
-    # ---------------------------------------------------------------- also included: the Lightroom Classic plugin and tutorials
-    I = k["inc"]
-    keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]
+    # ---------------------------------------------------------------- 02 · Lightroom Classic Plugin (included)
+    G = k["plug"]
     descs = "".join(f'<p data-lrc-desc="{keys[n]}"{"" if keys[n] == "looks" else " hidden"}><span class="n">{n + 1:02d}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
                     for n, (t, d) in enumerate(c["lrc"]))
-    out.append(f'''<section class="sec tint" id="included">
+    label, req = c["lrc_note"].split(" · ")
+    cols = ""
+    for n, (title, line, idx) in enumerate(G["phases"]):
+        tl = "".join(f'<li><b>{esc(c["lrc"][i][0])}</b><span>{esc(c["lrc"][i][1])}</span></li>' for i in idx)
+        cols += (f'<article class="pl-phase" data-r style="--d:{n * .08:.2f}s"><p class="pl-n">{n + 1:02d}</p><h3>{esc(title)}</h3>'
+                 f'<p class="pl-line">{esc(line)}</p><ul>{tl}</ul></article>')
+    gticks = "".join(f"<li>{CHECK}<span>{esc(x)}</span></li>" for x in G["points"])
+    out.append(f'''<section class="sec tint pc-col" id="lightroom-classic-plugin">
 <div class="wrap">
-{head(I["kick"], I["h"], I["lead"])}
-<div class="lrc" data-lrc data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["lrc_note"].split(" · ")[0])}<span class="req"> · {esc(c["lrc_note"].split(" · ")[1])}</span></span></p><div class="lrc-stage">{lrc_window()}</div>
-<div class="lrc-desc" aria-live="polite">{descs}</div></div>
+{col_head(k["cards"][1], G["lead"], f'<p class="pc-pill inc">{esc(G["badge"])}</p>')}
+<p class="pc-scope" data-r>{esc(G["scope"])}</p>
+<div class="pc-block"><div class="lrc" data-lrc data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(label)}<span class="req"> · {esc(req)}</span></span></p><div class="lrc-stage">{lrc_window()}</div>
+<div class="lrc-desc" aria-live="polite">{descs}</div></div></div>
+<div class="pc-block">{sub(G["flow_h"], G["flow_lead"])}<div class="pl-phases">{cols}</div></div>
+<ul class="ticks pc-safe" data-r>{gticks}</ul>
 </div>
 </section>''')
     return out

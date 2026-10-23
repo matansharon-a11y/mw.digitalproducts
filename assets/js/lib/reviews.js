@@ -84,7 +84,8 @@ function show(i) {
 // ---------------------------------------------------------------- the sections
 function fill(sec, all) {
   const product = sec.dataset.product;
-  let items = product ? all.filter((r) => (r.products || []).includes(product)) : all.slice();
+  const want = product ? product.split(" ") : null;   // a page can show several products' reviews (the Lightroom page: presets, plugin)
+  let items = want ? all.filter((r) => (r.products || []).some((x) => want.includes(x))) : all.slice();
   // each language's own reviews first, keeping the list order inside each
   const lang = he ? "he" : "en";
   items = items.filter((r) => (r.lang || "en") === lang).concat(items.filter((r) => (r.lang || "en") !== lang));

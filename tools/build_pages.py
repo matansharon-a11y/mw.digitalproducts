@@ -215,19 +215,20 @@ def _img(prefix):
 # The four products (Oct 2026 makeover). Each card says what the product is, which app it works in and what's in it,
 # with a small product mockup made of real material: the RAW and final of one photo, the plugin's own tabs and looks,
 # the Photoshop panel's own buttons, a real guide page. The Lightroom Classic plugin has no price of its own: it comes
-# with MWP Presets, so its button adds MWP Presets (Jeinna, 22 Oct 2026).
-# Filters by app (data-apps) in shop.js; "Compare" lines the four up; the bundles follow.
+# with MWP Presets (Jeinna, 22 Oct 2026): it has no price and no buy button of its own.
+# Grouped by app (Jeinna, 23 Oct 2026, after research): Lightroom (the presets you buy + the plugin that comes with them,
+# in one frame with one buy button), then Photoshop and Field Guides side by side; "Compare" lines the four up.
 PRODUCTS = [
     dict(key="presets", href="presets/", slug="mwp-presets", type="Lightroom presets and LUTs", name="Presets",
          line="Natural colour for wildlife photos, from Matan Wild's own edits.",
          apps=["lightroom", "classic", "mobile", "video"], works="Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw",
-         pts=["50 Lightroom presets, 12 of them adaptive", "33 LUTs for Photoshop and video", "Desktop and mobile files"],
+         pts=["50 Lightroom presets, 12 of them adaptive", "Desktop and mobile files", "33 LUTs for Photoshop and video"],
          cta="Add to cart", more="See the presets"),
-    dict(key="plugin", href="lightroom-classic/", slug="mwp-presets", type="Lightroom Classic plugin", name="Lightroom Classic Plugin",
+    dict(key="plugin", href="presets/#lightroom-classic-plugin", slug="mwp-presets", type="Lightroom Classic plugin", name="Lightroom Classic Plugin",
          line="Cull, keyword, edit and export a whole shoot from one window.",
          apps=["classic"], works="Lightroom Classic 13 or newer",
          pts=["Seven tabs, from the card to the post", "Culling never deletes a photo", "Early access, with free updates"],
-         cta="Get it with Presets", more="See the plugin", included=True),
+         more="See the plugin", included=True),
     dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop panel", name="Panel",
          line="Pick the animal, the sky or the background, then an effect. The panel does the masks.",
          apps=["photoshop"], works="Photoshop 2023 or newer",
@@ -239,7 +240,10 @@ PRODUCTS = [
          pts=["4 guides, 137 one-page lessons", "Composition, colour, light and planning", "Drills, a checklist and a cheat sheet"],
          cta="Add to cart", more="See the guides"),
 ]
-FILTERS = [("all", "All"), ("lightroom", "Lightroom"), ("classic", "Lightroom Classic"), ("photoshop", "Photoshop"), ("video", "Video"), ("pdf", "PDF guides")]
+# the categories, in page order: (id, label, heading, line, product keys)
+CATS = [("lightroom", "Lightroom", "Presets, with a Lightroom Classic plugin", "One purchase: buy MWP Presets, and the plugin comes with it.", ["presets", "plugin"]),
+        ("photoshop", "Photoshop", "A panel for Photoshop", "Masks and layers made for you, your original locked.", ["panel"]),
+        ("learn", "Field Guides", "Guides for the shoot", "Lessons to read before you go, and in the field.", ["guides"])]
 LOOK = ["bw", "moody", "golden", "bluehour"]
 
 
@@ -270,17 +274,33 @@ def _card(d, n):
             # the Hebrew name runs the other way ("התוסף ללייטרום קלאסיק"), so it has its own copy, shown only on the Hebrew page
             else '<h2 class="only-en">Lightroom Classic <span class="grad">Plugin</span></h2>'
                  '<h2 class="only-he" lang="he" data-no-i18n>התוסף ללייטרום <span class="grad">קלאסיק</span></h2>')
-    if d.get("included"):
-        price = ('<div class="sp-price inc"><span class="inc-t">Included</span><span class="inc-s">with MWP Presets</span></div>')
+    if d.get("included"):   # no price and no buy button: it comes with MWP Presets, bought in the Lightroom frame
+        price = '<div class="sp-price inc"><span class="inc-t">Included</span><span class="inc-s">with MWP Presets</span></div>'
+        buy = ""
     else:
         price = f'<div class="sp-price"><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></div>'
-    return (f'<article class="sp-card" id="{d["key"]}" data-apps="{" ".join(d["apps"])}" style="--i:{n}">'
-            f'<a class="sp-media" href="{d["href"]}" tabindex="-1" aria-hidden="true">{_media(d["key"])}</a>'
-            f'<div class="sp-body"><p class="sp-type"><span class="sp-n">0{n + 1}</span><span>{d["type"]}</span></p>'
+        buy = f'<a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">{d["cta"]}</a>'
+    return (f'<article class="sp-card{" inc" if d.get("included") else ""}" id="{d["key"]}" style="--i:{n}">'
+            f'<a class="sp-media" href="{d["href"]}" tabindex="-1" aria-hidden="true">{_media(d["key"])}'
+            f'{"<span class=sp-badge>Included free</span>" if d.get("included") else ""}</a>'
+            f'<div class="sp-body"><p class="sp-type"><span>{d["type"]}</span></p>'
             f'<a class="sp-name" href="{d["href"]}">{name}</a><p class="sp-line">{d["line"]}</p>'
             f'<p class="sp-works"><span>Works in</span> <b>{d["works"]}</b></p><ul class="sp-pts">{pts}</ul>'
-            f'<div class="sp-foot">{price}<div class="sp-acts"><a class="sp-more" href="{d["href"]}">{d["more"]}</a>'
-            f'<a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">{d["cta"]}</a></div></div></div></article>')
+            f'<div class="sp-foot">{price}<div class="sp-acts"><a class="sp-more" href="{d["href"]}">{d["more"]}</a>{buy}</div></div></div></article>')
+
+
+def _cats():
+    """The products by app: Lightroom in one frame (two tools, one purchase), then Photoshop and Field Guides side by side."""
+    by = {d["key"]: d for d in PRODUCTS}
+    out, n = [], 0
+    for cid, label, title, line, keys in CATS:
+        cards = ""
+        for k in keys:
+            cards += _card(by[k], n)
+            n += 1
+        out.append(f'<section class="sp-cat sp-cat-{cid}" id="{cid}" aria-labelledby="{cid}-h"><header class="sp-cat-head"><p class="kick">{label}</p>'
+                   f'<h2 id="{cid}-h">{title}</h2><p>{line}</p></header><div class="sp-cat-grid">{cards}</div></section>')
+    return out[0] + f'<div class="sp-pair">{"".join(out[1:])}</div>'
 
 
 # The comparison: one row per question a buyer asks, one column per product
@@ -299,7 +319,9 @@ def _compare():
     price = ("<tr class=\"pr\"><th scope=\"row\">Price</th>"
              + "".join(('<td><b>Included</b><span>with MWP Presets</span></td>' if d.get("included")
                         else f'<td><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b></td>') for d in PRODUCTS) + "</tr>")
-    return f'<div class="sp-table" tabindex="0" role="region" aria-label="Compare the four products"><table><thead><tr><td></td>{cols}</tr></thead><tbody>{rows}{price}</tbody></table></div>'
+    groups = "".join(f'<th scope="colgroup" colspan="{len(keys)}"{" class=lr" if len(keys) > 1 else ""}>{label}</th>' for _, label, _, _, keys in CATS)
+    return (f'<div class="sp-table" tabindex="0" role="region" aria-label="Compare the four products"><table><thead><tr class="grp"><td></td>{groups}</tr>'
+            f'<tr><td></td>{cols}</tr></thead><tbody>{rows}{price}</tbody></table></div>')
 
 
 def _itemlist():
@@ -324,14 +346,13 @@ page("shop.html", "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photosh
     <div class="container">
       <p class="kick">The MWP shop</p>
       <h1 class="display" id="shop-title">Four tools, <span class="grad">one way of seeing.</span></h1>
-      <p class="lead">Field guides for the shoot, presets and a Lightroom Classic plugin for the edit, a panel for Photoshop. Start with the app you use.</p>
-      <div class="sp-filter" role="group" aria-label="Show products for">{"".join(f'<button type="button" data-filter="{k}" aria-pressed="{str(k == 'all').lower()}">{t}</button>' for k, t in FILTERS)}</div>
+      <p class="lead">Presets and a Lightroom Classic plugin for Lightroom, a panel for Photoshop, and field guides for the shoot. Start with the app you use.</p>
+      <nav class="sp-jump" aria-label="Jump to">{"".join(f'<a href="#{cid}">{label}</a>' for cid, label, *_ in CATS)}<a href="#compare">Compare</a><a href="#bundles">Bundles</a></nav>
     </div>
   </section>
   <section class="section--tight sp-grid-sec" aria-labelledby="shop-title">
     <div class="container">
-      <div class="sp-grid">{"".join(_card(d, n) for n, d in enumerate(PRODUCTS))}</div>
-      <p class="sp-none" hidden>Nothing for that app yet. <button type="button" data-filter="all">Show all four</button></p>
+      {_cats()}
       <ul class="sp-trust"><li>Instant download</li><li>Secure checkout</li><li>Free updates</li><li>Help or a refund within 14 days</li></ul>
     </div>
   </section>

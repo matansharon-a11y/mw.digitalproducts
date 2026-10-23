@@ -916,6 +916,15 @@ const HE = {
   "Bought from us? Send us your review": "קניתם אצלנו? שלחו לנו ביקורת",
   "Tap a review to read it in full.": "הקישו על ביקורת כדי לקרוא אותה במלואה.",
   "Show reviews for": "הצגת ביקורות על",
+  "Presets, with a Lightroom Classic plugin": "פריסטים, עם תוסף ללייטרום קלאסיק",
+  "One purchase: buy MWP Presets, and the plugin comes with it.": "רכישה אחת: קונים את הפריסטים של MWP, והתוסף מגיע איתם.",
+  "A panel for Photoshop": "פאנל לפוטושופ",
+  "Masks and layers made for you, your original locked.": "מסכות ושכבות שנבנות בשבילכם, והמקור נשאר נעול.",
+  "Guides for the shoot": "מדריכים לצילום עצמו",
+  "Lessons to read before you go, and in the field.": "שיעורים לקרוא לפני היציאה, וגם בשטח.",
+  "Included free": "כלול בחינם",
+  "Presets and a Lightroom Classic plugin for Lightroom, a panel for Photoshop, and field guides for the shoot. Start with the app you use.": "פריסטים ותוסף ללייטרום קלאסיק ללייטרום, פאנל לפוטושופ, ומדריכי שטח לצילום עצמו. התחילו מהתוכנה שאתם עובדים בה.",
+  "Jump to": "מעבר אל",
 };
 
 // Text built from numbers or names.
@@ -937,7 +946,7 @@ const PATTERNS = [
     (m) => `הרישיון אישי: הפאנל עובד כשמתחברים אליו עם המייל הזה. אפשר להשתמש בו בעד ${m[1]} מחשבים בו־זמנית. החלפתם מחשב? הסירו את הישן כאן.`],
 ];
 
-const SALES = { "presets/": "presets/he/", "lightroom-classic/": "lightroom-classic/he/", "panel/": "panel/he/", "field-guides/": "field-guides/he/" };
+const SALES = { "presets/": "presets/he/", "panel/": "panel/he/", "field-guides/": "field-guides/he/" };
 
 function translate(text) {
   const core = text.replace(/\s+/g, " ").trim();
@@ -1055,8 +1064,9 @@ function walk(root) {
     }
     if (root.tagName === "A") {
       const href = root.getAttribute("href") || "";
+      const [path, hash] = href.split("#");   // a link to a section of a sales page keeps its #section
       for (const [en, he] of Object.entries(SALES)) {
-        if (href === en || href.endsWith("/" + en)) root.setAttribute("href", href.slice(0, href.length - en.length) + he);
+        if (path === en || path.endsWith("/" + en)) root.setAttribute("href", path.slice(0, path.length - en.length) + he + (hash !== undefined ? "#" + hash : ""));
       }
       // the Hebrew home and shop have their own addresses: go there directly, not through the English page's redirect
       if (href === "/" || href.startsWith("/#")) root.setAttribute("href", "/he" + href);

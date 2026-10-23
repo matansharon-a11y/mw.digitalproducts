@@ -5,7 +5,7 @@ reviews, see assets/reviews/README.md) and stays hidden while there's nothing to
 labelled placeholder cards instead, to check the design. Styles in assets/css/reviews.css.
 
 section(...) options:
-  product   only the reviews about this product (presets, plugin, panel, guides); None = all of them
+  product   only the reviews about these products (presets, plugin, panel, guides; several with spaces); None = all
   featured  the home page: the featured reviews (up to 6) and a link to all of them in the shop
   filters   the shop: one chip per product that has reviews
   lang      "en" for pages build_he.py translates (home, shop); "he" for the Hebrew product pages
@@ -34,7 +34,7 @@ def section(lang="en", product=None, featured=False, filters=False, cls=None):
     c = dict(sec="sec", wrap="wrap", head="head", kick="kick", h2="h2", grad="grad", lead="lead") | (cls or {})
     t = T[lang]
     he = lang == "he"
-    lead = t["lead_p"].format(name=NAMES[product][1 if he else 0]) if product else t["lead"]
+    lead = t["lead_p"].format(name=NAMES[product.split()[0]][1 if he else 0]) if product else t["lead"]
     chips = ""
     if filters:
         chips = (f'<div class="rv-filter" role="group" aria-label="{t["filt"]}" hidden><button type="button" data-rv-filter="all" aria-pressed="true">{t["every"]}</button>'
