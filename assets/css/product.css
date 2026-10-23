@@ -355,8 +355,8 @@ b.lw-txt{font-weight:700}
   transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s}
 .ver:hover{transform:translateY(-6px);border-color:rgba(244,175,86,.5);box-shadow:0 50px 90px -40px rgba(244,175,86,.35)}
 .ver-ph{position:relative;aspect-ratio:4/3;overflow:hidden}
-.ver-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.1,1)}
-.ver:hover .ver-ph img{transform:scale(1.05);transform-origin:50% 20%}
+.ver-ph:not(.mock) img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.1,1)}
+.ver:hover .ver-ph:not(.mock) img{transform:scale(1.05);transform-origin:50% 20%}
 .ver-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,9,8,0) 30%,rgba(15,14,12,.6) 62%,#0f0e0c 100%)}
 .ver-top{position:absolute;z-index:1;inset:auto 0 0 0;padding:0 clamp(24px,3vw,34px) 6px}
 .ver-for{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#F4AF56}
@@ -474,3 +474,33 @@ html[lang=he] .ver-for{letter-spacing:.04em}
 .specs .spec-group:first-child{margin-top:0}
 html[lang=he] .specs .spec-group{letter-spacing:.04em}
 .specs .spec-group + .row{border-top-color:rgba(244,175,86,.35)}
+
+/* MWP Presets' overview cards: a laptop with each part on its screen (laptop() in build_products.py). Drawn in CSS:
+   a dark lid with a thin bezel, the screen, a brushed base with a notch; a soft gold glow behind. */
+.ver-ph.mock{aspect-ratio:auto;display:flex;flex-direction:column;background:radial-gradient(60% 55% at 50% 42%,rgba(244,175,86,.16),rgba(244,175,86,0) 70%),#0f0e0c}
+.ver-ph.mock::after{display:none}
+.ver-ph.mock .ver-top{position:static;padding:4px clamp(24px,3vw,34px) 0}
+.ver-mock{padding:clamp(26px,3vw,40px) clamp(22px,3vw,38px) 18px}
+.lap{width:100%;max-width:520px;margin:0 auto;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.ver:hover .lap{transform:translateY(-4px)}
+.lap-lid{padding:2.2% 2.2% 2.6%;border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,#2c2b29,#1b1a19);border:1px solid #3a3836;box-shadow:0 30px 60px -30px rgba(0,0,0,.9)}
+.lap-screen{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:4px;background:#1d1d1d}
+.lap-base{position:relative;height:12px;margin:0 -6%;border-radius:0 0 14px 14px;background:linear-gradient(180deg,#5a5855,#2a2927 70%,#1a1918)}
+.lap-base::before{content:"";position:absolute;left:50%;top:0;width:16%;height:5px;margin-left:-8%;border-radius:0 0 6px 6px;background:#1f1e1d}
+/* part 01: a Lightroom-like view */
+.lr{position:absolute;inset:0;display:grid;grid-template-columns:22% 1fr 20%;font:500 8.5px/1.3 "Google Sans",sans-serif;color:#bdbdbd;text-align:left}
+.lr-side,.lr-right{background:#262626;padding:8px 7px}
+.lr-side p,.lr-right p{margin:0 0 5px;font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:#8d8d8d}
+.lr-right p{margin:7px 0 4px;letter-spacing:.04em;text-transform:none}
+.lr-side ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.lr-side li{padding:3px 5px;border-radius:3px}
+.lr-side li.on{background:#4a4a4a;color:#fff}
+.lr-main{display:grid;place-items:center;padding:8px;background:#1b1b1b}
+.lr-main img{width:100%;height:100%;object-fit:contain}
+.lr-sl{display:block;height:3px;border-radius:2px;background:#444}
+.lr-sl b{display:block;height:100%;border-radius:2px;background:#cfcfcf}
+/* part 02: the panel's own window, scaled down to fit the screen */
+.lap-lrc{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#232323,#1a1a1a)}
+.lap-lrc .lw{position:absolute;left:50%;top:50%;width:760px;transform:translate(-50%,-50%) scale(var(--k,.5));box-shadow:none}
+@media (max-width:760px){.lr{font-size:7.5px}}
+.ver-ph.mock .ver-badge{position:static;align-self:flex-start;margin:12px clamp(24px,3vw,34px) 0;backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(244,175,86,.08)}   /* under the title, not over the laptop */

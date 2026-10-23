@@ -244,6 +244,15 @@ document.querySelectorAll(".pw[data-pw]").forEach((pw) => {
   }));
 });
 
+// ---------------------------------------------------------------- laptop mockups: the panel window fits the screen
+document.querySelectorAll(".lap-lrc").forEach((scr) => {
+  const win = scr.querySelector(".lw");
+  if (!win) return;
+  const fit = () => scr.style.setProperty("--k", String(Math.min(scr.clientWidth / (win.offsetWidth + 40), scr.clientHeight / (win.offsetHeight + 30))));
+  fit();
+  if ("ResizeObserver" in window) new ResizeObserver(fit).observe(scr); else addEventListener("resize", fit);
+});
+
 // ---------------------------------------------------------------- FAQ: one open at a time
 const faqs = [...document.querySelectorAll(".faq details")];
 faqs.forEach((d) => d.addEventListener("toggle", () => { if (d.open) faqs.forEach((o) => { if (o !== d) o.open = false; }); }));

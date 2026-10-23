@@ -63,6 +63,7 @@ P["presets"] = dict(
     proof_type="ba", pairs_from=[("3c14b23d", "fbaf19ae"), ("7c359a77", "84c2340d")],
     cards=["6fbe4f2a", "e83b1947", "f424f86b", "e55ba138", "ff95ea5c"], feat_img="e55ba138", feat_flip=False, feat_first=True,
     versions_img=[("8cb56471", "50% 18%"), ("0015a37d", "52% 45%")],
+    versions_mock=True,   # the overview cards show a laptop with each part on screen (laptop() below)
     bundle="full-set",
     en=dict(
         name="MWP Presets", name_html='MWP <span class="grad">Presets</span>',
@@ -393,10 +394,24 @@ def page(folder, lang):
 </div>
 </section>''')
 
+    # MWP Presets' overview cards: a laptop with each part on its screen. Part 01: a Lightroom-like view with the presets'
+    # example photo and the five collections; part 02: the Lightroom Classic panel's own window (the same as in part 02).
+    def laptop(k):
+        if k == 0:
+            cols = "".join(f'<li{" class=on" if i == 0 else ""}>{t}</li>' for i, t in enumerate(("Signature", "Light &amp; Scene", "Mono", "Adaptive", "Tools")))   # as in the download (English)
+            screen = (f'<div class="lr"><div class="lr-side"><p>Presets</p><ul>{cols}</ul></div>'
+                      f'<div class="lr-main"><img src="{img(p["pairs_from"][0][1])}" alt="" loading="lazy"></div>'
+                      f'<div class="lr-right"><p>Amount</p><i class="lr-sl"><b style="width:72%"></b></i><p>Exposure</p><i class="lr-sl"><b style="width:55%"></b></i>'
+                      f'<p>Contrast</p><i class="lr-sl"><b style="width:62%"></b></i><p>Texture</p><i class="lr-sl"><b style="width:48%"></b></i></div></div>')
+        else:
+            screen = f'<div class="lap-lrc">{lrc_window()}</div>'
+        return (f'<div class="ver-mock" aria-hidden="true" inert lang="en" dir="ltr" data-no-i18n><div class="lap"><div class="lap-lid"><div class="lap-screen">{screen}</div></div>'
+                f'<div class="lap-base"></div></div></div>')
+
     # two versions of one product (MWP Panel: Photoshop and Lightroom Classic), right after the hero
     if "versions" in c:
         cards = "".join(f'''<a class="ver" href="#{href}" data-r style="--d:{k * 0.08:.2f}s">
-<div class="ver-ph"><img src="{img(p["versions_img"][k][0])}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["versions_img"][k][1]}"><div class="ver-top"><p class="ver-for">{esc(c.get("versions_for", [u["for"]] * 2)[k])}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
+<div class="ver-ph{" mock" if p.get("versions_mock") else ""}">{laptop(k) if p.get("versions_mock") else f'<img src="{img(p["versions_img"][k][0])}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["versions_img"][k][1]}">'}<div class="ver-top"><p class="ver-for">{esc(c.get("versions_for", [u["for"]] * 2)[k])}</p><h3>{esc(app)}</h3></div>{f'<span class="ver-badge">{esc(badge)}</span>' if badge else ""}</div>
 <div class="ver-body"><p>{esc(line)}</p><ol class="ver-tabs">{"".join(f'<li><b>{i + 1}</b>{esc(t)}</li>' for i, t in enumerate(tabs))}</ol><p class="ver-req">{esc(req)}</p><span class="ver-go">{esc(go)} {ARROW}</span></div></a>'''
                         for k, (app, badge, line, req, go, href, tabs, alt) in enumerate(c["versions"]))
         parts.append(f'''<section class="sec" id="versions">
