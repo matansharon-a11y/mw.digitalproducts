@@ -5,7 +5,7 @@
 // signed-terms PDF, and adds them to Shop Ambassadors through Make.
 import { notifyMake, requestPersonalCopies } from "./http.ts";
 
-export const AMBASSADOR_PRODUCTS = ["mwp-presets", "mwp-lightroom-plugin", "mwp-panel", "mwp-field-guides"];
+export const AMBASSADOR_PRODUCTS = ["mwp-presets", "mwp-panel", "mwp-field-guides"];   // not the Lightroom Classic plugin: everyone buys it
 
 export type NewAmbassador = {
   email: string; name: string; instagram: string | null; facebook: string | null;

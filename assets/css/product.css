@@ -3,7 +3,7 @@
 :root{
   --bg:#0A0908;--bg2:#100E0C;--ink:#FEFBF1;--ink2:#CDD7DD;--mute:#9CB1C2;--gold:#F2A541;--gold2:#F4AF56;
   --grad:linear-gradient(90deg,#E4AA7C,#F4AF56);--line:rgba(254,251,241,.09);--card:rgba(254,251,241,.035);
-  --ease:cubic-bezier(.2,.7,.2,1);--r:24px;--sec:clamp(64px,8vw,112px);
+  --ease:cubic-bezier(.2,.7,.2,1);--r:24px;--sec:clamp(52px,6vw,88px);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -734,7 +734,7 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 .pc-gap{margin-top:clamp(36px,5vw,64px)}
 .pc-set h4{margin:14px 0 0;font-size:17px;font-weight:500;text-align:center}
 .pc-mon{display:flex;justify-content:center}
-.mk.big{max-width:860px;font-size:11px}
+.mk.big{max-width:700px;font-size:10.5px}
 #adaptive .pc-feat-p{max-width:420px}
 .pc-x-tx .pc-cta{margin-top:22px}
 /* Minimal plugin page: a quiet caption under the window, tab names per phase, two links */
@@ -742,3 +742,9 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 .pl-tabs{margin:12px 0 0;color:var(--ink2);font-size:15px;line-height:1.6}
 .pl-phase{padding:30px 28px}
 .pl-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 36px;margin:28px 0 0}
+/* Compact heads on the minimal sections (23 Oct 2026): a smaller headline, a tighter gap to the visual */
+.pc-gap{margin-top:clamp(26px,3vw,40px)}
+:is(#look,#collections,#luts,#plugin,#inside,#workflow,#get) .h2{margin-top:10px;font-size:clamp(30px,3.4vw,48px)}
+:is(#look,#collections,#luts,#plugin,#inside,#workflow,#get) .lead{margin-top:12px;font-size:16px}
+#adaptive .pc-feat-h{font-size:clamp(28px,3vw,40px)}
+.pl-phases{margin-top:clamp(26px,3vw,40px)}
