@@ -86,7 +86,9 @@ function save(items) {
   refresh();
 }
 let memory = null;
-const items = () => memory || (memory = getCart());
+// sold only with another product: a cart saved before 23 Oct 2026 may still hold the plugin on its own
+const SOLD_WITH = { "mwp-lightroom-plugin": "mwp-presets" };
+const items = () => memory || (memory = getCart().filter((i) => !SOLD_WITH[i.slug]));
 
 export function addToCart(p) {
   const list = items().filter((i) => i.slug !== p.slug);
@@ -145,7 +147,8 @@ function render() {
 // Their buy buttons ("Get the presets", "Get the bundle" …) add that product to the cart. The product is the
 // price card the button sits in; else the nearest price before it in the same section; else the button's
 // words; else the page's own product. Names, prices and checkout links come from the public price list.
-const PAGE_PRODUCT = { presets: "mwp-presets", "lightroom-classic": "mwp-lightroom-plugin", panel: "mwp-panel", "field-guides": "mwp-field-guides" };
+// MWP Presets and the Lightroom Classic plugin are one purchase (Jeinna, 23 Oct 2026): the plugin's buttons add MWP Presets.
+const PAGE_PRODUCT = { presets: "mwp-presets", "lightroom-classic": "mwp-presets", panel: "mwp-panel", "field-guides": "mwp-field-guides" };
 const IMG = "/assets/pages/img/";
 const COVER = {
   "mwp-presets": "c88e041b857fb964607aaec43ad1753d.jpg", "mwp-lightroom-plugin": "86b95f1970bb30f72735d73708d9c095.jpg", "mwp-panel": "8f730b9bb76b93ca707cae719a309479.jpg",
@@ -172,7 +175,7 @@ function slugFor(a) {
   if (/presets ?\+ ?panel/.test(t)) return "presets-panel";
   if (/presets ?\+ ?field|field guides ?\+ ?presets/.test(t)) return "presets-field-guides";
   if (/field guides ?\+ ?panel/.test(t)) return "field-guides-panel";
-  if (/lightroom classic|plugin/.test(t)) return "mwp-lightroom-plugin";
+  if (/lightroom classic|plugin/.test(t)) return "mwp-presets";
   const folder = (href.match(/^(?:\.\.\/)?([\w-]+)\/#buy/) || [])[1] || location.pathname.split("/").filter(Boolean)[0];
   return PAGE_PRODUCT[folder] || null;
 }
@@ -193,6 +196,7 @@ const FALLBACK_NAME = { "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "M
   "presets-field-guides": "Presets + Field Guides", "presets-panel": "Presets + Panel", "field-guides-panel": "Field Guides + Panel", "full-set": "The full set" };
 
 export async function addSlugToCart(slug) {
+  slug = SOLD_WITH[slug] || slug;
   let r = null;
   try { r = (await priceList())[slug] || null; } catch { /* offline: add it with its name, the price shows later */ }
   addToCart({

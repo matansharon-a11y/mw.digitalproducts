@@ -949,12 +949,13 @@ const HE = {
   "and for the shoot.": "ולצילום עצמו.",
   "How you buy it": "איך קונים",
   "On its own, or in a bundle": "בנפרד, או בחבילה",
-  "On its own, or in any bundle with MWP Presets": "בנפרד, או בכל חבילה עם הפריסטים של MWP",
+  "Together, in one purchase, or in a bundle": "יחד, ברכישה אחת, או בחבילה",
+  "The presets and the plugin, one purchase": "הפריסטים והתוסף, ברכישה אחת",
   "The Lightroom Classic plugin": "התוסף ללייטרום קלאסיק",
   "MWP Presets and the Lightroom Classic plugin": "הפריסטים של MWP והתוסף ללייטרום קלאסיק",
   "Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.": "לא בטוחים מה עושה צילום חיות בר חזק? מתחילים במדריכי השטח. לייטרום מבלבל? הפריסטים של MWP, או התוסף שלנו ללייטרום קלאסיק. פוטושופ מרגיש כמו מבוך של תפריטים? הפאנל של MWP.",
   "Yes. Our": "כן. ה",
-  "(Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It's sold on its own, and every bundle with MWP Presets includes it.": "שלנו (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילום שלם בחלון אחד. הוא נמכר בנפרד, וכל חבילה עם הפריסטים של MWP כוללת אותו.",
+  "(Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It comes with MWP Presets, in one purchase.": "שלנו (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילום שלם בחלון אחד. הוא מגיע עם הפריסטים של MWP, ברכישה אחת.",
   "Lightroom Presets": "פריסטים ללייטרום",
   "50 presets from Matan Wild's own edits, for desktop and phone.": "50 פריסטים מתוך העריכות של מתן וויילד עצמו, למחשב ולטלפון.",
   "Lightroom · Lightroom Classic · Mobile · Camera Raw": "לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו",
@@ -967,7 +968,7 @@ const HE = {
   "No presets needed.": "לא צריך פריסטים.",
   "Presets for the look. A plugin for the workflow. Each sold on its own.": "פריסטים למראה. תוסף לתהליך העבודה. כל אחד נמכר בנפרד.",
   "Pick yours.": "בחרו את שלכם.",
-  "Each one sold on its own, or together in a bundle.": "כל אחד נמכר בנפרד, או יחד בחבילה.",
+  "The presets and the plugin come as one purchase. Or save with a bundle.": "הפריסטים והתוסף מגיעים ברכישה אחת. או שחוסכים עם חבילה.",
 };
 
 // Text built from numbers or names.

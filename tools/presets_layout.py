@@ -1,11 +1,13 @@
-"""The Lightroom page (/presets/): MWP Presets and the Lightroom Classic plugin, two separate products on one page.
-build_products.py calls sections() for P["presets"] (layout="collections", own_page=True: no template hero, no
-download list and no closing price cards, so every product is introduced once and bought from two places only).
+"""The Lightroom page (/presets/): MWP Presets and the Lightroom Classic plugin, two tools sold together as one purchase
+(Jeinna, 23 Oct 2026: one price, one Add to cart; neither is sold alone). build_products.py calls sections() for
+P["presets"] (layout="collections", own_page=True: no template hero, no download list and no closing price cards, so
+every tool is introduced once and the pair is bought from two places only: under the two cards and in the sticky bar).
 
-Redesign (Jeinna, 23 Oct 2026): land, see both products, understand the difference, buy. No repeats.
-  top       h1 and the two products side by side: mockup, type, name, one line, where it works, price, Buy, Learn more
-  presets   its head (name, one line, price, Buy) → the before / after slider → three big numbers → the five collections
-  plugin    its head (name, one line, price, Buy) → the plugin's real window (interactive) → three steps (sort, edit, share)
+Redesign (Jeinna, 23 Oct 2026): land, see both tools, understand the difference, buy. No repeats.
+  top       h1 and the two tools side by side (mockup, type, name, one line, where it works, Learn more),
+            then one buy row for both: what you get, price, Add to cart
+  presets   its head (name, one line) → the before / after slider → three big numbers → the five collections
+  plugin    its head (name, one line) → the plugin's real window (interactive) → three steps (sort, edit, share)
 The template then adds the reviews (when there are any) and the FAQs. The sticky bar links Presets · Plugin · FAQs.
 Content in P["presets"][lang]["m"]; the plugin's tabs and window words in P["lightroom-classic"][lang].
 Styles: .lr-* (and .mk-* for the two mockups) in assets/css/product.css.
@@ -16,7 +18,6 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
     k = c["m"]
     g = plug
     keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
-    slugs = {"presets": "mwp-presets", "plugin": "mwp-lightroom-plugin"}
     # each picture once on the page: the mockups use photos the page shows nowhere else (the ibex is the slider's)
 
     # ---------------------------------------------------------------- the two mockups (real material only)
@@ -36,9 +37,9 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
                    f'<div class="mk-pw-looks">{looks}</div><p class="mk-pw-sl"><i></i></p></div></div></div></div><div class="mk-base"></div></div>'),
     }
 
-    def buy(key, cta):   # its own price and its own button
-        return (f'<div class="lr-buy"><span class="lr-pr">{price(slugs[key], lang)}</span>'
-                f'<a class="btn" href="#buy" data-add-to-cart="{slugs[key]}">{esc(cta)}</a></div>')
+    def buy(cta):   # one price and one button for both: buying MWP Presets unlocks the plugin (checkout-webhook)
+        return (f'<div class="lr-buy"><span class="lr-pr">{price("mwp-presets", lang)}</span>'
+                f'<a class="btn" href="#buy" data-add-to-cart="mwp-presets">{esc(cta)}</a></div>')
 
     out = []
     # ---------------------------------------------------------------- top: the two products
@@ -47,18 +48,20 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
         cards += (f'<article class="lr-card in" style="--i:{n + 2}"><a class="lr-media" href="#{key}" tabindex="-1" aria-hidden="true">{mock[key]}</a>'
                   f'<div class="lr-body"><p class="lr-type">{esc(cd["type"])}</p><h2 class="lr-name">{esc(cd["name"])}</h2>'
                   f'<p class="lr-line">{esc(cd["line"])}</p><p class="lr-meta">{esc(cd["meta"])}</p>'
-                  f'<div class="lr-foot">{buy(key, cd["cta"])}<a class="lr-more" href="#{key}">{esc(cd["more"])}</a></div></div></article>')
+                  f'<div class="lr-foot"><a class="lr-more" href="#{key}">{esc(cd["more"])}</a></div></div></article>')
     T = k["top"]
+    B = k["both"]
     out.append(f'''<section class="lr-top" id="top">
 <div class="wrap">
 <div class="lr-head"><p class="kick in" style="--i:0">{esc(T["kick"])}</p><h1 class="lr-h1 in" style="--i:1">{esc(T["h1"][0])} <span class="grad">{esc(T["h1"][1])}</span></h1></div>
 <div class="lr-cards">{cards}</div>
+<div class="lr-both in" style="--i:4"><div><p class="lr-type">{esc(B["type"])}</p><p class="lr-both-h">{esc(B["name"])}</p></div>{buy(B["cta"])}</div>
 </div>
 </section>''')
 
-    def head(key, cd, line):   # a product's own head: name, one line, price, Buy
+    def head(key, cd, line):   # a tool's own head: name, one line (the pair is bought at the top and in the bar)
         return (f'<header class="lr-sh" data-r><div><p class="lr-type">{esc(cd["type"])}</p><h2 class="lr-sh-h">{esc(cd["name"])}</h2>'
-                f'<p class="lr-sh-line">{esc(line)}</p></div>{buy(key, cd["cta"])}</header>')
+                f'<p class="lr-sh-line">{esc(line)}</p></div></header>')
 
     def three(items):   # three short facts, one big word or number each
         return '<ul class="lr-three" data-r>' + "".join(f'<li><b>{esc(a)}</b><span>{esc(b)}</span></li>' for a, b in items) + "</ul>"

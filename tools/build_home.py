@@ -277,7 +277,7 @@ html = f'''<!doctype html>
 <h2 class="h2">FAQs</h2>
 </div>
 <div class="faq">
-<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/presets/#plugin">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It's sold on its own, and every bundle with MWP Presets includes it.</div></details>
+<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/presets/#plugin">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It comes with MWP Presets, in one purchase.</div></details>
 <details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Panel</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>

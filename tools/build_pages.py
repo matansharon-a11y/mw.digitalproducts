@@ -212,19 +212,19 @@ def _img(prefix):
     return "assets/pages/img/" + os.path.basename(sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix[:8] + "*")))[0])
 
 
-# The four products (Oct 2026 makeover). Four separate purchases (Jeinna, 23 Oct 2026): the Lightroom
-# Classic plugin is sold on its own; every bundle with MWP Presets includes it.
-# The shop is the comparison table (each product its own price, Add to cart and Details) and the bundles; the product
-# cards came off on 23 Oct 2026 (Jeinna). The products themselves are presented on their pages.
+# The four products (Oct 2026 makeover). MWP Presets and the Lightroom Classic plugin are sold only together, as one
+# purchase (Jeinna, 23 Oct 2026): their two columns share one price and one Add to cart (mwp-presets, which unlocks the
+# plugin). The shop is the comparison table and the bundles; the product cards came off on 23 Oct 2026 (Jeinna).
+# The products themselves are presented on their pages.
 PRODUCTS = [
     dict(key="presets", href="presets/", slug="mwp-presets", type="Preset pack · Lightroom and Camera Raw", name="Presets",
          line="50 presets from Matan Wild's own edits, for desktop and phone.",
          works="Lightroom · Lightroom Classic · Mobile · Camera Raw",
-         alone="No plugin needed.", cta="Add MWP Presets to cart", more="Details"),
+         alone="No plugin needed.", cta="Add MWP Presets to cart", more="Details", buy=2),
     dict(key="plugin", href="presets/#plugin", slug="mwp-lightroom-plugin", type="Plugin · Lightroom Classic 13 or newer", name="Lightroom Classic Plugin",
          line="Cull, keyword, edit and export a whole shoot in one window.",
          works="Lightroom Classic 13+ · Mac and Windows",
-         alone="No presets needed.", cta="Add the plugin to cart", more="Details"),
+         alone="No presets needed.", more="Details", buy=0),   # bought with MWP Presets
     dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop panel", name="Panel",
          line="Pick the animal, the sky or the background. The panel does the masks.",
          works="Photoshop 2023+ · Mac and Windows",
@@ -239,16 +239,25 @@ COMPARE = [
     ("What it is", ["Presets and LUTs: a finished look in one click", "A plugin: a window of tools inside Lightroom Classic", "A panel: a window of tools inside Photoshop", "PDF guides: lessons for the shoot itself"]),
     ("Works in", ["Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Any PDF reader: computer, tablet or phone"]),
     ("What you get", ["50 presets, 50 mobile files, 33 LUTs", "The plugin, built-in help, video tutorials", "The panel, a 21-page User Manual, an Installation Guide", "4 guides, 137 lessons, in English or Hebrew"]),
-    ("How you buy it", ["On its own, or in a bundle", "On its own, or in any bundle with MWP Presets", "On its own, or in a bundle", "On its own, or in a bundle"]),
+    ("How you buy it", ["Together, in one purchase, or in a bundle", None, "On its own, or in a bundle", "On its own, or in a bundle"]),   # None: joined to the cell before
 ]
 
 
 def _compare():
     cols = "".join(f'<th scope="col"><a href="{d["href"]}">{("MWP " + d["name"]) if d["key"] != "plugin" else "Lightroom Classic Plugin"}</a><span>{d["type"]}</span></th>' for d in PRODUCTS)
-    rows = "".join(f'<tr><th scope="row">{q}</th>{"".join(f"<td>{a}</td>" for a in ans)}</tr>' for q, ans in COMPARE)
+    def cells(ans):   # an answer of None joins the cell before it
+        out = []
+        for a in ans:
+            if a is None: out[-1][1] += 1
+            else: out.append([a, 1])
+        return "".join(f'<td{f" colspan={n}" if n > 1 else ""}>{a}</td>' for a, n in out)
+    rows = "".join(f'<tr><th scope="row">{q}</th>{cells(ans)}</tr>' for q, ans in COMPARE)
+    sold = [d for d in PRODUCTS if d.get("buy", 1)]   # the presets' cell spans the plugin's column too
+    span = lambda d: f' colspan="{d["buy"]}"' if d.get("buy", 1) > 1 else ""
+    both = lambda d: '<span>The presets and the plugin, one purchase</span>' if d.get("buy", 1) > 1 else ""
     price = ("<tr class=\"prices\"><th scope=\"row\">Price</th>"
-             + "".join(f'<td><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b></td>' for d in PRODUCTS) + "</tr>"
-             + '<tr class="buy"><td></td>' + "".join(f'<td><a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">Add to cart</a><a class="sp-more" href="{d["href"]}">Details</a></td>' for d in PRODUCTS) + "</tr>")
+             + "".join(f'<td{span(d)}><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b>{both(d)}</td>' for d in sold) + "</tr>"
+             + '<tr class="buy"><td></td>' + "".join(f'<td{span(d)}><a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">Add to cart</a><a class="sp-more" href="{d["href"]}">Details</a></td>' for d in sold) + "</tr>")
     return (f'<div class="sp-table" tabindex="0" role="region" aria-label="Compare the four products"><table><thead>'
             f'<tr><td></td>{cols}</tr></thead><tbody>{rows}{price}</tbody></table></div>')
 
@@ -275,7 +284,7 @@ page("shop.html", "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photosh
     <div class="container">
       <p class="kick">The MWP shop</p>
       <h1 class="display" id="shop-title">Four tools. <span class="grad">Pick yours.</span></h1>
-      <p class="lead">Each one sold on its own, or together in a bundle.</p>
+      <p class="lead">The presets and the plugin come as one purchase. Or save with a bundle.</p>
     </div>
   </section>
   <section class="section--tight sp-top" id="compare" aria-labelledby="shop-title">
