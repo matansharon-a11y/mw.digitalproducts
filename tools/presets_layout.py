@@ -17,7 +17,7 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
     g = plug
     keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
     slugs = {"presets": "mwp-presets", "plugin": "mwp-lightroom-plugin"}
-    raw, fin = p["pairs_from"][0]
+    # each picture once on the page: the mockups use photos the page shows nowhere else (the ibex is the slider's)
 
     # ---------------------------------------------------------------- the two mockups (real material only)
     sets_list = "".join(f'<li{" class=on" if t == "Light & Scene" else ""}>{esc(t)}</li>' for t in ("Signature", "Light & Scene", "Mono", "Adaptive", "Tools"))
@@ -26,13 +26,12 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
                     for x, t in (("bw", "B&W"), ("moody", "Moody"), ("golden", "Golden"), ("bluehour", "Blue hour")))
     mock = {
         "presets": f'''<div class="mk mk-lap" lang="en" dir="ltr" data-no-i18n><div class="mk-lid"><div class="mk-scr"><div class="mk-lr">
-<aside><p>Presets</p><ul>{sets_list}</ul><p class="mk-pre">{esc(c["pairs"][0])}</p></aside>
-<div class="mk-view"><div class="mk-photo"><img src="{img(fin)}" alt="{esc(k["choose"][0]["alt"])}" fetchpriority="high"><img class="mk-raw" src="{img(raw)}" alt=""><i class="mk-wipe"></i>
-<span class="mk-tag l">RAW</span><span class="mk-tag r">FINAL</span></div></div>
+<aside><p>Presets</p><ul>{sets_list}</ul></aside>
+<div class="mk-view"><div class="mk-photo"><img src="{img(p["pre_img"])}" alt="{esc(k["choose"][0]["alt"])}" fetchpriority="high"></div></div>
 <aside class="mk-r"><p>Amount</p><i class="mk-sl"><b></b></i><p>Exposure</p><i class="mk-sl s2"><b></b></i><p>Contrast</p><i class="mk-sl s3"><b></b></i></aside>
 </div></div></div><div class="mk-base"></div></div>''',
         "plugin": (f'<div class="mk mk-lap" lang="en" dir="ltr" data-no-i18n><div class="mk-lid"><div class="mk-scr"><div class="mk-plug">'
-                   f'<img class="mk-plug-bg" src="{img(fin)}" alt="{esc(k["choose"][1]["alt"])}">'
+                   f'<img class="mk-plug-bg" src="{img(p["plug_img"])}" alt="{esc(k["choose"][1]["alt"])}" style="object-position:70% 30%">'
                    f'<div class="mk-pw"><p class="mk-pw-bar"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></p><p class="mk-pw-tabs">{tabs}</p>'
                    f'<div class="mk-pw-looks">{looks}</div><p class="mk-pw-sl"><i></i></p></div></div></div></div><div class="mk-base"></div></div>'),
     }

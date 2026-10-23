@@ -70,6 +70,7 @@ P["presets"] = dict(
     layout="collections", adobe_img="0015a37d",   # its own layout: tools/presets_layout.py
     # the Lightroom page: two separate products, MWP Presets and the Lightroom Classic plugin (each its own price and button)
     slug_b="mwp-lightroom-plugin", bundle="mwp-lightroom-plugin", own_page=True,
+    pre_img="649e2d2b", plug_img="86b95f19",   # the two mockups' photos (the dune, the photographer): each picture once on the page
     en=dict(
         name="MWP for Lightroom", name_html='MWP <span class="grad">for Lightroom</span>',
         title="Lightroom Presets & Lightroom Classic Plugin for Wildlife · MWP",
@@ -84,10 +85,10 @@ P["presets"] = dict(
         pairs=["Light and Scene · Blue Hour", "Light and Scene · Macro Ground"],
         m=dict(choose=[dict(type="Preset pack", name="Lightroom Presets", line="50 presets from Matan Wild's own edits, 12 that adapt to every photo. With 33 LUTs.",
                             meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", cta="Add to cart", more="Learn more",
-                            alt="Three ibex at dusk, from RAW to final with an MWP preset"),
+                            alt="A sand dune in golden light, in a Lightroom-like window"),
                        dict(type="Plugin", name="Lightroom Classic Plugin", line="Cull, keyword, edit and export a whole shoot, in one window inside Lightroom Classic.",
                             meta="Lightroom Classic 13+ · Mac and Windows", cta="Add to cart", more="Learn more",
-                            alt="The Lightroom Classic plugin's window over a wildlife photo")],
+                            alt="The Lightroom Classic plugin's window over a photo of a wildlife photographer")],
                top=dict(kick="MWP for Lightroom", h1=["Two tools.", "Bought separately."]),
                pre=dict(line="A finished look on every wildlife photo, in one click.",
                         three=[("50", "presets in five collections"), ("12", "adapt to each photo"), ("33", "LUTs for Photoshop and video")],
@@ -150,10 +151,10 @@ P["presets"] = dict(
         pairs=["אור וסצנה · שעה כחולה", "אור וסצנה · קרקע במאקרו"],
         m=dict(choose=[dict(type="חבילת פריסטים", name="פריסטים ללייטרום", line="50 פריסטים מתוך העריכות של מתן וויילד עצמו, 12 מהם מתאימים את עצמם לכל תמונה. עם 33 קובצי LUT.",
                             meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", cta="הוספה לעגלה", more="לפרטים",
-                            alt="שלושה יעלים בדמדומים, מ-RAW לתמונה הסופית עם פריסט של MWP"),
+                            alt="דיונת חול באור זהוב, בחלון שנראה כמו לייטרום"),
                        dict(type="תוסף", name="התוסף ללייטרום קלאסיק", line="מיון, תיוג, עריכה וייצוא של צילום שלם, בחלון אחד בתוך לייטרום קלאסיק.",
                             meta="לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס", cta="הוספה לעגלה", more="לפרטים",
-                            alt="החלון של התוסף ללייטרום קלאסיק מעל צילום חיות בר")],
+                            alt="החלון של התוסף ללייטרום קלאסיק מעל צילום של צלם חיות בר")],
                top=dict(kick="MWP ללייטרום", h1=["שני כלים.", "כל אחד נקנה בנפרד."]),
                pre=dict(line="מראה מוגמר לכל צילום חיות בר, בלחיצה אחת.",
                         three=[("50", "פריסטים בחמישה אוספים"), ("12", "מתאימים את עצמם לכל תמונה"), ("33", "קובצי LUT לפוטושופ ולווידאו")],
