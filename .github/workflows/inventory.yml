@@ -1,0 +1,36 @@
+# Inventory product files (read-only): version, size and per-type file counts inside each uploaded zip. See tools/inventory_files.py.
+name: Inventory product files
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SUPABASE_PROJECT_REF: tkkpxsyioetzexgbmbqy
+
+jobs:
+  connect:
+    name: Inventory product files
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359  # v3.0.1
+        with:
+          version: 2.120.0
+
+      - name: Get the database key
+        run: |
+          KEY=$(supabase projects api-keys --project-ref "$SUPABASE_PROJECT_REF" -o json | jq -r '.[] | select(.name=="service_role") | .api_key')
+          [ -n "$KEY" ] || { echo "::error::Couldn't read the service key (is SUPABASE_ACCESS_TOKEN set?)"; exit 1; }
+          echo "::add-mask::$KEY"
+          echo "SUPABASE_SERVICE_KEY=$KEY" >> "$GITHUB_ENV"
+          echo "SUPABASE_URL=https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_ENV"
+
+      - name: Inventory
+        run: python3 tools/inventory_files.py
