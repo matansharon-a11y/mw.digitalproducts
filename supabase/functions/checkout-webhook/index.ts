@@ -144,7 +144,7 @@ async function handlePaid(
     await notifyMake("MAKE_ORDER_WEBHOOK", {
       type: "order", order_id: order.id, checkout_order_id: orderId, order_number: String(a.order_number),
       order_date: (a.created_at ?? new Date().toISOString()).slice(0, 10), test_mode: testMode,
-      status_label: "Paid, NOT DELIVERED: product not linked", email, name: plain(a.user_name),
+      status_label: "Not delivered", email, name: plain(a.user_name),
       product: plain(`UNMATCHED: ${a.first_order_item.product_name} (variant ${a.first_order_item.variant_id})`),
       product_slug: "", subtotal: a.subtotal / 100, discount: (a.discount_total ?? 0) / 100, tax: a.tax / 100,
       total: a.total / 100, currency: a.currency, receipt_url: a.urls?.receipt ?? null, source: plain(custom.source),

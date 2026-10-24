@@ -104,11 +104,14 @@ jobs:
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
           PERSONALIZE_TOKEN: ${{ secrets.PERSONALIZE_TOKEN }}
           PERSONALIZE_REPO: ${{ github.repository }}
+          # the hourly missed-orders check (scheduler "reconcile") reads the store's orders with it
+          LEMONSQUEEZY_API_KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
+          LEMONSQUEEZY_STORE_ID: ${{ vars.LEMONSQUEEZY_STORE_ID || '502637' }}
         run: |
           args=()
           for name in SITE_URL DOWNLOAD_DAILY_LIMIT CHECKOUT_WEBHOOK_SECRET MAKE_SHARED_SECRET IP_HASH_SALT \
                       MAKE_ORDER_WEBHOOK MAKE_SUPPORT_WEBHOOK MAKE_SUBSCRIBE_WEBHOOK MAKE_WEBHOOK_URL \
-                      PERSONALIZE_TOKEN PERSONALIZE_REPO; do
+                      PERSONALIZE_TOKEN PERSONALIZE_REPO LEMONSQUEEZY_API_KEY LEMONSQUEEZY_STORE_ID; do
             value="${!name}"
             if [ -n "$value" ]; then args+=("$name=$value"); continue; fi
             case "$name" in

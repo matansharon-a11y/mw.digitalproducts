@@ -55,7 +55,9 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 ## Payments safety (launch audit, 24 Oct 2026)
 - Lemon Squeezy **test-mode orders unlock nothing** (`orders.test_mode`), unless the buyer is the admin (to try the whole flow) or the function secret `ALLOW_TEST_ORDERS=true` is set. Reports leave them out.
 - Checkout carries the account's id (`checkout[custom][user_id]`, cart.js): the purchase lands in the signed-in account even if another email is typed at checkout. `checkout[custom][source]` carries the visit's utm_source.
-- An order for a variant the shop doesn't know is kept and raised in monday ("Paid, NOT DELIVERED"), not dropped.
+- An order for a variant the shop doesn't know is kept and raised in monday (Shop Orders status "Not delivered"), not dropped.
+- **Missed-orders check** (scheduler `reconcile`, every hour at :25, migration `20261024000006`): the last 3 days of Lemon Squeezy orders (store `LEMONSQUEEZY_STORE_ID`, default 502637) against the shop's `orders`. A paid order the shop doesn't have, or a refund it didn't apply, goes to Shop Orders once as "Not delivered" (deduplicated through `webhook_events`, provider `reconcile`). Test orders count only for the admin. It needs the `LEMONSQUEEZY_API_KEY` function secret (the deploy sets it from the GitHub secret), so it follows the test or live key automatically.
+- **Webhook signing:** "Connect Lemon Squeezy" makes the signing secret itself (`LS_WEBHOOK_SECRET_TEST` / `_LIVE` on the function); never set or type one by hand.
 - The cart refreshes names, prices and checkout links from `page_prices` when opened; My downloads takes what the buyer owns out of the cart and waits up to 3 minutes for an order that's just been paid (thank-you.js marks it).
 
 ## Accounts
@@ -96,7 +98,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - Never commit a paid file: this repo is public. Besides the admin box, the "Upload an extra download" workflow (`upload-extra.yml`, `tools/upload_extra.py`) pushes a public key to a temporary `upload-drop-<run id>` branch, receives the zip encrypted with it (`file.enc` + `key.enc`), uploads it, adds the row and deletes the branch.
 
 ## MWP Panel in Photoshop and Photoshop (Beta)
-- Both apps keep separate plugin storage, so `tools/panel-license/license.js` works out the device id from the computer, and the `license` function counts a computer already listed under the same name once. The plugin's manifest needs no `maxVersion` (see `tools/panel-license/README.md`).
+- Both apps keep separate plugin storage, so `tools/panel-license/license.js` works out the device id from the computer, and the `license` function counts a computer already listed under the same name once, but only from the same network (same IP hash; launch audit, 24 Oct 2026: before, any number of computers with one name counted once). The plugin's manifest needs no `maxVersion` (see `tools/panel-license/README.md`).
 
 ## Cart and header icons
 - `assets/js/lib/cart.js` adds the two header icons on every page: Account (a menu with who is signed in, My downloads, Help and sign in / sign out) and Cart. The sales pages ship the same two icons from `tools/unify_pages.py`.

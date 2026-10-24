@@ -21,6 +21,10 @@
 //                        Shop Ambassador Applications (see applications.ts)
 //   applications_callback → Make returns that board: Approved → the person becomes an ambassador and gets the
 //                        welcome email; Declined → the decline email (both sent by Make)
+//   reconcile          → hourly: every order paid in Lemon Squeezy in the last 3 days must be in the shop, and every
+//                        order refunded there must be refunded here. Anything else is raised once in monday (Shop
+//                        Orders, status "Not delivered"): the safety net under the webhook, which Lemon Squeezy
+//                        retries only 3 times.
 // ============================================================================
 import { admin, notifyMake, plain, requestPersonalCopies } from "../_shared/http.ts";
 import { applications, applicationsCallback } from "./applications.ts";
@@ -64,6 +68,7 @@ Deno.serve(async (req) => {
       case "product": return reply(await product(db, String(body.id ?? "")));
       case "approvals": return reply(await approvals(db));
       case "weekly_summary": return reply(await weeklySummary(db));
+      case "reconcile": return reply(await reconcile(db));
       case "month_close": return reply(await monthClose(db));
       case "account": return reply(await account(db, String(body.user_id ?? "")));
       case "downloaded": return reply(await downloaded(db, String(body.entitlement_id ?? "")));
@@ -182,6 +187,67 @@ function totals(orders: OrderRow[]) {
   const tax = orders.reduce((s, o) => s + o.tax_cents, 0);
   const refunded = orders.filter((o) => o.status === "refunded").reduce((s, o) => s + o.total_cents, 0);
   return { gross, tax, refunded, net: gross - tax - refunded };
+}
+
+// ---------------------------------------------------------------- reconcile (missed orders)
+async function reconcile(db: Db) {
+  const key = Deno.env.get("LEMONSQUEEZY_API_KEY") ?? "";
+  if (!key) return { skipped: "LEMONSQUEEZY_API_KEY not set" };
+  const store = Deno.env.get("LEMONSQUEEZY_STORE_ID") || "502637";   // MWP Shop
+  const since = Date.now() - 3 * 86400_000;
+  const settled = Date.now() - 20 * 60_000;   // younger orders may still be on their way through the webhook
+
+  const orders: any[] = [];
+  let url = `https://api.lemonsqueezy.com/v1/orders?filter[store_id]=${store}&page[size]=100`;
+  for (let page = 0; url && page < 5; page++) {
+    const res = await fetch(url, { headers: { Accept: "application/vnd.api+json", Authorization: `Bearer ${key}` } });
+    if (!res.ok) throw new Error(`Lemon Squeezy orders answered ${res.status}`);
+    const json = await res.json();
+    const data: any[] = json.data ?? [];
+    orders.push(...data);
+    if (data.some((o) => Date.parse(o.attributes.created_at) < since)) break;
+    url = json.links?.next ?? "";
+  }
+
+  // A test order counts only for the admin (or with ALLOW_TEST_ORDERS): anyone else's is deliberately not recorded.
+  const { data: admins } = await db.from("admin_allowlist").select("email");
+  const adminEmails = new Set((admins ?? []).map((a: { email: string }) => a.email.toLowerCase()));
+  const allowTest = Deno.env.get("ALLOW_TEST_ORDERS") === "true";
+  const relevant = orders.filter((o) => {
+    const a = o.attributes, t = Date.parse(a.created_at);
+    return t >= since && t <= settled && (!a.test_mode || allowTest || adminEmails.has(String(a.user_email).toLowerCase()));
+  });
+  if (!relevant.length) return { checked: 0, problems: [] };
+
+  const { data: ours, error } = await db.from("orders").select("checkout_order_id, status")
+    .in("checkout_order_id", relevant.map((o) => String(o.id)));
+  if (error) throw error;
+  const here = new Map((ours ?? []).map((o: { checkout_order_id: string; status: string }) => [o.checkout_order_id, o.status]));
+
+  const problems: { order: string; why: string }[] = [];
+  for (const o of relevant) {
+    const a = o.attributes, id = String(o.id), status = here.get(id);
+    let why = "";
+    if (a.status === "paid" && !status) why = "paid in Lemon Squeezy, not in the shop: no access";
+    else if (a.status === "refunded" && status && status !== "refunded") why = "refunded in Lemon Squeezy, access still on";
+    if (!why) continue;
+    const eventId = `reconcile:${id}:${a.status}`;   // each problem is raised once
+    const { data: seen } = await db.from("webhook_events").select("event_id").eq("event_id", eventId).maybeSingle();
+    if (seen) continue;
+    const sent = await notifyMake("MAKE_ORDER_WEBHOOK", {
+      type: "order", checkout_order_id: id, order_number: String(a.order_number),
+      order_date: String(a.created_at).slice(0, 10), test_mode: !!a.test_mode,
+      status_label: "Not delivered", email: String(a.user_email).toLowerCase(), name: plain(a.user_name),
+      product: plain(`CHECK: ${why} (${a.first_order_item?.product_name ?? "product"})`),
+      product_slug: "", subtotal: money(a.subtotal), discount: money(a.discount_total ?? 0), tax: money(a.tax),
+      total: money(a.total), currency: a.currency, receipt_url: a.urls?.receipt ?? null, source: "",
+      repeat_customer: false, downloads_url: "",
+    });
+    if (!sent) continue;   // not marked: the next hour tries again
+    await db.from("webhook_events").insert({ event_id: eventId, provider: "reconcile", payload: { order: id, why } });
+    problems.push({ order: String(a.order_number), why });
+  }
+  return { checked: relevant.length, problems };
 }
 
 async function weeklySummary(db: Db) {
