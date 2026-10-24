@@ -1,13 +1,14 @@
 // Prices on the home and sales pages. Every price spot is <span data-price="slug"> (plus data-was for a
 // struck-out "before" price). They read the prices set in the admin; until a product has a price there,
-// the spot stays empty (never 0.00). Every page shows dollars, the currency checkout charges: shekel prices (set in
-// the admin) show on the Hebrew pages only once there's a shekel checkout (SHOW_ILS, also in cart.js and
-// tools/bake_prices.py). Launch audit, 24 Oct 2026: a Hebrew visitor saw ₪179 and was charged $59.99.
+// the spot stays empty (never 0.00). The Hebrew pages show the shekel prices set in the admin, the English ones
+// dollars (SHOW_ILS, also in cart.js and tools/bake_prices.py; Matan, 24 Oct 2026). Checkout still charges
+// dollars, so every Hebrew section with prices says so (ilsNotes), and the cart shows the dollar amount.
 import { CONFIG } from "../config.js";
 
 let rows = null;
 
-const SHOW_ILS = false;
+const SHOW_ILS = true;
+const ILS_NOTE = "המחירים מוצגים בשקלים. התשלום בקופה הוא בדולרים, והסכום בדולרים מופיע בעגלה לפני התשלום.";
 const he = () => SHOW_ILS && document.documentElement.lang === "he";
 const fmt = (cents, cur) => {
   const n = (cents || 0) / 100;
@@ -38,7 +39,26 @@ function saveFor(el) {
   return (document.documentElement.lang === "he" ? "חוסכים " : "Save ") + fmt(was - now, cur);
 }
 
+// One line at the end of every Hebrew section that shows prices: checkout charges dollars. Taken away again
+// when the page switches to English in place.
+function ilsNotes() {
+  const on = he();
+  document.querySelectorAll(".ils-note").forEach((n) => { if (!on) n.remove(); });
+  if (!on) return;
+  document.querySelectorAll("[data-price]:not([data-was])").forEach((el) => {
+    const sec = el.closest("section");
+    if (!sec || el.closest(".cart-panel, .acct-menu") || sec.querySelector(":scope .ils-note")) return;
+    const p = document.createElement("p");
+    p.className = "ils-note";
+    p.setAttribute("data-no-i18n", "");
+    p.style.cssText = "margin:20px auto 0;max-width:640px;font-size:13px;line-height:1.5;color:#9CB1C2;text-align:center";
+    p.textContent = ILS_NOTE;
+    (sec.querySelector(":scope > .container, :scope > .wrap") || sec).append(p);
+  });
+}
+
 function paint(root = document) {
+  ilsNotes();
   if (!rows) return;   // no prices yet: keep what the page has (the prices baked in at deploy, or hidden placeholders)
   root.querySelectorAll("[data-price]").forEach((el) => {
     const t = textFor(el);
