@@ -10,7 +10,9 @@
 // ============================================================================
 import { requestPersonalCopies, admin, hmacHex, notifyMake, plain, safeEqual } from "../_shared/http.ts";
 
-const SECRET = Deno.env.get("CHECKOUT_WEBHOOK_SECRET") ?? "";
+// Lemon Squeezy takes a signing secret of at most 40 characters, so the webhook is registered with the first 40 of
+// the stored secret (tools/connect_lemonsqueezy.py) and checked with the same.
+const SECRET = (Deno.env.get("CHECKOUT_WEBHOOK_SECRET") ?? "").slice(0, 40);
 const ALLOW_TEST_ORDERS = Deno.env.get("ALLOW_TEST_ORDERS") === "true";
 
 type LsOrder = {
