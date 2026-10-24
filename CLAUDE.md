@@ -109,6 +109,10 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - **Supabase ↔ monday mirror** (migration `20261013000036`): deleting a login in Supabase (Authentication → Users) removes that person from the shop too (their applications and customer record with ambassador / tester rows, free access and feedback; someone with orders keeps their customer record; the admin is never touched). Deleting a customer (any way) sends `customer_deleted` → Make deletes their rows on Shop Customers, Shop Ambassadors, Shop Testers, Shop Ambassador Applications and Shop Feedback (to monday's trash). A customer added by hand in Supabase (not through the shop's API) goes to Shop Customers (`account`, source Shop).
 - Make can reject formulas the module checker accepts (a `replace()` with a regex switched the scenario off once). Keep mappings to plain `{{1.field}}` references and clean data in the shop's functions instead. After every blueprint upload, check the next run in Make's history.
 
+## Vercel copy (24 Oct 2026)
+- Matan connected the repo to Vercel without moving the domain: customers still use shop.mw.photography on GitHub Pages. The Vercel copy (`…vercel.app`) is a side copy only: `vercel.json` marks every page `noindex` and adds security headers; `.vercelignore` keeps server code, tools and notes out of it. Checkout and sign-in don't work there (Supabase answers only the shop's own address).
+- If the domain ever moves to Vercel: remove the `X-Robots-Tag` header first, and move the deploy's build steps (bake_prices, stamp_scripts) into a Vercel build, or the pages lose their baked prices and fresh-script stamps.
+
 ## Clean addresses
 - Every page also lives at a clean address: /account/, /shop/, /product/?p=…, /support/, /legal/, /thank-you/, /read/, /testers/, and /presets/he/ (etc.) for the Hebrew sales pages. `build_pages.py` and `unify_pages.py` write these copies (with `<base href>` so relative links still work); the old .html addresses keep working. Link to the clean addresses in new code. The deploy workflow copies these folders.
 
