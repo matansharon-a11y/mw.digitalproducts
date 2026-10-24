@@ -204,6 +204,7 @@ GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="curren
 # The bundles (the home page's bundle cards)
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
            ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Panel: the Photoshop panel"], "Get the bundle", False),
+           ("Field Guides + Panel", "Learn the shot, then finish it in Photoshop", "field-guides-panel", ["MWP Field Guides: 4 PDF guides, 137 lessons", "MWP Panel: the Photoshop panel"], "Get the bundle", False),
            ("The full set", "From the shot to the share", "full-set", ["MWP Presets and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
 
 
