@@ -1,0 +1,45 @@
+-- The tester code can't undo the admin (launch audit, 24 Oct 2026).
+-- Before: a tester removed in the admin, or an ambassador ended for breach, could enter the shared code again
+-- and get the free access back. Now the code refuses them ("tester_removed"). To let a removed tester back in,
+-- clear testers.removed_at for them in Supabase first.
+create or replace function public.add_tester_by_code(p_email text, p_name text)
+returns uuid
+language plpgsql security definer set search_path = public as $$
+declare
+  v_email text := lower(trim(p_email));
+  v_customer uuid;
+  v_tester uuid;
+begin
+  if v_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]{2,}$' then raise exception 'invalid email'; end if;
+  if exists (select 1 from public.testers t join public.customers c on c.id = t.customer_id
+              where c.email = v_email and t.removed_at is not null)
+     or exists (select 1 from public.beta_members b join public.customers c on c.id = b.customer_id
+              where c.email = v_email and b.status = 'ended_breach') then
+    raise exception 'tester_removed';
+  end if;
+  insert into public.customers (email, name) values (v_email, nullif(trim(p_name), ''))
+  on conflict (email) do update set name = coalesce(public.customers.name, excluded.name)
+  returning id into v_customer;
+
+  insert into public.testers (customer_id) values (v_customer)
+  on conflict (customer_id) do update set removed_at = null, added_at = now()
+  returning id into v_tester;
+
+  -- like ambassadors: the guides read online only. Anything bought (order_id set) is left exactly as it is,
+  -- so a refunded purchase stays refunded.
+  insert into public.entitlements (customer_id, product_id, view_only)
+  select v_customer, p.id, p.slug = 'mwp-field-guides' from public.products p
+   where p.slug in ('mwp-presets', 'mwp-panel', 'mwp-field-guides')
+  on conflict (customer_id, product_id) do update
+    set revoked_at = null, view_only = excluded.view_only
+    where public.entitlements.order_id is null;
+
+  begin
+    perform public.call_scheduler('tester', jsonb_build_object('tester_id', v_tester, 'action', 'added'));
+  exception when others then
+    raise warning 'add_tester_by_code: monday / personal copies not requested: %', sqlerrm;
+  end;
+  return v_tester;
+end $$;
+revoke all on function public.add_tester_by_code(text, text) from public, anon, authenticated;
+grant execute on function public.add_tester_by_code(text, text) to service_role;

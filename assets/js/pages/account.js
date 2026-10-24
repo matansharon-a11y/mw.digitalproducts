@@ -146,7 +146,12 @@ async function showLibrary(user) {
     let [items, extras] = await Promise.all([myLibrary(), myExtras().catch(() => undefined)]);
     // Just back from checkout and nothing here yet: the payment's confirmation can take a moment to arrive.
     // Wait for it (every 10 seconds, up to 3 minutes) instead of saying there's nothing.
-    const owned = () => items.some((i) => i.products && !i.view_only && i.products.category !== "bundle");
+    // Someone who already owns something (a repeat buyer, a tester) waits for what's new: granted after this
+    // tab went to checkout (cart.js), not anything at all.
+    let since = 0;
+    try { since = Number(sessionStorage.getItem("mwp_checkout_at") || 0); } catch { /* blocked */ }
+    const owned = () => items.some((i) => i.products && !i.view_only && i.products.category !== "bundle"
+      && (!since || Date.parse(i.granted_at) >= since - 60000));
     if (!owned() && justBought()) {
       library.innerHTML = `<div class="glass lib-empty stack"><p>Adding your order…</p><p class="meta">Your payment went through. Your downloads appear here in a moment.</p></div>`;
       for (let n = 0; n < 18 && !owned(); n++) {
@@ -462,10 +467,13 @@ if (next && /checkout|cart=1/.test(next)) document.getElementById("auth-why").hi
 show(params.get("mode") === "signup" ? "signup" : "signin");
 
 let recovering = resetting;
+let shownFor = null;   // the browser repeats SIGNED_IN (e.g. on returning to the tab): don't redraw a page in use
 function afterSignIn(user) {
   if (!user) return;
   if (recovering) { signedOut.hidden = false; show("reset"); return; }
   if (next) { location.replace(next); return; }
+  if (shownFor === user.id) return;
+  shownFor = user.id;
   showLibrary(user);
   showDetails(user);
 }

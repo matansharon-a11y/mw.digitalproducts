@@ -263,6 +263,7 @@ async function goToCheckout(link) {
   let utm = null;
   try { utm = sessionStorage.getItem("utm_source") || new URLSearchParams(location.search).get("utm_source"); } catch { /* blocked */ }
   if (utm) url.searchParams.set("checkout[custom][source]", utm.slice(0, 64));
+  try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
   else location.href = url.toString();
 }
