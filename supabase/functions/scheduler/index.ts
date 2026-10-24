@@ -111,8 +111,12 @@ async function product(db: Db, id: string) {
 }
 
 async function approvals(db: Db) {
-  const { count } = await db.from("products").select("id", { count: "exact", head: true }).eq("is_active", false);
-  if (!count) return { skipped: "no drafts waiting" };
+  // Only drafts that could go live count: the same rule as approvalsCallback (a checkout link and variant). Before,
+  // every inactive product counted, so Make was asked every hour before launch, and forever for the Lightroom
+  // Classic plugin, which is never sold alone and so never gets a link (about 2,900 Make operations a month).
+  const { count } = await db.from("products").select("id", { count: "exact", head: true }).eq("is_active", false)
+    .not("checkout_url", "is", null).not("checkout_variant_id", "is", null);
+  if (!count) return { skipped: "no drafts that could go live" };
   const nonce = crypto.randomUUID().replaceAll("-", "") + crypto.randomUUID().replaceAll("-", "");
   const { error } = await db.from("sync_nonces").insert({ nonce, purpose: "approvals" });
   if (error) throw error;
