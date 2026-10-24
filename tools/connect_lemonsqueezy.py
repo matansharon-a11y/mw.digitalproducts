@@ -14,7 +14,8 @@ LS = "https://api.lemonsqueezy.com/v1"
 KEY = os.environ.get("LEMONSQUEEZY_API_KEY", "")
 DB = os.environ.get("SUPABASE_URL", "")
 SERVICE = os.environ.get("SUPABASE_SERVICE_KEY", "")
-HOOK_SECRET = os.environ.get("CHECKOUT_WEBHOOK_SECRET", "")
+# Lemon Squeezy takes a signing secret of at most 40 characters: both sides use the first 40 of the stored one
+HOOK_SECRET = os.environ.get("CHECKOUT_WEBHOOK_SECRET", "")[:40]
 APPLY = os.environ.get("APPLY", "true") == "true"
 SUMMARY = os.environ.get("GITHUB_STEP_SUMMARY")
 lines = []
