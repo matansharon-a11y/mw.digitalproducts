@@ -114,7 +114,7 @@ const HE = {
   "Find your tool": "מצאו את הכלי שלכם",
   "Start where you get stuck.": "לכל שלב בעבודה.",
   "Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.": "לא בטוחים מה עושה צילום חיות בר חזק? מתחילים במדריכי השטח. לייטרום מבלבל? הפריסטים של MWP. פוטושופ מרגיש כמו מבוך של תפריטים? התוסף לפוטושופ של MWP.",
-  "Know what to aim for, before you press the shutter": "לדעת מה עושה תמונה חזקה",
+  "Know what to aim for, before you press the shutter": "137 שיעורים מהשטח",
   "Every guide ends with drills, a checklist and a cheat sheet for your next shoot.": "בסוף כל מדריך: תרגילים, צ׳קליסט ודף סיכום ליציאה הבאה לשטח.",
   "A natural starting point for every photo": "נקודת פתיחה טבעית לכל תמונה",
   "50 Lightroom presets made from Matan Wild's own wildlife and landscape edits. 12 are adaptive: they find the animal, the sky and the background and treat each one on its own.": "50 פריסטים ללייטרום, מתוך העריכות של מתן שרון לצילומי חיות בר ונופים. 12 מהם אדפטיביים: הם מוצאים את החיה, את השמיים ואת הרקע, ומטפלים בכל אחד בנפרד.",
@@ -875,7 +875,7 @@ const HE = {
     "כדי לצלם טוב יותר, מתחילים במדריכי השטח. אם אתם עורכים בלייטרום, הפריסטים של MWP. אם אתם מסיימים בפוטושופ, התוסף לפוטושופ של MWP.",
   "See the photo before you press the shutter": "לראות את התמונה לפני שלוחצים",
   "137 one-page lessons on composition, colour, light and planning. Each one is a real photo from the field, with a drawing that shows why it works.":
-    "137 שיעורים קצרים על קומפוזיציה, צבע, אור ותכנון. בכל עמוד צילום אמיתי, ושרטוט שמראה למה הוא עובד.",
+    "ארבעה מדריכים על קומפוזיציה, צבע, אור ותכנון. בכל עמוד צילום אמיתי, ושרטוט שמראה למה הוא עובד.",
   "Every guide ends with drills, a checklist and a cheat sheet to take on your next shoot.": "בסוף כל מדריך יש תרגילים, צ׳קליסט ודף סיכום שלוקחים לצילום הבא.",
   "Presets that find the animal first": "פריסטים שמוצאים קודם את החיה",
   "50 Lightroom presets built from Matan Wild's wildlife and landscape edits. 12 are adaptive: Lightroom's AI finds the animal, the sky and the background and treats each one on its own.":
