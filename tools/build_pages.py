@@ -2,7 +2,7 @@
 import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reviews_section import section as reviews_section
-from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
@@ -203,6 +203,8 @@ CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The bundles (the home page's bundle cards)
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
+           ("Presets + Photoshop Plugin Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", False),
+           ("Field Guides + Photoshop Plugin Panel", "Learn the shot, then finish it in Photoshop", "field-guides-panel", ["MWP Photoshop Plugin Panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
            ("The full set", "From the shot to the share", "full-set", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
 
 
@@ -239,7 +241,7 @@ COMPARE = [
     ("What it is", ["A plugin: a window of tools inside Lightroom Classic", "A plugin: a window of tools inside Photoshop", "Presets and LUTs: a finished look in one click", "PDF guides: lessons for the shoot itself"]),
     ("Works in", ["Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Any PDF reader: computer, tablet or phone"]),
     ("What you get", ["The plugin, built-in help, video tutorials", "The plugin, a 21-page User Manual, an Installation Guide", "50 presets, 50 mobile files, 33 LUTs", "4 guides, 137 lessons, in English or Hebrew"]),
-    ("How you buy it", ["With MWP Presets, in one purchase, or in a bundle", "On its own, or in the full set", "With the plugin, in one purchase, or in a bundle", "On its own, or in a bundle"]),
+    ("How you buy it", ["With MWP Presets, in one purchase, or in a bundle", "On its own, or in a bundle", "With the plugin, in one purchase, or in a bundle", "On its own, or in a bundle"]),
 ]
 
 
@@ -299,6 +301,7 @@ page("shop.html", "Compare Lightroom Presets, Plugins &amp; Guides · MWP Shop",
       <p class="kick">Bundles</p>
       <h2 class="display sp-h2" id="bundles-h">Buy together. <span class="grad">Pay less.</span></h2>
       <p class="lead">Every bundle with MWP Presets includes the Lightroom Classic plugin.</p>
+      {launch_block()}
       <div class="bundles">{"".join(_bundle(*b) for b in BUNDLES)}</div>
     </div>
   </section>

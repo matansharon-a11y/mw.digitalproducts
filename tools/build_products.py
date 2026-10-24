@@ -14,7 +14,7 @@ from lrc_preview import window as lrc_window
 from ps_preview import window as ps_window
 import presets_layout
 from reviews_section import section as reviews_section
-from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS
+from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, launch_block
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://shop.mw.photography"
@@ -219,7 +219,7 @@ P["panel"] = dict(
     # Its areas are real cut-outs (assets/pages/img/ps/, made with an AI subject mask); no RAW: Before hides the edits.
     ps_photo=(None, "8929f94d", {k: f"url(/assets/pages/img/ps/8929f94d-{k.lower()}.png)" for k in ("Subject", "Sky", "Background", "Lights", "Darks")}
               | {"Eye": "radial-gradient(ellipse 4% 3% at 46.3% 29.2%, #000 55%, transparent 100%), radial-gradient(ellipse 4% 3% at 59.6% 29.2%, #000 55%, transparent 100%)"}, True),
-    bundle="full-set",   # Matan, 24 Oct 2026: the Photoshop plugin sells alone or in the full set
+    bundle="full-set",
     en=dict(
         name="MWP Photoshop Plugin Panel", name_html='MWP <span class="grad">Photoshop Plugin Panel</span>',
         title="Photoshop Plugin for Easy Photo Editing · MWP",
@@ -677,7 +677,7 @@ def page(folder, lang):
 <img src="{img(p["final_img"])}" alt="" loading="lazy">
 <div class="wrap">
 <div class="head c" data-r><p class="kick">{esc(c["final_kick"])}</p>{h(c["final_h"])}<p class="lead">{esc(c["final_lead"])}</p></div>
-<div class="prices">{plan(c["plan"], slug, hi=True)}{plan(c["plan2"], p["bundle"], badge="" if p.get("slug_b") else u["bundle"])}</div>
+{launch_block(lang)}<div class="prices">{plan(c["plan"], slug, hi=True)}{plan(c["plan2"], p["bundle"], badge="" if p.get("slug_b") else u["bundle"])}</div>
 <p class="small">{u["trust"]} · <a href="/legal/">{u["terms"]}</a></p>
 </div>
 </section>''')

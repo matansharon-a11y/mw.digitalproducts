@@ -18,7 +18,7 @@ IMG = "assets/pages/img/"
 import home_fx, home_story
 from reviews_section import section as reviews_section
 import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(__file__))
-from brand import NAV_CSS, FONTS, SITE_CSS, site_links, menu_button, site_footer, use_webp, BRAND, ICONS, LANG_GUARD
+from brand import NAV_CSS, FONTS, SITE_CSS, site_links, menu_button, site_footer, use_webp, BRAND, ICONS, LANG_GUARD, launch_block, LAUNCH_CSS
 CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F2A541" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>'
 EXT = '<svg class="ext" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>'
 ARROW = '<svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
@@ -213,6 +213,7 @@ html = f'''<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
 {base_css}
+{LAUNCH_CSS}
 /* before / after (from the Presets page) */
 {ba_css}
 {NAV_CSS}
@@ -250,10 +251,12 @@ html = f'''<!doctype html>
 <p class="kick">Bundles</p>
 <h2 class="h2">Buy together. <span class="b grad">Pay less.</span></h2>
 <p class="lead">Every bundle costs less than buying its parts separately.</p>
+{launch_block()}
 </div>
 <div class="plans">
-{plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
 {plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "field-guides/#buy")}
+{plan("Presets + Photoshop Plugin Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", "panel/#buy")}
+{plan("Field Guides + Photoshop Plugin Panel", "Learn the shot, then finish it in Photoshop", '<span data-price="field-guides-panel" data-no-i18n>$0.00</span>', ["MWP Photoshop Plugin Panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "panel/#buy")}
 {plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>

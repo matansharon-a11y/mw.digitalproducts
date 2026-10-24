@@ -120,6 +120,13 @@ const HE = {
   "Pro editing in a few clicks: Lightroom presets, plugins for Lightroom Classic and Photoshop, and photography guides by photographer Matan Wild.": "עריכה מקצועית בכמה קליקים: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום ומדריכי צילום מאת הצלם מתן שרון. הורדה מיידית ועדכונים חינם.",
   "Compare Lightroom Presets, Plugins & Guides · MWP Shop": "השוואה: פריסטים ללייטרום, תוספים ומדריכי צילום · החנות של MWP",
   "Compare four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and PDF photography guides.": "ארבעה כלים מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום וקובצי LUT, ומדריכי צילום. השוו ביניהם, או חסכו עם חבילה.",
+  // launch offer (24 Oct 2026)
+  "Launch offer": "מבצע השקה",
+  "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.": "החבילות במחירי השקה עד 15 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
+  "days": "ימים",
+  "hrs": "שעות",
+  "min": "דקות",
+  "sec": "שניות",
   // menu and footer, one naming pattern (24 Oct 2026)
   ". If you sort and edit whole shoots in Lightroom Classic,": ". אם אתם ממיינים ועורכים צילומים שלמים בלייטרום קלאסיק,",
   "the Lightroom Classic plugin": "התוסף ללייטרום קלאסיק",

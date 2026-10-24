@@ -205,3 +205,40 @@ ICONS = ('<link rel="icon" href="/favicon.ico" sizes="any">'
 LANG_GUARD = ('<script>try{if(localStorage.getItem("mwp_lang")==="he"){var d=document.documentElement;d.lang="he";d.dir="rtl";'
               'd.classList.add("he-wait");setTimeout(function(){d.classList.remove("he-wait")},1500)}}catch(e){}</script>'
               '<style>html.he-wait body{visibility:hidden}</style>')
+
+
+# ---------------------------------------------------------------- launch offer (Matan, 24 Oct 2026)
+# The bundles sell at launch prices until this moment (Israel time). The block shows a live countdown and hides
+# itself when the time is up; after that, change the prices (new migration or the admin) and Lemon Squeezy.
+LAUNCH_END = "2026-11-15T23:59:00+02:00"
+LAUNCH_TEXT = {
+    "en": ("Launch offer", "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.",
+           ("days", "hrs", "min", "sec")),
+    "he": ("מבצע השקה", "החבילות במחירי השקה עד 15 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
+           ("ימים", "שעות", "דקות", "שניות")),
+}
+LAUNCH_CSS = """
+.launch{margin:28px auto 0;max-width:720px;padding:18px 22px 20px;border:1px solid rgba(244,175,86,.45);border-radius:14px;background:rgba(244,175,86,.06);text-align:center}
+.launch[hidden]{display:none}
+.launch-kick{margin:0;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#F4AF56}
+html[lang=he] .launch-kick{letter-spacing:normal;font-size:14px}
+.launch-line{margin:8px auto 0;max-width:560px;color:#CDD7DD;font-size:15px;line-height:1.5}
+.launch-count{display:flex;justify-content:center;gap:10px;margin-top:14px}
+.launch-count span{display:flex;flex-direction:column;align-items:center;min-width:58px;padding:8px 6px;border-radius:10px;background:rgba(254,251,241,.06)}
+.launch-count b{font-size:24px;line-height:1.1;font-weight:600;color:#FEFBF1;font-variant-numeric:tabular-nums}
+.launch-count i{margin-top:3px;font-style:normal;font-size:11px;color:#9CB1C2}
+"""
+LAUNCH_JS = ('<script>(function(){document.querySelectorAll(".launch[data-launch-end]").forEach(function(el){'
+             'var end=Date.parse(el.getAttribute("data-launch-end"));'
+             'function tick(){var s=Math.floor((end-Date.now())/1000);if(!(s>0)){el.hidden=true;return false}el.hidden=false;'
+             'var v={d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60};'
+             'el.querySelectorAll("[data-u]").forEach(function(b){var n=v[b.getAttribute("data-u")];b.textContent=(n<10?"0":"")+n});return true}'
+             'if(tick())setInterval(tick,1000)})})();</script>')
+
+
+def launch_block(lang="en"):
+    """The launch-offer notice with its countdown (hidden until the script runs, and after the offer ends)."""
+    kick, line, units = LAUNCH_TEXT["he" if lang == "he" else "en"]
+    cells = "".join(f'<span><b data-u="{k}">00</b><i>{u}</i></span>' for k, u in zip("dhms", units))
+    return (f'<div class="launch" data-launch-end="{LAUNCH_END}" hidden><p class="launch-kick">{kick}</p>'
+            f'<p class="launch-line">{line}</p><div class="launch-count" aria-hidden="true">{cells}</div></div>{LAUNCH_JS}')
