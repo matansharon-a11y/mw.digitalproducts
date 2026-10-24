@@ -110,7 +110,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - Make can reject formulas the module checker accepts (a `replace()` with a regex switched the scenario off once). Keep mappings to plain `{{1.field}}` references and clean data in the shop's functions instead. After every blueprint upload, check the next run in Make's history.
 
 ## Vercel copy (24 Oct 2026)
-- Matan connected the repo to Vercel without moving the domain: customers still use shop.mw.photography on GitHub Pages. The Vercel copy (`…vercel.app`) is a side copy only: `vercel.json` marks every page `noindex` and adds security headers; `.vercelignore` keeps server code, tools and notes out of it. Checkout and sign-in don't work there (Supabase answers only the shop's own address).
+- Matan connected the repo to Vercel without moving the domain: customers still use shop.mw.photography on GitHub Pages. The Vercel copy (`…vercel.app`) is a side copy only: `vercel.json` marks every page `noindex` and adds security headers; `.vercelignore` keeps server code, tools and notes out of it. Checkout and sign-in don't work there (Supabase answers only the shop's own address). Vercel builds only `main` (Settings → Build and Deployment → Ignored Build Step = "Only build production", 24 Oct 2026): other branches, including the temporary `upload-drop-*` branches, are never built there. Its GitHub app should have access to this repository only.
 - If the domain ever moves to Vercel: remove the `X-Robots-Tag` header first, and move the deploy's build steps (bake_prices, stamp_scripts) into a Vercel build, or the pages lose their baked prices and fresh-script stamps.
 
 ## Clean addresses
