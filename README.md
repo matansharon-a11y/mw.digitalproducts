@@ -176,7 +176,7 @@ supabase functions deploy subscribe
 | --- | --- |
 | `SITE_URL` | `https://shop.mw.photography` |
 | `ALLOWED_ORIGINS` | the site URL, plus `http://localhost:8000` while testing |
-| `CHECKOUT_WEBHOOK_SECRET` | a long random string; the same one goes into Lemon Squeezy |
+| `LS_WEBHOOK_SECRET_TEST`, `LS_WEBHOOK_SECRET_LIVE` | set by the "Connect Lemon Squeezy" workflow itself (never typed): the webhook signing secrets |
 | `MAKE_ORDER_WEBHOOK`, `MAKE_SUPPORT_WEBHOOK`, `MAKE_SUBSCRIBE_WEBHOOK` | the three Make.com custom webhook URLs |
 | `MAKE_SHARED_SECRET` | random string; Make scenarios reject calls without it in the `x-mwp-secret` header |
 | `IP_HASH_SALT` | random string |
@@ -190,7 +190,7 @@ Generate random strings with `openssl rand -hex 32`.
 2. One product per pack. Price it as approved. Do not attach the zip there (delivery is ours).
 3. On each product: Confirmation → redirect to `https://shop.mw.photography/thank-you.html`.
 4. Copy the product's **checkout link** and **variant ID** into the admin product form.
-5. Settings → Webhooks: URL `https://YOUR-PROJECT-REF.supabase.co/functions/v1/checkout-webhook`, signing secret = `CHECKOUT_WEBHOOK_SECRET`, events `order_created` and `order_refunded`.
+5. Run Actions → "Connect Lemon Squeezy" (store_id 502637): it writes the checkout links (live key only), creates the webhook (`order_created`, `order_refunded`) and sets its signing secret on the function.
 
 If the business turns out to be able to use Stripe directly, only `checkout-webhook` and the checkout link change; everything else stays.
 
