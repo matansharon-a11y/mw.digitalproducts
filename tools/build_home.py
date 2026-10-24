@@ -191,13 +191,13 @@ html = f'''<!doctype html>
 <script>try{{if(localStorage.getItem("mwp_lang")==="he")location.replace("/he/"+location.search+location.hash)}}catch(e){{}}</script>
 {LANG_GUARD}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP</title>
-<meta name="description" content="Edit wildlife photos so they look the way you saw them: Lightroom presets, a Photoshop plugin and field guides by wildlife photographer Matan Wild. Instant download, free updates.">
+<title>Lightroom Presets, Photoshop Plugin &amp; Photography Guides · MWP</title>
+<meta name="description" content="Pro editing in a few clicks: Lightroom presets, a Lightroom Classic plugin, a Photoshop plugin and PDF photography guides by photographer Matan Wild. Instant download, free updates.">
 <meta name="theme-color" content="#0A0908">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MWP">
-<meta property="og:title" content="Wildlife Lightroom Presets, Photoshop Plugin &amp; Guides · MWP">
-<meta property="og:description" content="Lightroom presets, a Photoshop plugin and field guides for wildlife and nature photographers, by Matan Wild. Make the animal stand out and keep it natural.">
+<meta property="og:title" content="Lightroom Presets, Photoshop Plugin &amp; Photography Guides · MWP">
+<meta property="og:description" content="The tools photographer Matan Wild edits with: Lightroom presets, a Photoshop plugin and photography guides, for every kind of photography.">
 <link rel="canonical" href="https://shop.mw.photography/">
 <link rel="alternate" hreflang="en" href="https://shop.mw.photography/"><link rel="alternate" hreflang="he" href="https://shop.mw.photography/he/"><link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/">
 <meta property="og:locale" content="en_US">
@@ -293,7 +293,7 @@ html = f'''<!doctype html>
 <div class="about-body">
 <p class="kick">About Matan</p>
 <h2 class="h2">Built <span class="b grad">in the field.</span></h2>
-<p class="about-intro">Matan Wild founded MW Photo Tours in 2023. He leads wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.</p>
+<p class="about-intro">Matan Wild founded MW Photo Tours in 2023. He leads nature and wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.</p>
 <p class="about-more">The presets, the panel and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.</p>
 <a class="ghost about-go" href="https://mw.photography" target="_blank" rel="noopener">Visit mw.photography {EXT}</a>
 </div>

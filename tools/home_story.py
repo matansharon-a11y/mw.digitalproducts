@@ -16,16 +16,16 @@ CHAPTERS = [
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Edit", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
-         img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets for wildlife photography",
+         img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets by Matan Wild",
          title="A natural starting point for every photo",
-         body=["50 Lightroom presets made from Matan Wild's own wildlife and landscape edits. 12 are adaptive: they find the animal, the sky and the background and treat each one on its own.",
+         body=["50 Lightroom presets made from Matan Wild's own edits. 12 are adaptive: they find the subject, the sky and the background and treat each one on its own.",
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
-         points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
-         cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
+         points=["50 Lightroom presets, 12 adaptive", "33 LUTs for Photoshop and video", "Lightroom Classic plugin included"],
+         cta="See the presets and the plugin", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
     dict(step="Finish", tag="Photoshop panel", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Photoshop, without the maze of menus",
-         body=["Pick the animal, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
+         body=["Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
                "Your original stays locked, and one undo takes back a whole button."],
          points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
          cta="See MWP Photoshop Plugin Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
@@ -37,9 +37,9 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="st-hero-shade"></div>
 <div class="st-vf" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 <div class="wrap st-hero-in">
-<p class="kick st-in" style="--i:0">MWP · by wildlife photographer Matan Wild</p>
-<h1 class="st-h1"><span class="st-l"><span style="--i:1">Wildlife,</span></span> <span class="st-l"><span class="grad" style="--i:2">as you saw it.</span></span></h1>
-<p class="lead st-in" style="--i:3">Lightroom presets, a Photoshop panel and field guides from wildlife photographer Matan Wild. The animal stands out, the light stays true, and nothing looks fake.</p>
+<p class="kick st-in" style="--i:0">Lightroom · Photoshop · Photography guides</p>
+<h1 class="st-h1"><span class="st-l"><span style="--i:1">Pro editing,</span></span> <span class="st-l"><span class="grad" style="--i:2">in a few clicks.</span></span></h1>
+<p class="lead st-in" style="--i:3">The tools photographer Matan Wild edits with, for every kind of photography. Presets for a precise starting point, and plugins for Lightroom Classic and Photoshop that do the masking for you.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout<span aria-hidden="true">·</span>Free updates</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Find your tool</a></div>
 </div>
@@ -67,7 +67,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
 <h2 class="h2">Four tools. <span class="b grad">Start where you get stuck.</span></h2>
-<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.</p>
+<p class="lead">Not sure what makes a strong photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

@@ -279,8 +279,8 @@ def _bundle(name, sub, slug, pts, cta, hi):
             f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
 
 
-page("shop.html", "Lightroom Classic Plugin, Photoshop Plugin Panel, Lightroom Presets &amp; Guides for Wildlife · MWP Shop",
- "Four tools for wildlife photographers by Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and LUTs, and PDF field guides. Compare them, or save with a bundle.",
+page("shop.html", "Compare Lightroom Presets, Plugins &amp; Photography Guides · MWP Shop",
+ "Four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and LUTs, and PDF photography guides. Compare them, or save with a bundle.",
  f"""  <section class="page-hero sp-hero">
     <div class="container">
       <p class="kick">The MWP shop</p>
