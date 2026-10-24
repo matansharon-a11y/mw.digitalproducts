@@ -276,7 +276,7 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .gal-nav .count{direction:ltr;unicode-bidi:isolate}
 
 /* the hero headline: the gold line always starts on its own line on wide screens */
-@media (min-width:760px){.hero .h1 .grad{display:block}}
+.hero .h1 .grad{display:block}   /* the headline's second half always starts its own line */
 /* the hero text starts at the same height on every product page, whatever the headline length */
 .hero{align-items:flex-start}.hero .wrap{padding-top:var(--hero-top)}
 :root{--hero-top:clamp(110px,22vh,240px)}
