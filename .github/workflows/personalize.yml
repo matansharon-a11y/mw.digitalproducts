@@ -16,6 +16,11 @@ on:
   repository_dispatch:
     types: [personalize]
   workflow_dispatch:
+    inputs:
+      check_guides:
+        description: "Only check that each single Field Guide can be cut from the set's pack (counts only, nothing made)"
+        type: boolean
+        default: false
   # right after each deploy (new tables and functions are in place by then)
   workflow_run:
     workflows: [Deploy]
@@ -65,4 +70,6 @@ jobs:
         env:
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
           MAKE_SHARED_SECRET: ${{ secrets.MAKE_SHARED_SECRET }}
+        env:
+          CHECK_GUIDES: ${{ inputs.check_guides }}
         run: .github/scripts/run.sh "Personal copies" python3 tools/personalize/worker.py

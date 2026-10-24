@@ -56,7 +56,32 @@ def upload(path, src, content_type="application/zip", bucket="presets"):
     r.raise_for_status()
 
 
+def check_single_guides():
+    """Read-only (workflow input check_guides): cuts the set's real pack for each single guide in each language and
+    prints how many PDFs each copy would hold (counts only: these logs are public). Nothing is uploaded or recorded."""
+    sets = rest("products", select="slug,product_files(path,version)", slug="eq.mwp-field-guides")
+    pf = sets[0].get("product_files") if sets else None
+    pf = (pf[0] if isinstance(pf, list) and pf else pf) or {}
+    if not pf.get("path"):
+        print("The Field Guides set has no file yet."); return 1
+    bad = 0
+    with tempfile.TemporaryDirectory() as tmp:
+        src = os.path.join(tmp, "set.zip"); download(pf["path"], src)
+        for key, _ in GUIDES:
+            for lang in ("en", "he"):
+                try:
+                    only_lang(src, os.path.join(tmp, "x.zip"), lang, key)
+                    print(f"OK   {key} ({lang}): 1 guide", flush=True)
+                except Exception as err:
+                    bad += 1
+                    print(f"FAIL {key} ({lang}): {str(err)[:160]}", flush=True)
+    print("Single guides: all eight copies can be made." if not bad else f"Single guides: {bad} of 8 can't be made yet.")
+    return bad
+
+
 def main():
+    if os.environ.get("CHECK_GUIDES") == "true":
+        sys.exit(1 if check_single_guides() else 0)
     failed = 0
     # Each part on its own: one failing never stops the others.
     for step in (signed_terms, guide_views, personal_copies):   # in order of who may be waiting
@@ -70,7 +95,7 @@ def main():
 
 
 def personal_copies():
-    products = rest("products", select="id,slug,category,product_files(path,version)",
+    products = rest("products", select="id,slug,category,guide_key,product_files(path,version)",
                     category=f"in.({','.join(PERSONAL)})")
     products = {p["id"]: p for p in products if p.get("product_files")}
     if not products:
@@ -101,16 +126,19 @@ def personal_copies():
                     bases[pf["path"]] = os.path.join(tmp, f"base-{len(bases)}.zip")
                     download(pf["path"], bases[pf["path"]])
                 src = bases[pf["path"]]
-                if lang:   # only the guides in the buyer's language
-                    key = (pf["path"], lang)
+                guide = products[e["product_id"]].get("guide_key")
+                if lang or guide:   # only the guides in the buyer's language; a single guide: only that one
+                    key = (pf["path"], lang, guide)
                     if key not in bases:
                         bases[key] = os.path.join(tmp, f"base-{len(bases)}.zip")
-                        only_lang(src, bases[key], lang)
+                        only_lang(src, bases[key], lang, guide)
                     src = bases[key]
                 out = os.path.join(tmp, "out.zip")
                 c = e["customers"]
                 personalize(src, out, (c.get("name") or "").strip(), c["email"].strip(), licence_id(e["id"]))
                 stem, ext = os.path.splitext(os.path.basename(pf["path"]))
+                if guide:   # a single guide's copy is named after it, not after the set it was cut from
+                    stem = f"MWP-Field-Guide-{guide.capitalize()}"
                 dest = f"personal/{e['id']}/{stem}-{lang}{ext}" if lang else f"personal/{e['id']}/{stem}{ext}"
                 upload(dest, out)
                 r = S.post(f"{URL}/rest/v1/personal_files", params={"on_conflict": "entitlement_id"},
@@ -139,18 +167,41 @@ def one_lang(product, ent):
     return lang if lang in ("en", "he") else (None if lang == "both" else "wait")
 
 
-def only_lang(src, dst, lang):
+# The four guides, told apart by their title (or file name), in the reader's order: the first that matches wins,
+# so a title is never counted as two guides. The same patterns as assets/js/pages/read.js.
+GUIDES = [("planning", r"plan|תכנון"), ("composition", r"compos|קומפוזיצ"), ("light", r"light|אור"), ("colour", r"colou?r|צבע")]
+
+
+def which_guide(name, doc, lang):
+    """'planning', 'composition', 'light' or 'colour' for one guide PDF, else None."""
+    import re
+    for text in (guide_title(doc, lang) or "", name):
+        for key, pattern in GUIDES:
+            if re.search(pattern, text, re.I):
+                return key
+    return None
+
+
+def only_lang(src, dst, lang, guide=None):
     """A copy of the pack with only the PDFs in one language (everything that isn't a PDF stays).
-    If no PDF is found in that language, the full pack is kept, so nobody ends up with an empty copy."""
+    If no PDF is found in that language, the full pack is kept, so nobody ends up with an empty copy.
+    guide (a single guide's key): only that guide's PDF. Here nothing is kept back up: if that guide can't be found,
+    the copy fails (and shows in the workflow), so a $29.99 buyer never gets all four guides."""
     import pymupdf, shutil, zipfile
     with zipfile.ZipFile(src) as zin:
         drop = set()
         for info in zin.infolist():
             if info.filename.lower().endswith(".pdf"):
                 with pymupdf.open(stream=zin.read(info), filetype="pdf") as doc:
-                    if guide_lang(info.filename, doc) != lang:
+                    this_lang = guide_lang(info.filename, doc)
+                    if lang and this_lang != lang:
+                        drop.add(info.filename)
+                    elif guide and which_guide(info.filename, doc, this_lang) != guide:
                         drop.add(info.filename)
         pdfs = [i.filename for i in zin.infolist() if i.filename.lower().endswith(".pdf")]
+        kept = len(pdfs) - len(drop)
+        if guide and kept != (1 if lang else 2):   # exactly that one guide (in both languages for a "both" copy)
+            raise ValueError(f"guide '{guide}' ({lang or 'both languages'}): {kept} PDFs matched in the pack, expected {1 if lang else 2}")
         if not pdfs or len(drop) == len(pdfs):
             print(f"  no {lang} guides found in the pack: keeping all of them", flush=True)
             shutil.copy(src, dst); return
@@ -158,7 +209,7 @@ def only_lang(src, dst, lang):
             for info in zin.infolist():
                 if info.filename not in drop:
                     zout.writestr(info, zin.read(info))
-    print(f"  {lang} pack: {len(pdfs) - len(drop)} of {len(pdfs)} guides", flush=True)
+    print(f"  {lang or 'all'} {guide or ''} pack: {len(pdfs) - len(drop)} of {len(pdfs)} guides", flush=True)
 
 
 # ---------------------------------------------------------------- Field Guides to read online
@@ -205,7 +256,9 @@ def guide_views():
     The pages are the plain guides; the reader draws each person's name, email and licence ID over them."""
     import re, zipfile
     import pymupdf
-    products = rest("products", select="id,slug,product_files(path,version),guide_views(version,guides)", category="eq.guide")
+    # the set only: single guides are cut from the same pack, and nobody reads them online
+    products = rest("products", select="id,slug,product_files(path,version),guide_views(version,guides)", category="eq.guide",
+                    guide_key="is.null")
     failed = 0
     for p in products:
         pf = p.get("product_files"); pf = (pf[0] if isinstance(pf, list) and pf else pf) or {}
