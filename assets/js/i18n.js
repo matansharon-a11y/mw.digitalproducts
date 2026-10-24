@@ -71,14 +71,17 @@ const HE = {
   "Follow the guide inside the zip, or watch the tutorial.": "לפי המדריך שבתוך קובץ ה-zip, או לפי סרטון ההדרכה.",
   "Photoshop and Lightroom Classic plugin": "פלאגין לפוטושופ וללייטרום קלאסיק",
   // menu and footer, one naming pattern (24 Oct 2026)
+  ". If you sort and edit whole shoots in Lightroom Classic,": ". אם אתם ממיינים ועורכים צילומים שלמים בלייטרום קלאסיק,",
+  "the Lightroom Classic plugin": "התוסף ללייטרום קלאסיק",
+  ". If you want a finished look in one click,": ". אם אתם רוצים מראה מוגמר בלחיצה אחת,",
   "Photography Guides": "מדריכי צילום",
   "Photoshop Plugin": "תוסף לפוטושופ",
   "Lightroom plugin": "תוסף ללייטרום",
   // the Lightroom Classic plugin chapter on the home page (24 Oct 2026)
   "Sort": "מיון",
   "Your whole shoot, in one window": "כל הצילום, בחלון אחד",
-  "Cull a day of bursts down to the keepers, keyword trips and species, edit, and export for Instagram, web and print, all inside Lightroom Classic.": "מסננים יום שלם של צילומים לרשימה קצרה, מתייגים טיולים ומינים, עורכים ומייצאים לאינסטגרם, לאתר ולהדפסה, בלי לצאת מלייטרום קלאסיק.",
-  "Nothing is ever deleted. Everything it does is ordinary Lightroom settings, masks and collections.": "שום תמונה לא נמחקת, וכל מה שהתוסף עושה הוא הגדרות, מסכות ואוספים רגילים של לייטרום.",
+  "Find the sharpest frame in every burst, build each trip into a collection per day, and keyword species from a list of 51,471. Then edit and export, all inside Lightroom Classic.": "מוצאים את הפריים החד בכל רצף, מסדרים כל טיול לאוסף לפי ימים, ומתייגים מינים מתוך מאגר של 51,471. אחר כך עורכים ומייצאים, הכול בתוך לייטרום קלאסיק.",
+  "Nothing is ever deleted. Everything it does is ordinary Lightroom settings, keywords and collections.": "שום תמונה לא נמחקת, וכל מה שהתוסף עושה הוא הגדרות, מילות מפתח ואוספים רגילים של לייטרום.",
   "Lightroom Classic 13 or newer · Mac and Windows": "לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס",
   "Comes with MWP Presets, in one purchase": "מגיע עם הפריסטים של MWP, ברכישה אחת",
   "See the plugin": "לתוסף ללייטרום",
@@ -120,7 +123,7 @@ const HE = {
   "Pick the animal, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.": "בוחרים את החיה, את השמיים או את הרקע. בוחרים אפקט. קובעים עוצמה. התוסף בונה בשבילכם את המסכות ואת השכבות.",
   "Your original stays locked, and one undo takes back a whole button.": "התמונה המקורית לא נפגעת, וכל פעולה מתבטלת בלחיצה אחת.",
   "Edit wildlife photos so they look the way you saw them: Lightroom presets, a Photoshop plugin and field guides by wildlife photographer Matan Wild. Instant download, free updates.": "לערוך צילומי חיות בר כך שייראו כמו שראיתם אותם: פריסטים ללייטרום, פלאגין לפוטושופ ומדריכי שטח מאת צלם חיות הבר מתן שרון. הורדה מיידית ועדכונים חינם.",
-  "The Field Guides help you take a stronger photo. MWP Presets and MWP Photoshop Plugin Panel help you finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.": "המדריכים עוזרים לכם לצלם טוב יותר, והכלים עוזרים לסיים את התמונה בלייטרום או בפוטושופ. כל חבילה זולה יותר מקנייה של כל מוצר בנפרד.",
+  "The Field Guides help you take a stronger photo. The Lightroom Classic plugin, MWP Presets and MWP Photoshop Plugin Panel help you sort it and finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.": "המדריכים עוזרים לכם לצלם טוב יותר, והכלים עוזרים לסיים את התמונה בלייטרום או בפוטושופ. כל חבילה זולה יותר מקנייה של כל מוצר בנפרד.",
   "Know what to aim for": "לצלם עם תוכנית",
   "The same look in Lightroom and Photoshop": "אותו מראה בלייטרום ובפוטושופ",
   "Wildlife Lightroom Presets, Photoshop Plugin & Guides · MWP": "פריסטים ללייטרום, פלאגין לפוטושופ ומדריכים לצילום חיות בר · MWP",
@@ -891,8 +894,8 @@ const HE = {
   ". If you finish your photos in Photoshop,": ". אם אתם מסיימים את התמונות בפוטושופ,",
   "Matan Wild founded MW Photo Tours in 2023. He leads wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.":
     "מתן שרון ייסד את MW Photo Tours ב-2023. הוא מוביל מסעות צילום חיות בר בחו״ל וסדנאות בישראל, מנהל את קהילת הצלמים של MWP ומוציא את המגזין החודשי דה ווילד סייד אוף פוטוגרפי.",
-  "The presets, the panel and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.":
-    "הפריסטים, התוספים והמדריכים נולדו מהעבודה הזאת: אותן עריכות ואותם שיעורים שמתן מעביר לצלמים בשטח, עכשיו אצלכם בבית.",
+  "The plugins, the presets and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.":
+    "התוספים, הפריסטים והמדריכים נולדו מהעבודה הזאת: אותן עריכות ואותם שיעורים שמתן מעביר לצלמים בשטח, עכשיו אצלכם בבית.",
   "Shop Wildlife Lightroom Presets, Photoshop Plugin & Guides · MWP": "חנות: פריסטים ללייטרום, פלאגין לפוטושופ ומדריכים לצילום חיות בר · MWP",
   "Tools for wildlife and nature photographers, from the shoot to the share.": "כלים לצלמי חיות בר וטבע, מהצילום ועד השיתוף.",
   "MWP Presets: Lightroom presets for wildlife photography": "הפריסטים של MWP: פריסטים ללייטרום לצילום חיות בר",

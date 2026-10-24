@@ -1,298 +1,298 @@
 {
- "presets": {
-  "en": [
-   {
-    "q": "Do I get both?",
-    "a": "Yes. MWP Presets and the Lightroom Classic plugin come together, in one purchase. Neither needs the other: the presets work in Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw; the plugin works in Lightroom Classic 13 or newer."
-   },
-   {
-    "q": "Which programs do they work in?",
-    "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro. The 12 adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+."
-   },
-   {
-    "q": "Which Lightroom does the plugin work in?",
-    "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's MWP Photoshop Plugin Panel."
-   },
-   {
-    "q": "What's in the download?",
-    "a": "MWP Presets: 50 desktop presets (.xmp) for Lightroom Classic, Lightroom and Camera Raw, 50 mobile files (.dng) for Lightroom Mobile, 33 LUTs (.cube), video tutorials and an install guide. The Lightroom Classic plugin: the plugin for Lightroom Classic 13 or newer, with built-in help and a video tutorial."
-   },
-   {
-    "q": "Will they work on my photos, not only on yours?",
-    "a": "The 12 adaptive presets use Lightroom's AI masks to find the subject, the sky and the background in each photo, so they adjust to your frame. Every photo is different: expect to set white balance and exposure after the preset, as in the examples on this page."
-   },
-   {
-    "q": "Can I use them on my phone only?",
-    "a": "Yes. The pack includes 50 DNG files for Lightroom Mobile on iPhone, iPad and Android. If you also use Lightroom on desktop, install there and they sync to your phone."
-   },
-   {
-    "q": "Can I use the LUTs on video?",
-    "a": "Yes. They carry the colour and tone of presets 01 to 33 and are built for standard Rec.709 footage. With LOG footage, convert to Rec.709 first, then apply the LUT."
-   },
-   {
-    "q": "How do I get and install the files?",
-    "a": "Right after payment they're waiting in My downloads, in your MWP account, with a video tutorial. The pack includes an install guide with a page for each program. Most installs take a couple of minutes. The plugin is added once in Lightroom Classic: File › Plug-in Manager › Add."
-   },
-   {
-    "q": "Why is the plugin's window called MWP Panel?",
-    "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with the MWP Photoshop Plugin Panel, which is a separate product."
-   },
-   {
-    "q": "What can I do with the files?",
-    "a": "Use them on all your own photos and videos, including paid client work, on every device you use. The files are for you alone: please don’t share, resell or repackage them."
-   },
-   {
-    "q": "Can I get a refund?",
-    "a": "If the presets or the plugin don't work for you, write to support within 14 days of purchase with your order number. We'll help you get them working, and if we can't, we'll refund you. The full terms are on our Terms page."
-   }
-  ],
-  "he": [
-   {
-    "q": "מקבלים את שניהם?",
-    "a": "כן. הפריסטים של MWP והתוסף ללייטרום קלאסיק מגיעים יחד, ברכישה אחת. אף אחד מהם לא צריך את השני: הפריסטים עובדים בלייטרום קלאסיק, בלייטרום, בלייטרום מובייל ובקאמרה ראו; התוסף עובד בלייטרום קלאסיק 13 ומעלה."
-   },
-   {
-    "q": "באילו תוכנות הם עובדים?",
-    "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו. 12 הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה."
-   },
-   {
-    "q": "באיזה לייטרום התוסף עובד?",
-    "a": "לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את התוסף לפוטושופ של MWP."
-   },
-   {
-    "q": "מה יש בהורדה?",
-    "a": "הפריסטים של MWP: ‏50 פריסטים למחשב (‎.xmp) ללייטרום קלאסיק, ללייטרום ולקאמרה ראו, 50 קבצים לנייד (‎.dng) ללייטרום מובייל, 33 קובצי LUT (‎.cube), סרטוני הדרכה ומדריך התקנה. התוסף ללייטרום קלאסיק: התוסף ללייטרום קלאסיק 13 ומעלה, עם עזרה מובנית וסרטון הדרכה."
-   },
-   {
-    "q": "הם יעבדו על התמונות שלי, ולא רק על שלכם?",
-    "a": "12 הפריסטים האדפטיביים משתמשים במסכות ה-AI של לייטרום כדי למצוא בכל תמונה את הנושא, את השמיים ואת הרקע, ולכן הם מתאימים את עצמם לפריים שלכם. כל תמונה שונה: אחרי הפריסט קובעים איזון לבן וחשיפה, כמו בדוגמאות בעמוד הזה."
-   },
-   {
-    "q": "אפשר להשתמש רק בטלפון?",
-    "a": "כן. בחבילה יש 50 קובצי DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד. אם אתם משתמשים גם בלייטרום במחשב, מתקינים שם והפריסטים מסתנכרנים לטלפון."
-   },
-   {
-    "q": "אפשר להשתמש ב-LUT בווידאו?",
-    "a": "כן. הם נושאים את הצבע והטון של פריסטים 01 עד 33 ובנויים לצילום וידאו רגיל. בצילום לוג (שטוח) ממירים קודם לצבע רגיל, ואז מחילים את ה-LUT."
-   },
-   {
-    "q": "איך מקבלים ומתקינים את הקבצים?",
-    "a": "מיד אחרי התשלום הם מחכים לכם בעמוד ההורדות שלי, בחשבון ה-MWP שלכם, יחד עם סרטון הדרכה. בחבילה יש מדריך התקנה עם עמוד לכל תוכנה. רוב ההתקנות לוקחות כמה דקות. את התוסף מוסיפים פעם אחת בלייטרום קלאסיק: File › Plug-in Manager › Add."
-   },
-   {
-    "q": "למה החלון של התוסף נקרא MWP Panel?",
-    "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם התוסף לפוטושופ של MWP, שהוא מוצר נפרד."
-   },
-   {
-    "q": "מה מותר לעשות עם הקבצים?",
-    "a": "משתמשים בהם על כל התמונות והסרטונים שלכם, כולל עבודה בתשלום ללקוחות, בכל המכשירים שלכם. הקבצים אישיים: לא משתפים, לא מוכרים מחדש ולא אורזים מחדש."
-   },
-   {
-    "q": "אפשר לקבל החזר?",
-    "a": "אם הפריסטים או התוסף לא עובדים לכם, כתבו לתמיכה תוך 14 יום מהרכישה, עם מספר ההזמנה. נעזור לכם להפעיל אותם, ואם לא נצליח, נחזיר לכם את הכסף. התנאים המלאים בעמוד התנאים."
-   }
-  ]
- },
- "panel": {
-  "en": [
-   {
-    "q": "Do I need to know layers and masks?",
-    "a": "No. You choose what to edit and an effect, and the panel builds the layers and masks for you. A 21-page manual and a guide inside the panel explain every button from the start."
-   },
-   {
-    "q": "MWP Presets or MWP Photoshop Plugin Panel: which do I need?",
-    "a": "If you edit in Lightroom, MWP Presets, which come with the Lightroom Classic plugin for sorting and finishing whole shoots. If you open your photos in Photoshop, MWP Photoshop Plugin Panel. If you use both apps, the Presets + Photoshop Plugin Panel bundle gives you the same look in each, includes the plugin, and costs less than buying them separately."
-   },
-   {
-    "q": "Which Photoshop do I need?",
-    "a": "Photoshop 2023 (version 24.2) or newer, on Mac or Windows, from a Creative Cloud subscription. It does not run in Lightroom, on iPad or on phones. Working in Lightroom Classic? MWP Presets come with a plugin for it."
-   },
-   {
-    "q": "Can it ruin my photo?",
-    "a": "No. Every button adds its own layer and your original layer is locked. One Ctrl+Z (Cmd+Z on Mac) undoes a whole button, Reset MWP removes everything the panel added, and exports are always saved as new files."
-   },
-   {
-    "q": "Can I edit a whole series the same way?",
-    "a": "Yes. Open the other photos, return to the edited one and click Apply under More photos. Subject, sky and background are found again on each. You can also save your edit as a look under Save my look."
-   },
-   {
-    "q": "Are updates included?",
-    "a": "Yes. Updates to MWP Photoshop Plugin Panel are free: new versions appear in My downloads."
-   },
-   {
-    "q": "Are there video tutorials?",
-    "a": "Yes. Every purchase includes video tutorials for the panel. You find them in My downloads, next to your files."
-   },
-   {
-    "q": "License, computers and refunds?",
-    "a": "A personal licence for your own work and client work. MWP Photoshop Plugin Panel works on up to 3 computers at a time, signed in with your email; changed computer? Free one up in My downloads. If it doesn't work for you, write to support within 14 days of purchase: we'll help, and if we can't, we'll refund you."
-   },
-   {
-    "q": "What if I get stuck?",
-    "a": "Start with the video tutorials in My downloads. The Installation Guide covers common problems and their fixes, and every button in the panel has a tip and a help entry. Still stuck? Write to support and a person replies within one business day."
-   }
-  ],
-  "he": [
-   {
-    "q": "צריך לדעת שכבות ומסכות?",
-    "a": "לא. בוחרים מה לערוך ואפקט, והתוסף בונה בשבילכם את השכבות והמסכות. מדריך של 21 עמודים ומדריך בתוך התוסף מסבירים כל כפתור מההתחלה."
-   },
-   {
-    "q": "הפריסטים של MWP או התוסף לפוטושופ של MWP: מה אני צריך?",
-    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP, שמגיעים עם התוסף ללייטרום קלאסיק למיון ולעריכה של צילומים שלמים. אם אתם פותחים את התמונות בפוטושופ, התוסף לפוטושופ של MWP. אם אתם עובדים בשתי התוכנות, חבילת פריסטים + התוסף לפוטושופ נותנת את אותו מראה בשתיהן, כוללת את התוסף, ועולה פחות מלקנות כל אחד בנפרד."
-   },
-   {
-    "q": "איזה פוטושופ צריך?",
-    "a": "פוטושופ 2023 (גרסה 24.2) ומעלה, במק או בווינדוס, עם מנוי קריאייטיב קלאוד. הוא לא עובד בלייטרום, באייפד או בטלפון. עובדים בלייטרום קלאסיק? הפריסטים של MWP מגיעים עם תוסף בשבילו."
-   },
-   {
-    "q": "זה יכול להרוס לי את התמונה?",
-    "a": "לא. כל כפתור מוסיף שכבה משלו ושכבת המקור נעולה. ביטול אחד (‏Ctrl+Z, ובמק Cmd+Z) מבטל כפתור שלם, כפתור האיפוס מסיר את כל מה שהתוסף הוסיף, והייצוא תמיד נשמר כקובץ חדש."
-   },
-   {
-    "q": "אפשר לערוך סדרה שלמה באותה צורה?",
-    "a": "כן. פותחים את שאר התמונות, חוזרים לתמונה הערוכה ולוחצים על החלה על תמונות נוספות. הנושא, השמיים והרקע מזוהים מחדש בכל תמונה. אפשר גם לשמור את העריכה כלוק משלכם."
-   },
-   {
-    "q": "עדכונים כלולים?",
-    "a": "כן. העדכונים לתוסף לפוטושופ של MWP בחינם: גרסאות חדשות מופיעות בעמוד ההורדות שלי."
-   },
-   {
-    "q": "יש סרטוני הדרכה?",
-    "a": "כן. כל רכישה כוללת סרטוני הדרכה לתוסף. הם מחכים לכם בעמוד ההורדות שלי, ליד הקבצים."
-   },
-   {
-    "q": "רישיון, מחשבים והחזרים?",
-    "a": "רישיון אישי, לעבודה שלכם ולעבודה ללקוחות. התוסף לפוטושופ של MWP עובד על עד 3 מחשבים בו זמנית, כשמתחברים עם המייל שלכם; החלפתם מחשב? אפשר לפנות מקום בעמוד ההורדות שלי. אם הוא לא עובד לכם, כתבו לתמיכה תוך 14 יום מהרכישה: נעזור, ואם לא נצליח, נחזיר לכם את הכסף."
-   },
-   {
-    "q": "ומה אם נתקעים?",
-    "a": "התחילו מסרטוני ההדרכה בעמוד ההורדות שלי. מדריך ההתקנה מכסה בעיות נפוצות ואת הפתרונות שלהן, ולכל כפתור בתוסף יש טיפ ועמוד עזרה. עדיין תקועים? כתבו לתמיכה ונחזור אליכם תוך יום עסקים אחד."
-   }
-  ]
- },
- "field-guides": {
-  "en": [
-   {
-    "q": "What exactly do I get?",
-    "a": "All four guides, in English or Hebrew: you choose one language. Each guide has one-page lessons with a photo, a drawing and a short explanation, plus tools and diagrams, a cheat sheet, drills and a checklist. They open on any computer, tablet or phone."
-   },
-   {
-    "q": "Is it for beginners too?",
-    "a": "Yes. The lessons start from the basics, and every lesson ends with \"Break the rule\" for those who already shoot and want to go further. Start with any guide and any page."
-   },
-   {
-    "q": "Do I need a particular camera or gear?",
-    "a": "No. The guides teach you to see and plan: composition, colour, light and planning. They don't depend on any camera or lens."
-   },
-   {
-    "q": "Do the guides cover editing?",
-    "a": "No. They're about what happens before the click: composition, colour, light and planning. For the edit, MWP Presets and MWP Photoshop Plugin Panel carry the same approach into Lightroom and Photoshop, and both come in bundles with the guides."
-   },
-   {
-    "q": "Can I buy just one guide?",
-    "a": "Not at the moment. The four guides come as one set, in the language you choose, and together they cost less than four separate guides would."
-   },
-   {
-    "q": "How do I get the files?",
-    "a": "Your purchased files will be available in the My downloads section."
-   },
-   {
-    "q": "What is the refund policy, and how can I use the files?",
-    "a": "If the guides don't work for you, write to support within 14 days of purchase. We'll help, and if we can't, we'll refund you. The files are for your own use: please don't share, resell or give them away. The full terms are on our Terms page."
-   }
-  ],
-  "he": [
-   {
-    "q": "מה בדיוק מקבלים?",
-    "a": "ארבעת המדריכים, בעברית או באנגלית: בוחרים שפה אחת. בכל מדריך שיעורים של עמוד אחד עם צילום, שרטוט והסבר קצר, ובנוסף כלים ודיאגרמות, דף סיכום, תרגילים וצ׳קליסט. נפתחים בכל מחשב, טאבלט או טלפון."
-   },
-   {
-    "q": "זה מתאים גם למתחילים?",
-    "a": "כן. השיעורים מתחילים מהיסודות, וכל שיעור נגמר ב״שוברים את הכלל״ בשביל מי שכבר מצלם ורוצה ללכת רחוק יותר. אפשר להתחיל מכל מדריך ומכל עמוד."
-   },
-   {
-    "q": "צריך מצלמה או ציוד מסוים?",
-    "a": "לא. המדריכים מלמדים לראות ולתכנן: קומפוזיציה, צבע, אור ותכנון. הם לא תלויים במצלמה או בעדשה מסוימת."
-   },
-   {
-    "q": "המדריכים מלמדים גם עריכה?",
-    "a": "לא. הם עוסקים במה שקורה לפני הקליק: קומפוזיציה, צבע, אור ותכנון. לעריכה, הפריסטים והתוסף לפוטושופ של MWP ממשיכים את אותה גישה בלייטרום ובפוטושופ, ושניהם מגיעים גם בחבילות עם המדריכים."
-   },
-   {
-    "q": "אפשר לקנות מדריך אחד?",
-    "a": "כרגע לא. ארבעת המדריכים מגיעים כסט אחד, בשפה שבוחרים, ויחד הם עולים פחות מארבעה מדריכים נפרדים."
-   },
-   {
-    "q": "איך מקבלים את הקבצים?",
-    "a": "הקבצים שקניתם יחכו לכם בעמוד ההורדות שלי."
-   },
-   {
-    "q": "מה מדיניות ההחזרים והשימוש בקבצים?",
-    "a": "אם המדריכים לא מתאימים לכם, כתבו לתמיכה תוך 14 יום מהרכישה. נעזור, ואם לא נצליח, נחזיר לכם את הכסף. הקבצים לשימוש שלכם בלבד: אין לשתף, למכור או להעביר אותם. התנאים המלאים בעמוד התנאים."
-   }
-  ]
- },
- "lightroom-classic": {
-  "en": [
-   {
-    "q": "Do I need MWP Presets to use the plugin?",
-    "a": "No. The plugin has its own looks inside and works without the presets. It comes together with MWP Presets, in one purchase."
-   },
-   {
-    "q": "Which Lightroom does it work in?",
-    "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's MWP Photoshop Plugin Panel."
-   },
-   {
-    "q": "Why is its window called MWP Panel?",
-    "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with the MWP Photoshop Plugin Panel, which is a separate product."
-   },
-   {
-    "q": "What does early access mean?",
-    "a": "The plugin works today. New features and fixes arrive as free updates in My downloads, and we'd like to hear what you think through support."
-   },
-   {
-    "q": "Will it change or delete my photos?",
-    "a": "Culling never deletes a photo. Everything the plugin does is ordinary Lightroom settings, masks, keywords and collections, so you can undo it or change it by hand, and nothing is locked in."
-   },
-   {
-    "q": "How do I install it?",
-    "a": "Download it from My downloads and unzip it. In Lightroom Classic, open File › Plug-in Manager, click Add and choose the MWP-Panel.lrplugin folder. The download includes a note with these steps, and there's a video tutorial in My downloads."
-   },
-   {
-    "q": "Can I get a refund?",
-    "a": "If the plugin doesn't work for you, write to support within 14 days of purchase with your order number. We'll help you get it working, and if we can't, we'll refund you. The full terms are on our Terms page."
-   }
-  ],
-  "he": [
-   {
-    "q": "צריך את הפריסטים של MWP כדי להשתמש בתוסף?",
-    "a": "לא. יש בתוסף לוקים משלו והוא עובד בלי הפריסטים. הוא מגיע יחד עם הפריסטים של MWP, ברכישה אחת."
-   },
-   {
-    "q": "באיזה לייטרום הוא עובד?",
-    "a": "לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את התוסף לפוטושופ של MWP."
-   },
-   {
-    "q": "למה החלון שלו נקרא MWP Panel?",
-    "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם התוסף לפוטושופ של MWP, שהוא מוצר נפרד."
-   },
-   {
-    "q": "מה זה גישה מוקדמת?",
-    "a": "התוסף עובד כבר היום. תכונות חדשות ותיקונים מגיעים כעדכונים חינמיים בעמוד ההורדות שלי, ונשמח לשמוע מה אתם חושבים דרך התמיכה."
-   },
-   {
-    "q": "הוא ישנה או ימחק לי תמונות?",
-    "a": "המיון אף פעם לא מוחק תמונה. כל מה שהתוסף עושה הוא הגדרות, מסכות, מילות מפתח ואוספים רגילים של לייטרום, כך שאפשר לבטל או לשנות הכול ידנית, ושום דבר לא נעול."
-   },
-   {
-    "q": "איך מתקינים אותו?",
-    "a": "מורידים אותו מעמוד ההורדות שלי ופותחים את הקובץ. בלייטרום קלאסיק פותחים File › Plug-in Manager, לוחצים Add ובוחרים את התיקייה MWP-Panel.lrplugin. בהורדה יש הוראות עם הצעדים האלה, ובעמוד ההורדות שלי יש סרטון הדרכה."
-   },
-   {
-    "q": "אפשר לקבל החזר?",
-    "a": "אם התוסף לא עובד לכם, כתבו לתמיכה תוך 14 יום מהרכישה, עם מספר ההזמנה. נעזור לכם להפעיל אותו, ואם לא נצליח, נחזיר לכם את הכסף. התנאים המלאים בעמוד התנאים."
-   }
-  ]
- }
+  "presets": {
+    "en": [
+      {
+        "q": "Do I get both?",
+        "a": "Yes. MWP Presets and the Lightroom Classic plugin come together, in one purchase. Neither needs the other: the presets work in Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw; the plugin works in Lightroom Classic 13 or newer."
+      },
+      {
+        "q": "Which programs do they work in?",
+        "a": "Lightroom Classic, Lightroom (desktop), Lightroom Mobile and Photoshop Camera Raw. Lightroom on its own is enough. The LUTs work in Photoshop, Premiere Pro, DaVinci Resolve and Final Cut Pro. The 12 adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+."
+      },
+      {
+        "q": "Which Lightroom does the plugin work in?",
+        "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's MWP Photoshop Plugin Panel."
+      },
+      {
+        "q": "What's in the download?",
+        "a": "MWP Presets: 50 desktop presets (.xmp) for Lightroom Classic, Lightroom and Camera Raw, 50 mobile files (.dng) for Lightroom Mobile, 33 LUTs (.cube), video tutorials and an install guide. The Lightroom Classic plugin: the plugin for Lightroom Classic 13 or newer, with built-in help and a video tutorial."
+      },
+      {
+        "q": "Will they work on my photos, not only on yours?",
+        "a": "The 12 adaptive presets use Lightroom's AI masks to find the subject, the sky and the background in each photo, so they adjust to your frame. Every photo is different: expect to set white balance and exposure after the preset, as in the examples on this page."
+      },
+      {
+        "q": "Can I use them on my phone only?",
+        "a": "Yes. The pack includes 50 DNG files for Lightroom Mobile on iPhone, iPad and Android. If you also use Lightroom on desktop, install there and they sync to your phone."
+      },
+      {
+        "q": "Can I use the LUTs on video?",
+        "a": "Yes. They carry the colour and tone of presets 01 to 33 and are built for standard Rec.709 footage. With LOG footage, convert to Rec.709 first, then apply the LUT."
+      },
+      {
+        "q": "How do I get and install the files?",
+        "a": "Right after payment they're waiting in My downloads, in your MWP account, with a video tutorial. The pack includes an install guide with a page for each program. Most installs take a couple of minutes. The plugin is added once in Lightroom Classic: File › Plug-in Manager › Add."
+      },
+      {
+        "q": "Why is the plugin's window called MWP Panel?",
+        "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with the MWP Photoshop Plugin Panel, which is a separate product."
+      },
+      {
+        "q": "What can I do with the files?",
+        "a": "Use them on all your own photos and videos, including paid client work, on every device you use. The files are for you alone: please don’t share, resell or repackage them."
+      },
+      {
+        "q": "Can I get a refund?",
+        "a": "If the presets or the plugin don't work for you, write to support within 14 days of purchase with your order number. We'll help you get them working, and if we can't, we'll refund you. The full terms are on our Terms page."
+      }
+    ],
+    "he": [
+      {
+        "q": "מקבלים את שניהם?",
+        "a": "כן. הפריסטים של MWP והתוסף ללייטרום קלאסיק מגיעים יחד, ברכישה אחת. אף אחד מהם לא צריך את השני: הפריסטים עובדים בלייטרום קלאסיק, בלייטרום, בלייטרום מובייל ובקאמרה ראו; התוסף עובד בלייטרום קלאסיק 13 ומעלה."
+      },
+      {
+        "q": "באילו תוכנות הם עובדים?",
+        "a": "לייטרום קלאסיק, ‏לייטרום למחשב, לייטרום מובייל וקאמרה ראו בפוטושופ. לייטרום לבד מספיק. קובצי ה-LUT עובדים בפוטושופ, בפרמייר פרו, בדה־וינצ׳י ריזולב ובפיינל קאט פרו. 12 הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה."
+      },
+      {
+        "q": "באיזה לייטרום התוסף עובד?",
+        "a": "לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את התוסף לפוטושופ של MWP."
+      },
+      {
+        "q": "מה יש בהורדה?",
+        "a": "הפריסטים של MWP: ‏50 פריסטים למחשב (‎.xmp) ללייטרום קלאסיק, ללייטרום ולקאמרה ראו, 50 קבצים לנייד (‎.dng) ללייטרום מובייל, 33 קובצי LUT (‎.cube), סרטוני הדרכה ומדריך התקנה. התוסף ללייטרום קלאסיק: התוסף ללייטרום קלאסיק 13 ומעלה, עם עזרה מובנית וסרטון הדרכה."
+      },
+      {
+        "q": "הם יעבדו על התמונות שלי, ולא רק על שלכם?",
+        "a": "12 הפריסטים האדפטיביים משתמשים במסכות ה-AI של לייטרום כדי למצוא בכל תמונה את הנושא, את השמיים ואת הרקע, ולכן הם מתאימים את עצמם לפריים שלכם. כל תמונה שונה: אחרי הפריסט קובעים איזון לבן וחשיפה, כמו בדוגמאות בעמוד הזה."
+      },
+      {
+        "q": "אפשר להשתמש רק בטלפון?",
+        "a": "כן. בחבילה יש 50 קובצי DNG ללייטרום מובייל באייפון, באייפד ובאנדרואיד. אם אתם משתמשים גם בלייטרום במחשב, מתקינים שם והפריסטים מסתנכרנים לטלפון."
+      },
+      {
+        "q": "אפשר להשתמש ב-LUT בווידאו?",
+        "a": "כן. הם נושאים את הצבע והטון של פריסטים 01 עד 33 ובנויים לצילום וידאו רגיל. בצילום לוג (שטוח) ממירים קודם לצבע רגיל, ואז מחילים את ה-LUT."
+      },
+      {
+        "q": "איך מקבלים ומתקינים את הקבצים?",
+        "a": "מיד אחרי התשלום הם מחכים לכם בעמוד ההורדות שלי, בחשבון ה-MWP שלכם, יחד עם סרטון הדרכה. בחבילה יש מדריך התקנה עם עמוד לכל תוכנה. רוב ההתקנות לוקחות כמה דקות. את התוסף מוסיפים פעם אחת בלייטרום קלאסיק: File › Plug-in Manager › Add."
+      },
+      {
+        "q": "למה החלון של התוסף נקרא MWP Panel?",
+        "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם התוסף לפוטושופ של MWP, שהוא מוצר נפרד."
+      },
+      {
+        "q": "מה מותר לעשות עם הקבצים?",
+        "a": "משתמשים בהם על כל התמונות והסרטונים שלכם, כולל עבודה בתשלום ללקוחות, בכל המכשירים שלכם. הקבצים אישיים: לא משתפים, לא מוכרים מחדש ולא אורזים מחדש."
+      },
+      {
+        "q": "אפשר לקבל החזר?",
+        "a": "אם הפריסטים או התוסף לא עובדים לכם, כתבו לתמיכה תוך 14 יום מהרכישה, עם מספר ההזמנה. נעזור לכם להפעיל אותם, ואם לא נצליח, נחזיר לכם את הכסף. התנאים המלאים בעמוד התנאים."
+      }
+    ]
+  },
+  "panel": {
+    "en": [
+      {
+        "q": "Do I need to know layers and masks?",
+        "a": "No. You choose what to edit and an effect, and the panel builds the layers and masks for you. A 21-page manual and a guide inside the panel explain every button from the start."
+      },
+      {
+        "q": "MWP Presets or MWP Photoshop Plugin Panel: which do I need?",
+        "a": "If you edit in Lightroom, MWP Presets, which come with the Lightroom Classic plugin for sorting and finishing whole shoots. If you open your photos in Photoshop, MWP Photoshop Plugin Panel. If you use both apps, the Presets + Photoshop Plugin Panel bundle gives you the same look in each, includes the plugin, and costs less than buying them separately."
+      },
+      {
+        "q": "Which Photoshop do I need?",
+        "a": "Photoshop 2023 (version 24.2) or newer, on Mac or Windows, from a Creative Cloud subscription. It does not run in Lightroom, on iPad or on phones. Working in Lightroom Classic? MWP Presets come with a plugin for it."
+      },
+      {
+        "q": "Can it ruin my photo?",
+        "a": "No. Every button adds its own layer and your original layer is locked. One Ctrl+Z (Cmd+Z on Mac) undoes a whole button, Reset MWP removes everything the panel added, and exports are always saved as new files."
+      },
+      {
+        "q": "Can I edit a whole series the same way?",
+        "a": "Yes. Open the other photos, return to the edited one and click Apply under More photos. Subject, sky and background are found again on each. You can also save your edit as a look under Save my look."
+      },
+      {
+        "q": "Are updates included?",
+        "a": "Yes. Updates to MWP Photoshop Plugin Panel are free: new versions appear in My downloads."
+      },
+      {
+        "q": "Are there video tutorials?",
+        "a": "Yes. Every purchase includes video tutorials for the panel. You find them in My downloads, next to your files."
+      },
+      {
+        "q": "License, computers and refunds?",
+        "a": "A personal licence for your own work and client work. MWP Photoshop Plugin Panel works on up to 3 computers at a time, signed in with your email; changed computer? Free one up in My downloads. If it doesn't work for you, write to support within 14 days of purchase: we'll help, and if we can't, we'll refund you."
+      },
+      {
+        "q": "What if I get stuck?",
+        "a": "Start with the video tutorials in My downloads. The Installation Guide covers common problems and their fixes, and every button in the panel has a tip and a help entry. Still stuck? Write to support and a person replies within one business day."
+      }
+    ],
+    "he": [
+      {
+        "q": "צריך לדעת שכבות ומסכות?",
+        "a": "לא. בוחרים מה לערוך ואפקט, והתוסף בונה בשבילכם את השכבות והמסכות. מדריך של 21 עמודים ומדריך בתוך התוסף מסבירים כל כפתור מההתחלה."
+      },
+      {
+        "q": "הפריסטים של MWP או התוסף לפוטושופ של MWP: מה אני צריך?",
+        "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP, שמגיעים עם התוסף ללייטרום קלאסיק למיון ולעריכה של צילומים שלמים. אם אתם פותחים את התמונות בפוטושופ, התוסף לפוטושופ של MWP. אם אתם עובדים בשתי התוכנות, חבילת פריסטים + התוסף לפוטושופ נותנת את אותו מראה בשתיהן, כוללת את התוסף, ועולה פחות מלקנות כל אחד בנפרד."
+      },
+      {
+        "q": "איזה פוטושופ צריך?",
+        "a": "פוטושופ 2023 (גרסה 24.2) ומעלה, במק או בווינדוס, עם מנוי קריאייטיב קלאוד. הוא לא עובד בלייטרום, באייפד או בטלפון. עובדים בלייטרום קלאסיק? הפריסטים של MWP מגיעים עם תוסף בשבילו."
+      },
+      {
+        "q": "זה יכול להרוס לי את התמונה?",
+        "a": "לא. כל כפתור מוסיף שכבה משלו ושכבת המקור נעולה. ביטול אחד (‏Ctrl+Z, ובמק Cmd+Z) מבטל כפתור שלם, כפתור האיפוס מסיר את כל מה שהתוסף הוסיף, והייצוא תמיד נשמר כקובץ חדש."
+      },
+      {
+        "q": "אפשר לערוך סדרה שלמה באותה צורה?",
+        "a": "כן. פותחים את שאר התמונות, חוזרים לתמונה הערוכה ולוחצים על החלה על תמונות נוספות. הנושא, השמיים והרקע מזוהים מחדש בכל תמונה. אפשר גם לשמור את העריכה כלוק משלכם."
+      },
+      {
+        "q": "עדכונים כלולים?",
+        "a": "כן. העדכונים לתוסף לפוטושופ של MWP בחינם: גרסאות חדשות מופיעות בעמוד ההורדות שלי."
+      },
+      {
+        "q": "יש סרטוני הדרכה?",
+        "a": "כן. כל רכישה כוללת סרטוני הדרכה לתוסף. הם מחכים לכם בעמוד ההורדות שלי, ליד הקבצים."
+      },
+      {
+        "q": "רישיון, מחשבים והחזרים?",
+        "a": "רישיון אישי, לעבודה שלכם ולעבודה ללקוחות. התוסף לפוטושופ של MWP עובד על עד 3 מחשבים בו זמנית, כשמתחברים עם המייל שלכם; החלפתם מחשב? אפשר לפנות מקום בעמוד ההורדות שלי. אם הוא לא עובד לכם, כתבו לתמיכה תוך 14 יום מהרכישה: נעזור, ואם לא נצליח, נחזיר לכם את הכסף."
+      },
+      {
+        "q": "ומה אם נתקעים?",
+        "a": "התחילו מסרטוני ההדרכה בעמוד ההורדות שלי. מדריך ההתקנה מכסה בעיות נפוצות ואת הפתרונות שלהן, ולכל כפתור בתוסף יש טיפ ועמוד עזרה. עדיין תקועים? כתבו לתמיכה ונחזור אליכם תוך יום עסקים אחד."
+      }
+    ]
+  },
+  "field-guides": {
+    "en": [
+      {
+        "q": "What exactly do I get?",
+        "a": "All four guides, in English or Hebrew: you choose one language. Each guide has one-page lessons with a photo, a drawing and a short explanation, plus tools and diagrams, a cheat sheet, drills and a checklist. They open on any computer, tablet or phone."
+      },
+      {
+        "q": "Is it for beginners too?",
+        "a": "Yes. The lessons start from the basics, and every lesson ends with \"Break the rule\" for those who already shoot and want to go further. Start with any guide and any page."
+      },
+      {
+        "q": "Do I need a particular camera or gear?",
+        "a": "No. The guides teach you to see and plan: composition, colour, light and planning. They don't depend on any camera or lens."
+      },
+      {
+        "q": "Do the guides cover editing?",
+        "a": "No. They're about what happens before the click: composition, colour, light and planning. For the edit, the Lightroom Classic plugin, MWP Presets and MWP Photoshop Plugin Panel carry the same approach into Lightroom and Photoshop, and all of them come in bundles with the guides."
+      },
+      {
+        "q": "Can I buy just one guide?",
+        "a": "Not at the moment. The four guides come as one set, in the language you choose, and together they cost less than four separate guides would."
+      },
+      {
+        "q": "How do I get the files?",
+        "a": "Your purchased files will be available in the My downloads section."
+      },
+      {
+        "q": "What is the refund policy, and how can I use the files?",
+        "a": "If the guides don't work for you, write to support within 14 days of purchase. We'll help, and if we can't, we'll refund you. The files are for your own use: please don't share, resell or give them away. The full terms are on our Terms page."
+      }
+    ],
+    "he": [
+      {
+        "q": "מה בדיוק מקבלים?",
+        "a": "ארבעת המדריכים, בעברית או באנגלית: בוחרים שפה אחת. בכל מדריך שיעורים של עמוד אחד עם צילום, שרטוט והסבר קצר, ובנוסף כלים ודיאגרמות, דף סיכום, תרגילים וצ׳קליסט. נפתחים בכל מחשב, טאבלט או טלפון."
+      },
+      {
+        "q": "זה מתאים גם למתחילים?",
+        "a": "כן. השיעורים מתחילים מהיסודות, וכל שיעור נגמר ב״שוברים את הכלל״ בשביל מי שכבר מצלם ורוצה ללכת רחוק יותר. אפשר להתחיל מכל מדריך ומכל עמוד."
+      },
+      {
+        "q": "צריך מצלמה או ציוד מסוים?",
+        "a": "לא. המדריכים מלמדים לראות ולתכנן: קומפוזיציה, צבע, אור ותכנון. הם לא תלויים במצלמה או בעדשה מסוימת."
+      },
+      {
+        "q": "המדריכים מלמדים גם עריכה?",
+        "a": "לא. הם עוסקים במה שקורה לפני הקליק: קומפוזיציה, צבע, אור ותכנון. לעריכה יש את התוסף ללייטרום קלאסיק, הפריסטים והתוסף לפוטושופ של MWP, שממשיכים את אותה גישה בלייטרום ובפוטושופ. כולם מגיעים גם בחבילות עם המדריכים."
+      },
+      {
+        "q": "אפשר לקנות מדריך אחד?",
+        "a": "כרגע לא. ארבעת המדריכים מגיעים כסט אחד, בשפה שבוחרים, ויחד הם עולים פחות מארבעה מדריכים נפרדים."
+      },
+      {
+        "q": "איך מקבלים את הקבצים?",
+        "a": "הקבצים שקניתם יחכו לכם בעמוד ההורדות שלי."
+      },
+      {
+        "q": "מה מדיניות ההחזרים והשימוש בקבצים?",
+        "a": "אם המדריכים לא מתאימים לכם, כתבו לתמיכה תוך 14 יום מהרכישה. נעזור, ואם לא נצליח, נחזיר לכם את הכסף. הקבצים לשימוש שלכם בלבד: אין לשתף, למכור או להעביר אותם. התנאים המלאים בעמוד התנאים."
+      }
+    ]
+  },
+  "lightroom-classic": {
+    "en": [
+      {
+        "q": "Do I need MWP Presets to use the plugin?",
+        "a": "No. The plugin has its own looks inside and works without the presets. It comes together with MWP Presets, in one purchase."
+      },
+      {
+        "q": "Which Lightroom does it work in?",
+        "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's MWP Photoshop Plugin Panel."
+      },
+      {
+        "q": "Why is its window called MWP Panel?",
+        "a": "That's the plugin's own name inside Lightroom Classic. On this site we call it the Lightroom Classic plugin, so it isn't confused with the MWP Photoshop Plugin Panel, which is a separate product."
+      },
+      {
+        "q": "What does early access mean?",
+        "a": "The plugin works today. New features and fixes arrive as free updates in My downloads, and we'd like to hear what you think through support."
+      },
+      {
+        "q": "Will it change or delete my photos?",
+        "a": "Culling never deletes a photo. Everything the plugin does is ordinary Lightroom settings, masks, keywords and collections, so you can undo it or change it by hand, and nothing is locked in."
+      },
+      {
+        "q": "How do I install it?",
+        "a": "Download it from My downloads and unzip it. In Lightroom Classic, open File › Plug-in Manager, click Add and choose the MWP-Panel.lrplugin folder. The download includes a note with these steps, and there's a video tutorial in My downloads."
+      },
+      {
+        "q": "Can I get a refund?",
+        "a": "If the plugin doesn't work for you, write to support within 14 days of purchase with your order number. We'll help you get it working, and if we can't, we'll refund you. The full terms are on our Terms page."
+      }
+    ],
+    "he": [
+      {
+        "q": "צריך את הפריסטים של MWP כדי להשתמש בתוסף?",
+        "a": "לא. יש בתוסף לוקים משלו והוא עובד בלי הפריסטים. הוא מגיע יחד עם הפריסטים של MWP, ברכישה אחת."
+      },
+      {
+        "q": "באיזה לייטרום הוא עובד?",
+        "a": "לייטרום קלאסיק 13 ומעלה, במק או בווינדוס. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את התוסף לפוטושופ של MWP."
+      },
+      {
+        "q": "למה החלון שלו נקרא MWP Panel?",
+        "a": "זה השם של התוסף עצמו בתוך לייטרום קלאסיק. באתר אנחנו קוראים לו התוסף ללייטרום קלאסיק, כדי שלא יתבלבל עם התוסף לפוטושופ של MWP, שהוא מוצר נפרד."
+      },
+      {
+        "q": "מה זה גישה מוקדמת?",
+        "a": "התוסף עובד כבר היום. תכונות חדשות ותיקונים מגיעים כעדכונים חינמיים בעמוד ההורדות שלי, ונשמח לשמוע מה אתם חושבים דרך התמיכה."
+      },
+      {
+        "q": "הוא ישנה או ימחק לי תמונות?",
+        "a": "המיון אף פעם לא מוחק תמונה. כל מה שהתוסף עושה הוא הגדרות, מסכות, מילות מפתח ואוספים רגילים של לייטרום, כך שאפשר לבטל או לשנות הכול ידנית, ושום דבר לא נעול."
+      },
+      {
+        "q": "איך מתקינים אותו?",
+        "a": "מורידים אותו מעמוד ההורדות שלי ופותחים את הקובץ. בלייטרום קלאסיק פותחים File › Plug-in Manager, לוחצים Add ובוחרים את התיקייה MWP-Panel.lrplugin. בהורדה יש הוראות עם הצעדים האלה, ובעמוד ההורדות שלי יש סרטון הדרכה."
+      },
+      {
+        "q": "אפשר לקבל החזר?",
+        "a": "אם התוסף לא עובד לכם, כתבו לתמיכה תוך 14 יום מהרכישה, עם מספר ההזמנה. נעזור לכם להפעיל אותו, ואם לא נצליח, נחזיר לכם את הכסף. התנאים המלאים בעמוד התנאים."
+      }
+    ]
+  }
 }

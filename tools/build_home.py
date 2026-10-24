@@ -249,7 +249,7 @@ html = f'''<!doctype html>
 <div class="head">
 <p class="kick">Bundles</p>
 <h2 class="h2">Shoot with the guides. <span class="b grad">Finish with the tools.</span></h2>
-<p class="lead">The Field Guides help you take a stronger photo. MWP Presets and MWP Photoshop Plugin Panel help you finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.</p>
+<p class="lead">The Field Guides help you take a stronger photo. The Lightroom Classic plugin, MWP Presets and MWP Photoshop Plugin Panel help you sort it and finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.</p>
 </div>
 <div class="plans">
 {plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
@@ -277,7 +277,7 @@ html = f'''<!doctype html>
 </div>
 <div class="faq">
 <details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/presets/#plugin">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It comes with MWP Presets, in one purchase.</div></details>
-<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Photoshop Plugin Panel</a>.</div></details>
+<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you sort and edit whole shoots in Lightroom Classic, <a href="/presets/#plugin">the Lightroom Classic plugin</a>. If you want a finished look in one click, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Photoshop Plugin Panel</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>
 <details><summary>Do I need an account?</summary><div>Yes. You create one with your email and a password before you pay, so your files and future updates are always waiting for you.</div></details>
@@ -294,7 +294,7 @@ html = f'''<!doctype html>
 <p class="kick">About Matan</p>
 <h2 class="h2">Built <span class="b grad">in the field.</span></h2>
 <p class="about-intro">Matan Wild founded MW Photo Tours in 2023. He leads nature and wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.</p>
-<p class="about-more">The presets, the panel and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.</p>
+<p class="about-more">The plugins, the presets and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.</p>
 <a class="ghost about-go" href="https://mw.photography" target="_blank" rel="noopener">Visit mw.photography {EXT}</a>
 </div>
 <ul class="roles">

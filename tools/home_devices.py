@@ -82,7 +82,7 @@ def sort():
     looks = "".join(f'<span class="lp-look"><img src="{IMG}lrc/look_{k}.png" alt="">{n}{"<i class=\"st-ring lp-ring\"></i>" if k == "bw" else ""}</span>' for k, n in LP_LOOKS)
     return f"""<div class="st-dev st-dev-sort" data-i="1">
 <div class="st-lap">
-<div class="st-lap-scr"><div class="st-app lpc">
+<div class="st-lap-scr"><div class="st-app lpc ui-en">
 <div class="lp-top"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></div>
 <div class="st-canvas lp-canvas"><img src="{IMG}{LP_PHOTO}.jpg" alt=""><img class="st-wipe lp-bw" src="{IMG}{LP_PHOTO}.jpg" alt=""><i class="st-wline"></i></div>
 <div class="lp-side"><div class="lp-tabs">{tabs}</div><div class="lp-looks">{looks}</div><div class="lp-str"><span>Strength</span><div class="lr-track"><i style="--at:80%"></i></div></div></div>
