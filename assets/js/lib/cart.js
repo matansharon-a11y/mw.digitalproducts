@@ -42,6 +42,8 @@ const CSS = `
 .cart-row img,.cart-row .cart-ph{width:64px;height:64px;border-radius:10px;object-fit:cover;background:#262626}
 .cart-row .nm{font-weight:700;line-height:1.3}
 .cart-row .pr{font-size:14px;color:#CDD7DD;margin-top:2px}
+.cart-row .pr .usd{display:block;font-size:12px;color:#9CB1C2}
+.cart-note.cart-usd{color:#FEFBF1;margin-bottom:10px}
 .cart-row .acts{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .cart-row button,.cart-row a.pay{border:0;background:none;color:#9CB1C2;font-weight:600;font-size:13px;;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
 .cart-row a.pay{color:#F4AF56}
@@ -120,15 +122,18 @@ function removeFromCart(slug) { save(items().filter((i) => i.slug !== slug)); }
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function money(cents, cur) {
   if (cents == null) return "";
-  try { return new Intl.NumberFormat(he() ? "he-IL" : "en-US", { style: "currency", currency: cur || "USD" }).format(cents / 100); }
+  // written like the page prices ("$59.99", "₪179.00") in both languages
+  try { return new Intl.NumberFormat("en-US", { style: "currency", currency: cur || "USD" }).format(cents / 100); }
   catch { return (cents / 100).toFixed(2) + " " + cur; }
 }
 
-// The cart shows the currency checkout charges: dollars, on the Hebrew site too, until there's a shekel checkout
-// (then set SHOW_ILS here and in prices.js / bake_prices.py). Matan's call; see the 24 Oct 2026 launch audit.
-const SHOW_ILS = false;
+// The Hebrew site shows shekels (the prices set in the admin), but checkout still charges dollars (Matan, 24 Oct
+// 2026). So in Hebrew every row also shows the dollar amount charged, and the total says it plainly. The same
+// switch is in prices.js and tools/bake_prices.py.
+const SHOW_ILS = true;
 function priceOf(i) {
-  return SHOW_ILS && he() && i.price_ils_cents != null ? money(i.price_ils_cents, "ILS") : money(i.price_cents, i.currency);
+  if (!(SHOW_ILS && he() && i.price_ils_cents != null)) return money(i.price_cents, i.currency);
+  return `${money(i.price_ils_cents, "ILS")}<span class="usd">בקופה: ${money(i.price_cents, i.currency)}</span>`;
 }
 
 function render() {
@@ -162,7 +167,10 @@ function render() {
     go = "";
     note = T("Each product has its own secure checkout. Tap Pay next to each one.", "לכל מוצר יש תשלום מאובטח משלו. לחצו על \"לתשלום\" ליד כל מוצר.");
   }
-  foot.innerHTML = `${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${go}${note ? `<p class="cart-note">${note}</p>` : ""}`;
+  const usdTotal = list.reduce((s, i) => s + (i.price_cents || 0), 0);
+  const charge = ils && list.every((i) => i.price_cents != null)
+    ? `<p class="cart-note cart-usd">המחירים מוצגים בשקלים. התשלום בקופה הוא בדולרים: ${money(usdTotal, list[0].currency)} בסך הכול.</p>` : "";
+  foot.innerHTML = `${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}`;
 }
 
 // ---------------------------------------------------------------- add to cart from the home and sales pages

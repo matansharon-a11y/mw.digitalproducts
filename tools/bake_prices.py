@@ -3,7 +3,8 @@
 
 Reads the public page_prices view with the public (anon) key from assets/js/config.js, then fills every
 <span data-price="slug"> (data-was: the struck-out "before" price) and <span data-save="slug"> the same way
-assets/js/lib/prices.js does: dollars on every page (shekels on the Hebrew ones only with SHOW_ILS, once checkout charges shekels). The page's <html> gets the
+assets/js/lib/prices.js does: shekels on the Hebrew pages, dollars on the English ones (SHOW_ILS; checkout still
+charges dollars, and prices.js and the cart say so on the Hebrew pages). The page's <html> gets the
 prices-on class so the spots aren't hidden while loading. prices.js still asks for the live prices on every
 visit and corrects anything changed in the admin since the last deploy.
 If the prices can't be read, nothing is changed: the pages behave as before.
@@ -47,7 +48,7 @@ def save(slug, he, hebrew=False):
     return ("חוסכים " if hebrew else "Save ") + fmt(was - now, cur)
 
 
-SHOW_ILS = False   # the same switch as in assets/js/lib/prices.js and cart.js
+SHOW_ILS = True   # the same switch as in assets/js/lib/prices.js and cart.js (Matan, 24 Oct 2026: shekels in Hebrew)
 
 PRICE = re.compile(r'<span([^>]*\bdata-price="([a-z0-9-]+)"[^>]*)>[^<]*</span>')
 SAVE = re.compile(r'<span([^>]*\bdata-save="([a-z0-9-]+)"[^>]*)>[^<]*</span>')
