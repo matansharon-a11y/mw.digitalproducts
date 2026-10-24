@@ -16,8 +16,13 @@ body.admin { display: block; }
 }
 .admin-nav button:hover { background: var(--c-surface); color: var(--c-paper); }
 .admin-nav button[aria-current="page"] { background: var(--c-surface-2); color: var(--c-paper); }
-.admin-side__foot { margin-top: auto; display: grid; gap: var(--s-2); }
+.admin-side__foot { margin-top: auto; display: grid; gap: var(--s-2); padding-top: var(--s-3); border-top: 1px solid var(--c-line); min-width: 0; }
 .admin-side__foot a { text-decoration: none; }
+/* who's signed in on one line (a long address ends in …), then two quiet links side by side */
+.admin-who { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-foot-links { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); }
+.admin-foot-link { background: none; border: 0; padding: 0; color: var(--c-paper-2); font: inherit; font-size: var(--fs-xs); cursor: pointer; }
+.admin-foot-link:hover, .admin-side__foot a:hover { color: var(--c-paper); }
 .pill { min-width: 20px; padding: 0 6px; border-radius: var(--r-pill); background: var(--c-accent); color: var(--c-accent-ink); font-size: 11px; text-align: center; }
 
 .admin-main { padding: var(--s-6) clamp(var(--s-4), 3vw, var(--s-7)) var(--s-9); display: grid; gap: var(--s-5); align-content: start; }
@@ -89,7 +94,9 @@ input[type="file"] { font-size: var(--fs-sm); color: var(--c-paper-2); }
   .admin-app { grid-template-columns: 1fr; }
   .admin-side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; border-right: 0; border-bottom: 1px solid var(--c-line); }
   .admin-nav { grid-auto-flow: column; overflow-x: auto; }
-  .admin-side__foot { margin: 0; grid-auto-flow: column; align-items: center; }
+  .admin-nav button { white-space: nowrap; }
+  .admin-side__foot { margin: 0; grid-auto-flow: column; align-items: center; gap: var(--s-4); padding-top: 0; border-top: 0; }
+  .admin-who { max-width: 180px; }
   .input--sm { width: 100%; }
 }
 
