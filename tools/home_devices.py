@@ -2,6 +2,7 @@
 - Shoot: the four Field Guides as printed hardcover books (covers from the Field Guides page) that fan out.
 - Edit: a laptop, straight on, in a Lightroom-style layout (preset groups from the Presets page) where the
   RAW turns into Matan's finished frame as you scroll.
+- Sort: a laptop with the Lightroom Classic plugin's window (MWP Panel): click Looks, click B&W, the look wipes across.
 - Finish: a desktop monitor, straight on, in a Photoshop-style layout with the real MWP Panel docked,
   applying Subject · Pop.
 Calm, centred, symmetric compositions; everything moves with the story's scroll-linked transition."""
@@ -46,7 +47,7 @@ def edit():
     film = "".join(f'<img src="{IMG}{f}.jpg" alt=""{" class=on" if k == 0 else ""}>' for k, f in enumerate(FILM))
     tone = "".join(_sl(n) for n in ["Exposure", "Contrast", "Highlights", "Shadows", "Whites", "Blacks"])
     presence = "".join(_sl(n) for n in ["Texture", "Clarity", "Dehaze", "Vibrance", "Saturation"])
-    return f"""<div class="st-dev st-dev-edit" data-i="1">
+    return f"""<div class="st-dev st-dev-edit" data-i="2">
 <div class="st-lap">
 <div class="st-lap-scr"><div class="st-app lrc">
 <div class="lr-top"><span class="lr-id">MW PHOTO TOURS</span><nav><span>Library</span><b>Develop</b><span>Map</span><span>Book</span><span>Slideshow</span><span>Print</span><span>Web</span></nav></div>
@@ -70,10 +71,31 @@ def edit():
 <div class="st-floor"></div>
 </div>"""
 
+LP_TABS = ["Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"]
+LP_LOOKS = [("bw", "B&amp;W"), ("moody", "Moody"), ("golden", "Golden"), ("bluehour", "Blue hour"), ("matte", "Matte"), ("clean", "Clean")]
+LP_PHOTO = "86b95f1970bb30f72735d73708d9c095"
+
+
+def sort():
+    """The Lightroom Classic plugin: its window over the photo; Looks, then B&W, then the look wipes across."""
+    tabs = "".join(f'<span class="lp-tab{" on" if t == "Looks" else ""}">{t}{"<i class=\"st-ring lp-ring\"></i>" if t == "Looks" else ""}</span>' for t in LP_TABS)
+    looks = "".join(f'<span class="lp-look"><img src="{IMG}lrc/look_{k}.png" alt="">{n}{"<i class=\"st-ring lp-ring\"></i>" if k == "bw" else ""}</span>' for k, n in LP_LOOKS)
+    return f"""<div class="st-dev st-dev-sort" data-i="1">
+<div class="st-lap">
+<div class="st-lap-scr"><div class="st-app lpc">
+<div class="lp-top"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></div>
+<div class="st-canvas lp-canvas"><img src="{IMG}{LP_PHOTO}.jpg" alt=""><img class="st-wipe lp-bw" src="{IMG}{LP_PHOTO}.jpg" alt=""><i class="st-wline"></i></div>
+<div class="lp-side"><div class="lp-tabs">{tabs}</div><div class="lp-looks">{looks}</div><div class="lp-str"><span>Strength</span><div class="lr-track"><i style="--at:80%"></i></div></div></div>
+{MOUSE}</div><i class="st-glare"></i></div>
+<div class="st-lap-base"></div>
+</div>
+<div class="st-floor"></div>
+</div>"""
+
 
 def finish():
     tools = "<i></i>" * 14
-    return f"""<div class="st-dev st-dev-finish" data-i="2">
+    return f"""<div class="st-dev st-dev-finish" data-i="3">
 <div class="st-lap">
 <div class="st-lap-scr"><div class="st-app psc">
 <div class="ps-menu"><span>File</span><span>Edit</span><span>Image</span><span>Layer</span><span>Select</span><span>Filter</span><span>View</span><span>Plugins</span><span>Window</span></div>
@@ -95,7 +117,7 @@ def finish():
 </div>"""
 
 
-HTML = '<div class="st-devs" aria-hidden="true" data-no-i18n>' + shoot() + edit() + finish() + "</div>"
+HTML = '<div class="st-devs" aria-hidden="true" data-no-i18n>' + shoot() + sort() + edit() + finish() + "</div>"
 
 CSS = """
 /* ---------- landing: product scenes ---------- */
@@ -229,5 +251,21 @@ CSS = """
 .ps-layer.grp span{color:#F4AF56;font-weight:600}
 .st-newlayer{opacity:0;max-height:0;padding-top:0;padding-bottom:0;overflow:hidden;transition:opacity .4s,max-height .4s,padding .4s}
 .st-newlayer.on{opacity:1;max-height:20px;padding-top:3px;padding-bottom:3px;background:#3d4a5a}
-@media (max-width:1200px){.st-app{font-size:8px}.lrc,.psc{font-size:6px}}
+/* Lightroom Classic plugin window */
+.lpc{grid-template-columns:1fr 36%;grid-template-rows:7% 1fr;background:#1a1a1a;font-size:7px;color:#b4b4b4}
+.lp-top{grid-column:1/-1;display:flex;align-items:center;gap:4px;padding:0 3%;background:#141414;border-bottom:1px solid #0a0a0a}
+.lp-top i{width:6px;height:6px;border-radius:50%;background:#555}
+.lp-top span{flex:1;text-align:center;font-size:7px;color:#cfcfcf;margin-right:22px}
+.lp-canvas{margin:5%;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+.lp-bw{filter:grayscale(1) contrast(1.15) brightness(.95)}
+.lp-side{display:flex;flex-direction:column;gap:8px;padding:8px 7px;background:#262626;border-left:1px solid #111;min-width:0}
+.lp-tabs{display:flex;flex-wrap:wrap;gap:3px}
+.lp-tab{position:relative;padding:2px 4px;border-radius:3px;background:#2f2f2f;font-size:6px;color:#9a9a9a}
+.lp-tab.on{background:#3d3d3d;color:#f0f0f0}
+.lp-looks{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.lp-look{position:relative;display:flex;flex-direction:column;gap:2px;font-size:6px;color:#bdbdbd;text-align:center}
+.lp-look img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:2px}
+.lp-str{display:grid;gap:4px;font-size:6px;color:#9a9a9a}
+.lp-ring{inset:-2px;left:-2px;top:-2px;width:auto;height:auto}
+@media (max-width:1200px){.st-app{font-size:8px}.lrc,.psc,.lpc{font-size:6px}}
 """

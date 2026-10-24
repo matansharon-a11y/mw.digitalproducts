@@ -102,7 +102,9 @@ html[lang=he] .plans .plan .small,html[lang=he] .plans .plan .tagx,html[lang=he]
 # ---------------------------------------------------------------- one header and footer for the whole site
 # The same menu on every page (home, sales pages, shop pages), in the home page's look. Absolute links, so
 # they work from any folder; the English sales pages send Hebrew visitors to their Hebrew page by themselves.
-SITE_LINKS = [("/presets/", "Lightroom", "לייטרום"), ("/panel/", "Photoshop Plugin Panel", "פאנל התוסף לפוטושופ"), ("/field-guides/", "Field Guides", "מדריכי השטח"),
+# the products in the order you work: shoot, sort, edit, finish (Matan, 24 Oct 2026: one naming pattern in the menu)
+SITE_LINKS = [("/field-guides/", "Photography Guides", "מדריכי צילום"), ("/presets/#plugin", "Lightroom Plugin", "תוסף ללייטרום"),
+              ("/presets/#presets", "Presets", "פריסטים"), ("/panel/", "Photoshop Plugin", "תוסף לפוטושופ"),
               ("/shop/", "Compare", "השוואה"), ("/#bundles", "Bundles", "חבילות"), ("/#about", "About Matan", "על מתן")]
 MENU_ICON = ('<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" '
              'stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg>')
@@ -130,8 +132,8 @@ def menu_button(lang="en"):
     return f'<button class="nav-menu" type="button" aria-label="{label}" aria-expanded="false" aria-controls="site-links">{MENU_ICON}</button>'
 
 
-FOOTER_LINKS = [("/presets/#plugin", "Lightroom Classic plugin", "תוסף ללייטרום קלאסיק"), ("/panel/", "Photoshop plugin panel", "פאנל התוסף לפוטושופ"), ("/presets/", "Lightroom presets", "פריסטים ללייטרום"),
-                ("/field-guides/", "Photography guides", "מדריכי צילום"), ("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
+FOOTER_LINKS = [("/field-guides/", "Photography guides", "מדריכי צילום"), ("/presets/#plugin", "Lightroom plugin", "תוסף ללייטרום"),
+                ("/presets/#presets", "Presets", "פריסטים"), ("/panel/", "Photoshop plugin", "תוסף לפוטושופ"), ("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
                 ("/support/", "Contact support", "פנייה לתמיכה"), ("/legal/#refunds", "Refunds", "החזרים"),
                 ("/legal/#terms", "Terms", "תנאים"), ("/legal/#privacy", "Privacy", "פרטיות")]
 
@@ -139,7 +141,7 @@ FOOTER_LINKS = [("/presets/#plugin", "Lightroom Classic plugin", "תוסף לל�
 def site_footer(lang="en"):
     he = lang == "he"
     links = "".join(f'<a href="{he_href(href) if he else href}">{h if he else e}</a>' for href, e, h in FOOTER_LINKS)
-    credit = "כל הצילומים: מתן וויילד · contact@matanwildphotography.com" if he else "All photos: Matan Wild · contact@matanwildphotography.com"
+    credit = "כל הצילומים: מתן שרון · contact@matanwildphotography.com" if he else "All photos: Matan Wild · contact@matanwildphotography.com"
     return (f'<footer class="site-foot">\n<div class="wrap container">\n<div class="sf-brand">{"אם־דבליו פוטו טורס" if he else "MW PHOTO TOURS"}</div>\n'
             f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n<div class="sf-credit">{credit}</div>\n</div>\n</footer>')
 

@@ -25,8 +25,8 @@ T = {
                filt="הצגת ביקורות על", every="הכול"),
 }
 NAMES = {"presets": ("MWP Presets", "הפריסטים של MWP"), "plugin": ("the Lightroom Classic plugin", "התוסף ללייטרום קלאסיק"),
-         "panel": ("MWP Photoshop Plugin Panel", "פאנל התוסף לפוטושופ של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
-CHIPS = [("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"), ("panel", "Photoshop Plugin Panel", "פאנל התוסף לפוטושופ"),
+         "panel": ("MWP Photoshop Plugin Panel", "התוסף לפוטושופ של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
+CHIPS = [("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"), ("panel", "Photoshop Plugin Panel", "התוסף לפוטושופ"),
          ("presets", "Presets", "פריסטים"), ("guides", "Field Guides", "מדריכי השטח")]
 
 

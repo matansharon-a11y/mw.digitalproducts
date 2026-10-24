@@ -549,7 +549,23 @@ html[lang=he] .plans .plan .small,html[lang=he] .plans .plan .tagx,html[lang=he]
 .ps-layer.grp span{color:#F4AF56;font-weight:600}
 .st-newlayer{opacity:0;max-height:0;padding-top:0;padding-bottom:0;overflow:hidden;transition:opacity .4s,max-height .4s,padding .4s}
 .st-newlayer.on{opacity:1;max-height:20px;padding-top:3px;padding-bottom:3px;background:#3d4a5a}
-@media (max-width:1200px){.st-app{font-size:8px}.lrc,.psc{font-size:6px}}
+/* Lightroom Classic plugin window */
+.lpc{grid-template-columns:1fr 36%;grid-template-rows:7% 1fr;background:#1a1a1a;font-size:7px;color:#b4b4b4}
+.lp-top{grid-column:1/-1;display:flex;align-items:center;gap:4px;padding:0 3%;background:#141414;border-bottom:1px solid #0a0a0a}
+.lp-top i{width:6px;height:6px;border-radius:50%;background:#555}
+.lp-top span{flex:1;text-align:center;font-size:7px;color:#cfcfcf;margin-right:22px}
+.lp-canvas{margin:5%;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+.lp-bw{filter:grayscale(1) contrast(1.15) brightness(.95)}
+.lp-side{display:flex;flex-direction:column;gap:8px;padding:8px 7px;background:#262626;border-left:1px solid #111;min-width:0}
+.lp-tabs{display:flex;flex-wrap:wrap;gap:3px}
+.lp-tab{position:relative;padding:2px 4px;border-radius:3px;background:#2f2f2f;font-size:6px;color:#9a9a9a}
+.lp-tab.on{background:#3d3d3d;color:#f0f0f0}
+.lp-looks{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.lp-look{position:relative;display:flex;flex-direction:column;gap:2px;font-size:6px;color:#bdbdbd;text-align:center}
+.lp-look img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:2px}
+.lp-str{display:grid;gap:4px;font-size:6px;color:#9a9a9a}
+.lp-ring{inset:-2px;left:-2px;top:-2px;width:auto;height:auto}
+@media (max-width:1200px){.st-app{font-size:8px}.lrc,.psc,.lpc{font-size:6px}}
 
 /* ---------- landing: cinematic hero ---------- */
 .st-hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;background:#0A0908;isolation:isolate}
@@ -589,7 +605,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-ch{position:relative;background:#0A0908}
 .st-ch-head{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(72px,10vh,120px);padding-bottom:clamp(40px,6vh,64px)}
 .st-ch-head .lead{text-wrap:balance}
-.st-track{position:relative;height:420vh}
+.st-track{position:relative;height:540vh}
 .st-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
 .st-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);height:100%;width:100%}
 .st-media{position:relative;height:100%;overflow:hidden;background:#141210}
@@ -825,7 +841,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
 <a class="brand" href="/" aria-label="MWP, home"><img src="/assets/img/logo-mark.png" alt="MWP" width="36" height="38"></a>
-<div class="links"><a href="/presets/">Lightroom</a><a href="/panel/">Photoshop Plugin Panel</a><a href="/field-guides/">Field Guides</a><a href="/shop/">Compare</a><a href="/#bundles">Bundles</a><a href="/#about">About Matan</a></div>
+<div class="links"><a href="/field-guides/">Photography Guides</a><a href="/presets/#plugin">Lightroom Plugin</a><a href="/presets/#presets">Presets</a><a href="/panel/">Photoshop Plugin</a><a href="/shop/">Compare</a><a href="/#bundles">Bundles</a><a href="/#about">About Matan</a></div>
 <div class="navr"></div>
 <button class="nav-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-links"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg></button>
 </div>
@@ -856,7 +872,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="st-sticky">
 <div class="st-grid">
 <div class="st-media" aria-hidden="true">
-<img class="st-mimg" data-i="0" src="assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122.webp" alt="" loading="lazy" style="object-position: 56% 55%"><img class="st-mimg" data-i="1" src="assets/pages/img/8cb56471dbe5940badc7a93cad5c8bf1.webp" alt="" loading="lazy" style="object-position: 50% 12%"><img class="st-mimg" data-i="2" src="assets/pages/img/866c1bdb5cf29c21c1a04f6fc87b03e9.jpg" alt="" loading="lazy" style="object-position: 62% 38%">
+<img class="st-mimg" data-i="0" src="assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122.webp" alt="" loading="lazy" style="object-position: 56% 55%"><img class="st-mimg" data-i="1" src="assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg" alt="" loading="lazy" style="object-position: 80% 45%"><img class="st-mimg" data-i="2" src="assets/pages/img/8cb56471dbe5940badc7a93cad5c8bf1.webp" alt="" loading="lazy" style="object-position: 50% 12%"><img class="st-mimg" data-i="3" src="assets/pages/img/866c1bdb5cf29c21c1a04f6fc87b03e9.jpg" alt="" loading="lazy" style="object-position: 62% 38%">
 <div class="st-devs" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-shoot" data-i="0"><div class="bk-row"><div class="bk" style="--k:0">
 <div class="bk-f bk-front"><img loading="lazy" src="assets/pages/img/d5f6d2a7c84cc3346ef45e4922528351.webp" alt=""><div class="bk-lab"><span class="bk-brand">MWP FIELD GUIDES</span><span class="bk-num">01</span><b>Composition</b></div></div>
 <div class="bk-f bk-back"></div>
@@ -881,7 +897,17 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="bk-f bk-spine"><span>Planning</span></div>
 <div class="bk-f bk-pages"></div>
 <div class="bk-f bk-top"></div>
-</div></div><div class="st-floor"></div></div><div class="st-dev st-dev-edit" data-i="1">
+</div></div><div class="st-floor"></div></div><div class="st-dev st-dev-sort" data-i="1">
+<div class="st-lap">
+<div class="st-lap-scr"><div class="st-app lpc">
+<div class="lp-top"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></div>
+<div class="st-canvas lp-canvas"><img loading="lazy" src="assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg" alt=""><img loading="lazy" class="st-wipe lp-bw" src="assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg" alt=""><i class="st-wline"></i></div>
+<div class="lp-side"><div class="lp-tabs"><span class="lp-tab">Cull</span><span class="lp-tab">Organize</span><span class="lp-tab">Expedition</span><span class="lp-tab on">Looks<i class="st-ring lp-ring"></i></span><span class="lp-tab">Edit</span><span class="lp-tab">Color</span><span class="lp-tab">Export</span></div><div class="lp-looks"><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_bw.png" alt="">B&amp;W<i class="st-ring lp-ring"></i></span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_moody.png" alt="">Moody</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_golden.png" alt="">Golden</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_bluehour.png" alt="">Blue hour</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_matte.png" alt="">Matte</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_clean.png" alt="">Clean</span></div><div class="lp-str"><span>Strength</span><div class="lr-track"><i style="--at:80%"></i></div></div></div>
+<i class="st-mouse"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 3l14 8-6.2 1.6L9.6 19z" fill="#FEFBF1" stroke="#0A0908" stroke-width="1.4" stroke-linejoin="round"/></svg></i></div><i class="st-glare"></i></div>
+<div class="st-lap-base"></div>
+</div>
+<div class="st-floor"></div>
+</div><div class="st-dev st-dev-edit" data-i="2">
 <div class="st-lap">
 <div class="st-lap-scr"><div class="st-app lrc">
 <div class="lr-top"><span class="lr-id">MW PHOTO TOURS</span><nav><span>Library</span><b>Develop</b><span>Map</span><span>Book</span><span>Slideshow</span><span>Print</span><span>Web</span></nav></div>
@@ -903,7 +929,7 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="st-lap-base"></div>
 </div>
 <div class="st-floor"></div>
-</div><div class="st-dev st-dev-finish" data-i="2">
+</div><div class="st-dev st-dev-finish" data-i="3">
 <div class="st-lap">
 <div class="st-lap-scr"><div class="st-app psc">
 <div class="ps-menu"><span>File</span><span>Edit</span><span>Image</span><span>Layer</span><span>Select</span><span>Filter</span><span>View</span><span>Plugins</span><span>Window</span></div>
@@ -924,13 +950,13 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="st-floor"></div>
 </div></div>
 <div class="st-vf st-vf-sm"><span></span><span></span><span></span><span></span></div>
-<div class="st-count"><span class="st-cur">01</span><span class="st-of">/ 03</span></div>
+<div class="st-count"><span class="st-cur">01</span><span class="st-of">/ 04</span></div>
 </div>
 <div class="st-side">
-<div class="st-ambs" aria-hidden="true"><img loading="lazy" class="st-amb" data-i="0" src="assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122.webp" alt=""><img loading="lazy" class="st-amb" data-i="1" src="assets/pages/img/8cb56471dbe5940badc7a93cad5c8bf1.webp" alt=""><img loading="lazy" class="st-amb" data-i="2" src="assets/pages/img/866c1bdb5cf29c21c1a04f6fc87b03e9.jpg" alt=""></div>
-<div class="st-ghosts" aria-hidden="true"><span class="st-ghost" data-i="0">01</span><span class="st-ghost" data-i="1">02</span><span class="st-ghost" data-i="2">03</span></div>
+<div class="st-ambs" aria-hidden="true"><img loading="lazy" class="st-amb" data-i="0" src="assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122.webp" alt=""><img loading="lazy" class="st-amb" data-i="1" src="assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg" alt=""><img loading="lazy" class="st-amb" data-i="2" src="assets/pages/img/8cb56471dbe5940badc7a93cad5c8bf1.webp" alt=""><img loading="lazy" class="st-amb" data-i="3" src="assets/pages/img/866c1bdb5cf29c21c1a04f6fc87b03e9.jpg" alt=""></div>
+<div class="st-ghosts" aria-hidden="true"><span class="st-ghost" data-i="0">01</span><span class="st-ghost" data-i="1">02</span><span class="st-ghost" data-i="2">03</span><span class="st-ghost" data-i="3">04</span></div>
 <div class="st-texts">
-<div class="st-prog" aria-hidden="true"><span data-i="0">Shoot</span><span data-i="1">Edit</span><span data-i="2">Finish</span></div>
+<div class="st-prog" aria-hidden="true"><span data-i="0">Shoot</span><span data-i="1">Sort</span><span data-i="2">Edit</span><span data-i="3">Finish</span></div>
 <article class="st-art" data-i="0">
 <p class="st-step"><span class="st-num">01</span><span>Shoot</span></p>
 <p class="st-tag">PDF field guides</p>
@@ -965,14 +991,33 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="bk-f bk-top"></div>
 </div></div><div class="st-floor"></div></div></div></div>
 </article><article class="st-art" data-i="1">
-<p class="st-step"><span class="st-num">02</span><span>Edit</span></p>
+<p class="st-step"><span class="st-num">02</span><span>Sort</span></p>
+<p class="st-tag">Lightroom Classic plugin</p>
+<h3 class="st-name" data-no-i18n>MWP <span class="grad">Lightroom Classic Plugin</span></h3>
+<p class="st-line">Your whole shoot, in one window</p>
+<div class="st-body"><p>Cull a day of bursts down to the keepers, keyword trips and species, edit, and export for Instagram, web and print, all inside Lightroom Classic.</p><p>Nothing is ever deleted. Everything it does is ordinary Lightroom settings, masks and collections.</p></div>
+<ul class="st-pts"><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Seven tabs, from the card to the post</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Lightroom Classic 13 or newer · Mac and Windows</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Comes with MWP Presets, in one purchase</span></li></ul>
+<div class="st-acts"><a class="btn" href="presets/#plugin">See the plugin <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+<div class="st-mscene"><img class="st-mbg" src="assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg" alt="A photographer behind a long lens in the mountains, photographed by Matan Wild" loading="lazy" style="object-position: 80% 45%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-sort" data-i="1">
+<div class="st-lap">
+<div class="st-lap-scr"><div class="st-app lpc">
+<div class="lp-top"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></div>
+<div class="st-canvas lp-canvas"><img loading="lazy" src="assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg" alt=""><img loading="lazy" class="st-wipe lp-bw" src="assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg" alt=""><i class="st-wline"></i></div>
+<div class="lp-side"><div class="lp-tabs"><span class="lp-tab">Cull</span><span class="lp-tab">Organize</span><span class="lp-tab">Expedition</span><span class="lp-tab on">Looks<i class="st-ring lp-ring"></i></span><span class="lp-tab">Edit</span><span class="lp-tab">Color</span><span class="lp-tab">Export</span></div><div class="lp-looks"><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_bw.png" alt="">B&amp;W<i class="st-ring lp-ring"></i></span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_moody.png" alt="">Moody</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_golden.png" alt="">Golden</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_bluehour.png" alt="">Blue hour</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_matte.png" alt="">Matte</span><span class="lp-look"><img loading="lazy" src="assets/pages/img/lrc/look_clean.png" alt="">Clean</span></div><div class="lp-str"><span>Strength</span><div class="lr-track"><i style="--at:80%"></i></div></div></div>
+<i class="st-mouse"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 3l14 8-6.2 1.6L9.6 19z" fill="#FEFBF1" stroke="#0A0908" stroke-width="1.4" stroke-linejoin="round"/></svg></i></div><i class="st-glare"></i></div>
+<div class="st-lap-base"></div>
+</div>
+<div class="st-floor"></div>
+</div></div></div>
+</article><article class="st-art" data-i="2">
+<p class="st-step"><span class="st-num">03</span><span>Edit</span></p>
 <p class="st-tag">Lightroom presets</p>
 <h3 class="st-name" data-no-i18n>MWP <span class="grad">Presets</span></h3>
 <p class="st-line">A natural starting point for every photo</p>
 <div class="st-body"><p>50 Lightroom presets made from Matan Wild's own edits. 12 are adaptive: they find the subject, the sky and the background and treat each one on its own.</p><p>You set the strength. On desktop, on your phone and, with 33 LUTs, on video.</p></div>
-<ul class="st-pts"><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>50 Lightroom presets, 12 adaptive</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>33 LUTs for Photoshop and video</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Lightroom Classic plugin included</span></li></ul>
-<div class="st-acts"><a class="btn" href="presets/">See the presets and the plugin <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-<div class="st-mscene"><img class="st-mbg" src="assets/pages/img/8cb56471dbe5940badc7a93cad5c8bf1.webp" alt="MWP Presets, Lightroom presets by Matan Wild" loading="lazy" style="object-position: 50% 12%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-edit" data-i="1">
+<ul class="st-pts"><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>50 Lightroom presets, 12 adaptive</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>50 mobile files</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>33 LUTs for Photoshop and video</span></li></ul>
+<div class="st-acts"><a class="btn" href="presets/">See MWP Presets <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+<div class="st-mscene"><img class="st-mbg" src="assets/pages/img/8cb56471dbe5940badc7a93cad5c8bf1.webp" alt="MWP Presets, Lightroom presets by Matan Wild" loading="lazy" style="object-position: 50% 12%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-edit" data-i="2">
 <div class="st-lap">
 <div class="st-lap-scr"><div class="st-app lrc">
 <div class="lr-top"><span class="lr-id">MW PHOTO TOURS</span><nav><span>Library</span><b>Develop</b><span>Map</span><span>Book</span><span>Slideshow</span><span>Print</span><span>Web</span></nav></div>
@@ -995,15 +1040,15 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 </div>
 <div class="st-floor"></div>
 </div></div></div>
-</article><article class="st-art" data-i="2">
-<p class="st-step"><span class="st-num">03</span><span>Finish</span></p>
+</article><article class="st-art" data-i="3">
+<p class="st-step"><span class="st-num">04</span><span>Finish</span></p>
 <p class="st-tag">Photoshop panel</p>
 <h3 class="st-name" data-no-i18n>MWP <span class="grad">Photoshop Plugin Panel</span></h3>
 <p class="st-line">Photoshop, without the maze of menus</p>
 <div class="st-body"><p>Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.</p><p>Your original stays locked, and one undo takes back a whole button.</p></div>
 <ul class="st-pts"><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>8 one-click effects</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>11 looks and 4 painted lights</span></li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>User manual and install guide</span></li></ul>
 <div class="st-acts"><a class="btn" href="panel/">See MWP Photoshop Plugin Panel <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-<div class="st-mscene"><img class="st-mbg" src="assets/pages/img/866c1bdb5cf29c21c1a04f6fc87b03e9.jpg" alt="A tiger, photographed by Matan Wild" loading="lazy" style="object-position: 62% 38%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-finish" data-i="2">
+<div class="st-mscene"><img class="st-mbg" src="assets/pages/img/866c1bdb5cf29c21c1a04f6fc87b03e9.jpg" alt="A tiger, photographed by Matan Wild" loading="lazy" style="object-position: 62% 38%"><div class="st-mstage" aria-hidden="true" data-no-i18n><div class="st-dev st-dev-finish" data-i="3">
 <div class="st-lap">
 <div class="st-lap-scr"><div class="st-app psc">
 <div class="ps-menu"><span>File</span><span>Edit</span><span>Image</span><span>Layer</span><span>Select</span><span>Filter</span><span>View</span><span>Plugins</span><span>Window</span></div>
@@ -1108,7 +1153,7 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
 <footer class="site-foot">
 <div class="wrap container">
 <div class="sf-brand">MW PHOTO TOURS</div>
-<nav class="sf-links" aria-label="Footer"><a href="/presets/#plugin">Lightroom Classic plugin</a><a href="/panel/">Photoshop plugin panel</a><a href="/presets/">Lightroom presets</a><a href="/field-guides/">Photography guides</a><a href="/shop/">All products</a><a href="/account/">My downloads</a><a href="/support/">Contact support</a><a href="/legal/#refunds">Refunds</a><a href="/legal/#terms">Terms</a><a href="/legal/#privacy">Privacy</a></nav>
+<nav class="sf-links" aria-label="Footer"><a href="/field-guides/">Photography guides</a><a href="/presets/#plugin">Lightroom plugin</a><a href="/presets/#presets">Presets</a><a href="/panel/">Photoshop plugin</a><a href="/shop/">All products</a><a href="/account/">My downloads</a><a href="/support/">Contact support</a><a href="/legal/#refunds">Refunds</a><a href="/legal/#terms">Terms</a><a href="/legal/#privacy">Privacy</a></nav>
 <div class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</div>
 </div>
 </footer>

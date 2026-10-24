@@ -5,14 +5,15 @@ import re
 
 MWP = "MWP"
 NAMES = [
-    ("MWP - PS Panel", f"פאנל התוסף לפוטושופ של {MWP}"),
+    ("MWP - PS Panel", f"התוסף לפוטושופ של {MWP}"),
     ("MWP - Signature Preset Pack", f"הפריסטים של {MWP}"),
     ("MWP Field Guides", f"מדריכי השטח של {MWP}"), ("MWP FIELD GUIDES", f"מדריכי השטח של {MWP}"),
     ("MWP Field Guide", f"מדריך השטח של {MWP}"), ("MWP FIELD GUIDE", f"מדריך השטח של {MWP}"),
     ("MWP Presets", f"הפריסטים של {MWP}"), ("MWP PRESETS", f"הפריסטים של {MWP}"),
-    ("MWP Photoshop Plugin Panel", f"פאנל התוסף לפוטושופ של {MWP}"), ("MWP PHOTOSHOP PLUGIN PANEL", f"פאנל התוסף לפוטושופ של {MWP}"),
+    ("MWP Photoshop Plugin Panel", f"התוסף לפוטושופ של {MWP}"), ("MWP PHOTOSHOP PLUGIN PANEL", f"התוסף לפוטושופ של {MWP}"),
+    ("MWP Lightroom Classic Plugin", f"התוסף ללייטרום של {MWP}"),
     ("MW Photo Tours", "אם־דבליו פוטו טורס"), ("MW PHOTO TOURS", "אם־דבליו פוטו טורס"),
-    ("Matan Wild Photography", "מתן וויילד צילום"), ("Matan Wild", "מתן וויילד"),
+    ("Matan Wild Photography", "מתן וויילד צילום"), ("Matan Wild", "מתן שרון"),
     ("Lemon Squeezy", "למון סקוויזי"),
     ("Photoshop (Beta)", "פוטושופ (בטא)"), ("Photoshop", "פוטושופ"), ("PHOTOSHOP", "פוטושופ"),
     ("Lightroom Classic", "לייטרום קלאסיק"), ("Lightroom Mobile", "לייטרום מובייל"),

@@ -15,13 +15,20 @@ CHAPTERS = [
                "Every guide ends with drills, a checklist and a cheat sheet for your next shoot."],
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
+    dict(step="Sort", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", href="presets/#plugin",
+         img="86b95f1970bb30f72735d73708d9c095.jpg", pos="80% 45%", alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",
+         title="Your whole shoot, in one window",
+         body=["Cull a day of bursts down to the keepers, keyword trips and species, edit, and export for Instagram, web and print, all inside Lightroom Classic.",
+               "Nothing is ever deleted. Everything it does is ordinary Lightroom settings, masks and collections."],
+         points=["Seven tabs, from the card to the post", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
+         cta="See the plugin", box="86b95f1970bb30f72735d73708d9c095.jpg", gk="LIGHTROOM CLASSIC PLUGIN", sub="7 tabs · one window"),
     dict(step="Edit", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets by Matan Wild",
          title="A natural starting point for every photo",
          body=["50 Lightroom presets made from Matan Wild's own edits. 12 are adaptive: they find the subject, the sky and the background and treat each one on its own.",
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
-         points=["50 Lightroom presets, 12 adaptive", "33 LUTs for Photoshop and video", "Lightroom Classic plugin included"],
-         cta="See the presets and the plugin", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
+         points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
+         cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
     dict(step="Finish", tag="Photoshop panel", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Photoshop, without the maze of menus",
@@ -46,7 +53,7 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 </section>"""
 
 
-SCENES = [home_devices.shoot, home_devices.edit, home_devices.finish]   # the same scene per chapter on phones
+SCENES = [home_devices.shoot, home_devices.sort, home_devices.edit, home_devices.finish]   # the same scene per chapter on phones
 
 
 def _chapter_text(i, c):
@@ -76,7 +83,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 {"".join(f'<img class="st-mimg" data-i="{i}" src="{IMG}{c["img"]}" alt="" loading="lazy" style="object-position: {c["pos"]}">' for i, c in enumerate(CHAPTERS))}
 {home_devices.HTML}
 <div class="st-vf st-vf-sm"><span></span><span></span><span></span><span></span></div>
-<div class="st-count"><span class="st-cur">01</span><span class="st-of">/ 03</span></div>
+<div class="st-count"><span class="st-cur">01</span><span class="st-of">/ 0{len(CHAPTERS)}</span></div>
 </div>
 <div class="st-side">
 <div class="st-ambs" aria-hidden="true">{"".join(f'<img class="st-amb" data-i="{i}" src="{IMG}{c["img"]}" alt="">' for i, c in enumerate(CHAPTERS))}</div>
@@ -138,7 +145,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-ch{position:relative;background:#0A0908}
 .st-ch-head{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(72px,10vh,120px);padding-bottom:clamp(40px,6vh,64px)}
 .st-ch-head .lead{text-wrap:balance}
-.st-track{position:relative;height:420vh}
+.st-track{position:relative;height:540vh}
 .st-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
 .st-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);height:100%;width:100%}
 .st-media{position:relative;height:100%;overflow:hidden;background:#141210}

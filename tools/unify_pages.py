@@ -97,7 +97,7 @@ FRESH = re.compile(r'\[(?:YOUR PRICE|BUNDLE PRICE|PRICE BEFORE DISCOUNT|המחי
 DROP = {
     "presets": ["band", "Edit at the desk", "עורכים ליד השולחן", "The preset sets the look", "הפריסט קובע את המראה",
                 "Built in the field", "נבנה בשטח", "How to use them", "איך משתמשים בהם", "What's in the download", "מה יש בהורדה"],
-    "panel": ["band", "A panel next to your layers", "פאנל אחד, ליד השכבות", "The questions from our evenings", "השאלות מהערבים",
+    "panel": ["band", "A panel next to your layers", "תוסף אחד, ליד השכבות", "The questions from our evenings", "השאלות מהערבים",
               "How it works.", "איך זה עובד", "What's in the download", "מה יש בהורדה"],
     "field-guides": ["band", "On your desk, your tablet", "במחשב, בטאבלט", "A wildlife photographer who lives", "צלם טבע שחי בשטח",
                      "137 lessons. All from", "137 שיעורים. כולם"],
