@@ -180,7 +180,7 @@ LD = __import__("json").dumps([
     {"@context": "https://schema.org", "@type": "Organization", "name": "MWP", "alternateName": "MW Photo Tours",
      "url": "https://shop.mw.photography/", "logo": "https://shop.mw.photography/assets/img/favicon-512.png",
      "founder": {"@type": "Person", "name": "Matan Sharon", "alternateName": ["Matan Wild", "מתן שרון", "מתן וויילד"], "jobTitle": "Photographer", "url": "https://mw.photography"}, "email": "contact@matanwildphotography.com",
-     "sameAs": ["https://mw.photography"]},
+     "sameAs": ["https://mw.photography", "https://mw-phototours.com"], "description": "Lightroom presets, plugins for Lightroom Classic and Photoshop, and photography guides by photographer Matan Wild (Matan Sharon), founder of MW Photo Tours."},
     {"@context": "https://schema.org", "@type": "WebSite", "name": "MWP", "url": "https://shop.mw.photography/", "inLanguage": ["en", "he"]},
 ], ensure_ascii=False)
 
@@ -192,7 +192,7 @@ html = f'''<!doctype html>
 {LANG_GUARD}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lightroom Presets, Photoshop Plugin &amp; Photography Guides · MWP</title>
-<meta name="description" content="Pro editing in a few clicks: Lightroom presets, a Lightroom Classic plugin, a Photoshop plugin and PDF photography guides by photographer Matan Wild. Instant download, free updates.">
+<meta name="description" content="Pro editing in a few clicks: Lightroom presets, plugins for Lightroom Classic and Photoshop, and photography guides by photographer Matan Wild.">
 <meta name="theme-color" content="#0A0908">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MWP">
@@ -275,7 +275,7 @@ html = f'''<!doctype html>
 <h2 class="h2">FAQs</h2>
 </div>
 <div class="faq">
-<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. I built a <a href="/presets/#plugin">Lightroom Classic plugin</a> (version 13 or newer) that culls, organises, edits and exports a whole shoot. It comes with MWP Presets, in one purchase.</div></details>
+<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. I built a <a href="/presets/#plugin">Lightroom Classic plugin</a> (version 13 or newer) that sorts, organises, edits and exports a whole shoot. It comes with MWP Presets, in one purchase.</div></details>
 <details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you sort and edit whole shoots in Lightroom Classic, <a href="/presets/#plugin">the Lightroom Classic plugin</a>. If you want a finished look in one click, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Photoshop Plugin Panel</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>

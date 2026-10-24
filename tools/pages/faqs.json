@@ -35,7 +35,7 @@
       },
       {
         "q": "What can I do with the files?",
-        "a": "Use them on all your own photos and videos, including paid client work, on every device you use. The files are for you alone: please don’t share, resell or repackage them."
+        "a": "Use them on all your own photos and videos, including paid client work, on every device you use. The files are for you alone: please don't share, resell or repackage them."
       },
       {
         "q": "Can I get a refund?",
@@ -101,7 +101,7 @@
       },
       {
         "q": "Can it ruin my photo?",
-        "a": "No. Every button adds its own layer and your original layer is locked. One Ctrl+Z (Cmd+Z on Mac) undoes a whole button, Reset MWP removes everything the plugin added, and exports are always saved as new files."
+        "a": "No. Every button adds its own layer and your original layer is locked. One Ctrl+Z (Cmd+Z on Mac) undoes a whole step, Reset MWP removes everything the plugin added, and exports are always saved as new files."
       },
       {
         "q": "Can I edit a whole series the same way?",
@@ -116,7 +116,7 @@
         "a": "Yes. Every purchase includes video tutorials for the plugin. You find them in My downloads, next to your files."
       },
       {
-        "q": "License, computers and refunds?",
+        "q": "Licence, computers and refunds?",
         "a": "A personal licence for your own work and client work. MWP Photoshop Plugin Panel works on up to 3 computers at a time, signed in with your email; changed computer? Free one up in My downloads. If it doesn't work for you, write to support within 14 days of purchase: we'll help, and if we can't, we'll refund you."
       },
       {
@@ -241,7 +241,7 @@
       },
       {
         "q": "Will it change or delete my photos?",
-        "a": "Culling never deletes a photo. Everything the plugin does is ordinary Lightroom settings, masks, keywords and collections, so you can undo it or change it by hand, and nothing is locked in."
+        "a": "Sorting never deletes a photo. Everything the plugin does is ordinary Lightroom settings, masks, keywords and collections, so you can undo it or change it by hand, and nothing is locked in."
       },
       {
         "q": "How do I install it?",

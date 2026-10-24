@@ -79,8 +79,6 @@ const HE = {
   "Pick what to edit: the subject, the sky or the background. Pick an effect, set the strength, and the plugin builds the masks and layers for you.": "בוחרים מה לערוך: הנושא, השמיים או הרקע. בוחרים אפקט וקובעים עוצמה, והתוסף בונה את המסכות והשכבות לבד.",
   "Your original stays locked, and one undo takes back a whole step.": "התמונה המקורית לא נפגעת, וכל פעולה מתבטלת בלחיצה אחת.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
-  "From the card to the post": "מהמיון ועד הפרסום",
-  "Seven tabs, from culling to export": "שבע לשוניות: ממיון ועד ייצוא",
   "Photoshop, made easy.": "פוטושופ, בלי להסתבך",
   "Learn as you go, without risking your original": "לומדים תוך כדי עבודה, בלי לסכן את הקובץ המקורי",
   "User manual and video tutorials": "מדריך משתמש ומדריך התקנה",
@@ -105,9 +103,23 @@ const HE = {
   "One for every step.": "לכל שלב בעבודה.",
   "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
-  "From first cull to final export": "מהמיון ועד הפרסום",
   "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin Panel.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
   "Yes. The MWP Photoshop Plugin Panel installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.": "כן. MWP Photoshop Plugin Panel מותקן גם ב־Photoshop וגם ב־Photoshop (Beta), ומחשב אחד נספר פעם אחת גם אם משתמשים בשניהם. הפריסטים נמצאים ב־Camera Raw, שמשותף לשתי הגרסאות. את קובצי ה-LUT טוענים בכל אחת מהן דרך שכבת התאמה של חיפוש צבע, ואז טעינת LUT תלת־ממדי.",
+  // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
+  "11 looks and 4 light effects": "11 לוקים ו־4 אפקטי אור",
+  // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
+  "From sorting to sharing": "מהמיון ועד הפרסום",
+  "Seven tabs, from sorting to sharing": "שבע לשוניות: ממיון ועד ייצוא",
+  "From sorting to sharing": "מהמיון ועד הפרסום",
+  "Seven tabs, from sorting to sharing": "שבע לשוניות: ממיון ועד ייצוא",
+  "Seven tabs, from sorting to sharing": "שבע לשוניות: ממיון ועד ייצוא",
+  "Sort, keyword, edit and export a whole shoot in one window.": "מיון, תיוג, עריכה וייצוא של צילום שלם, בחלון אחד.",
+  // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
+  "(version 13 or newer) that sorts, organises, edits and exports a whole shoot. It comes with MWP Presets, in one purchase.": "שפיתחתי (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילומים שלמים, מהמיון ועד הפרסום. הוא מגיע עם הפריסטים של MWP, ברכישה אחת.",
+  // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
+  "Pro editing in a few clicks: Lightroom presets, plugins for Lightroom Classic and Photoshop, and photography guides by photographer Matan Wild.": "עריכה מקצועית בכמה קליקים: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום ומדריכי צילום מאת הצלם מתן שרון. הורדה מיידית ועדכונים חינם.",
+  "Compare Lightroom Presets, Plugins & Guides · MWP Shop": "השוואה: פריסטים ללייטרום, תוספים ומדריכי צילום · החנות של MWP",
+  "Compare four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and PDF photography guides.": "ארבעה כלים מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום וקובצי LUT, ומדריכי צילום. השוו ביניהם, או חסכו עם חבילה.",
   // menu and footer, one naming pattern (24 Oct 2026)
   ". If you sort and edit whole shoots in Lightroom Classic,": ". אם אתם ממיינים ועורכים צילומים שלמים בלייטרום קלאסיק,",
   "the Lightroom Classic plugin": "התוסף ללייטרום קלאסיק",
@@ -956,7 +968,6 @@ const HE = {
   "See the presets": "לעמוד הפריסטים",
   "Cull, keyword, edit and export a whole shoot from one window.": "מיון, מילות מפתח, עריכה וייצוא של צילום שלם, מחלון אחד.",
   "Lightroom Classic 13 or newer": "לייטרום קלאסיק 13 ומעלה",
-  "Seven tabs, from the card to the post": "שבע לשוניות: ממיון ועד ייצוא",
   "Culling never deletes a photo": "המיון אף פעם לא מוחק תמונה",
   "Early access, with free updates": "גישה מוקדמת, עם עדכונים חינם",
   "Included": "כלול",

@@ -218,7 +218,7 @@ def _img(prefix):
 # came off on 23 Oct 2026 (Jeinna). The products themselves are presented on their pages.
 PRODUCTS = [
     dict(key="plugin", href="presets/#plugin", slug="mwp-lightroom-plugin", type="Plugin · Lightroom Classic 13 or newer", name="Lightroom Classic Plugin",
-         line="Cull, keyword, edit and export a whole shoot in one window.",
+         line="Sort, keyword, edit and export a whole shoot in one window.",
          works="Lightroom Classic 13+ · Mac and Windows",
          alone="No presets needed.", more="Details", with_="mwp-presets"),   # bought with MWP Presets, never alone
     dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop plugin", name="Photoshop Plugin Panel",
@@ -277,8 +277,8 @@ def _bundle(name, sub, slug, pts, cta, hi):
             f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
 
 
-page("shop.html", "Compare Lightroom Presets, Plugins &amp; Photography Guides · MWP Shop",
- "Four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin, Lightroom presets and LUTs, and PDF photography guides. Compare them, or save with a bundle.",
+page("shop.html", "Compare Lightroom Presets, Plugins &amp; Guides · MWP Shop",
+ "Compare four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and PDF photography guides.",
  f"""  <section class="page-hero sp-hero">
     <div class="container">
       <p class="kick">The MWP shop</p>

@@ -17,10 +17,10 @@ CHAPTERS = [
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Sort", step_he="מיון", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", href="presets/#plugin",
          img="86b95f1970bb30f72735d73708d9c095.jpg", pos="80% 45%", alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",
-         title="From first cull to final export",
+         title="From sorting to sharing",
          body=["Find the sharpest frame in every burst, build each trip into a collection per day, and keyword species from a list of 51,471. Then edit and export, all inside Lightroom Classic.",
                "Nothing is ever deleted, and every change stays in Lightroom, ready to adjust."],
-         points=["Seven tabs, from culling to export", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
+         points=["Seven tabs, from sorting to sharing", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
          cta="See the plugin", box="86b95f1970bb30f72735d73708d9c095.jpg", gk="LIGHTROOM CLASSIC PLUGIN", sub="7 tabs · one window"),
     dict(step="Edit", step_he="מראה מוגמר", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets by Matan Wild",
@@ -34,7 +34,7 @@ CHAPTERS = [
          title="Photoshop, made easy.",
          body=["Pick what to edit: the subject, the sky or the background. Pick an effect, set the strength, and the plugin builds the masks and layers for you.",
                "Your original stays locked, and one undo takes back a whole step."],
-         points=["Learn as you go, without risking your original", "11 looks and 4 painted lights", "User manual and video tutorials"],
+         points=["Learn as you go, without risking your original", "11 looks and 4 light effects", "User manual and video tutorials"],
          cta="See the Photoshop plugin", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
 ]
 
