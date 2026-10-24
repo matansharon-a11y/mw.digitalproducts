@@ -1,0 +1,8 @@
+# The Vercel copy gets the website only, like GitHub Pages (see "Collect the public site files" in deploy.yml):
+# server code, SQL, build tools and notes stay out.
+.github
+supabase
+tools
+docs
+CLAUDE.md
+README.md
