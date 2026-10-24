@@ -250,6 +250,8 @@ const HE = {
   "Background": "רקע",
   "Panel": "פאנל",
   "Presets + Panel": "פריסטים + פאנל",
+  "Field Guides + Panel": "מדריכי שטח + פאנל",
+  "Learn the shot, then finish it in Photoshop": "לומדים לצלם, ואז מסיימים בפוטושופ",
   "The first products are being prepared. Check back soon.": "המוצרים הראשונים בהכנה. חזרו בקרוב.",
   "Terms, licence, refunds and privacy · MWP": "תנאים, רישיון, החזרים ופרטיות · MWP",
   "Terms of sale, licence, refund policy and privacy notice for MWP.": "תנאי מכירה, רישיון, מדיניות החזרים והודעת פרטיות של MWP.",

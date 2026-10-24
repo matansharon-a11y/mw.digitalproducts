@@ -515,7 +515,7 @@ select.input option, select.select option { background: #FFFFFF; color: #15130f;
 [dir="rtl"] .tile .go svg { transform: scaleX(-1); }
 .tile:hover .go svg { transform: translateX(4px); }
 [dir="rtl"] .tile:hover .go svg { transform: scaleX(-1) translateX(4px); }
-.bundles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 48px; }
+.bundles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 48px; }   /* four bundles: two by two */
 .bundle { position: relative; display: flex; flex-direction: column; padding: 36px 32px 32px; border-radius: 28px; border: 1px solid rgba(254, 251, 241, .09);
   background: linear-gradient(180deg, rgba(254, 251, 241, .055), rgba(254, 251, 241, .015)); transition: transform .5s cubic-bezier(.2, .7, .2, 1), border-color .4s; }
 .bundle:hover { transform: translateY(-4px); border-color: rgba(242, 165, 65, .3); }
