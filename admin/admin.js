@@ -30,6 +30,9 @@ async function boot() {
 }
 
 async function enter(user) {
+  // Two-step sign-in: once the account has an authenticator, the password alone doesn't open the admin.
+  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (aal?.nextLevel === "aal2" && aal.currentLevel !== "aal2") return askCode(user);
   const { data: isAdmin, error } = await supabase.rpc("is_admin");
   if (error || !isAdmin) {
     $("#gate-msg").textContent = `${user.email} isn't an admin. Ask the owner to add you, then sign in again.`;
@@ -63,10 +66,88 @@ $("#gate-form").addEventListener("submit", async (e) => {
 supabase?.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_IN" && session && app.hidden) enter(session.user);
 });
+
+// ---------------------------------------------------------------- two-step sign-in
+const verifiedTotp = async () => {
+  const { data, error } = await supabase.auth.mfa.listFactors();
+  check(error);
+  return { factor: data.totp.find((f) => f.status === "verified"), all: data.all };
+};
+const CODE_RE = /^\d{6}$/;
+const codeError = (error) => /invalid|expired/i.test(error.message) ? "That code didn't work. Wait for a new one and try again." : error.message;
+
+function askCode(user) {
+  $("#gate-form").hidden = true;
+  $("#code-form").hidden = false;
+  $("#gate-msg").textContent = `Enter the 6-digit code from your authenticator app for ${user.email}.`;
+  $("#gate-code").focus();
+}
+
+$("#code-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const code = form.elements.code.value.trim();
+  const status = $(".form-status", form);
+  if (!CODE_RE.test(code)) return setStatus(status, "Enter the 6 digits.", "error");
+  const btn = $("button[type=submit]", form);
+  setBusy(btn, true);
+  try {
+    const { factor } = await verifiedTotp();
+    const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId: factor.id, code });
+    if (error) return setStatus(status, codeError(error), "error");
+    form.elements.code.value = "";
+    const { data } = await supabase.auth.getUser();
+    await enter(data.user);
+  } catch { setStatus(status, "Something went wrong. Please try again.", "error"); }
+  finally { setBusy(btn, false); }
+});
+$("#code-cancel").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
+
+let pendingFactor = null;
+async function loadSecurity() {
+  const { factor } = await verifiedTotp();
+  $("#mfa-on").hidden = !factor;
+  $("#mfa-off").hidden = !!factor;
+  $("#mfa-enroll").hidden = true;
+}
+
+$("#mfa-start").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  setBusy(btn, true);
+  try {
+    // an earlier setup left unfinished would block a new one
+    const { all } = await verifiedTotp();
+    for (const f of all.filter((f) => f.factor_type === "totp" && f.status !== "verified")) await supabase.auth.mfa.unenroll({ factorId: f.id });
+    const { data, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: "MWP admin" });
+    check(error);
+    pendingFactor = data.id;
+    $("#mfa-qr").src = data.totp.qr_code;
+    $("#mfa-secret").textContent = data.totp.secret;
+    $("#mfa-off").hidden = true;
+    $("#mfa-enroll").hidden = false;
+    $("#mfa-code").focus();
+  } finally { setBusy(btn, false); }
+});
+
+$("#mfa-enroll").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const code = form.elements.code.value.trim();
+  const status = $(".form-status", form);
+  if (!CODE_RE.test(code)) return setStatus(status, "Enter the 6 digits.", "error");
+  const btn = $("button[type=submit]", form);
+  setBusy(btn, true);
+  const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId: pendingFactor, code });
+  setBusy(btn, false);
+  if (error) return setStatus(status, codeError(error), "error");
+  form.elements.code.value = "";
+  toast("Two-step sign-in is on.");
+  loadSecurity();
+});
 $("#admin-signout").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
 
 // ---------------------------------------------------------------- navigation
-const loaders = { overview: loadOverview, products: loadProducts, orders: loadOrders, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets };
+const loaders = { overview: loadOverview, products: loadProducts, orders: loadOrders, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
 
 function show(tab) {
   $$("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== tab; });
