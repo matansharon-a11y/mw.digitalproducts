@@ -13,6 +13,7 @@ import { admin, clientIp, cors, EMAIL_RE, fail, json, safeEqual, sha256Hex } fro
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
 const MAX_LINKS_PER_HOUR = 5;   // per IP
+const MAX_TRIES_ALL_PER_HOUR = 100;   // code tries and Ambassador applications from everyone together
 const SLUGS = ["mwp-presets", "mwp-lightroom-plugin", "mwp-panel", "mwp-field-guides"];   // what "me" lists (the plugin only if bought)
 
 Deno.serve(async (req) => {
@@ -55,18 +56,22 @@ Deno.serve(async (req) => {
     if (!code) return fail(req, "Please enter your tester code.", 400);
     const salt = Deno.env.get("IP_HASH_SALT") ?? "";
     const ipHash = clientIp(req) ? await sha256Hex(salt + clientIp(req)) : null;
+    const hourAgo = new Date(Date.now() - 3600 * 1000).toISOString();
+    // the address can be faked, so tries are also capped for everyone together: guessing the code stays hopeless
+    const { count: all } = await db.from("beta_attempts").select("id", { count: "exact", head: true }).gte("created_at", hourAgo);
+    if ((all ?? 0) >= MAX_TRIES_ALL_PER_HOUR) return fail(req, "Too many tries. Please wait an hour and try again.", 429);
     if (ipHash) {
-      const hourAgo = new Date(Date.now() - 3600 * 1000).toISOString();
       const { count } = await db.from("beta_attempts").select("id", { count: "exact", head: true })
         .eq("ip_hash", ipHash).gte("created_at", hourAgo);
       if ((count ?? 0) >= MAX_LINKS_PER_HOUR) return fail(req, "Too many tries. Please wait an hour and try again.", 429);
-      await db.from("beta_attempts").insert({ ip_hash: ipHash });
     }
+    await db.from("beta_attempts").insert({ ip_hash: ipHash });   // counted even without an address
     const { data: row } = await db.from("tester_code").select("code_hash").maybeSingle();
     if (!row || !safeEqual(await sha256Hex(code), row.code_hash)) return fail(req, "That tester code isn't right.", 403);
     const { error: tErr } = await db.rpc("add_tester_by_code", { p_email: email, p_name: name });
     if (tErr) {
       if (/tester_program_full/.test(tErr.message)) return fail(req, "The testers group is full right now. Please contact us.", 409);
+      if (/tester_removed/.test(tErr.message)) return fail(req, "This email can't join with the code. Please contact us.", 403);
       console.error("tester join", tErr); return fail(req, "Couldn't add you. Please try again.", 500);
     }
     // Always an emailed link: the shared code proves they're a tester, not that the email is theirs.

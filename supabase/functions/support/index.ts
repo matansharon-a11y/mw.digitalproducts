@@ -64,6 +64,8 @@ Deno.serve(async (req) => {
     ticket_id: saved.id,
     ...ticket,
     subject: plain(ticket.subject),
+    name: plain(ticket.name),             // Make maps these into monday: no quotes or backslashes
+    order_number: ticket.order_number ? plain(ticket.order_number) : ticket.order_number,
     is_customer: !!customer,
     owned,
     // Ready-made body for the monday update: who wrote, what they own, and the message.

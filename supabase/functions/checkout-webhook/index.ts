@@ -62,7 +62,8 @@ Deno.serve(async (req) => {
     } else {
       return text(`ignored ${event}`);
     }
-    await db.from("webhook_events").insert({ event_id: eventId, provider: "lemonsqueezy", payload: body });
+    const { error: logErr } = await db.from("webhook_events").insert({ event_id: eventId, provider: "lemonsqueezy", payload: body });
+    if (logErr) throw logErr;   // unrecorded: Lemon Squeezy retries, and the handlers above are safe to run again
     return text("ok");
   } catch (err) {
     // Non-2xx makes Lemon Squeezy retry later; nothing is half-recorded as processed.
@@ -97,6 +98,10 @@ async function handlePaid(
     const { data: isAdmin } = await db.from("admin_allowlist").select("email").eq("email", email).maybeSingle();
     if (!isAdmin) { console.warn(`test-mode order ${orderId} from ${email}: nothing unlocked`); return; }
   }
+
+  // an old "paid" notice sent again (Lemon Squeezy's resend) never reopens a refunded order
+  const { data: known } = await db.from("orders").select("status").eq("checkout_order_id", orderId).maybeSingle();
+  if (known?.status === "refunded") { console.warn(`order ${orderId} is refunded: paid notice ignored`); return; }
 
   const { data: product, error: pErr } = await db.from("products")
     .select("id, name, name_emphasis, slug")
