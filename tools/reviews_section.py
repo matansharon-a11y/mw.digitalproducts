@@ -18,7 +18,7 @@ T = {
                lead_p="What photographers who use {name} told us, shown as screenshots of what they sent us.",
                all="See all reviews", send="Bought from us? Send us your review", tap="Tap a review to read it in full.",
                filt="Show reviews for", every="All"),
-    "he": dict(kick="מהלקוחות שלנו", h=("צלמים אמיתיים.", "מילים אמיתיות."),
+    "he": dict(kick="מהלקוחות שלנו", h=("מה אומרים", "הצלמים"),
                lead="הודעות וביקורות מצלמים שעובדים עם הכלים של MWP, כצילומי מסך של מה ששלחו לנו.",
                lead_p="מה שצלמים שעובדים עם {name} סיפרו לנו, כצילומי מסך של מה ששלחו לנו.",
                all="לכל הביקורות", send="קניתם אצלנו? שלחו לנו ביקורת", tap="הקישו על ביקורת כדי לקרוא אותה במלואה.",
