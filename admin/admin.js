@@ -644,6 +644,8 @@ const orderCols = [
   { label: "Total", num: true, value: (r) => money(r.total_cents, r.currency) },
   { label: "Source", value: (r) => r.source || "" },
   { label: "Status", value: (r) => r.status, html: (r) => `<span class="status status--${esc(r.status)}">${esc(r.status.replace("_", " "))}</span>` },
+  // Lemon Squeezy test-mode checkouts: kept for the record, left out of every total
+  { label: "Test", value: (r) => (r.test_mode ? "test" : ""), html: (r) => (r.test_mode ? `<span class="status status--test">Test order</span>` : "") },
 ];
 let orderRows = [];
 async function loadOrders() {

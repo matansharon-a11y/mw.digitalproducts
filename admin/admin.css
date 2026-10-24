@@ -66,6 +66,7 @@ body.admin { display: block; }
 .status--paid, .status--resolved, .status--live { color: var(--c-success); }
 .status--refunded, .status--new { color: var(--c-danger); }
 .status--partially_refunded, .status--waiting, .status--draft { color: var(--c-warning); }
+.status--test { color: var(--c-paper-3); }
 
 .product-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto auto; gap: var(--s-4); align-items: center; padding: var(--s-3); border-bottom: 1px solid var(--c-line); }
 .product-row img, .product-row .noimg { width: 64px; height: 80px; object-fit: cover; border-radius: var(--r-sm); background: var(--c-surface-2); }
