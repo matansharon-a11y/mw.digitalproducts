@@ -31,6 +31,12 @@
       <p class="form-status" role="status"></p>
       <p class="meta">No password yet, or forgot it? Set one on <a class="link" href="/account/">My downloads</a> with the same email.</p>
     </form>
+    <form class="form" id="code-form" novalidate hidden>
+      <div class="field"><label for="gate-code">Code</label><input class="input" id="gate-code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required></div>
+      <button class="btn btn--accent" type="submit">Continue</button>
+      <p class="form-status" role="status"></p>
+      <button class="btn btn--sm btn--ghost" id="code-cancel" type="button">Use a different account</button>
+    </form>
   </div>
 </main>
 
@@ -49,6 +55,7 @@
     </nav>
     <div class="admin-side__foot">
       <p class="meta" id="admin-email"></p>
+      <button class="btn btn--sm btn--ghost" type="button" data-tab="security">Two-step sign-in</button>
       <a class="meta" href="../index.html" target="_blank" rel="noopener">View shop ↗</a>
       <button class="btn btn--sm btn--ghost" id="admin-signout" type="button">Sign out</button>
     </div>
@@ -73,6 +80,26 @@
       <div class="panel">
         <h2 class="admin-h2">Top products</h2>
         <div id="top-products"></div>
+      </div>
+    </section>
+
+    <!-- Two-step sign-in -->
+    <section data-panel="security" hidden>
+      <header class="admin-head"><h1 class="h3">Two-step sign-in</h1></header>
+      <div class="panel stack" style="max-width:560px">
+        <p id="mfa-on" hidden>Two-step sign-in is on. Each time you sign in, you'll also enter a code from your authenticator app.</p>
+        <div class="stack" id="mfa-off" hidden>
+          <p>This login controls the whole shop. With two-step sign-in, a stolen password isn't enough: signing in also needs a code from an authenticator app on your phone (Google Authenticator, Microsoft Authenticator, 1Password …).</p>
+          <button class="btn btn--accent" id="mfa-start" type="button">Set up two-step sign-in</button>
+        </div>
+        <form class="form stack" id="mfa-enroll" novalidate hidden>
+          <p>1. In your authenticator app, add an account and scan this code.</p>
+          <img id="mfa-qr" alt="QR code for your authenticator app" width="200" height="200" style="background:#fff;padding:8px;border-radius:8px">
+          <p class="meta">Can't scan? Enter this key instead: <code id="mfa-secret"></code></p>
+          <div class="field"><label for="mfa-code">2. Enter the 6-digit code the app shows</label><input class="input" id="mfa-code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required></div>
+          <button class="btn btn--accent" type="submit">Turn on</button>
+          <p class="form-status" role="status"></p>
+        </form>
       </div>
     </section>
 
