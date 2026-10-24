@@ -77,9 +77,13 @@ def main():
     if not stores:
         raise SystemExit("::error::The API key sees no store.")
     store = stores[0]
-    mode = "test mode" if ls("/users/me")["meta"].get("test_mode") else "live"
+    test = bool(ls("/users/me")["meta"].get("test_mode"))
+    mode = "test mode" if test else "live"
+    # The shop's products table is the live site: test checkout links never go there (a visitor would get a checkout
+    # that only takes test cards and delivers nothing). In test mode the links are listed here to test with instead.
+    write = APPLY and not test
     say(f"## Connect Lemon Squeezy\n\nStore **{store['attributes']['name']}** (id {store['id']}), key in **{mode}**. "
-        f"{'Writing to the shop.' if APPLY else 'Dry run: nothing is written.'}\n")
+        f"{'Writing to the shop.' if write else 'Test mode: the shop is not changed; test with the links below.' if test else 'Dry run: nothing is written.'}\n")
 
     shop = {p["slug"]: p for p in db("products?select=slug,name,name_emphasis,price_cents,checkout_url,checkout_variant_id,is_active")}
     products = ls_all(f"/products?filter[store_id]={store['id']}&page[size]=100")
@@ -103,13 +107,17 @@ def main():
         v = live[0]
         ls_price, shop_price = v["attributes"].get("price"), shop[slug]["price_cents"]
         url = a.get("buy_now_url")
-        note = "connected" if APPLY else "would connect"
+        note = "connected" if write else f"test link: {url}" if test else "would connect"
         if ls_price != shop_price:
             note += f" · **price differs** (fix it in Lemon Squeezy)"
         if a.get("status") != "published":
             note += f" · product is {a.get('status')} in Lemon Squeezy"
-        if APPLY:
+        if write:
             db(f"products?slug=eq.{urllib.parse.quote(slug)}", "PATCH", {"checkout_url": url, "checkout_variant_id": str(v["id"])})
+        elif test and APPLY:
+            # the webhook finds the product by its variant ID: test orders need the test variant IDs, which are safe to
+            # store (they're not links and unlock nothing on their own); the live run replaces them
+            db(f"products?slug=eq.{urllib.parse.quote(slug)}", "PATCH", {"checkout_variant_id": str(v["id"])})
         found.add(slug)
         say(f"| {a['name']} | {slug} | {v['id']} | ${ls_price / 100:.2f} | ${shop_price / 100:.2f} | {note} |")
     for slug in sorted(set(shop) - found):
