@@ -76,7 +76,7 @@ const HE = {
   "See the presets and the plugin": "לפריסטים ולתוסף",
   "Pro editing,": "עריכה מקצועית,",
   "in a few clicks.": "בכמה קליקים.",
-  "The tools photographer Matan Wild edits with, for every kind of photography. Presets for a precise starting point, and plugins for Lightroom Classic and Photoshop that do the masking for you.": "פיתחתי את הכלים האלה במיוחד בשבילכם, לכל סוג צילום. פריסטים לנקודת פתיחה מדויקת, ותוספים ללייטרום קלאסיק ולפוטושופ שעושים את המסכות במקומכם.",
+  "The tools photographer Matan Wild edits with, for every kind of photography. Presets for a precise starting point, and plugins for Lightroom Classic and Photoshop that do the masking for you.": "פיתחתי את הכלים האלה במיוחד בשבילכם: פלאגין ללייטרום, פלאגין לפוטושופ, פריסטים ומדריכי צילום קצרים וקלים לשימוש.",
   "Not sure what makes a strong photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? פאנל התוסף לפוטושופ.",
   "50 Lightroom presets made from Matan Wild's own edits. 12 are adaptive: they find the subject, the sky and the background and treat each one on its own.": "50 פריסטים ללייטרום, מתוך העריכות של מתן וויילד עצמו. 12 מהם אדפטיביים: הם מוצאים את הנושא, את השמיים ואת הרקע, ומטפלים בכל אחד בנפרד.",
   "Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.": "בוחרים את הנושא, את השמיים או את הרקע. בוחרים אפקט. קובעים עוצמה. הפאנל בונה בשבילכם את המסכות ואת השכבות.",
