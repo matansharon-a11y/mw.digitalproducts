@@ -203,8 +203,6 @@ CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The bundles (the home page's bundle cards)
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
-           ("Presets + Photoshop Plugin Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", False),
-           ("Field Guides + Photoshop Plugin Panel", "Learn the shot, then finish it in Photoshop", "field-guides-panel", ["MWP Photoshop Plugin Panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
            ("The full set", "From the shot to the share", "full-set", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
 
 

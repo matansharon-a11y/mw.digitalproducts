@@ -33,7 +33,7 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
 </div></div></div><div class="mk-base"></div></div>''',
         "plugin": (f'<div class="mk mk-lap" lang="en" dir="ltr" data-no-i18n><div class="mk-lid"><div class="mk-scr"><div class="mk-plug">'
                    f'<img class="mk-plug-bg" src="{img(p["plug_img"])}" alt="{esc(k["choose"][1]["alt"])}" style="object-position:70% 30%">'
-                   f'<div class="mk-pw"><p class="mk-pw-bar"><i></i><i></i><i></i><span>MWP Panel · Lightroom Classic</span></p><p class="mk-pw-tabs">{tabs}</p>'
+                   f'<div class="mk-pw"><p class="mk-pw-bar"><i></i><i></i><i></i><span>MWP · Lightroom Classic</span></p><p class="mk-pw-tabs">{tabs}</p>'
                    f'<div class="mk-pw-looks">{looks}</div><p class="mk-pw-sl"><i></i></p></div></div></div></div><div class="mk-base"></div></div>'),
     }
 

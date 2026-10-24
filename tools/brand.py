@@ -142,7 +142,7 @@ def site_footer(lang="en"):
     he = lang == "he"
     links = "".join(f'<a href="{he_href(href) if he else href}">{h if he else e}</a>' for href, e, h in FOOTER_LINKS)
     credit = "כל הצילומים: מתן שרון · contact@matanwildphotography.com" if he else "All photos: Matan Wild · contact@matanwildphotography.com"
-    return (f'<footer class="site-foot">\n<div class="wrap container">\n<div class="sf-brand">{"אם־דבליו פוטו טורס" if he else "MW PHOTO TOURS"}</div>\n'
+    return (f'<footer class="site-foot">\n<div class="wrap container">\n<div class="sf-brand">{"MW - Photo Tours" if he else "MW PHOTO TOURS"}</div>\n'
             f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n<div class="sf-credit">{credit}</div>\n</div>\n</footer>')
 
 

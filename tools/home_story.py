@@ -8,28 +8,28 @@ CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4
 ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 
 CHAPTERS = [
-    dict(step="Shoot", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", href="field-guides/",
+    dict(step="Shoot", step_he="צילום", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", href="field-guides/",
          img="5275cc7bcd4fb7560d8f7163592e3122.jpg", pos="56% 55%", alt="Mountains at dusk, photographed by Matan Wild",
          title="Know what to aim for, before you press the shutter",
          body=["137 one-page lessons on composition, colour, light and planning. Each one is a real photo from the field, with a drawing that shows why it works.",
                "Every guide ends with drills, a checklist and a cheat sheet for your next shoot."],
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
-    dict(step="Sort", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", href="presets/#plugin",
+    dict(step="Sort", step_he="מיון", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", href="presets/#plugin",
          img="86b95f1970bb30f72735d73708d9c095.jpg", pos="80% 45%", alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",
          title="Your whole shoot, in one window",
          body=["Find the sharpest frame in every burst, build each trip into a collection per day, and keyword species from a list of 51,471. Then edit and export, all inside Lightroom Classic.",
                "Nothing is ever deleted. Everything it does is ordinary Lightroom settings, keywords and collections."],
          points=["Seven tabs, from the card to the post", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
          cta="See the plugin", box="86b95f1970bb30f72735d73708d9c095.jpg", gk="LIGHTROOM CLASSIC PLUGIN", sub="7 tabs · one window"),
-    dict(step="Edit", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
+    dict(step="Edit", step_he="מראה מוגמר", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets by Matan Wild",
          title="A natural starting point for every photo",
          body=["50 Lightroom presets made from Matan Wild's own edits. 12 are adaptive: they find the subject, the sky and the background and treat each one on its own.",
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
-    dict(step="Finish", tag="Photoshop panel", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
+    dict(step="Finish", step_he="פוטושופ", tag="Photoshop panel", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Photoshop, without the maze of menus",
          body=["Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
@@ -56,10 +56,15 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 SCENES = [home_devices.shoot, home_devices.sort, home_devices.edit, home_devices.finish]   # the same scene per chapter on phones
 
 
+def _step(c):
+    """The step's name in each language, written for that language (the Hebrew isn't a translation)."""
+    return f'<span class="only-en">{c["step"]}</span><span class="only-he" data-no-i18n>{c["step_he"]}</span>'
+
+
 def _chapter_text(i, c):
     lis = "".join(f"<li>{CHECK}<span>{p}</span></li>" for p in c["points"])
     return f"""<article class="st-art" data-i="{i}">
-<p class="st-step"><span class="st-num">0{i + 1}</span><span>{c["step"]}</span></p>
+<p class="st-step"><span class="st-num">0{i + 1}</span>{_step(c)}</p>
 <p class="st-tag">{c["tag"]}</p>
 <h3 class="st-name" data-no-i18n>MWP <span class="grad">{c["name"]}</span></h3>
 <p class="st-line">{c["title"]}</p>
@@ -89,7 +94,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="st-ambs" aria-hidden="true">{"".join(f'<img class="st-amb" data-i="{i}" src="{IMG}{c["img"]}" alt="">' for i, c in enumerate(CHAPTERS))}</div>
 <div class="st-ghosts" aria-hidden="true">{"".join(f'<span class="st-ghost" data-i="{i}">0{i + 1}</span>' for i, c in enumerate(CHAPTERS))}</div>
 <div class="st-texts">
-<div class="st-prog" aria-hidden="true">{"".join(f'<span data-i="{i}">{c["step"]}</span>' for i, c in enumerate(CHAPTERS))}</div>
+<div class="st-prog" aria-hidden="true">{"".join(f'<span data-i="{i}">{_step(c)}</span>' for i, c in enumerate(CHAPTERS))}</div>
 {"".join(_chapter_text(i, c) for i, c in enumerate(CHAPTERS))}
 </div>
 </div>
@@ -107,6 +112,7 @@ CLOSE = """<section class="st-close">
 </section>"""
 
 CSS = home_devices.CSS + """
+html[lang=he] .only-en{display:none!important}html:not([lang=he]) .only-he{display:none!important}
 /* ---------- landing: cinematic hero ---------- */
 .st-hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;background:#0A0908;isolation:isolate}
 .st-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 35%;z-index:-2;animation:stkb 24s cubic-bezier(.2,.6,.2,1) both;transform-origin:65% 40%}

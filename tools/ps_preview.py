@@ -69,9 +69,9 @@ def window(logo):
     )
     others = "".join(f'<div class="pw-pane" role="tabpanel" data-pw-pane="{t}" hidden><p class="pw-h">In this tab</p><ul class="pw-list">'
                      + "".join(f"<li>{CHECK}{esc(x)}</li>" for x in items)
-                     + '</ul><p class="pw-hint">Every button in it is in the User Manual (PDF) that comes with the panel.</p></div>'
+                     + '</ul><p class="pw-hint">Every button in it is in the User Manual that comes with the plugin.</p></div>'
                      for t, items in TABS.items())
-    return (f'<div class="pw" lang="en" dir="ltr" data-no-i18n data-pw aria-label="MWP Photoshop Plugin Panel in Photoshop (preview)">'
+    return (f'<div class="pw" lang="en" dir="ltr" data-no-i18n data-pw aria-label="MWP in Photoshop (preview)">'
             f'<div class="pw-top"><span class="pw-logo"><img src="{logo}" alt="" width="22" height="23"></span><b>MW PHOTO TOURS</b>'
             f'<span class="pw-icons">{"".join(icon(k) for k in ("undo", "redo", "ba", "help", "reset"))}</span></div>'
             f'<div class="pw-tabs" role="tablist">{tabs}</div>'

@@ -99,7 +99,7 @@ def window(start="looks"):
     tabs = "".join(f'<button type="button" role="tab" data-lrc-tab="{k}" aria-selected="{str(k == start).lower()}"{" class=on" if k == start else ""}>{t}</button>'
                    for k, t, _ in ps)
     body = "".join(f'<div class="lw-pane" role="tabpanel" data-lrc-pane="{k}"{"" if k == start else " hidden"}>{html}</div>' for k, _, html in ps)
-    return (f'<div class="lw" lang="en" dir="ltr" data-no-i18n aria-label="MWP Panel in Lightroom Classic (preview)">'
-            f'<div class="lw-bar"><i></i><i></i><i></i><span>MWP Panel</span></div>'
+    return (f'<div class="lw" lang="en" dir="ltr" data-no-i18n aria-label="MWP in Lightroom Classic (preview)">'
+            f'<div class="lw-bar"><i></i><i></i><i></i><span>MWP · Lightroom Classic</span></div>'
             f'<div class="lw-tabs" role="tablist">{tabs}</div><div class="lw-body">{body}</div>'
             f'<div class="lw-foot"><span>Select photos in Lightroom, then pick a tab.</span>{btn("Help")}</div></div>')
