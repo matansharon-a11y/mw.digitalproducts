@@ -478,6 +478,25 @@ function afterSignIn(user) {
   showDetails(user);
 }
 
+// Emailed links come in three forms, depending on the email template: ?code= (handled by the client itself),
+// ?token_hash=&type= and #access_token=&refresh_token= (handled here). Each signs the person in; a recovery link
+// then opens "Choose a new password". The codes are taken out of the address bar right away.
+if (supabase) {
+  const th = params.get("token_hash"), type = params.get("type");
+  const h = new URLSearchParams(location.hash.slice(1));
+  let used = false;
+  if (th && type) {
+    const { error } = await supabase.auth.verifyOtp({ token_hash: th, type });
+    used = true;
+    if (!error && type === "recovery") recovering = true;
+  } else if (h.get("access_token") && h.get("refresh_token")) {
+    const { error } = await supabase.auth.setSession({ access_token: h.get("access_token"), refresh_token: h.get("refresh_token") });
+    used = true;
+    if (!error && h.get("type") === "recovery") recovering = true;
+  }
+  if (used) history.replaceState(null, "", location.pathname + (recovering ? "?reset=1" : ""));
+}
+
 const user = await currentUser();
 if (user) afterSignIn(user);
 // A reset link that signed no one in (used already, over an hour old, or opened in another browser than the one that

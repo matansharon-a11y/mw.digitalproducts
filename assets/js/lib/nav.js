@@ -2,6 +2,23 @@
 // section in view gets the gold underline. Works on the home page and the sales pages.
 (function () {
   "use strict";
+  // An emailed account link (reset password, confirm email, sign in) that lands on another page than My downloads,
+  // e.g. the home page when the email's button points at the site's address: forward it there, code and all.
+  (function forwardAccountLink() {
+    if (/^\/account(\/|\.html)?$/.test(location.pathname)) return;
+    const q = new URLSearchParams(location.search), h = new URLSearchParams(location.hash.slice(1));
+    if (!(q.has("code") || q.has("token_hash") || h.has("access_token") || q.has("error_description") || h.has("error_description"))) return;
+    // a reset link says so in its type, or (a ?code= link) in the marker the browser kept when the reset was asked for
+    let asked = false;
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (/-code-verifier$/.test(k) && /\/recovery"?$/.test(localStorage.getItem(k) || "")) asked = true;
+      }
+    } catch (e) { /* storage blocked */ }
+    const recovery = ((q.get("type") || h.get("type")) === "recovery" || (q.has("code") && asked)) && !q.has("reset");
+    location.replace("/account/" + location.search + (recovery ? (location.search ? "&" : "?") + "reset=1" : "") + location.hash);
+  })();
   const root = document.documentElement;
   const onScroll = () => root.classList.toggle("nav-scrolled", window.scrollY > 12);
   onScroll();
