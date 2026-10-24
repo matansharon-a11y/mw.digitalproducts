@@ -172,8 +172,8 @@ def plan(title, sub, price, points, cta, href, hi=False):
 PAIRS = [
     ("Presets · Blue Hour", "3c14b23dbb00f051684ad60fb205ed10.jpg", "fbaf19aea2af10f26b2949ab31fff094.jpg", "Light and Scene", "Blue Hour", "100%", "FINAL · MWP PRESET"),
     ("Presets · Macro Ground", "7c359a77f23f632596ebda32f1e9a72f.jpg", "84c2340ddf79f1f703f8c905e9b986be.jpg", "Light and Scene", "Macro Ground", "100%", "FINAL · MWP PRESET"),
-    ("Panel · Subject Pop", "c339384fe0c6d91e7b1388d0fed7d1ae.jpg", "52e0c3d2c90942f72d31faa689449bd0.jpg", "Subject", "Pop", "60%", "FINAL · MWP PANEL"),
-    ("Panel · Background Darken", "af0d1799831d0417d338c0b162975a7b.jpg", "95e0579188ba924ac89563eb21facef6.jpg", "Background", "Darken", "45%", "FINAL · MWP PANEL"),
+    ("Panel · Subject Pop", "c339384fe0c6d91e7b1388d0fed7d1ae.jpg", "52e0c3d2c90942f72d31faa689449bd0.jpg", "Subject", "Pop", "60%", "FINAL · MWP PHOTOSHOP PLUGIN PANEL"),
+    ("Panel · Background Darken", "af0d1799831d0417d338c0b162975a7b.jpg", "95e0579188ba924ac89563eb21facef6.jpg", "Background", "Darken", "45%", "FINAL · MWP PHOTOSHOP PLUGIN PANEL"),
 ]
 
 LD = __import__("json").dumps([
@@ -249,13 +249,13 @@ html = f'''<!doctype html>
 <div class="head">
 <p class="kick">Bundles</p>
 <h2 class="h2">Shoot with the guides. <span class="b grad">Finish with the tools.</span></h2>
-<p class="lead">The Field Guides help you take a stronger photo. MWP Presets and MWP Panel help you finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.</p>
+<p class="lead">The Field Guides help you take a stronger photo. MWP Presets and MWP Photoshop Plugin Panel help you finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.</p>
 </div>
 <div class="plans">
 {plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
-{plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "field-guides/#buy")}
-{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Panel: the Photoshop panel"], "Get the bundle", "panel/#buy")}
-{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["MWP Presets and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
+{plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "field-guides/#buy")}
+{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", "panel/#buy")}
+{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>
 </section>
@@ -277,11 +277,11 @@ html = f'''<!doctype html>
 </div>
 <div class="faq">
 <details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/presets/#plugin">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It comes with MWP Presets, in one purchase.</div></details>
-<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Panel</a>.</div></details>
+<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you edit in Lightroom, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Photoshop Plugin Panel</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>
 <details><summary>Do I need an account?</summary><div>Yes. You create one with your email and a password before you pay, so your files and future updates are always waiting for you.</div></details>
-<details><summary>Do they work in Photoshop (Beta)?</summary><div>Yes. MWP Panel installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.</div></details>
+<details><summary>Do they work in Photoshop (Beta)?</summary><div>Yes. MWP Photoshop Plugin Panel installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.</div></details>
 <details><summary>What if something doesn't work for me?</summary><div>Write to <a href="/support/">support</a> within 14 days of purchase. We'll help you get it working, and if we can't, we'll refund you. The <a href="/legal/#refunds">refund policy</a> has the details.</div></details>
 </div>
 </div>

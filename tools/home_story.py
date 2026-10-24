@@ -22,13 +22,13 @@ CHAPTERS = [
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
-    dict(step="Finish", tag="Photoshop panel", name="Panel", slug="mwp-panel", href="panel/",
+    dict(step="Finish", tag="Photoshop panel", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Photoshop, without the maze of menus",
          body=["Pick the animal, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
                "Your original stays locked, and one undo takes back a whole button."],
          points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
-         cta="See MWP Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
+         cta="See MWP Photoshop Plugin Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
 ]
 
 HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("st-wait");var go=function(){{h.classList.remove("st-wait")}};setTimeout(go,1500);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go)}})();</script>
@@ -67,7 +67,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
 <h2 class="h2">Four tools. <span class="b grad">Start where you get stuck.</span></h2>
-<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Panel.</p>
+<p class="lead">Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

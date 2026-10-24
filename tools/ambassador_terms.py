@@ -4,17 +4,17 @@ Change the wording only with Matan's OK, and when you do, bump TERMS_VERSION her
 supabase/functions/beta/index.ts (each acceptance records the version).
 Blocks: ("p", html) a paragraph, ("ul", [html, ...]) a list. Only <strong> and <a> tags are used."""
 
-TERMS_VERSION = "2026-10-24.6"   # .6: the Lightroom Classic plugin is included (Matan, 24 Oct 2026). .5: the monthly reel is optional. .2: the Field Guides are included; Facebook page is MW Photo Tours. .3: guides are read online. .4: Hebrew text writes MWP in Latin letters
+TERMS_VERSION = "2026-10-24.7"   # .7: MWP Photoshop Plugin Panel (the new name), and the four tools in the shop's order (Matan, 24 Oct 2026). .6: the Lightroom Classic plugin is included (Matan, 24 Oct 2026). .5: the monthly reel is optional. .2: the Field Guides are included; Facebook page is MW Photo Tours. .3: guides are read online. .4: Hebrew text writes MWP in Latin letters
 
 TERMS_DATE = "Oct 24, 2026"
 TERMS_INTRO = [
-    "The MWP Ambassador Program gives a small group of selected photographers free access to the MWP - PS Panel, the MWP - Signature Preset Pack, the MWP Lightroom Classic Plugin and the MWP Field Guides. In return, we ask ambassadors to create with them, share their work, tell their audience about the experience, and send us feedback and bug reports that help us improve the tools. These terms explain what you get, what we ask, and how we both use the content.",
+    "The MWP Ambassador Program gives a small group of selected photographers free access to the MWP Lightroom Classic Plugin, the MWP Photoshop Plugin Panel, the MWP - Signature Preset Pack and the MWP Field Guides. In return, we ask ambassadors to create with them, share their work, tell their audience about the experience, and send us feedback and bug reports that help us improve the tools. These terms explain what you get, what we ask, and how we both use the content.",
     "By accepting your access, you agree to these terms.",
 ]
 TERMS = [
     ("Your free license", [
         ("p", 'MW Photo Tours ("MWP", "we") grants you a free, personal, non-exclusive, non-transferable, lifetime license to use:'),
-        ("ul", ["MWP - PS Panel", "MWP - Signature Preset Pack", "MWP Lightroom Classic Plugin", "MWP Field Guides, to read online in your account (they can't be downloaded)", "All future updates to all four, for life"]),
+        ("ul", ["MWP Lightroom Classic Plugin", "MWP Photoshop Plugin Panel", "MWP - Signature Preset Pack", "MWP Field Guides, to read online in your account (they can't be downloaded)", "All future updates to all four, for life"]),
         ("p", "You may use them on your own photos, for personal and professional work, including paid client work. The license is for you only. It covers up to 2 devices."),
     ]),
     ("What we invite you to do", [
@@ -78,13 +78,13 @@ TERMS = [
 # The same terms in Hebrew, chapter for chapter. Handles, hashtags and the email stay as they're typed.
 TERMS_DATE_HE = "24 באוקטובר 2026"
 TERMS_INTRO_HE = [
-    "תוכנית השגרירים של MWP נותנת לקבוצה קטנה של צלמים נבחרים גישה חינמית לפאנל של MWP, לפריסטים של MWP, לתוסף של MWP ללייטרום קלאסיק ולמדריכי השטח של MWP. בתמורה, אנחנו מבקשים מהשגרירים ליצור איתם, לשתף את העבודות, לספר לקהל שלהם על החוויה, ולשלוח לנו משוב ודיווחי תקלות שעוזרים לנו לשפר את הכלים. התנאים האלה מסבירים מה מקבלים, מה אנחנו מבקשים, ואיך שנינו משתמשים בתוכן.",
+    "תוכנית השגרירים של MWP נותנת לקבוצה קטנה של צלמים נבחרים גישה חינמית לתוסף של MWP ללייטרום קלאסיק, לפאנל התוסף לפוטושופ של MWP, לפריסטים של MWP ולמדריכי השטח של MWP. בתמורה, אנחנו מבקשים מהשגרירים ליצור איתם, לשתף את העבודות, לספר לקהל שלהם על החוויה, ולשלוח לנו משוב ודיווחי תקלות שעוזרים לנו לשפר את הכלים. התנאים האלה מסבירים מה מקבלים, מה אנחנו מבקשים, ואיך שנינו משתמשים בתוכן.",
     "כשאתם מאשרים את הגישה, אתם מסכימים לתנאים האלה.",
 ]
 TERMS_HE = [
     ("הרישיון החינמי שלכם", [
         ("p", 'אם־דבליו פוטו טורס ("MWP", "אנחנו") מעניקה לכם רישיון חינמי, אישי, לא בלעדי, שאינו ניתן להעברה ולכל החיים, לשימוש ב:'),
-        ("ul", ["הפאנל של MWP", "הפריסטים של MWP", "התוסף של MWP ללייטרום קלאסיק", "מדריכי השטח של MWP, לקריאה אונליין בחשבון שלכם (אי אפשר להוריד אותם)", "כל העדכונים העתידיים לארבעתם, לכל החיים"]),
+        ("ul", ["התוסף של MWP ללייטרום קלאסיק", "פאנל התוסף לפוטושופ של MWP", "הפריסטים של MWP", "מדריכי השטח של MWP, לקריאה אונליין בחשבון שלכם (אי אפשר להוריד אותם)", "כל העדכונים העתידיים לארבעתם, לכל החיים"]),
         ("p", "מותר להשתמש בהם בתמונות שלכם, לעבודה אישית ומקצועית, כולל עבודות בתשלום ללקוחות. הרישיון הוא לכם בלבד, ומכסה עד 2 מכשירים."),
     ]),
     ("מה אנחנו מזמינים אתכם לעשות", [

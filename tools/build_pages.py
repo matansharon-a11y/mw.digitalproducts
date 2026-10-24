@@ -202,10 +202,10 @@ page("index.html",
 CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The bundles (the home page's bundle cards)
-BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
-           ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["MWP Presets: 50 presets and 33 LUTs", "The Lightroom Classic plugin", "MWP Panel: the Photoshop panel"], "Get the bundle", False),
-           ("Field Guides + Panel", "Learn the shot, then finish it in Photoshop", "field-guides-panel", ["MWP Field Guides: 4 PDF guides, 137 lessons", "MWP Panel: the Photoshop panel"], "Get the bundle", False),
-           ("The full set", "From the shot to the share", "full-set", ["MWP Presets and the Lightroom Classic plugin", "MWP Panel: the Photoshop panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
+BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
+           ("Presets + Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", False),
+           ("Field Guides + Panel", "Learn the shot, then finish it in Photoshop", "field-guides-panel", ["MWP Photoshop Plugin Panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
+           ("The full set", "From the shot to the share", "full-set", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
 
 
 def _img(prefix):
@@ -213,54 +213,54 @@ def _img(prefix):
     return "assets/pages/img/" + os.path.basename(sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix[:8] + "*")))[0])
 
 
-# The four products (Oct 2026 makeover). MWP Presets and the Lightroom Classic plugin are sold only together, as one
-# purchase (Jeinna, 23 Oct 2026): their two columns share one price and one Add to cart (mwp-presets, which unlocks the
-# plugin). The shop is the comparison table and the bundles; the product cards came off on 23 Oct 2026 (Jeinna).
-# The products themselves are presented on their pages.
+# The four products (Oct 2026 makeover), always in this order (Matan, 24 Oct 2026): the Lightroom Classic plugin,
+# MWP Photoshop Plugin Panel, MWP Presets, MWP Field Guides. MWP Presets and the plugin are sold only together, as one
+# purchase (Jeinna, 23 Oct 2026): the plugin's column shows no price and no button of its own (with_: the product it
+# comes with), and buying MWP Presets unlocks it. The shop is the comparison table and the bundles; the product cards
+# came off on 23 Oct 2026 (Jeinna). The products themselves are presented on their pages.
 PRODUCTS = [
-    dict(key="presets", href="presets/", slug="mwp-presets", type="Preset pack · Lightroom and Camera Raw", name="Presets",
-         line="50 presets from Matan Wild's own edits, for desktop and phone.",
-         works="Lightroom · Lightroom Classic · Mobile · Camera Raw",
-         alone="No plugin needed.", cta="Add MWP Presets to cart", more="Details", buy=2),
     dict(key="plugin", href="presets/#plugin", slug="mwp-lightroom-plugin", type="Plugin · Lightroom Classic 13 or newer", name="Lightroom Classic Plugin",
          line="Cull, keyword, edit and export a whole shoot in one window.",
          works="Lightroom Classic 13+ · Mac and Windows",
-         alone="No presets needed.", more="Details", buy=0),   # bought with MWP Presets
-    dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop panel", name="Panel",
+         alone="No presets needed.", more="Details", with_="mwp-presets"),   # bought with MWP Presets, never alone
+    dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop panel", name="Photoshop Plugin Panel",
          line="Pick the animal, the sky or the background. The panel does the masks.",
          works="Photoshop 2023+ · Mac and Windows",
          cta="Add to cart", more="See the panel"),
+    dict(key="presets", href="presets/", slug="mwp-presets", type="Preset pack · Lightroom and Camera Raw", name="Presets",
+         line="50 presets from Matan Wild's own edits, for desktop and phone.",
+         works="Lightroom · Lightroom Classic · Mobile · Camera Raw",
+         alone="No plugin needed.", cta="Add MWP Presets to cart", more="Details"),
     dict(key="guides", href="field-guides/", slug="mwp-field-guides", type="PDF field guides", name="Field Guides",
          line="Know what to aim for before you press the shutter.",
          works="4 PDF guides · English or Hebrew",
          cta="Add to cart", more="See the guides"),
 ]
-# The comparison: one row per question a buyer asks, one column per product
+# The comparison: one row per question a buyer asks, one column per product (in PRODUCTS' order)
 COMPARE = [
-    ("What it is", ["Presets and LUTs: a finished look in one click", "A plugin: a window of tools inside Lightroom Classic", "A panel: a window of tools inside Photoshop", "PDF guides: lessons for the shoot itself"]),
-    ("Works in", ["Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Any PDF reader: computer, tablet or phone"]),
-    ("What you get", ["50 presets, 50 mobile files, 33 LUTs", "The plugin, built-in help, video tutorials", "The panel, a 21-page User Manual, an Installation Guide", "4 guides, 137 lessons, in English or Hebrew"]),
-    ("How you buy it", ["Together, in one purchase, or in a bundle", None, "On its own, or in a bundle", "On its own, or in a bundle"]),   # None: joined to the cell before
+    ("What it is", ["A plugin: a window of tools inside Lightroom Classic", "A panel: a window of tools inside Photoshop", "Presets and LUTs: a finished look in one click", "PDF guides: lessons for the shoot itself"]),
+    ("Works in", ["Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Any PDF reader: computer, tablet or phone"]),
+    ("What you get", ["The plugin, built-in help, video tutorials", "The panel, a 21-page User Manual, an Installation Guide", "50 presets, 50 mobile files, 33 LUTs", "4 guides, 137 lessons, in English or Hebrew"]),
+    ("How you buy it", ["With MWP Presets, in one purchase, or in a bundle", "On its own, or in a bundle", "With the plugin, in one purchase, or in a bundle", "On its own, or in a bundle"]),
 ]
 
 
 def _compare():
     cols = "".join(f'<th scope="col"><a href="{d["href"]}">{("MWP " + d["name"]) if d["key"] != "plugin" else "Lightroom Classic Plugin"}</a><span>{d["type"]}</span></th>' for d in PRODUCTS)
-    def cells(ans):   # an answer of None joins the cell before it
-        out = []
-        for a in ans:
-            if a is None: out[-1][1] += 1
-            else: out.append([a, 1])
-        return "".join(f'<td{f" colspan={n}" if n > 1 else ""}>{a}</td>' for a, n in out)
-    rows = "".join(f'<tr><th scope="row">{q}</th>{cells(ans)}</tr>' for q, ans in COMPARE)
-    sold = [d for d in PRODUCTS if d.get("buy", 1)]   # the presets' cell spans the plugin's column too
-    span = lambda d: f' colspan="{d["buy"]}"' if d.get("buy", 1) > 1 else ""
-    both = lambda d: '<span>The presets and the plugin, one purchase</span>' if d.get("buy", 1) > 1 else ""
-    price = ("<tr class=\"prices\"><th scope=\"row\">Price</th>"
-             + "".join(f'<td{span(d)}><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b>{both(d)}</td>' for d in sold) + "</tr>"
-             + '<tr class="buy"><td></td>' + "".join(f'<td{span(d)}><a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">Add to cart</a><a class="sp-more" href="{d["href"]}">Details</a></td>' for d in sold) + "</tr>")
+    rows = "".join(f'<tr><th scope="row">{q}</th>{"".join(f"<td>{a}</td>" for a in ans)}</tr>' for q, ans in COMPARE)
+    def price(d):   # the plugin has no price of its own: it comes with MWP Presets
+        if d.get("with_"):
+            return '<td><b class="sp-with">With MWP Presets</b><span>One purchase, one price</span></td>'
+        both = '<span>The presets and the plugin, one purchase</span>' if d["slug"] == "mwp-presets" else ""
+        return f'<td><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b>{both}</td>'
+    def buy(d):
+        if d.get("with_"):
+            return f'<td><a class="sp-more" href="{d["href"]}">Details</a></td>'
+        return f'<td><a class="btn sp-buy" href="#buy" data-add-to-cart="{d["slug"]}">Add to cart</a><a class="sp-more" href="{d["href"]}">Details</a></td>'
+    prices = ('<tr class="prices"><th scope="row">Price</th>' + "".join(price(d) for d in PRODUCTS) + "</tr>"
+              + '<tr class="buy"><td></td>' + "".join(buy(d) for d in PRODUCTS) + "</tr>")
     return (f'<div class="sp-table" tabindex="0" role="region" aria-label="Compare the four products"><table><thead>'
-            f'<tr><td></td>{cols}</tr></thead><tbody>{rows}{price}</tbody></table></div>')
+            f'<tr><td></td>{cols}</tr></thead><tbody>{rows}{prices}</tbody></table></div>')
 
 
 def _itemlist():
@@ -279,8 +279,8 @@ def _bundle(name, sub, slug, pts, cta, hi):
             f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
 
 
-page("shop.html", "Wildlife Lightroom Presets, Lightroom Classic Plugin, Photoshop Panel &amp; Guides · MWP Shop",
- "Four tools for wildlife photographers by Matan Wild: Lightroom presets and LUTs, a Lightroom Classic plugin, a Photoshop panel and PDF field guides. Compare them, or save with a bundle.",
+page("shop.html", "Lightroom Classic Plugin, Photoshop Plugin Panel, Lightroom Presets &amp; Guides for Wildlife · MWP Shop",
+ "Four tools for wildlife photographers by Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and LUTs, and PDF field guides. Compare them, or save with a bundle.",
  f"""  <section class="page-hero sp-hero">
     <div class="container">
       <p class="kick">The MWP shop</p>
@@ -564,7 +564,7 @@ page("account.html", "My downloads · MWP",
           <form class="form" id="feedback-form" novalidate>
             <div class="details-grid">
             <div class="field"><label for="fb-kind">Type</label><select class="input" id="fb-kind" name="kind"><option value="Bug">Bug</option><option value="Recommendation">Recommendation</option><option value="Report">Report</option><option value="Other">Other</option></select></div>
-            <div class="field"><label for="fb-product">About</label><select class="input" id="fb-product" name="product"><option value="MWP Presets">MWP Presets</option><option value="MWP Panel">MWP Panel</option><option value="MWP Field Guides">MWP Field Guides</option><option value="General">General</option></select></div>
+            <div class="field"><label for="fb-product">About</label><select class="input" id="fb-product" name="product"><option value="MWP Presets">MWP Presets</option><option value="MWP Panel">MWP Photoshop Plugin Panel</option><option value="MWP Field Guides">MWP Field Guides</option><option value="General">General</option></select></div>
             <div class="field field--full"><label for="fb-message">Your message</label><textarea class="input" id="fb-message" name="message" rows="5" placeholder="What happened, and what did you expect? Steps to reproduce help a lot."></textarea></div>
             </div>
             <div class="details-actions"><button class="btn" type="submit">Send feedback</button><p class="form-status" role="status"></p></div>
@@ -645,8 +645,8 @@ page("testers.html", "Testers · MWP",
         <p class="t-hi" id="t-hi"></p>
         <div class="library" id="t-lib" aria-live="polite"></div>
         <div class="terms-box">
-          <div><h2 class="h3">MWP Panel</h2>
-          <p class="meta">In Photoshop, open MWP Panel and sign in with this email. It works on up to 2 computers.</p></div>
+          <div><h2 class="h3">MWP Photoshop Plugin Panel</h2>
+          <p class="meta">In Photoshop, open MWP Photoshop Plugin Panel and sign in with this email. It works on up to 2 computers.</p></div>
         </div>
         <p class="acct-note">Your copies are made for you and carry your name. Please don't share them. Download links work for 5 minutes. Trouble? <a class="link" href="/support/">Contact support</a>.</p>
       </div>
@@ -664,7 +664,7 @@ page("testers.html", "Testers · MWP",
   "</style>")
 
 page("support.html", "Help with downloads, installing and refunds · MWP",
- "Help with downloading, installing or using MWP Presets, MWP Panel and the Field Guides. A person replies within one business day.",
+ "Help with downloading, installing or using MWP Presets, MWP Photoshop Plugin Panel and the Field Guides. A person replies within one business day.",
  f"""  <section class="page-hero">
     <div class="container container--text stack">
       <p class="kick">Help</p>
@@ -755,7 +755,7 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
       <h2 id="privacy">Privacy</h2>
       <p>We collect only what we need to sell and deliver your products: your name, email, country and what you bought. In My details you can also add a phone number; it's optional. Payment details are handled by the checkout provider and never reach us.</p>
       <p><strong>Your personal copy.</strong> Presets and field guides are made for you: your name, email and licence number (for example MWP-1A2B3C4D) are added at the foot of each PDF page and in the file's details, as a note inside preset and LUT files, and in a LICENSED-TO.txt file in the pack. It doesn't change how the files work; it lets a shared copy be traced back to its licence.</p>
-      <p><strong>Downloads and computers.</strong> Each pack can be downloaded up to 5 times a day. MWP Panel works on up to 3 computers; for each one we keep a computer ID, its name and system (for example "Dana-MacBook (Mac)") and when it was last used. You can see and remove computers in My downloads. For downloads and activations we keep a scrambled form of your IP address, never the address itself.</p>
+      <p><strong>Downloads and computers.</strong> Each pack can be downloaded up to 5 times a day. MWP Photoshop Plugin Panel works on up to 3 computers; for each one we keep a computer ID, its name and system (for example "Dana-MacBook (Mac)") and when it was last used. You can see and remove computers in My downloads. For downloads and activations we keep a scrambled form of your IP address, never the address itself.</p>
       <p><strong>Support.</strong> When you contact support we keep your name, email and message so we can answer you.</p>
       <p>We use your email to deliver your files, answer support requests and, if you agreed, send occasional news and new releases. You can unsubscribe from any email. The site uses no advertising or analytics trackers; your browser only remembers your language, your cart and your sign-in.</p>
       <p>Our service providers: Supabase (database, sign-in and file storage), Lemon Squeezy (checkout), Resend (account emails), MailerLite (newsletters), Make.com and monday.com (order and support handling). To see, correct or delete your data, write to support.</p>
@@ -772,7 +772,7 @@ page("404.html", "Page not found · MWP", "This page doesn't exist.",
         <p class="lead">The link may be old or mistyped. Everything in the shop is one click away.</p>
       </div>
       <div class="row"><a class="btn" href="/shop/">Browse all products</a><a class="btn btn--ghost" href="/">Home</a></div>
-      <p class="muted"><a class="link" href="/presets/">Lightroom presets</a> · <a class="link" href="/panel/">Photoshop panel</a> · <a class="link" href="/field-guides/">Photography guides</a></p>
+      <p class="muted"><a class="link" href="/presets/#plugin">Lightroom Classic plugin</a> · <a class="link" href="/panel/">Photoshop plugin panel</a> · <a class="link" href="/presets/">Lightroom presets</a> · <a class="link" href="/field-guides/">Photography guides</a></p>
     </div>
   </section>""", "static.js")
 print("pages written")

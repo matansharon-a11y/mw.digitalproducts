@@ -128,7 +128,7 @@ function welcome(lang: "en" | "he", name: string, acceptUrl: string) {
 <p>כל מה שצריך כדי להתחיל:</p>
 <ul>
 <li><b>הצעד הראשון:</b> <a href="${acceptUrl}">קוראים ומאשרים את תנאי תוכנית השגרירים</a>. ברגע שמאשרים, הכלים שלכם מוכנים.</li>
-<li><b>הכלים:</b> אחרי האישור נכנסים ל<a href="${ACCOUNT}?lang=he">הורדות שלי</a> עם המייל הזה (או פותחים איתו חשבון) ומורידים את הפריסטים של MWP ואת הפאנל של MWP. בפוטושופ פותחים את הפאנל ומתחברים עם אותו מייל. הרישיון לכל החיים, כולל כל העדכונים, על עד 2 מכשירים.</li>
+<li><b>הכלים:</b> אחרי האישור נכנסים ל<a href="${ACCOUNT}?lang=he">הורדות שלי</a> עם המייל הזה (או פותחים איתו חשבון) ומורידים את הפריסטים של MWP ואת פאנל התוסף לפוטושופ של MWP. בפוטושופ פותחים את הפאנל ומתחברים עם אותו מייל. הרישיון לכל החיים, כולל כל העדכונים, על עד 2 מכשירים.</li>
 <li><b>חדש: הפלאגין של MWP ללייטרום קלאסיק.</b> מוצר נפרד בחנות, לרכישה לבד או בחבילה: <a href="https://shop.mw.photography/lightroom-classic/he/">לפלאגין</a>. עובד בלייטרום קלאסיק 13 ומעלה, במק ובווינדוס.</li>
 <li><b>סרטוני הדרכה, כדאי לצפות לפני שמתחילים:</b><br>הפאנל לפוטושופ: <a href="https://youtu.be/3tCNcjvVFII">בעברית</a> · <a href="https://youtu.be/TyVnLIjf84Y">באנגלית</a><br>הסרטונים נמצאים גם ב"הורדות שלי", מתחת לכל מוצר.</li>
 <li><b>שלושת החודשים הראשונים:</b> 3 פוסטים בחודש ורילס אחד אם תרצו, וגם סטורי אחד בשבוע.</li>
@@ -147,7 +147,7 @@ function welcome(lang: "en" | "he", name: string, acceptUrl: string) {
 <p>Here's everything you need to get started:</p>
 <ul>
 <li><b>First step:</b> <a href="${acceptUrl}">read and accept the Ambassador Program terms</a>. As soon as you accept, your tools are ready.</li>
-<li><b>Your tools:</b> then sign in to <a href="${ACCOUNT}">My downloads</a> with this email (or create your account with it) and download the MWP - Signature Preset Pack and the MWP - PS Panel. In Photoshop, open the panel and sign in with the same email. Your license is for life, with all future updates, on up to 2 devices.</li>
+<li><b>Your tools:</b> then sign in to <a href="${ACCOUNT}">My downloads</a> with this email (or create your account with it) and download the MWP - Signature Preset Pack and the MWP Photoshop Plugin Panel. In Photoshop, open the panel and sign in with the same email. Your license is for life, with all future updates, on up to 2 devices.</li>
 <li><b>New: the MWP plugin for Lightroom Classic.</b> A separate product in the shop, on its own or in a bundle: <a href="https://shop.mw.photography/lightroom-classic/">see the plugin</a>. It needs Lightroom Classic 13 or newer, on Mac or Windows.</li>
 <li><b>Video tutorials, worth watching before you start:</b><br>Photoshop panel: <a href="https://youtu.be/TyVnLIjf84Y">English</a> · <a href="https://youtu.be/3tCNcjvVFII">Hebrew</a><br>You'll also find them in My downloads, under each product.</li>
 <li><b>Your first 3 months:</b> 3 posts and 1 optional reel a month, plus 1 story a week.</li>

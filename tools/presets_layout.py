@@ -44,7 +44,8 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
     out = []
     # ---------------------------------------------------------------- top: the two products
     cards = ""
-    for n, (key, cd) in enumerate(zip(("presets", "plugin"), k["choose"])):
+    # the plugin first, then the presets (Matan, 24 Oct 2026: the products always in this order); choose holds presets, plugin
+    for n, (key, cd) in enumerate((("plugin", k["choose"][1]), ("presets", k["choose"][0]))):
         cards += (f'<article class="lr-card in" style="--i:{n + 2}"><a class="lr-media" href="#{key}" tabindex="-1" aria-hidden="true">{mock[key]}</a>'
                   f'<div class="lr-body"><p class="lr-type">{esc(cd["type"])}</p><h2 class="lr-name">{esc(cd["name"])}</h2>'
                   f'<p class="lr-line">{esc(cd["line"])}</p><p class="lr-meta">{esc(cd["meta"])}</p>'
@@ -77,7 +78,7 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
     sets = "".join(f'''<figure class="lr-set" data-r style="--d:{n * .06:.2f}s"><div class="lr-set-ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy" style="object-position:{p["card_focus"][n]}"></div>
 <figcaption>{esc(t)}</figcaption></figure>''' for n, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
     P = k["pre"]
-    out.append(f'''<section class="sec lr-sec" id="presets">
+    presets_sec = (f'''<section class="sec tint lr-sec" id="presets">
 <div class="wrap">
 {head("presets", k["choose"][0], P["line"])}
 <div class="lr-vis">{gallery(slides, c["pairs"])}</div>
@@ -92,7 +93,7 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
                     for n, (t, d) in enumerate(g["lrc"]))
     G = k["plug"]
     steps = [(title, " · ".join(g["lrc"][i][0] for i in idx)) for title, line, idx in g["phases"]]
-    out.append(f'''<section class="sec tint lr-sec" id="plugin">
+    out.append(f'''<section class="sec lr-sec" id="plugin">
 <div class="wrap">
 {head("plugin", k["choose"][1], G["line"])}
 <div class="lrc lr-vis" data-lrc data-r><div class="lrc-stage">{lrc_window()}</div>
@@ -100,4 +101,5 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
 {three(steps)}
 </div>
 </section>''')
+    out.append(presets_sec)   # after the plugin
     return out
