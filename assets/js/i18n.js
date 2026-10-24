@@ -79,7 +79,7 @@ const HE = {
   "Lightroom plugin": "תוסף ללייטרום",
   // the Lightroom Classic plugin chapter on the home page (24 Oct 2026)
   "Sort": "מיון",
-  "Your whole shoot, in one window": "מהכרטיס ועד הפרסום",
+  "Your whole shoot, in one window": "מהמיון ועד הפרסום",
   "Find the sharpest frame in every burst, build each trip into a collection per day, and keyword species from a list of 51,471. Then edit and export, all inside Lightroom Classic.": "מוצאים את הפריים החד בכל רצף, מסדרים כל טיול באוספים לפי ימים, ומתייגים מתוך מאגר של 51,471 מינים. אחר כך עורכים ומייצאים, בלי לצאת מלייטרום קלאסיק.",
   "Nothing is ever deleted. Everything it does is ordinary Lightroom settings, keywords and collections.": "שום תמונה לא נמחקת, וכל שינוי נשאר בלייטרום, פתוח לעריכה.",
   "Lightroom Classic 13 or newer · Mac and Windows": "לייטרום קלאסיק 13 ומעלה · מק ו־ווינדוס",
@@ -1029,7 +1029,7 @@ const HE = {
   "MWP Presets and the Lightroom Classic plugin": "הפריסטים של MWP והתוסף ללייטרום קלאסיק",
   "Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.": "לא בטוחים מה עושה צילום חיות בר חזק? מתחילים במדריכי השטח. לייטרום מבלבל? הפריסטים של MWP, או התוסף שלנו ללייטרום קלאסיק. פוטושופ מרגיש כמו מבוך של תפריטים? התוסף לפוטושופ של MWP.",
   "Yes. Our": "כן. ה",
-  "(Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It comes with MWP Presets, in one purchase.": "שלנו (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילומים שלמים, מהכרטיס ועד הפרסום. הוא מגיע עם הפריסטים של MWP, ברכישה אחת.",
+  "(Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It comes with MWP Presets, in one purchase.": "שלנו (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילומים שלמים, מהמיון ועד הפרסום. הוא מגיע עם הפריסטים של MWP, ברכישה אחת.",
   "Lightroom Presets": "פריסטים ללייטרום",
   "50 presets from Matan Wild's own edits, for desktop and phone.": "50 פריסטים מתוך העריכות של מתן שרון עצמו, למחשב ולטלפון.",
   "Lightroom · Lightroom Classic · Mobile · Camera Raw": "לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו",
