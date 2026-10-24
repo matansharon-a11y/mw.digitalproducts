@@ -264,8 +264,9 @@ async function goToCheckout(link) {
   // Checkout uses the account's email, and carries the account's id: the purchase lands in this account even if
   // they type another email at checkout (checkout-webhook). The visit's utm_source goes along for the reports.
   const url = new URL(link.href, location.href);
-  // only ever hand the buyer's email and id to a Lemon Squeezy checkout page (or our own checkout domain on it), whatever the price list says
-  if (url.protocol !== "https:" || !/(^|\.)lemonsqueezy\.com$/.test(url.hostname)) { alert(T("Checkout isn't available right now. Please contact support.", "התשלום לא זמין כרגע. אפשר לפנות לתמיכה.")); return; }
+  // only ever hand the buyer's email and id to a Lemon Squeezy checkout page (or the store's own checkout domain
+  // there), whatever the price list says
+  if (url.protocol !== "https:" || !(/(^|\.)lemonsqueezy\.com$/.test(url.hostname) || url.hostname === "checkout.mw.photography")) { alert(T("Checkout isn't available right now. Please contact support.", "התשלום לא זמין כרגע. אפשר לפנות לתמיכה.")); return; }
   url.searchParams.set("checkout[email]", user.email);
   url.searchParams.set("checkout[custom][user_id]", user.id);
   let utm = null;
