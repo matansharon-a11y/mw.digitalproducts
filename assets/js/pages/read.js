@@ -104,6 +104,10 @@ function render() {
   const lang = he() ? "he" : "en";
   list = all.map((g, i) => i).filter((i) => all[i].lang === lang);
   if (!list.length) list = all.map((g, i) => i);   // languages not marked yet: show them all
+  // Matan, 25 Oct 2026: Planning, Composition, Light, Colour (unknown titles keep their place after these)
+  const ORDER = [/plan|תכנון/i, /compos|קומפוזיצ/i, /light|אור/i, /colou?r|צבע/i];
+  const rank = (i) => { const k = ORDER.findIndex((re) => re.test(all[i].title || "")); return k < 0 ? ORDER.length : k; };
+  list = list.map((i, n) => [i, n]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]).map(([i]) => i);
   if (!list.length) { message(`<p>${esc(T("The guides aren't ready to read online yet.", "המדריכים עוד לא מוכנים לקריאה אונליין."))}</p>`); return; }
   body.innerHTML = `
     <div class="rd-bar" id="rd-bar">
