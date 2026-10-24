@@ -4,19 +4,33 @@
 2. Matches each one to a shop product by its name (MWP Presets, MWP Panel, MWP Field Guides, the bundles with
    "+", and MWP Full Set) and writes its checkout link and variant ID into the shop's products table.
 3. Makes sure the store has the order webhook (order_created, order_refunded) to the shop's checkout-webhook
-   function, signed with CHECKOUT_WEBHOOK_SECRET.
+   function. Its signing secret is made here (40 random letters and digits), set on the function as
+   LS_WEBHOOK_SECRET_TEST or LS_WEBHOOK_SECRET_LIVE and given to Lemon Squeezy: no one ever sees or types it.
+   A new one is made whenever the webhook is created, or on request (workflow input new_signing_secret).
 Prices are compared, never changed: a product whose Lemon Squeezy price differs from the shop's is reported.
 Nothing is switched on or off (is_active stays as it is) and nothing is deleted.
 """
-import json, os, re, sys, urllib.error, urllib.parse, urllib.request
+import json, os, re, secrets, subprocess, sys, urllib.error, urllib.parse, urllib.request
 
 LS = "https://api.lemonsqueezy.com/v1"
 KEY = os.environ.get("LEMONSQUEEZY_API_KEY", "")
 DB = os.environ.get("SUPABASE_URL", "")
 SERVICE = os.environ.get("SUPABASE_SERVICE_KEY", "")
-# Lemon Squeezy takes a signing secret of at most 40 characters: both sides use the first 40 of the stored one
-HOOK_SECRET = os.environ.get("CHECKOUT_WEBHOOK_SECRET", "")[:40]
+PROJECT = os.environ.get("SUPABASE_PROJECT_REF", "")
 APPLY = os.environ.get("APPLY", "true") == "true"
+NEW_SECRET = os.environ.get("NEW_SIGNING_SECRET", "false") == "true"
+
+
+def new_signing_secret(test):
+    """A fresh 40-character secret (Lemon Squeezy's maximum), letters and digits only so no tool reads it
+    differently, set on the checkout-webhook function under this mode's name. Returns it for the webhook."""
+    s = secrets.token_hex(20)
+    print(f"::add-mask::{s}")
+    name = "LS_WEBHOOK_SECRET_TEST" if test else "LS_WEBHOOK_SECRET_LIVE"
+    r = subprocess.run(["supabase", "secrets", "set", f"{name}={s}", "--project-ref", PROJECT], capture_output=True, text=True)
+    if r.returncode != 0:
+        raise SystemExit(f"::error::Couldn't set {name} on the functions (supabase secrets set failed).")
+    return s, name
 SUMMARY = os.environ.get("GITHUB_STEP_SUMMARY")
 lines = []
 
@@ -136,20 +150,20 @@ def main():
     hooks = ls_all(f"/webhooks?filter[store_id]={store['id']}")
     mine = [h for h in hooks if h["attributes"]["url"] == hook_url]
     want = {"order_created", "order_refunded"}
-    if mine and want <= set(mine[0]["attributes"]["events"]):
+    if mine and want <= set(mine[0]["attributes"]["events"]) and not NEW_SECRET:
         say(f"Webhook: already there ({hook_url}).")
-    elif not HOOK_SECRET:
-        say("Webhook: **not created**: CHECKOUT_WEBHOOK_SECRET isn't set in GitHub secrets.")
     elif not APPLY:
-        say(f"Webhook: would be {'updated' if mine else 'created'} ({hook_url}).")
+        say(f"Webhook: would be {'updated' if mine else 'created'} with a new signing secret ({hook_url}).")
     elif mine:
+        secret, name = new_signing_secret(test)
         ls(f"/webhooks/{mine[0]['id']}", "PATCH", {"data": {"type": "webhooks", "id": mine[0]["id"], "attributes": {
-            "events": sorted(want | set(mine[0]["attributes"]["events"])), "secret": HOOK_SECRET}}})
-        say("Webhook: updated (events and signing secret).")
+            "events": sorted(want | set(mine[0]["attributes"]["events"])), "secret": secret}}})
+        say(f"Webhook: updated (events, and a new signing secret set on the function as {name}).")
     else:
-        ls("/webhooks", "POST", {"data": {"type": "webhooks", "attributes": {"url": hook_url, "events": sorted(want), "secret": HOOK_SECRET, "test_mode": test},
+        secret, name = new_signing_secret(test)
+        ls("/webhooks", "POST", {"data": {"type": "webhooks", "attributes": {"url": hook_url, "events": sorted(want), "secret": secret, "test_mode": test},
                                           "relationships": {"store": {"data": {"type": "stores", "id": str(store["id"])}}}}})
-        say(f"Webhook: created ({hook_url}).")
+        say(f"Webhook: created, signing secret set on the function as {name} ({hook_url}).")
 
     say("\nStill by hand in Lemon Squeezy (the API can't set it): on each product, Confirmation → redirect to "
         "`https://shop.mw.photography/thank-you/`.")

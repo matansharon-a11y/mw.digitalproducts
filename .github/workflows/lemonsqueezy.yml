@@ -15,6 +15,10 @@ on:
         description: "Lemon Squeezy store ID (needed when the account has more than one store)"
         type: string
         default: ""
+      new_signing_secret:
+        description: "Give the existing webhook a new signing secret (made here, never shown)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -47,7 +51,7 @@ jobs:
       - name: Connect
         env:
           LEMONSQUEEZY_API_KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
-          CHECKOUT_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_WEBHOOK_SECRET }}
           APPLY: ${{ inputs.apply }}
           STORE_ID: ${{ inputs.store_id }}
+          NEW_SIGNING_SECRET: ${{ inputs.new_signing_secret }}
         run: python3 tools/connect_lemonsqueezy.py

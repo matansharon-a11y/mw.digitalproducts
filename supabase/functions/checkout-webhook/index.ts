@@ -10,9 +10,10 @@
 // ============================================================================
 import { requestPersonalCopies, admin, hmacHex, notifyMake, plain, safeEqual } from "../_shared/http.ts";
 
-// Lemon Squeezy takes a signing secret of at most 40 characters, so the webhook is registered with the first 40 of
-// the stored secret (tools/connect_lemonsqueezy.py) and checked with the same.
-const SECRET = (Deno.env.get("CHECKOUT_WEBHOOK_SECRET") ?? "").slice(0, 40);
+// The signing secrets are made by "Connect Lemon Squeezy" (tools/connect_lemonsqueezy.py), one for the test-mode
+// webhook and one for the live one, and set here directly: no one ever types them. A request signed with either is
+// accepted; test orders are then told apart by their test_mode flag.
+const SECRETS = [Deno.env.get("LS_WEBHOOK_SECRET_LIVE"), Deno.env.get("LS_WEBHOOK_SECRET_TEST")].filter((s): s is string => !!s);
 const ALLOW_TEST_ORDERS = Deno.env.get("ALLOW_TEST_ORDERS") === "true";
 
 type LsOrder = {
@@ -34,11 +35,13 @@ const text = (body: string, status = 200) => new Response(body, { status });
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") return text("method not allowed", 405);
-  if (!SECRET) return text("webhook secret not configured", 500);
+  if (!SECRETS.length) return text("webhook secret not configured", 500);
 
   const raw = await req.text();
   const signature = req.headers.get("x-signature") ?? "";
-  if (!signature || !safeEqual(await hmacHex(SECRET, raw), signature)) return text("bad signature", 401);
+  let signed = false;
+  for (const s of SECRETS) if (safeEqual(await hmacHex(s, raw), signature)) signed = true;   // checks every secret: no timing hint
+  if (!signature || !signed) return text("bad signature", 401);
 
   let body: LsOrder;
   try { body = JSON.parse(raw); } catch { return text("bad json", 400); }
