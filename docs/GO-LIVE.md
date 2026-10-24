@@ -7,7 +7,7 @@ Time: about 30 minutes, plus one real purchase.
 ## Before the day (all must be true)
 - [ ] Lemon Squeezy approved the store (approval email; the sidebar no longer says "Your application has been received", and the test-mode switch moves).
 - [ ] Payouts: bank account set, tax details submitted (no "[Action Required]" banner on Settings → Payouts).
-- [ ] Lemon Squeezy → Products: rename **MWP Panel** to **MWP Photoshop Plugin Panel** (the name buyers see at checkout and on receipts; Matan, 24 Oct 2026). Nothing else changes: the shop matches products by variant ID.
+- [ ] Lemon Squeezy → Products: rename **MWP Panel** to **MWP Photoshop Plugin Panel**, **Presets + Panel** to **Presets + Photoshop Plugin Panel** and **Field Guides + Panel** to **Field Guides + Photoshop Plugin Panel** (the names buyers see at checkout and on receipts; Matan, 24 Oct 2026). Nothing else changes: the shop matches products by variant ID.
 - [ ] Two-step sign-in on your Lemon Squeezy login (the shop admin's has been on since 24 Oct).
 - Test orders don't need deleting: they stay as the record of the checks, marked "Test order" in admin → Orders, and every total (Overview, Customers, weekly report) leaves them out.
 - [ ] Test-mode checks passed: an admin test order unlocks the product; a test order from any other email unlocks nothing; a test refund removes access (Lemon Squeezy's refunds were failing in test mode on 24 Oct; asked support).
