@@ -19,7 +19,7 @@ const COVERS = {
   "mwp-panel": ["assets/pages/img/8f730b9bb76b93ca707cae719a309479.jpg", "50% 40%"],     // tiger: face and stride
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"], // lioness: face
 };
-const TAGS = { preset: "Lightroom presets", plugin: "Photoshop panel", guide: "PDF field guides", bundle: "Bundle" };
+const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin panel", guide: "PDF field guides", bundle: "Bundle" };
 const SLUG_TAGS = { "mwp-lightroom-plugin": "Lightroom Classic plugin" };   // a plugin that isn't the Photoshop panel
 // A product with extra downloads (product_extra_files) shows one button per app: the main zip gets this label.
 const MAIN_LABEL = { "mwp-presets": "Presets" };   // beside it: "Lightroom Classic plugin"
