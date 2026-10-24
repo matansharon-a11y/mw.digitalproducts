@@ -213,6 +213,9 @@ def build(src_path, out_path, en_url, he_url, here, base=False):
     if base and "<base " not in out:
         extra = '<base href="/">' + extra
     out = out.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + extra, 1)
+    # search engines: the product links in the page's structured data go to the Hebrew product pages
+    out = re.sub(r'("url": "https://shop\.mw\.photography/(?:presets|panel|field-guides)/)(#[\w-]+)?"',
+                 lambda m: f'{m.group(1)}he/{m.group(2) or ""}"', out)
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from brand import LANG_GUARD
     out = out.replace(LANG_GUARD, "")   # already Hebrew: nothing to wait for

@@ -471,7 +471,7 @@ def structured(folder, lang, url):
     c, u = P[folder][lang], UI[lang]
     data = [
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": u["home"], "item": f"{SITE}/"},
+            {"@type": "ListItem", "position": 1, "name": u["home"], "item": f"{SITE}/he/" if lang == "he" else f"{SITE}/"},
             {"@type": "ListItem", "position": 2, "name": c["name"], "item": url}]},
         {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": lang, "mainEntity": [
             {"@type": "Question", "name": f["q"], "acceptedAnswer": {"@type": "Answer", "text": f["a"]}}
