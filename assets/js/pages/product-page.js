@@ -272,3 +272,22 @@ if (location.hash.length > 1) {
     try { document.querySelector(decodeURIComponent(location.hash))?.scrollIntoView({ block: "start" }); } catch { /* not a valid selector */ }
   }, 300), { once: true });
 }
+
+// ---------------------------------------------------------------- single Field Guides: not for those who have all four
+// Only for someone signed in (a saved session): then the library is checked, and an owner sees a line instead.
+const singles = document.querySelector("[data-singles]");
+if (singles) {
+  let signedIn = false;
+  try { signedIn = Object.keys(localStorage).some((k) => /^sb-.*-auth-token$/.test(k)); } catch { /* storage blocked */ }
+  if (signedIn) {
+    import("../lib/api.js").then(async (api) => {
+      if (!(await api.currentUser())) return;
+      const lib = await api.myLibrary();
+      if (lib.some((i) => i.products?.slug === "mwp-field-guides" && !i.view_only)) {
+        singles.querySelector(".singles-row").hidden = true;
+        singles.querySelector(".singles-line").hidden = true;
+        singles.querySelector(".singles-owned").hidden = false;
+      }
+    }).catch(() => { /* couldn't check: the cart still refuses them */ });
+  }
+}

@@ -241,7 +241,7 @@ COMPARE = [
     ("What it is", ["A plugin: a window of tools inside Lightroom Classic", "A plugin: a window of tools inside Photoshop", "Presets and LUTs: a finished look in one click", "PDF guides: lessons for the shoot itself"]),
     ("Works in", ["Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Any PDF reader: computer, tablet or phone"]),
     ("What you get", ["The plugin, built-in help, video tutorials", "The plugin, a 21-page User Manual, an Installation Guide", "50 presets, 50 mobile files, 33 LUTs", "4 guides, 137 lessons, in English or Hebrew"]),
-    ("How you buy it", ["With MWP Presets, in one purchase, or in a bundle", "On its own, or in a bundle", "With the plugin, in one purchase, or in a bundle", "On its own, or in a bundle"]),
+    ("How you buy it", ["With MWP Presets, in one purchase, or in a bundle", "On its own, or in a bundle", "With the plugin, in one purchase, or in a bundle", "All four, one guide at a time, or in a bundle"]),
 ]
 
 
@@ -252,6 +252,9 @@ def _compare():
         if d.get("with_"):
             return '<td><b class="sp-with">With MWP Presets</b><span>One purchase, one price</span></td>'
         both = '<span>The presets and the plugin, one purchase</span>' if d["slug"] == "mwp-presets" else ""
+        if d["slug"] == "mwp-field-guides":   # single guides (Matan, 25 Oct 2026): all four cost the same
+            both = '<span>Or one guide: <span data-price="field-guide-planning" data-no-i18n>$0.00</span></span>'
+
         return f'<td><b><span data-price="{d["slug"]}" data-no-i18n>$0.00</span></b>{both}</td>'
     def buy(d):
         if d.get("with_"):

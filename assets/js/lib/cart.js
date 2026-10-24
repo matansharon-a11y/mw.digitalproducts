@@ -52,6 +52,7 @@ const CSS = `
 .cart-go{display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:30px;border:0;background:linear-gradient(90deg,#E4AA7C,#F4AF56);color:#0A0908;font-weight:800;font-size:16px;;text-decoration:none;cursor:pointer}
 .cart-go[aria-disabled=true]{opacity:.45;pointer-events:none}
 .cart-note{margin:0;font-size:13px;color:#9CB1C2;text-align:center}
+.cart-notice{margin:12px 0 4px;padding:12px 14px;border-radius:12px;background:rgba(244,175,86,.1);border:1px solid rgba(244,175,86,.3);color:#FEFBF1;font-size:14px;line-height:1.5}
 .cart-gate{display:flex;flex-direction:column;align-items:center;gap:14px;padding:36px 4px;text-align:center}
 .cart-gate .gate-ic{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;color:#F4AF56;background:rgba(244,175,86,.1);box-shadow:inset 0 0 0 1px rgba(244,175,86,.35)}
 .cart-gate h3{margin:6px 0 0;font-size:22px;font-weight:600;letter-spacing:-.01em}
@@ -136,18 +137,21 @@ function priceOf(i) {
   return `${money(i.price_ils_cents, "ILS")}<span class="usd">בקופה: ${money(i.price_cents, i.currency)}</span>`;
 }
 
+let notice = "";   // a one-time line at the top of the cart (why something wasn't added)
 function render() {
   const body = document.querySelector(".cart-body"), foot = document.querySelector(".cart-foot");
   if (!body) return;
   const list = items();
+  const top = notice ? `<p class="cart-notice" role="status">${esc(notice)}</p>` : "";
+  if (document.documentElement.classList.contains("cart-open")) notice = "";   // shown once, when the cart is open
   if (!list.length) {
-    body.innerHTML = `<div class="cart-empty"><p>${T("Your cart is empty.", "העגלה ריקה.")}</p><a href="/#shop">${T("Browse the products", "לכל המוצרים")}</a></div>`;
+    body.innerHTML = top + `<div class="cart-empty"><p>${T("Your cart is empty.", "העגלה ריקה.")}</p><a href="/#shop">${T("Browse the products", "לכל המוצרים")}</a></div>`;
     foot.hidden = true;
     return;
   }
   foot.hidden = false;
   const several = list.length > 1;
-  body.innerHTML = list.map((i) => `<div class="cart-row">
+  body.innerHTML = top + list.map((i) => `<div class="cart-row">
       ${i.image ? `<img src="${esc(i.image)}" alt="">` : `<span class="cart-ph"></span>`}
       <div><div class="nm" data-no-i18n>${esc(i.name)}</div><div class="pr">${priceOf(i)}</div></div>
       <div class="acts">${several && i.checkout_url ? `<a class="pay" data-checkout href="${esc(i.checkout_url)}">${T("Pay", "לתשלום")}</a>` : ""}<button type="button" data-remove="${esc(i.slug)}">${T("Remove", "הסרה")}</button></div>
@@ -185,7 +189,12 @@ const COVER = {
   "mwp-field-guides": "0cf44582c4078749d18156eec10c90d3.jpg", "presets-panel": "8f730b9bb76b93ca707cae719a309479.jpg",
   "presets-field-guides": "c88e041b857fb964607aaec43ad1753d.jpg", "field-guides-panel": "0cf44582c4078749d18156eec10c90d3.jpg",
   "full-set": "c88e041b857fb964607aaec43ad1753d.jpg",
+  "field-guide-planning": "0cf44582c4078749d18156eec10c90d3.jpg", "field-guide-composition": "0cf44582c4078749d18156eec10c90d3.jpg",
+  "field-guide-light": "0cf44582c4078749d18156eec10c90d3.jpg", "field-guide-colour": "0cf44582c4078749d18156eec10c90d3.jpg",
 };
+// Single Field Guides (Matan, 25 Oct 2026): never offered to someone who has all four. These include all four guides.
+const GUIDE_SETS = ["mwp-field-guides", "presets-field-guides", "field-guides-panel", "full-set"];
+const isSingleGuide = (slug) => slug.startsWith("field-guide-");
 const SLUGS = Object.keys(COVER);
 
 function slugFor(a) {
@@ -222,11 +231,37 @@ async function priceList() {
   (await res.json()).forEach((r) => { priceRows[r.slug] = r; });
   return priceRows;
 }
-const FALLBACK_NAME = { "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Classic Plugin", "mwp-panel": "MWP Photoshop Plugin Panel", "mwp-field-guides": "MWP Field Guides",
+const FALLBACK_NAME = { "field-guide-planning": "MWP Field Guide: Planning", "field-guide-composition": "MWP Field Guide: Composition",
+  "field-guide-light": "MWP Field Guide: Light", "field-guide-colour": "MWP Field Guide: Colour", "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Classic Plugin", "mwp-panel": "MWP Photoshop Plugin Panel", "mwp-field-guides": "MWP Field Guides",
   "presets-field-guides": "Presets + Field Guides", "presets-panel": "Presets + Photoshop Plugin Panel", "field-guides-panel": "Field Guides + Photoshop Plugin Panel", "full-set": "The full set" };
 
 export async function addSlugToCart(slug) {
   slug = SOLD_WITH[slug] || slug;
+  if (isSingleGuide(slug)) {
+    // the set (or a bundle with it) is in the cart: it already has this guide
+    if (items().some((i) => GUIDE_SETS.includes(i.slug))) {
+      notice = T("The Field Guides in your cart already include this guide.", "מדריכי השטח בעגלה כבר כוללים את המדריך הזה.");
+      openCart(); return;
+    }
+    // they own all four already (bought, alone or in a bundle). Only checked for someone with a saved sign-in, so
+    // visitors who aren't signed in don't load the account code.
+    let signedIn = false;
+    try { signedIn = Object.keys(localStorage).some((k) => /^sb-.*-auth-token$/.test(k)); } catch { /* blocked */ }
+    const { api, user } = signedIn ? await accountUser() : { api: null, user: null };
+    if (user && api) {
+      try {
+        const lib = await api.myLibrary();
+        if (lib.some((i) => i.products?.slug === "mwp-field-guides" && !i.view_only)) {
+          notice = T("You already have all four Field Guides. Find them in My downloads.", "כל ארבעת מדריכי השטח כבר אצלכם. הם מחכים בעמוד ההורדות שלי.");
+          openCart(); return;
+        }
+      } catch { /* couldn't check: the page itself hides the single guides from owners */ }
+    }
+  } else if (GUIDE_SETS.includes(slug) && items().some((i) => isSingleGuide(i.slug))) {
+    // all four guides replace any single guide already in the cart
+    save(items().filter((i) => !isSingleGuide(i.slug)));
+    notice = T("Single guides were taken out: this includes all four.", "המדריכים הבודדים הוצאו מהעגלה: כאן כלולים כל הארבעה.");
+  }
   let r = null;
   try { r = (await priceList())[slug] || null; } catch { /* offline: add it with its name, the price shows later */ }
   addToCart({

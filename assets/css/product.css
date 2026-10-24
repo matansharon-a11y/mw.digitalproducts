@@ -190,6 +190,17 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .small{margin:28px 0 0;text-align:center;color:var(--mute);font-size:14px}
 .small a{color:var(--ink2)}
 @media (max-width:760px){.prices{grid-template-columns:minmax(0,1fr)}.plan{padding:36px 26px 28px}}
+/* the Field Guides page: each guide on its own, under the set */
+.singles{max-width:920px;margin:48px auto 0;text-align:center}
+.singles-h{margin:0;font-size:clamp(22px,2.2vw,28px);font-weight:500;letter-spacing:-.02em}
+.singles-line{margin:8px 0 0;color:var(--ink2);font-size:15.5px}
+.singles-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
+.single{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 14px 18px;border-radius:20px;border:1px solid var(--line);background:rgba(254,251,241,.025)}
+.single-nm{margin:0;font-size:17px;font-weight:600}
+.single-pr{margin:0 0 6px;color:var(--ink2);font-size:15px}
+.single .ghost{min-height:42px;padding:0 18px;font-size:14px}
+.singles-owned{margin:18px 0 0;color:var(--ink2)}
+@media (max-width:760px){.singles-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* ---------- FAQ ---------- */
 .faq{max-width:820px;margin:36px auto 0}

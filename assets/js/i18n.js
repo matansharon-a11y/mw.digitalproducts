@@ -1076,6 +1076,8 @@ const HE = {
   "How you buy it": "איך קונים",
   "On its own, or in a bundle": "בנפרד, או בחבילה",
   "Together, in one purchase, or in a bundle": "יחד, ברכישה אחת, או בחבילה",
+  "All four, one guide at a time, or in a bundle": "כל הארבעה, מדריך אחד בכל פעם, או בחבילה",
+  "Or one guide:": "או מדריך אחד:",
   "The presets and the plugin, one purchase": "הפריסטים והתוסף, ברכישה אחת",
   "With MWP Presets": "עם הפריסטים של MWP",
   "One purchase, one price": "רכישה אחת, מחיר אחד",
