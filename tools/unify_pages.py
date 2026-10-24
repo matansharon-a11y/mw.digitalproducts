@@ -45,9 +45,9 @@ document.readyState === "complete" ? go() : addEventListener("load", go);
 </script>"""
 
 WORDS = {
-    "en": [(">BEFORE<", ">RAW<"), (">AFTER · MWP PRESET<", ">FINAL · MWP PRESET<"), (">AFTER<", ">FINAL · MWP PANEL<"),
-           (">Before and after<", ">From RAW to final<"), (">See before and after<", ">Compare RAW and final<"), (">See before and after →<", ">Compare RAW and final →<"), ("'BEFORE'", "'RAW'"), ("'AFTER'", "'FINAL · MWP PANEL'"), ("'AFTER · MWP PRESET'", "'FINAL · MWP PRESET'")],
-    "he": [(">לפני<", ">RAW<"), (">אחרי · פריסט MWP<", ">סופי · פריסט MWP<"), (">אחרי<", ">סופי · MWP Panel<"),
+    "en": [(">BEFORE<", ">RAW<"), (">AFTER · MWP PRESET<", ">FINAL · MWP PRESET<"), (">AFTER<", ">FINAL · MWP PHOTOSHOP PLUGIN PANEL<"),
+           (">Before and after<", ">From RAW to final<"), (">See before and after<", ">Compare RAW and final<"), (">See before and after →<", ">Compare RAW and final →<"), ("'BEFORE'", "'RAW'"), ("'AFTER'", "'FINAL · MWP PHOTOSHOP PLUGIN PANEL'"), ("'AFTER · MWP PRESET'", "'FINAL · MWP PRESET'")],
+    "he": [(">לפני<", ">RAW<"), (">אחרי · פריסט MWP<", ">סופי · פריסט MWP<"), (">אחרי<", ">סופי · MWP Photoshop Plugin Panel<"),
            (">לפני ואחרי<", ">מ-RAW לתמונה הסופית<"), (">לראות לפני ואחרי ←<", ">מ-RAW לתמונה הסופית ←<")],
 }
 
@@ -69,7 +69,7 @@ def share_tags(s, url):
 # Search descriptions (from each page's own copy). The Hebrew pages get them in Hebrew from EXACT in tools/sales_he.py.
 DESC = {
     "presets": "50 Lightroom presets and 33 video LUTs built from the MWP edits of wildlife and landscapes. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.",
-    "panel": "MWP Panel, a Photoshop plugin: the way we edit on our expeditions, built in as simple buttons. Pick the animal or the sky, pick an effect, set how strong.",
+    "panel": "MWP Photoshop Plugin Panel, a Photoshop plugin: the way we edit on our expeditions, built in as simple buttons. Pick the animal or the sky, pick an effect, set how strong.",
     "field-guides": "MWP Field Guides: four visual guides with 137 short lessons on composition, colour, light and planning, each one a real photo from the field.",
 }
 

@@ -79,6 +79,7 @@ button{font:inherit;color:inherit}
 .pbar nav a:hover,.pbar nav a.on{color:var(--ink)}
 .pbar .pp{color:var(--ink2);font-size:14px;white-space:nowrap}
 @media (max-width:820px){.pbar nav{display:none}.pbar .pp{margin-inline-start:auto}}
+@media (max-width:820px){.pbar .wrap{gap:14px}.pbar .nm{white-space:normal;min-width:0;font-size:15px;line-height:1.25}.pbar .pp,.pbar .btn{flex:none}}   /* a long name (MWP Photoshop Plugin Panel) wraps instead of pushing Buy off a phone */
 html.menu-open .pbar{opacity:0;visibility:hidden}
 
 /* ---------- before / after ---------- */

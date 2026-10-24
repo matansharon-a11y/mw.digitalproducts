@@ -11,8 +11,8 @@ EXACT = {
     # search descriptions (DESC in tools/unify_pages.py)
     "50 Lightroom presets and 33 video LUTs built from the MWP edits of wildlife and landscapes. For Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw.":
         "50 פריסטים ללייטרום ו־33 קובצי LUT לווידאו, שנבנו מתוך העריכות של MWP לצילומי חיות בר ונופים. ללייטרום קלאסיק, ללייטרום, ללייטרום מובייל ולקאמרה ראו.",
-    "MWP Panel, a Photoshop plugin: the way we edit on our expeditions, built in as simple buttons. Pick the animal or the sky, pick an effect, set how strong.":
-        "הפאנל של MWP, פלאגין לפוטושופ: הדרך שבה אנחנו עורכים במסעות שלנו, בכפתורים פשוטים. בוחרים את החיה או את השמיים, בוחרים אפקט וקובעים עוצמה.",
+    "MWP Photoshop Plugin Panel, a Photoshop plugin: the way we edit on our expeditions, built in as simple buttons. Pick the animal or the sky, pick an effect, set how strong.":
+        "פאנל התוסף לפוטושופ של MWP, פלאגין לפוטושופ: הדרך שבה אנחנו עורכים במסעות שלנו, בכפתורים פשוטים. בוחרים את החיה או את השמיים, בוחרים אפקט וקובעים עוצמה.",
     "MWP Field Guides: four visual guides with 137 short lessons on composition, colour, light and planning, each one a real photo from the field.":
         "מדריכי השטח של MWP: ארבעה מדריכים חזותיים עם 137 שיעורים קצרים על קומפוזיציה, צבע, אור ותכנון. כל שיעור הוא צילום אמיתי מהשטח.",
     # product labels and mockups
@@ -42,8 +42,8 @@ EXACT = {
     "Add a finishing look on top of the preset, or save your own.": "מוסיפים לוק מסיים מעל הפריסט, או שומרים לוק משלכם.",
     "Your own watermark, sized for where the photo is going.": "סימן מים משלכם, בגודל שמתאים למקום שאליו התמונה הולכת.",
     "PLACEHOLDER: ה\"אחרי\" כאן הוא העריכה הסופית של מתן. לפני ההשקה להחליף באותו RAW שנערך רק עם הפאנל.": "ממלא מקום: ה\"אחרי\" כאן הוא העריכה הסופית של מתן. לפני ההשקה להחליף באותו RAW שנערך רק עם הפאנל.",
-    "מתחילים בלייטרום עם פריסט, ומסיימים בפוטושופ עם הפאנל של MWP. נסו כאן: לחצו על Subject, ‏Eye, ‏Background ו-Dodge & Burn.":
-        "מתחילים בלייטרום עם פריסט, ומסיימים בפוטושופ עם הפאנל של MWP. נסו כאן: לחצו על נושא, עין, רקע והבהרה והכהיה.",
+    "מתחילים בלייטרום עם פריסט, ומסיימים בפוטושופ עם פאנל התוסף לפוטושופ של MWP. נסו כאן: לחצו על Subject, ‏Eye, ‏Background ו-Dodge & Burn.":
+        "מתחילים בלייטרום עם פריסט, ומסיימים בפוטושופ עם פאנל התוסף לפוטושופ של MWP. נסו כאן: לחצו על נושא, עין, רקע והבהרה והכהיה.",
     "נושא, עין, שמיים, רקע, Dodge and Burn, כפתור אחד לכל אחד.": "נושא, עין, שמיים, רקע, הבהרה והכהיה, כפתור אחד לכל אחד.",
     "קובעים חשיפה לפריים, ובמחוון Amount מחזקים או מרככים את המראה.": "קובעים חשיפה לפריים, ובמחוון העוצמה מחזקים או מרככים את המראה.",
     # questions and answers

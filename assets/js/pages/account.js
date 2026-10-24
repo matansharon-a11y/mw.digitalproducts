@@ -41,8 +41,14 @@ function onePerProduct(items) {
     const k = i.products.slug, cur = best.get(k);
     if (!cur || rank(i) > rank(cur) || (rank(i) === rank(cur) && i.granted_at < cur.granted_at)) best.set(k, i);
   }
-  return items.filter((i) => best.get(i.products.slug) === i);
+  return items.filter((i) => best.get(i.products.slug) === i)
+    .sort((a, b) => place(a.products.slug) - place(b.products.slug));
 }
+
+// Always in this order (Matan, 24 Oct 2026): the Lightroom Classic plugin, MWP Photoshop Plugin Panel, MWP Presets,
+// the Field Guides. Anything else after them, newest first (the order myLibrary() returns).
+const PRODUCT_ORDER = ["mwp-lightroom-plugin", "mwp-panel", "mwp-presets", "mwp-field-guides"];
+const place = (slug) => (PRODUCT_ORDER.includes(slug) ? PRODUCT_ORDER.indexOf(slug) : PRODUCT_ORDER.length);
 
 // The video tutorials of one product: unlisted YouTube links, opened in a new tab.
 function tutorialsHTML(videos) {
@@ -106,9 +112,9 @@ function devicesHTML({ devices, max }) {
       <button class="btn btn--ghost btn--sm" type="button" data-remove-device="${esc(d.device_id)}">Remove</button>
     </li>`).join("");
   return `<section class="devices stack" aria-labelledby="devices-h">
-    <h2 class="h3" id="devices-h">MWP Panel on your computers</h2>
+    <h2 class="h3" id="devices-h">MWP Photoshop Plugin Panel on your computers</h2>
     <p class="meta">Your licence is personal: Panel works when you sign in to it with this email. You can use it on up to ${max} computers at a time. Changed computer? Remove the old one here.</p>
-    ${devices.length ? `<ul class="device-list">${rows}</ul>` : `<p class="meta">No computers yet. Open MWP Panel in Photoshop and sign in with this email.</p>`}
+    ${devices.length ? `<ul class="device-list">${rows}</ul>` : `<p class="meta">No computers yet. Open MWP Photoshop Plugin Panel in Photoshop and sign in with this email.</p>`}
   </section>`;
 }
 
@@ -264,7 +270,7 @@ document.addEventListener("click", async (e) => {
   setBusy(rm, true, "Removing…");
   try {
     document.getElementById("devices").innerHTML = devicesHTML(await removePanelDevice(rm.dataset.removeDevice));
-    toast("Computer removed. You can now sign in to MWP Panel on another one.");
+    toast("Computer removed. You can now sign in to MWP Photoshop Plugin Panel on another one.");
   } catch (err) {
     toast(err.message, { type: "error", timeout: 7000 });
     setBusy(rm, false);

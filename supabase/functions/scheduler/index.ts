@@ -398,7 +398,7 @@ async function tester(db: Db, id: string, action: string) {
     email: c?.email ?? "",
     added_on: day(new Date(t.added_at)),
     removed_on: t.removed_at ? day(new Date(t.removed_at)) : "",
-    products: "MWP Presets, MWP Panel, MWP Field Guides",
+    products: "MWP Presets, MWP Photoshop Plugin Panel, MWP Field Guides",
   });
   return { ok: true };
 }

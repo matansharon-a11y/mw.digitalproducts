@@ -25,9 +25,9 @@ T = {
                filt="הצגת ביקורות על", every="הכול"),
 }
 NAMES = {"presets": ("MWP Presets", "הפריסטים של MWP"), "plugin": ("the Lightroom Classic plugin", "התוסף ללייטרום קלאסיק"),
-         "panel": ("MWP Panel", "הפאנל של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
-CHIPS = [("presets", "Presets", "פריסטים"), ("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"),
-         ("panel", "Photoshop Panel", "פאנל לפוטושופ"), ("guides", "Field Guides", "מדריכי השטח")]
+         "panel": ("MWP Photoshop Plugin Panel", "פאנל התוסף לפוטושופ של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
+CHIPS = [("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"), ("panel", "Photoshop Plugin Panel", "פאנל התוסף לפוטושופ"),
+         ("presets", "Presets", "פריסטים"), ("guides", "Field Guides", "מדריכי השטח")]
 
 
 def section(lang="en", product=None, featured=False, filters=False, cls=None):

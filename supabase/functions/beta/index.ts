@@ -14,7 +14,7 @@
 import { admin, clientIp, cors, EMAIL_RE, fail, json, notifyMake, requestPersonalCopies, sha256Hex } from "../_shared/http.ts";
 import { grantAmbassador } from "../_shared/ambassador.ts";
 
-const TERMS_VERSION = "2026-10-24.6";   // must match TERMS_VERSION in tools/ambassador_terms.py
+const TERMS_VERSION = "2026-10-24.7";   // must match TERMS_VERSION in tools/ambassador_terms.py
 const MAX_APPLICATIONS_PER_HOUR = 5;  // per IP
 const MAX_ALL_PER_HOUR = 100;         // from everyone together (shared with the tester code, see tester/index.ts)
 

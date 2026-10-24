@@ -12,7 +12,7 @@ const L = he
       ph: "Design placeholder", phs: "A real review screenshot goes here", dialog: "Customer review" };
 const NAME = {
   presets: ["MWP Presets", "הפריסטים של MWP"], plugin: ["Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"],
-  panel: ["MWP Panel", "הפאנל של MWP"], guides: ["MWP Field Guides", "מדריכי השטח של MWP"],
+  panel: ["MWP Photoshop Plugin Panel", "פאנל התוסף לפוטושופ של MWP"], guides: ["MWP Field Guides", "מדריכי השטח של MWP"],
 };
 const name = (k) => (NAME[k] || [k, k])[he ? 1 : 0];
 const TALL = 1.7;   // taller than this (height / width) shows to a set height, with "Read it all"

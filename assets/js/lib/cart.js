@@ -222,7 +222,7 @@ async function priceList() {
   (await res.json()).forEach((r) => { priceRows[r.slug] = r; });
   return priceRows;
 }
-const FALLBACK_NAME = { "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Classic Plugin", "mwp-panel": "MWP Panel", "mwp-field-guides": "MWP Field Guides",
+const FALLBACK_NAME = { "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Classic Plugin", "mwp-panel": "MWP Photoshop Plugin Panel", "mwp-field-guides": "MWP Field Guides",
   "presets-field-guides": "Presets + Field Guides", "presets-panel": "Presets + Panel", "field-guides-panel": "Field Guides + Panel", "full-set": "The full set" };
 
 export async function addSlugToCart(slug) {

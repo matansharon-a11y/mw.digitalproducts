@@ -51,7 +51,7 @@ export async function grantAmbassador(db: any, a: NewAmbassador): Promise<{ ok: 
     name: a.name, email: a.email, instagram: a.instagram ? `@${a.instagram}` : "", facebook: a.facebook ?? "",
     agreed_on: day(start), first_months_end: day(firstMonths), ends_on: day(ends),
     terms_version: a.termsVersion,
-    products: "MWP Presets, MWP Panel, MWP Field Guides (read online)",
+    products: "MWP Presets, MWP Photoshop Plugin Panel, MWP Field Guides (read online)",
   });
   return { ok: true, memberId: member.id };
 }

@@ -635,6 +635,7 @@ html[lang="he"] .only-en { display: none; }
 .sp-table tr > :first-child { position: sticky; inset-inline-start: 0; z-index: 1; background: #121110; }
 .sp-table tr:last-child > * { border-bottom: 0; }
 .sp-table .prices b { display: block; color: #FEFBF1; font-size: 22px; font-weight: 500; }
+.sp-table .prices b.sp-with { font-size: 17px; font-weight: 600; }
 .sp-table .prices td span:not([data-price]) { font-size: 13px; color: #9CB1C2; }
 @media (max-width: 600px) {
   .sp-body { padding: 22px 20px 24px; }

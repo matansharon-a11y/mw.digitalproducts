@@ -1,7 +1,7 @@
 """Connects the shop to Lemon Squeezy (run by .github/workflows/lemonsqueezy.yml, "Connect Lemon Squeezy").
 
 1. Reads the store's products through the Lemon Squeezy API (LEMONSQUEEZY_API_KEY).
-2. Matches each one to a shop product by its name (MWP Presets, MWP Panel, MWP Field Guides, the bundles with
+2. Matches each one to a shop product by its name (MWP Presets, MWP Photoshop Plugin Panel, MWP Field Guides, the bundles with
    "+", and MWP Full Set) and writes its checkout link and variant ID into the shop's products table.
 3. Makes sure the store has the order webhook (order_created, order_refunded) to the shop's checkout-webhook
    function. Its signing secret is made here (40 random letters and digits), set on the function as
@@ -75,7 +75,8 @@ def slug_for(name):
     if "full set" in t or "full-set" in t:
         return "full-set"
     # MWP Presets comes with the Lightroom Classic plugin (one purchase), so a name with "preset" is never the plugin
-    if ("lightroom classic" in t or "plugin" in t) and "preset" not in t:   # (MWP Panel is the Photoshop panel)
+    # (the Photoshop one is "MWP Photoshop Plugin Panel" since 24 Oct 2026: a name with "photoshop" or "panel" is never this one)
+    if ("lightroom classic" in t or "plugin" in t) and not any(w in t for w in ("preset", "photoshop", "panel")):
         return "mwp-lightroom-plugin"
     parts = frozenset(p for p, w in (("presets", "preset"), ("panel", "panel"), ("guides", "guide")) if w in t)
     return {frozenset({"presets"}): "mwp-presets", frozenset({"panel"}): "mwp-panel", frozenset({"guides"}): "mwp-field-guides",

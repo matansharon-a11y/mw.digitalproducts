@@ -45,7 +45,7 @@ Deno.serve(async (req) => {
   const active = (ents ?? []).filter((e) => !e.revoked_at);
   if (!active.length) {
     const refunded = (ents ?? []).length > 0;
-    return fail(req, refunded ? "This licence was cancelled after a refund." : "MWP Panel isn't in your library on this email.", 403);
+    return fail(req, refunded ? "This licence was cancelled after a refund." : "MWP Photoshop Plugin Panel isn't in your library on this email.", 403);
   }
   const ent = active[0];
 
@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
     const list = await devices();
     if (list.length >= MAX_DEVICES) {
       return json(req, {
-        error: `MWP Panel is already active on ${MAX_DEVICES} computers. Remove one in My downloads on shop.mw.photography, then try again.`,
+        error: `MWP Photoshop Plugin Panel is already active on ${MAX_DEVICES} computers. Remove one in My downloads on shop.mw.photography, then try again.`,
         devices: list, max: MAX_DEVICES,
       }, 409);
     }
