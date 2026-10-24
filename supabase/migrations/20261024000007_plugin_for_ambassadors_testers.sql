@@ -1,0 +1,91 @@
+-- The Lightroom Classic plugin for ambassadors and testers (Matan, 24 Oct 2026: "they're ambassadors and testers,
+-- but not for everybody"). Reverses 20261023000003 for them only; customers still buy it, with MWP Presets.
+--  1. Everyone in the program today (active ambassadors, testers not removed) gets it now. A copy taken back on
+--     23 Oct comes back; anything bought is left as it is.
+--  2. Testers who join later (the code, or the admin) get it with their other tools. New ambassadors get it from
+--     grantAmbassador() (supabase/functions/_shared/ambassador.ts).
+--  Removing a tester or ending an ambassador for breach already takes it back (remove_tester, end_ambassador).
+
+insert into public.entitlements (customer_id, product_id, view_only)
+select m.customer_id, (select id from public.products where slug = 'mwp-lightroom-plugin'), false
+  from (select customer_id from public.beta_members where status = 'active'
+        union
+        select customer_id from public.testers where removed_at is null) m
+on conflict (customer_id, product_id) do update set revoked_at = null
+  where public.entitlements.order_id is null;
+
+create or replace function public.add_tester_by_code(p_email text, p_name text)
+returns uuid
+language plpgsql security definer set search_path = public as $$
+declare
+  v_email text := lower(trim(p_email));
+  v_customer uuid;
+  v_tester uuid;
+begin
+  if v_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]{2,}$' then raise exception 'invalid email'; end if;
+  if exists (select 1 from public.testers t join public.customers c on c.id = t.customer_id
+              where c.email = v_email and t.removed_at is not null)
+     or exists (select 1 from public.beta_members b join public.customers c on c.id = b.customer_id
+              where c.email = v_email and b.status = 'ended_breach') then
+    raise exception 'tester_removed';
+  end if;
+  insert into public.customers (email, name) values (v_email, nullif(trim(p_name), ''))
+  on conflict (email) do update set name = coalesce(public.customers.name, excluded.name)
+  returning id into v_customer;
+
+  insert into public.testers (customer_id) values (v_customer)
+  on conflict (customer_id) do update set removed_at = null, added_at = now()
+  returning id into v_tester;
+
+  -- like ambassadors: the guides read online only. Anything bought (order_id set) is left exactly as it is,
+  -- so a refunded purchase stays refunded.
+  insert into public.entitlements (customer_id, product_id, view_only)
+  select v_customer, p.id, p.slug = 'mwp-field-guides' from public.products p
+   where p.slug in ('mwp-presets', 'mwp-lightroom-plugin', 'mwp-panel', 'mwp-field-guides')
+  on conflict (customer_id, product_id) do update
+    set revoked_at = null, view_only = excluded.view_only
+    where public.entitlements.order_id is null;
+
+  begin
+    perform public.call_scheduler('tester', jsonb_build_object('tester_id', v_tester, 'action', 'added'));
+  exception when others then
+    raise warning 'add_tester_by_code: monday / personal copies not requested: %', sqlerrm;
+  end;
+  return v_tester;
+end $$;
+revoke all on function public.add_tester_by_code(text, text) from public, anon, authenticated;
+grant execute on function public.add_tester_by_code(text, text) to service_role;
+
+create or replace function public.add_tester(p_email text, p_name text)
+returns uuid
+language plpgsql security definer set search_path = public as $$
+declare
+  v_email text := lower(trim(p_email));
+  v_customer uuid;
+  v_tester uuid;
+begin
+  if not coalesce(public.is_admin(), false) then raise exception 'admins only'; end if;
+  if v_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]{2,}$' then raise exception 'invalid email'; end if;
+
+  insert into public.customers (email, name) values (v_email, nullif(trim(p_name), ''))
+  on conflict (email) do update set name = coalesce(public.customers.name, excluded.name)
+  returning id into v_customer;
+
+  insert into public.testers (customer_id) values (v_customer)
+  on conflict (customer_id) do update set removed_at = null, added_at = now()
+  returning id into v_tester;
+
+  insert into public.entitlements (customer_id, product_id, view_only)
+  select v_customer, p.id, false from public.products p
+   where p.slug in ('mwp-presets', 'mwp-lightroom-plugin', 'mwp-panel', 'mwp-field-guides')
+  on conflict (customer_id, product_id) do update set revoked_at = null, view_only = false;
+
+  begin
+    perform public.call_scheduler('tester', jsonb_build_object('tester_id', v_tester, 'action', 'added'));
+  exception when others then
+    raise warning 'add_tester: monday / personal copies not requested: %', sqlerrm;
+  end;
+  return v_tester;
+end $$;
+revoke all on function public.add_tester(text, text) from public, anon;
+grant execute on function public.add_tester(text, text) to authenticated;   -- checked inside: admins only
