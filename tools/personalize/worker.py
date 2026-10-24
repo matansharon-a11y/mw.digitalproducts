@@ -163,6 +163,7 @@ def only_lang(src, dst, lang):
 
 # ---------------------------------------------------------------- Field Guides to read online
 PAGE_WIDTH = 1240   # pixels; sharp on a laptop, small enough to load quickly on a phone
+PAGE_WIDTH_HD = 2480   # the full-screen reader: sharp on large and retina screens, and when zoomed in
 
 
 def guide_lang(name, doc):
@@ -210,7 +211,7 @@ def guide_views():
         pf = p.get("product_files"); pf = (pf[0] if isinstance(pf, list) and pf else pf) or {}
         gv = p.get("guide_views"); gv = (gv[0] if isinstance(gv, list) and gv else gv) or {}
         # done already: this version, with each guide's language known (English or Hebrew pages)
-        if not pf.get("path") or (gv.get("version") == pf["version"] and all("lang" in g and g.get("titled") for g in gv.get("guides") or [{}])):
+        if not pf.get("path") or (gv.get("version") == pf["version"] and all("lang" in g and g.get("titled") and g.get("hd") for g in gv.get("guides") or [{}])):
             continue
         print(f"Rendering {p['slug']} {pf['version']} for reading online", flush=True)
         old = gv.get("version") if gv.get("version") != pf["version"] else None   # same version: pages are replaced in place
@@ -239,12 +240,17 @@ def guide_views():
                         pix.save(out, jpg_quality=75)
                         path = f"{prefix}/{g}-{i:03d}.jpg"
                         files.append((path, out))
-                        pages.append({"path": path, "w": pix.width, "h": pix.height})
+                        hd = page.get_pixmap(matrix=pymupdf.Matrix(PAGE_WIDTH_HD / page.rect.width, PAGE_WIDTH_HD / page.rect.width), alpha=False)
+                        out_hd = os.path.join(tmp, f"{g}-{i:03d}-hd.jpg")
+                        hd.save(out_hd, jpg_quality=82)
+                        path_hd = f"{prefix}/{g}-{i:03d}-hd.jpg"
+                        files.append((path_hd, out_hd))
+                        pages.append({"path": path, "w": pix.width, "h": pix.height, "hd": path_hd, "hw": hd.width, "hh": hd.height})
                     # upload many pages at once: one by one, a long guide took many minutes
                     with ThreadPoolExecutor(max_workers=12) as pool:
                         list(pool.map(lambda f: upload(f[0], f[1], "image/jpeg", "guide-pages"), files))
                     lang = guide_lang(name, doc)
-                    guides.append({"title": guide_title(doc, lang) or title, "lang": lang, "titled": True, "pages": pages})
+                    guides.append({"title": guide_title(doc, lang) or title, "lang": lang, "titled": True, "hd": True, "pages": pages})
                     print(f"  {title} ({guides[-1]['lang']}): {len(pages)} pages", flush=True)
             S.post(f"{URL}/rest/v1/guide_views", params={"on_conflict": "product_id"},
                    headers={"content-type": "application/json", "prefer": "resolution=merge-duplicates"},

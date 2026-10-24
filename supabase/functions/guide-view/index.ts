@@ -43,9 +43,9 @@ Deno.serve(async (req) => {
   // A new version uploaded: keep showing the current pages while the new ones are made, so nobody waits.
   if (view.version !== file.version) await requestPersonalCopies();
 
-  type Page = { path: string; w: number; h: number };
+  type Page = { path: string; w: number; h: number; hd?: string; hw?: number; hh?: number };
   const guides = (view.guides ?? []) as { title: string; lang?: string; pages: Page[] }[];
-  const paths = guides.flatMap((g) => g.pages.map((p) => p.path));
+  const paths = guides.flatMap((g) => g.pages.flatMap((p) => (p.hd ? [p.path, p.hd] : [p.path])));
   const { data: signed, error } = await db.storage.from("guide-pages").createSignedUrls(paths, LINK_SECONDS);
   if (error || !signed) { console.error(error); return fail(req, "Couldn't open the guides. Please try again.", 500); }
   const url = new Map(signed.map((s) => [s.path, s.signedUrl]));
@@ -54,6 +54,9 @@ Deno.serve(async (req) => {
   return json(req, {
     stamp: [customer.name, email, licence].filter(Boolean).join(" · "),
     expires_in: LINK_SECONDS,
-    guides: guides.map((g) => ({ title: g.title, lang: g.lang ?? null, pages: g.pages.map((p) => ({ url: url.get(p.path), w: p.w, h: p.h })) })),
+    guides: guides.map((g) => ({ title: g.title, lang: g.lang ?? null, pages: g.pages.map((p) => ({
+      url: url.get(p.path), w: p.w, h: p.h,
+      ...(p.hd && url.get(p.hd) ? { hd: url.get(p.hd), hw: p.hw, hh: p.hh } : {}),   // the sharp copy for the full-screen reader
+    })) })),
   });
 });

@@ -1,6 +1,7 @@
 // Read online: the MWP Field Guides, page by page (shop.mw.photography/read/).
 // Ambassadors can only read the guides here; buyers can too. The pages come from the guide-view function
 // as private links that last 10 minutes, drawn on a canvas. No download, no print.
+// The full-screen reader (openReader) shows a sharper copy of each page, with zoom.
 import { initChrome } from "../lib/ui.js";
 import { currentUser, guideView, esc } from "../lib/api.js";
 
@@ -41,134 +42,62 @@ async function draw(el) {
   if (el.dataset.drawn) return;
   el.dataset.drawn = "1";
   const [g, p] = el.dataset.page.split(":").map(Number);
-  for (let attempt = 0; attempt < 2; attempt++) {
-    await fresh();
-    const page = data.guides[g]?.pages[p];
-    if (!page?.url) return;
-    try {
-      const img = new Image();
-      img.decoding = "async";
-      img.src = page.url;
-      await img.decode();
-      const c = el.querySelector("canvas");
-      c.width = page.w; c.height = page.h;
-      const ctx = c.getContext("2d");
-      ctx.drawImage(img, 0, 0, page.w, page.h);
-      el.classList.add("ok");   // hides its "Loading…"
-      return;
-    } catch {
-      fetchedAt = 0;   // the link may have run out: get new ones and try once more
-    }
-  }
-  delete el.dataset.drawn;
+  try {
+    const img = await loadImg(g, p, false);
+    const c = el.querySelector("canvas");
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    c.getContext("2d").drawImage(img, 0, 0);
+    el.classList.add("ok");   // hides its "Loading…"
+  } catch { delete el.dataset.drawn; }
 }
 
-// ---------------------------------------------------------------- the reader
-// A guide picker, Scroll or Page-by-page, and full screen. Scroll mode scrolls (no arrows);
-// Page by page turns pages with the side arrows (and arrow keys, swipe), with scrolling off.
-// English pages show the English guides, Hebrew pages the Hebrew ones.
+// ---------------------------------------------------------------- the page
+// A guide picker, the pages one under another, and "Read full screen". Clicking a page opens the
+// full-screen reader on it. English pages show the English guides, Hebrew pages the Hebrew ones.
 const ICONS = {
-  prev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>',
-  next: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>',
+  prev: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>',
+  next: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>',
   full: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
-  exit: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>',
+  close: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  minus: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>',
+  plus: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
 };
-const MODE_KEY = "mwp_read_mode";
-let mode = (() => { try { return localStorage.getItem(MODE_KEY) === "pages" ? "pages" : "scroll"; } catch { return "scroll"; } })();
 let page = 0, list = [];   // list: indexes into data.guides for this language
 
 const nearby = "IntersectionObserver" in window
   ? new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) draw(e.target); }), { rootMargin: "1200px 0px" })
   : null;
-// in Scroll mode, the current page is the one at the top of the screen, just under the toolbar
-function trackScroll() {
-  if (mode !== "scroll" || !document.getElementById("rd-bar")) return;
-  const line = document.getElementById("rd-bar").getBoundingClientRect().bottom + 60;
-  const els = allPages();
-  let k = 0;
-  els.forEach((el, n) => { if (el.getBoundingClientRect().top <= line) k = n; });
-  if (k !== page) { page = k; counter(); }
-}
-let ticking = false;
-const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; trackScroll(); }); } };
-window.addEventListener("scroll", onScroll, { passive: true });
-document.addEventListener("scroll", onScroll, { passive: true, capture: true });   // also inside full screen
-
 const pagesEl = () => document.getElementById("rd-pages");
 const allPages = () => [...pagesEl().querySelectorAll(".rd-page")];
 
-function counter() {
-  const n = allPages().length;
-  document.getElementById("rd-count").textContent = `${page + 1} / ${n}`;
-  document.getElementById("rd-prev").disabled = page <= 0;
-  document.getElementById("rd-next").disabled = page >= n - 1;
+// the current page is the one at the top of the screen, just under the toolbar
+function trackScroll() {
+  const bar = document.getElementById("rd-bar");
+  if (!bar || rx.el) return;
+  const line = bar.getBoundingClientRect().bottom + 60;
+  let k = 0;
+  allPages().forEach((el, n) => { if (el.getBoundingClientRect().top <= line) k = n; });
+  if (k !== page) { page = k; counter(); }
 }
+let ticking = false;
+window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; trackScroll(); }); } }, { passive: true });
 
-function go(i, smooth = true) {
-  const els = allPages();
-  page = Math.max(0, Math.min(els.length - 1, i));
-  if (mode === "pages") {
-    els.forEach((el, k) => el.classList.toggle("cur", k === page));
-    [page, page + 1, page - 1].forEach((k) => els[k] && draw(els[k]));   // this page, and the ones either side ready
-    viewer().scrollTo?.({ top: 0 });
-    if (!document.querySelector(".rd-viewer.fs")) window.scrollTo({ top: viewer().offsetTop - 70, behavior: smooth ? "smooth" : "auto" });
-  } else {
-    els[page].scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
-  }
-  counter();
+function counter() {
+  const c = document.getElementById("rd-count");
+  if (c) c.textContent = `${page + 1} / ${allPages().length}`;
 }
 
 function show(g) {
   current = g;
   const guide = data.guides[g];
   pagesEl().innerHTML = guide.pages.map((p, i) => `
-    <div class="rd-page" data-page="${g}:${i}" style="aspect-ratio:${p.w}/${p.h};--ar:${p.w / p.h}">
-      <canvas aria-label="${esc(T(`${guide.title}, page ${i + 1}`, `${guide.title}, עמוד ${i + 1}`))}"></canvas>
-      <span class="rd-n" dir="ltr">${i + 1} / ${guide.pages.length}</span>
-      <button type="button" class="rd-fs" data-full aria-label="${esc(fullLabel())}">${isFull() ? ICONS.exit : ICONS.full}</button>
-    </div>`).join("");
+    <div class="rd-page" data-page="${g}:${i}" role="button" tabindex="0" style="aspect-ratio:${p.w}/${p.h}"
+      aria-label="${esc(T(`Page ${i + 1}: read full screen`, `עמוד ${i + 1}: קריאה במסך מלא`))}"><canvas></canvas></div>`).join("");
   allPages().forEach((el) => { nearby ? nearby.observe(el) : draw(el); });
   page = 0;
-  go(0, false);
+  window.scrollTo({ top: Math.min(window.scrollY, body.offsetTop - 80) });
+  counter();
 }
-
-function setMode(m) {
-  mode = m;
-  try { localStorage.setItem(MODE_KEY, m); } catch { /* fine: just not remembered */ }
-  viewer().classList.toggle("paged", m === "pages");
-  document.querySelectorAll("[data-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === m)));
-  go(page, false);
-}
-
-const viewer = () => document.querySelector(".rd-viewer");
-function toggleFull() {
-  const v = viewer();
-  const native = document.fullscreenElement || document.webkitFullscreenElement;
-  if (native) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
-  if (v.classList.contains("fs")) { setFull(false); return; }
-  const req = v.requestFullscreen || v.webkitRequestFullscreen;
-  if (!req) { setFull(true); return; }   // iPhone: no real full screen for pages, so fill the window instead
-  try {
-    const r = req.call(v);               // fullscreenchange then turns the full-screen layout on
-    if (r && r.then) {
-      // Refused: fill the window instead. Some browsers (in-app and embedded ones) never answer at all,
-      // so after a second without full screen, fill the window too.
-      let answered = false;
-      r.then(() => { answered = true; }, () => { answered = true; setFull(true); });
-      setTimeout(() => { if (!answered && !document.fullscreenElement && !isFull()) setFull(true); }, 1000);
-    }
-  } catch { setFull(true); }
-}
-const isFull = () => Boolean(viewer()?.classList.contains("fs"));
-const fullLabel = () => (isFull() ? T("Exit full screen", "יציאה ממסך מלא") : T("Full screen", "מסך מלא"));
-function setFull(on) {
-  viewer().classList.toggle("fs", on);
-  document.documentElement.classList.toggle("rd-fs-on", on);
-  document.querySelectorAll("[data-full]").forEach((b) => { b.innerHTML = on ? ICONS.exit : ICONS.full; b.setAttribute("aria-label", fullLabel()); });
-  go(page, false);
-}
-document.addEventListener("fullscreenchange", () => setFull(Boolean(document.fullscreenElement)));
-document.addEventListener("webkitfullscreenchange", () => setFull(Boolean(document.webkitFullscreenElement)));
 
 function render() {
   const all = data.guides || [];
@@ -177,68 +106,320 @@ function render() {
   if (!list.length) list = all.map((g, i) => i);   // languages not marked yet: show them all
   if (!list.length) { message(`<p>${esc(T("The guides aren't ready to read online yet.", "המדריכים עוד לא מוכנים לקריאה אונליין."))}</p>`); return; }
   body.innerHTML = `
-    <p class="rd-note">${esc(T("For your eyes only: please don't share screenshots of the guides.", "לשימושכם בלבד: נא לא לשתף צילומי מסך של המדריכים."))}</p>
-    <div class="rd-viewer${mode === "pages" ? " paged" : ""}">
-      <div class="rd-bar" id="rd-bar">
-        <label class="rd-pick"><span class="visually-hidden">${esc(T("Guide", "מדריך"))}</span>
-          <select id="rd-guide" data-no-i18n>${list.map((i) => `<option value="${i}">${esc(all[i].title)}</option>`).join("")}</select>
-        </label>
-        <div class="rd-modes" role="group" aria-label="${esc(T("How to read", "איך לקרוא"))}">
-          <button type="button" data-mode="scroll" aria-pressed="${mode === "scroll"}">${esc(T("Scroll", "גלילה"))}</button>
-          <button type="button" data-mode="pages" aria-pressed="${mode === "pages"}">${esc(T("Page by page", "עמוד אחר עמוד"))}</button>
-        </div>
-        <div class="rd-nav">
-          <span class="rd-count" id="rd-count" dir="ltr">1 / 1</span>
-        </div>
-      </div>
-      <div class="rd-stage">
-        <div class="rd-side"><button type="button" class="rd-ic rd-flip" id="rd-prev" aria-label="${esc(T("Previous page", "העמוד הקודם"))}">${ICONS.prev}</button></div>
-        <div class="rd-pages" id="rd-pages"></div>
-        <div class="rd-side"><button type="button" class="rd-ic rd-flip" id="rd-next" aria-label="${esc(T("Next page", "העמוד הבא"))}">${ICONS.next}</button></div>
-      </div>
-    </div>`;
+    <div class="rd-bar" id="rd-bar">
+      <label class="rd-pick"><span class="visually-hidden">${esc(T("Guide", "מדריך"))}</span>
+        <select id="rd-guide" data-no-i18n>${list.map((i) => `<option value="${i}">${esc(all[i].title)}</option>`).join("")}</select>
+      </label>
+      <span class="rd-count" id="rd-count" dir="ltr">1 / 1</span>
+      <button type="button" class="btn rd-open" id="rd-open">${ICONS.full}<span>${esc(T("Read full screen", "קריאה במסך מלא"))}</span></button>
+    </div>
+    <div class="rd-pages" id="rd-pages"></div>
+    <p class="rd-note">${esc(T("For your eyes only: please don't share screenshots of the guides.", "לשימושכם בלבד: נא לא לשתף צילומי מסך של המדריכים."))}</p>`;
   document.getElementById("rd-guide").addEventListener("change", (e) => show(Number(e.target.value)));
-  body.querySelector(".rd-modes").addEventListener("click", (e) => {
-    const b = e.target.closest("[data-mode]");
-    if (b && b.dataset.mode !== mode) setMode(b.dataset.mode);
+  document.getElementById("rd-open").addEventListener("click", () => openReader(current, page));
+  pagesEl().addEventListener("click", (e) => {
+    const el = e.target.closest(".rd-page");
+    if (el) openReader(current, Number(el.dataset.page.split(":")[1]));
   });
-  document.getElementById("rd-prev").addEventListener("click", () => go(page - 1));
-  document.getElementById("rd-next").addEventListener("click", () => go(page + 1));
-  pagesEl().addEventListener("click", (e) => { if (e.target.closest("[data-full]")) toggleFull(); });
-  // Page by page turns pages with the arrows only: scrolling over the pages does nothing (pinch zoom still works).
-  const stage = body.querySelector(".rd-stage");
-  const noScroll = (e) => {
-    if (mode !== "pages" || (e.touches && e.touches.length > 1) || e.ctrlKey) return;
-    if (e.cancelable) e.preventDefault();
-  };
-  stage.addEventListener("wheel", noScroll, { passive: false });
-  stage.addEventListener("touchmove", noScroll, { passive: false });
-  // swipe between pages (Page by page)
-  let x0 = null;
-  pagesEl().addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
-  pagesEl().addEventListener("touchend", (e) => {
-    if (mode !== "pages" || x0 === null) return;
-    const dx = e.changedTouches[0].clientX - x0; x0 = null;
-    if (Math.abs(dx) < 50) return;
-    const forward = he() ? dx > 0 : dx < 0;
-    go(page + (forward ? 1 : -1));
+  pagesEl().addEventListener("keydown", (e) => {
+    const el = e.target.closest(".rd-page");
+    if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openReader(current, Number(el.dataset.page.split(":")[1])); }
   });
   show(list[0]);
 }
 
+// ---------------------------------------------------------------- the full-screen reader
+// Only the page, on black. A small floating control (close, zoom, page number) and the side arrows show
+// when the mouse moves or the screen is tapped, and fade after a moment. Zoom: + / −, pinch, ctrl + wheel
+// or trackpad pinch, double-click or double-tap; drag to move around a zoomed page. Pages turn with the
+// arrows, the arrow keys, swiping, tapping the page's sides, or the wheel when the page fits.
+const imgs = new Map();   // "g:p:hd" → Promise<Image>, so a page loads once
+function loadImg(g, p, hd) {
+  const key = `${g}:${p}:${hd ? 1 : 0}`;
+  if (!imgs.has(key)) {
+    imgs.set(key, (async () => {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        await fresh();
+        const pg = data.guides[g]?.pages[p];
+        const src = hd ? (pg?.hd || pg?.url) : pg?.url;
+        if (!src) throw new Error("no page");
+        try { const img = new Image(); img.decoding = "async"; img.src = src; await img.decode(); return img; }
+        catch { fetchedAt = 0; }
+      }
+      throw new Error("page didn't load");
+    })().catch((e) => { imgs.delete(key); throw e; }));
+  }
+  return imgs.get(key);
+}
+
+const MAX_ZOOM = 5;
+const STEPS = [1, 1.5, 2, 3, 4, 5];   // the + and − buttons and keys
+const stepUp = () => STEPS.find((z) => z > rx.s + 0.01) ?? MAX_ZOOM;
+const stepDown = () => [...STEPS].reverse().find((z) => z < rx.s - 0.01) ?? 1;
+const rx = { el: null, g: 0, p: 0, s: 1, x: 0, y: 0, idle: 0, back: null, native: false };
+const $ = (sel) => rx.el.querySelector(sel);
+const pageCount = () => data.guides[rx.g].pages.length;
+const dims = () => { const pg = data.guides[rx.g].pages[rx.p]; return { w: pg.hw || pg.w, h: pg.hh || pg.h }; };
+
+function openReader(g, p) {
+  if (rx.el) return;
+  rx.g = g; rx.back = document.activeElement;
+  const el = document.createElement("div");
+  el.className = "rx";
+  el.setAttribute("role", "dialog");
+  el.setAttribute("aria-modal", "true");
+  el.setAttribute("aria-label", data.guides[g].title);
+  el.dir = he() ? "rtl" : "ltr";
+  el.innerHTML = `
+    <div class="rx-stage"><div class="rx-sheet"><canvas></canvas></div><div class="rx-wait" hidden></div></div>
+    <button type="button" class="rx-edge rx-prev" aria-label="${esc(T("Previous page", "העמוד הקודם"))}">${ICONS.prev}</button>
+    <button type="button" class="rx-edge rx-next" aria-label="${esc(T("Next page", "העמוד הבא"))}">${ICONS.next}</button>
+    <div class="rx-dock" role="toolbar" aria-label="${esc(T("Reader", "קורא"))}">
+      <button type="button" class="rx-b" data-a="close" aria-label="${esc(T("Close full screen", "יציאה ממסך מלא"))}">${ICONS.close}</button>
+      <span class="rx-sep"></span>
+      <button type="button" class="rx-b" data-a="out" aria-label="${esc(T("Zoom out", "הקטנה"))}">${ICONS.minus}</button>
+      <button type="button" class="rx-b rx-z" data-a="fit" dir="ltr" aria-label="${esc(T("Fit to screen", "התאמה למסך"))}">100%</button>
+      <button type="button" class="rx-b" data-a="in" aria-label="${esc(T("Zoom in", "הגדלה"))}">${ICONS.plus}</button>
+      <span class="rx-sep"></span>
+      <span class="rx-n" dir="ltr" aria-live="polite"></span>
+    </div>
+    <div class="rx-progress"><i></i></div>
+    <p class="rx-hint" hidden>${esc(T("Turn your phone sideways to read the page larger", "סובבו את הטלפון לרוחב כדי לקרוא בגדול"))}</p>`;
+  document.body.appendChild(el);
+  rx.el = el;
+  document.documentElement.classList.add("rx-on");
+  bindReader();
+  // real full screen where the browser has it (not on iPhone: there the reader fills the window)
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  let entered = null;
+  if (req) { try { entered = req.call(el); rx.native = true; entered?.catch?.(() => { rx.native = false; }); } catch { rx.native = false; } }
+  turn(p, true);
+  wake();
+  el.tabIndex = -1;
+  el.focus({ preventScroll: true });
+  sideways(entered);
+}
+
+// Wide pages on a phone held upright: turn the screen sideways where the phone allows it (Android, in full
+// screen), or say once that turning the phone shows the page larger.
+async function sideways(entered) {
+  const { w, h } = dims();
+  if (w <= h || !matchMedia("(hover:none) and (orientation:portrait)").matches) return;
+  try { await Promise.race([entered, wait(800)]); await Promise.race([screen.orientation.lock("landscape"), wait(1200).then(() => { throw new Error("no answer"); })]); return; } catch { /* not here: show the hint */ }
+  const hint = rx.el && $(".rx-hint");
+  if (!hint) return;
+  hint.hidden = false;
+  setTimeout(() => hint.classList.add("gone"), 4500);
+  addEventListener("orientationchange", () => hint.classList.add("gone"), { once: true });
+}
+
+function closeReader() {
+  if (!rx.el) return;
+  try { screen.orientation?.unlock?.(); } catch { /* fine */ }
+  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if (fsEl) (document.exitFullscreen || document.webkitExitFullscreen).call(document)?.catch?.(() => {});
+  rx.el.remove(); rx.el = null; rx.native = false;
+  document.documentElement.classList.remove("rx-on");
+  // back on the page where the reader was
+  const els = allPages();
+  if (rx.g === current && els[rx.p]) { page = rx.p; els[rx.p].scrollIntoView({ block: "center" }); counter(); }
+  rx.back?.focus?.({ preventScroll: true });
+}
+const onFs = () => { if (rx.el && rx.native && !(document.fullscreenElement || document.webkitFullscreenElement)) closeReader(); };
+document.addEventListener("fullscreenchange", onFs);
+document.addEventListener("webkitfullscreenchange", onFs);
+
+// the page's size when it fits the screen (scale 1), and where it sits
+function fit() {
+  const st = $(".rx-stage"), W = st.clientWidth, H = st.clientHeight;
+  const m = W < 700 ? 0 : 20;
+  const { w, h } = dims();
+  const k = Math.min((W - 2 * m) / w, (H - 2 * m) / h);
+  return { W, H, bw: w * k, bh: h * k };
+}
+function clamp() {
+  const { W, H, bw, bh } = fit();
+  const sw = bw * rx.s, sh = bh * rx.s, left = (W - bw) / 2, top = (H - bh) / 2;
+  rx.x = sw <= W ? W / 2 - left - sw / 2 : Math.min(-left, Math.max(W - left - sw, rx.x));
+  rx.y = sh <= H ? H / 2 - top - sh / 2 : Math.min(-top, Math.max(H - top - sh, rx.y));
+}
+function layout(animate = false) {
+  if (!rx.el) return;
+  const { W, H, bw, bh } = fit();
+  clamp();
+  const sheet = $(".rx-sheet");
+  sheet.classList.toggle("anim", animate);
+  Object.assign(sheet.style, { width: `${bw}px`, height: `${bh}px`, left: `${(W - bw) / 2}px`, top: `${(H - bh) / 2}px`,
+    transform: `translate(${rx.x}px,${rx.y}px) scale(${rx.s})` });
+  rx.el.classList.toggle("zoomed", rx.s > 1.001);
+  $(".rx-z").textContent = `${Math.round(rx.s * 100)}%`;
+  $('[data-a="out"]').disabled = rx.s <= 1.001;
+  $('[data-a="in"]').disabled = rx.s >= MAX_ZOOM - 0.001;
+}
+// zoom to s, keeping the point (cx, cy) on the screen where it is
+function zoomTo(s, cx, cy, animate = false) {
+  const { W, H, bw, bh } = fit();
+  s = Math.max(1, Math.min(MAX_ZOOM, s));
+  if (cx === undefined) { cx = W / 2; cy = H / 2; }
+  const left = (W - bw) / 2, top = (H - bh) / 2;
+  const lx = (cx - left - rx.x) / rx.s, ly = (cy - top - rx.y) / rx.s;
+  rx.x = cx - left - lx * s; rx.y = cy - top - ly * s; rx.s = s;
+  layout(animate);
+}
+
+let turnId = 0;
+async function turn(p, first = false) {
+  const n = pageCount();
+  if (p < 0 || p >= n || (!first && p === rx.p)) return;
+  rx.p = p; rx.s = 1; rx.x = 0; rx.y = 0;
+  const id = ++turnId;
+  const { w, h } = dims();
+  const c = $(".rx-sheet canvas"), wait = $(".rx-wait");
+  layout();
+  $(".rx-n").textContent = `${p + 1} / ${n}`;
+  $(".rx-progress i").style.width = `${((p + 1) / n) * 100}%`;
+  $(".rx-prev").disabled = p <= 0;
+  $(".rx-next").disabled = p >= n - 1;
+  const paint = (img) => {
+    if (id !== turnId || !rx.el) return;
+    c.width = w; c.height = h;
+    c.getContext("2d").drawImage(img, 0, 0, w, h);
+    c.classList.add("ok"); wait.hidden = true;
+  };
+  c.classList.remove("ok");
+  const showWait = setTimeout(() => { if (id === turnId) wait.hidden = false; }, 250);
+  // the lighter page first if it's here already, then the sharp one
+  loadImg(rx.g, p, false).then(paint, () => {});
+  await loadImg(rx.g, p, true).then(paint, () => {});
+  clearTimeout(showWait);
+  // the next pages ready before they're needed
+  [p + 1, p + 2, p - 1].forEach((k) => { if (k >= 0 && k < n) loadImg(rx.g, k, true).catch(() => {}); });
+}
+const forward = () => turn(rx.p + 1), backward = () => turn(rx.p - 1);
+
+// the controls show on movement and fade while reading
+function wake() {
+  if (!rx.el) return;
+  rx.el.classList.remove("idle");
+  clearTimeout(rx.idle);
+  rx.idle = setTimeout(() => { if (rx.el && !rx.el.querySelector(".rx-dock:hover, .rx-edge:hover, .rx-dock :focus-visible")) rx.el.classList.add("idle"); }, 2200);
+}
+
+function bindReader() {
+  const el = rx.el, stage = $(".rx-stage");
+  el.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-a]")?.dataset.a;
+    if (a === "close") closeReader();
+    else if (a === "in") zoomTo(stepUp(), undefined, undefined, true);
+    else if (a === "out") zoomTo(stepDown(), undefined, undefined, true);
+    else if (a === "fit") { rx.s = 1; layout(true); }
+  });
+  $(".rx-prev").addEventListener("click", backward);
+  $(".rx-next").addEventListener("click", forward);
+  el.addEventListener("mousemove", wake);
+  el.addEventListener("contextmenu", (e) => e.preventDefault());
+  addEventListener("resize", () => layout());
+
+  // wheel: ctrl + wheel and trackpad pinch zoom; otherwise it moves a zoomed page, or turns pages when the page fits
+  let acc = 0, lock = 0;
+  stage.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const r = stage.getBoundingClientRect();
+    if (e.ctrlKey || e.metaKey) { zoomTo(rx.s * Math.exp(-e.deltaY * 0.01), e.clientX - r.left, e.clientY - r.top); return; }
+    if (rx.s > 1.001) { rx.x -= e.deltaX; rx.y -= e.deltaY; layout(); return; }
+    if (Date.now() < lock) return;
+    acc += Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : (he() ? -e.deltaX : e.deltaX);
+    if (Math.abs(acc) > 60) { acc > 0 ? forward() : backward(); acc = 0; lock = Date.now() + 450; }
+  }, { passive: false });
+
+  // pointers: drag to move, pinch to zoom, swipe to turn, tap the sides to turn, tap to show the controls,
+  // double-tap / double-click to zoom in and back
+  const pts = new Map();
+  let start = null, pinch = null, lastTap = 0, tapTimer = 0;
+  const local = (e) => { const r = stage.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  stage.addEventListener("pointerdown", (e) => {
+    stage.setPointerCapture(e.pointerId);
+    pts.set(e.pointerId, local(e));
+    if (pts.size === 1) start = { ...local(e), x0: rx.x, y0: rx.y, t: Date.now(), moved: false };
+    if (pts.size === 2) {
+      const [a, b] = [...pts.values()];
+      pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), s: rx.s, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+      start = null;
+    }
+  });
+  stage.addEventListener("pointermove", (e) => {
+    if (!pts.has(e.pointerId)) return;
+    pts.set(e.pointerId, local(e));
+    if (pinch && pts.size === 2) {
+      const [a, b] = [...pts.values()];
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      rx.x += mx - pinch.mx; rx.y += my - pinch.my; pinch.mx = mx; pinch.my = my;
+      zoomTo(pinch.s * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, mx, my);
+      return;
+    }
+    if (!start) return;
+    const p = local(e), dx = p.x - start.x, dy = p.y - start.y;
+    if (Math.hypot(dx, dy) > 8) start.moved = true;
+    if (rx.s > 1.001 && start.moved) { rx.x = start.x0 + dx; rx.y = start.y0 + dy; layout(); el.classList.add("dragging"); }
+  });
+  const up = (e) => {
+    if (!pts.has(e.pointerId)) return;
+    pts.delete(e.pointerId);
+    el.classList.remove("dragging");
+    if (pinch) { if (pts.size < 2) pinch = null; start = null; return; }
+    if (!start) return;
+    const p = local(e), dx = p.x - start.x, dy = p.y - start.y, s0 = start;
+    start = null;
+    if (rx.s <= 1.001 && s0.moved && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.2) {   // swipe
+      const fwd = he() ? dx > 0 : dx < 0;
+      fwd ? forward() : backward();
+      return;
+    }
+    if (s0.moved || Date.now() - s0.t > 400) return;
+    // a tap
+    if (Date.now() - lastTap < 300) {   // double: zoom in there, or back to the whole page
+      clearTimeout(tapTimer); lastTap = 0;
+      rx.s > 1.001 ? (rx.s = 1, layout(true)) : zoomTo(2.5, p.x, p.y, true);
+      return;
+    }
+    lastTap = Date.now();
+    if (e.pointerType === "mouse") { wake(); return; }
+    tapTimer = setTimeout(() => {   // touch: the sides turn pages, the middle shows or hides the controls
+      const W = stage.clientWidth;
+      if (rx.s <= 1.001 && p.x < W * 0.22) (he() ? forward : backward)();
+      else if (rx.s <= 1.001 && p.x > W * 0.78) (he() ? backward : forward)();
+      else if (el.classList.contains("idle")) wake();
+      else { clearTimeout(rx.idle); el.classList.add("idle"); }
+    }, 280);
+  };
+  stage.addEventListener("pointerup", up);
+  stage.addEventListener("pointercancel", up);
+}
+
 document.addEventListener("keydown", (e) => {
+  if (rx.el) {
+    const fwd = he() ? "ArrowLeft" : "ArrowRight", back = he() ? "ArrowRight" : "ArrowLeft";
+    const k = e.key;
+    if (k === "Escape") { e.preventDefault(); closeReader(); }
+    else if ([fwd, "PageDown", " "].includes(k) || (k === "ArrowDown" && rx.s <= 1.001)) { e.preventDefault(); forward(); }
+    else if ([back, "PageUp"].includes(k) || (k === "ArrowUp" && rx.s <= 1.001)) { e.preventDefault(); backward(); }
+    else if (k === "ArrowDown" || k === "ArrowUp") { e.preventDefault(); rx.y += k === "ArrowDown" ? -80 : 80; layout(); }
+    else if (k === "Home") { e.preventDefault(); turn(0); }
+    else if (k === "End") { e.preventDefault(); turn(pageCount() - 1); }
+    else if (k === "+" || k === "=") { e.preventDefault(); zoomTo(stepUp(), undefined, undefined, true); }
+    else if (k === "-") { e.preventDefault(); zoomTo(stepDown(), undefined, undefined, true); }
+    else if (k === "0") { e.preventDefault(); rx.s = 1; layout(true); }
+    else return;
+    wake();
+    return;
+  }
   if (!document.getElementById("rd-pages") || e.target.closest("input, select, textarea")) return;
-  const fwd = he() ? "ArrowLeft" : "ArrowRight", back = he() ? "ArrowRight" : "ArrowLeft";
-  // Page by page: the keys turn pages (and never scroll). Scroll: the keys scroll as usual.
-  if (mode === "pages" && [fwd, "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(page + 1); }
-  else if (mode === "pages" && [back, "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); go(page - 1); }
-  else if (e.key.toLowerCase() === "f" && !e.ctrlKey && !e.metaKey) toggleFull();
-  else if (e.key === "Escape" && viewer()?.classList.contains("fs") && !document.fullscreenElement) setFull(false);
+  if (e.key.toLowerCase() === "f" && !e.ctrlKey && !e.metaKey) openReader(current, page);
 });
 
 // No saving, dragging or printing the pages from here.
-document.addEventListener("contextmenu", (e) => { if (e.target.closest(".rd-pages")) e.preventDefault(); });
-document.addEventListener("dragstart", (e) => { if (e.target.closest(".rd-pages")) e.preventDefault(); });
+document.addEventListener("contextmenu", (e) => { if (e.target.closest(".rd-pages, .rx")) e.preventDefault(); });
+document.addEventListener("dragstart", (e) => { if (e.target.closest(".rd-pages, .rx")) e.preventDefault(); });
 document.addEventListener("keydown", (e) => {
   if ((e.ctrlKey || e.metaKey) && ["s", "p"].includes(e.key.toLowerCase())) e.preventDefault();
 });
