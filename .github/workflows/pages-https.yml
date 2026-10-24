@@ -1,0 +1,25 @@
+# Enforce HTTPS on the shop's GitHub Pages site (launch audit, 24 Oct 2026): without it, http://shop.mw.photography
+# serves the pages, sign-in included, unencrypted. Run by hand (Actions > Enforce HTTPS > Run workflow); safe to
+# run again. Reads the Pages settings, turns on "Enforce HTTPS" if it's off, and reports the result.
+name: Enforce HTTPS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  pages: write
+
+jobs:
+  https:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Enforce HTTPS on GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh api "repos/$REPO/pages" --jq '"Before: domain \(.cname), certificate \(.https_certificate.state // "none"), enforce HTTPS \(.https_enforced)"'
+          if [ "$(gh api "repos/$REPO/pages" --jq .https_enforced)" != "true" ]; then
+            gh api -X PUT "repos/$REPO/pages" -F https_enforced=true --silent
+          fi
+          gh api "repos/$REPO/pages" --jq '"After: enforce HTTPS \(.https_enforced)"'
