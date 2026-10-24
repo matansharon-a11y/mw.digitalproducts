@@ -82,12 +82,12 @@ const HE = {
   "Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.": "בוחרים את הנושא, את השמיים או את הרקע. בוחרים אפקט. קובעים עוצמה. הפאנל בונה בשבילכם את המסכות ואת השכבות.",
   "MWP Presets, Lightroom presets by Matan Wild": "הפריסטים של MWP, פריסטים ללייטרום מאת מתן וויילד",
   "Lightroom Presets, Photoshop Plugin & Photography Guides · MWP": "פריסטים ללייטרום, פלאגין לפוטושופ ומדריכי צילום · MWP",
-  "Pro editing in a few clicks: Lightroom presets, a Lightroom Classic plugin, a Photoshop plugin and PDF photography guides by photographer Matan Wild. Instant download, free updates.": "עריכה מקצועית בכמה קליקים: פריסטים ללייטרום, תוסף ללייטרום קלאסיק, פלאגין לפוטושופ ומדריכי צילום ב-PDF מאת הצלם מתן וויילד. הורדה מיידית ועדכונים חינם.",
-  "Tools Matan Wild built for photographers: Lightroom presets, Lightroom and Photoshop plugins and photography guides, for every kind of photography.": "כלים שמתן וויילד פיתח במיוחד לצלמים: פריסטים ללייטרום, תוספים ללייטרום ולפוטושופ ומדריכי צילום, לכל סוג צילום.",
+  "Pro editing in a few clicks: Lightroom presets, a Lightroom Classic plugin, a Photoshop plugin and PDF photography guides by photographer Matan Wild. Instant download, free updates.": "עריכה מקצועית בכמה קליקים: פריסטים ללייטרום, תוסף ללייטרום קלאסיק, פלאגין לפוטושופ ומדריכי צילום ב-PDF מאת הצלם מתן שרון. הורדה מיידית ועדכונים חינם.",
+  "Tools Matan Wild built for photographers: Lightroom presets, Lightroom and Photoshop plugins and photography guides, for every kind of photography.": "כלים שמתן שרון פיתח במיוחד לצלמים: פריסטים ללייטרום, תוספים ללייטרום ולפוטושופ ומדריכי צילום, לכל סוג צילום.",
   "Matan Wild founded MW Photo Tours in 2023. He leads nature and wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.":
     "מתן וויילד ייסד את MW Photo Tours ב-2023. הוא מוביל מסעות צילום טבע וחיות בר בחו״ל וסדנאות בישראל, מנהל את קהילת הצלמים של MWP ומוציא את המגזין החודשי דה ווילד סייד אוף פוטוגרפי.",
   "Compare Lightroom Presets, Plugins & Photography Guides · MWP Shop": "השוואה: פריסטים ללייטרום, תוספים ומדריכי צילום · החנות של MWP",
-  "Four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and LUTs, and PDF photography guides. Compare them, or save with a bundle.": "ארבעה כלים מאת הצלם מתן וויילד: תוסף ללייטרום קלאסיק, פאנל תוסף לפוטושופ, פריסטים ללייטרום וקובצי LUT, ומדריכי צילום ב-PDF. השוו ביניהם, או חסכו עם חבילה.",
+  "Four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and LUTs, and PDF photography guides. Compare them, or save with a bundle.": "ארבעה כלים מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק, פאנל תוסף לפוטושופ, פריסטים ללייטרום וקובצי LUT, ומדריכי צילום ב-PDF. השוו ביניהם, או חסכו עם חבילה.",
   // copy rewrite from the audience research (Oct 2026, drafts for Matan)
   "MWP · by wildlife photographer Matan Wild": "MWP · מאת צלם חיות הבר מתן וויילד",
   "Wildlife,": "חיות הבר,",

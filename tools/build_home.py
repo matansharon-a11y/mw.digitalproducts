@@ -179,7 +179,7 @@ PAIRS = [
 LD = __import__("json").dumps([
     {"@context": "https://schema.org", "@type": "Organization", "name": "MWP", "alternateName": "MW Photo Tours",
      "url": "https://shop.mw.photography/", "logo": "https://shop.mw.photography/assets/img/favicon-512.png",
-     "founder": {"@type": "Person", "name": "Matan Wild"}, "email": "contact@matanwildphotography.com",
+     "founder": {"@type": "Person", "name": "Matan Sharon", "alternateName": ["Matan Wild", "מתן שרון", "מתן וויילד"], "jobTitle": "Photographer", "url": "https://mw.photography"}, "email": "contact@matanwildphotography.com",
      "sameAs": ["https://mw.photography"]},
     {"@context": "https://schema.org", "@type": "WebSite", "name": "MWP", "url": "https://shop.mw.photography/", "inLanguage": ["en", "he"]},
 ], ensure_ascii=False)
