@@ -922,7 +922,7 @@ const HE = {
   "See the guides": "לעמוד המדריכים",
   "Nothing for that app yet.": "עדיין אין מוצר לתוכנה הזאת.",
   "Show all four": "להצגת כל הארבעה",
-  "Help or a refund within 14 days": "עזרה או החזר תוך 14 יום",
+  "Help or a refund within 14 days": "לא עובד לכם? 14 יום להחזר כספי",
   "Compare": "השוואה",
   "Which one is": "מה",
   "for you?": "מתאים לכם?",
