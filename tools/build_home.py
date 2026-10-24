@@ -248,13 +248,13 @@ html = f'''<!doctype html>
 <div class="wrap">
 <div class="head">
 <p class="kick">Bundles</p>
-<h2 class="h2">Shoot with the guides. <span class="b grad">Finish with the tools.</span></h2>
-<p class="lead">The Field Guides help you take a stronger photo. The Lightroom Classic plugin, MWP Presets and MWP Photoshop Plugin Panel help you sort it and finish it, in Lightroom or Photoshop. Every bundle costs less than its parts.</p>
+<h2 class="h2">Buy together. <span class="b grad">Pay less.</span></h2>
+<p class="lead">Every bundle costs less than buying its parts separately.</p>
 </div>
 <div class="plans">
 {plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
 {plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "field-guides/#buy")}
-{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
+{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>
 </section>
@@ -275,12 +275,12 @@ html = f'''<!doctype html>
 <h2 class="h2">FAQs</h2>
 </div>
 <div class="faq">
-<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. Our <a href="/presets/#plugin">Lightroom Classic plugin</a> (Lightroom Classic 13 or newer) culls, organises, edits and exports a whole shoot in one window. It comes with MWP Presets, in one purchase.</div></details>
-<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you sort and edit whole shoots in Lightroom Classic, <a href="/presets/#plugin">the Lightroom Classic plugin</a>. If you want a finished look in one click, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Photoshop Plugin Panel</a>.</div></details>
+<details><summary>Is there anything for Lightroom Classic?</summary><div>Yes. I built a <a href="/presets/#plugin">Lightroom Classic plugin</a> (version 13 or newer) that culls, organises, edits and exports a whole shoot. It comes with MWP Presets, in one purchase.</div></details>
+<details><summary>Which one should I start with?</summary><div>If you want to shoot better, start with <a href="/field-guides/">MWP Field Guides</a>. If you sort and edit whole shoots in Lightroom Classic, <a href="/presets/#plugin">the Lightroom Classic plugin</a>. If you want a finished look in one click, <a href="/presets/">MWP Presets</a>. If you finish your photos in Photoshop, <a href="/panel/">MWP Photoshop Plugin</a>.</div></details>
 <details><summary>How do I get my files after paying?</summary><div>You get an email straight away. Open <a href="/account/">My downloads</a>, sign in to your MWP account, and everything you bought is there.</div></details>
 <details><summary>Can I download again later?</summary><div>Yes. Sign in to My downloads any time, including for future updates to products you own.</div></details>
 <details><summary>Do I need an account?</summary><div>Yes. You create one with your email and a password before you pay, so your files and future updates are always waiting for you.</div></details>
-<details><summary>Do they work in Photoshop (Beta)?</summary><div>Yes. MWP Photoshop Plugin Panel installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.</div></details>
+<details><summary>Do they work in Photoshop (Beta)?</summary><div>Yes. The MWP Photoshop Plugin installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.</div></details>
 <details><summary>What if something doesn't work for me?</summary><div>Write to <a href="/support/">support</a> within 14 days of purchase. We'll help you get it working, and if we can't, we'll refund you. The <a href="/legal/#refunds">refund policy</a> has the details.</div></details>
 </div>
 </div>
@@ -291,9 +291,9 @@ html = f'''<!doctype html>
 <div class="wrap about-in">
 <div class="about-body">
 <p class="kick">About Matan</p>
-<h2 class="h2">Built <span class="b grad">in the field.</span></h2>
-<p class="about-intro">Matan Wild founded MW Photo Tours in 2023. He leads nature and wildlife photography expeditions abroad and workshops in Israel, runs the MWP photographers' community and publishes the monthly magazine The Wild Side of Photography.</p>
-<p class="about-more">The plugins, the presets and the guides come out of that work: the edits and the lessons he shares with photographers in the field, made so you can use them at home.</p>
+<h2 class="h2">Hi, <span class="b grad">I'm Matan.</span></h2>
+<p class="about-intro">I founded MW Photo Tours in 2023. I lead nature and wildlife photography expeditions abroad and workshops in Israel, run the MWP photographers' community and publish the monthly magazine The Wild Side of Photography.</p>
+<p class="about-more">The plugins, the presets and the guides come out of that work: the edits and the lessons I share with photographers in the field, made so you can use them at home.</p>
 <a class="ghost about-go" href="https://mw.photography" target="_blank" rel="noopener">Visit mw.photography {EXT}</a>
 </div>
 <ul class="roles">

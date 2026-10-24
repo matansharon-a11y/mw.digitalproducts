@@ -47,7 +47,7 @@ ZERO = {"en": "$0.00", "he": "₪0.00"}
 
 # Words the template uses on every page
 UI = {
-    "en": {"buy": "Buy", "for": "MWP Photoshop Plugin Panel for", "prev": "Previous", "next": "Next", "page": "Page", "raw": "RAW", "final": "FINAL",
+    "en": {"buy": "Buy", "for": "MWP Photoshop Plugin for", "prev": "Previous", "next": "Next", "page": "Page", "raw": "RAW", "final": "FINAL",
            "hint": "Drag the handle to compare.", "faq_kick": "Before you buy", "faq": "FAQs",
            "spec_kick": "What you get", "spec_h": "What's in the download.", "price_kick": "Get it",
            "trust": "Instant download · Secure checkout · Free updates · Help or a refund within 14 days", "terms": "Full terms",
@@ -87,7 +87,7 @@ P["presets"] = dict(
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The same photo,", "before and after."],
         proof_lead="Each example shows the RAW file beside the same file with one preset, plus white balance and exposure.",
         pairs=["Light and Scene · Blue Hour", "Light and Scene · Macro Ground"],
-        m=dict(choose=[dict(type="Preset pack", name="Lightroom Presets", line="50 presets from Matan Wild's own edits, 12 that adapt to every photo. With 33 LUTs.",
+        m=dict(choose=[dict(type="Preset pack", name="Lightroom Presets", line="50 presets built from my own edits, 12 that adapt to every photo. With 33 LUTs.",
                             meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", cta="Add to cart", more="Learn more",
                             alt="A sand dune in golden light, in a Lightroom-like window"),
                        dict(type="Plugin", name="Lightroom Classic Plugin", line="Cull, keyword, edit and export a whole shoot, in one window inside Lightroom Classic.",
@@ -117,7 +117,7 @@ P["presets"] = dict(
                ("Tools", "Exposure, fur detail, vignette and grain.", "Tiger walking out of the forest")],
         lrc=[("Cull", "Turn a day of bursts into a short list. Nothing is ever deleted."),
              ("Organize", "Trips, a collection per day, and 51,471 species for your keywords."),
-             ("Expedition", "The edit we teach in camp, one step per line."),
+             ("Expedition", "The edit I teach on my expeditions, one step at a time."),
              ("Looks", "A finished mood with a strength slider, and looks of your own."),
              ("Edit", "Subject, sky, background or people: pick an effect, set the strength."),
              ("Color", "Hue, saturation and luminance per colour, and ready fixes like Warm fur."),
@@ -221,19 +221,19 @@ P["panel"] = dict(
               | {"Eye": "radial-gradient(ellipse 4% 3% at 46.3% 29.2%, #000 55%, transparent 100%), radial-gradient(ellipse 4% 3% at 59.6% 29.2%, #000 55%, transparent 100%)"}, True),
     bundle="full-set",   # Matan, 24 Oct 2026: the Photoshop plugin sells alone or in the full set
     en=dict(
-        name="MWP Photoshop Plugin Panel", name_html='MWP <span class="grad">Photoshop Plugin Panel</span>',
-        title="Photoshop Plugin for Easy Photo Editing · MWP Photoshop Plugin Panel",
-        desc="Edit photos in Photoshop without learning layers or masks. Pick the subject, the sky or the background, pick an effect, set the strength. Your original stays locked. Mac and Windows.",
+        name="MWP Photoshop Plugin", name_html='MWP <span class="grad">Photoshop Plugin</span>',
+        title="Photoshop Plugin for Easy Photo Editing · MWP",
+        desc="Edit photos in Photoshop and learn as you go, without risking your original. Pick the subject, the sky or the background, pick an effect, set the strength. Mac and Windows.",
         hero_alt="A tiger, photographed by Matan Wild",
-        kick="MWP Photoshop Plugin Panel · Mac and Windows", h1=["Photoshop,", "made easy."],
-        lead="Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you, and your original stays locked.",
-        cta="Get MWP Photoshop Plugin Panel", cta2="Compare RAW and final",
-        facts=["No layers or masks to learn", "Your original stays locked", "Photoshop 2023 or newer · Mac and Windows"],
+        kick="MWP Photoshop Plugin", h1=["Photoshop,", "made easy."],
+        lead="Pick what to edit: the subject, the sky or the background. Pick an effect, set the strength, and the plugin builds the masks and layers for you. Your original stays locked.",
+        cta="Get the plugin", cta2="Compare RAW and final",
+        facts=["Learn as you go, without risking your original", "Photoshop 2023 or newer · Mac and Windows"],
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The subject brighter.", "The sky calmer."],
-        proof_lead="Choose the subject or the sky, then an effect. The panel builds the mask and puts the edit on its own layer.",
+        proof_lead="Choose the subject or the sky, then an effect. The plugin builds the mask and puts each edit on its own layer.",
         pairs=["Subject · Pop", "Background · Darken"],
         inside_kick="What's inside", inside_h=["Four tabs,", "in the order you edit."],
-        inside_lead="From the first crop to the Instagram copy, without leaving the panel.",
+        inside_lead="From the first crop to the Instagram copy, without leaving the plugin.",
         cards=[("Prepare", "Crop around the subject, straighten, find and erase dust, denoise. Neutral color in one tap.", "Iceberg under storm light"),
                ("Edit", "Subject, eye, sky, background, lights, darks or any color. 8 effects. Paint them in or out.", "Red fox looking at the camera"),
                ("Style", "11 looks from golden to blue hour to B&W. Sun glow, sunbeams, rim light, spotlight.", "Lion walking, black and white"),
@@ -242,18 +242,18 @@ P["panel"] = dict(
         feat_lead="Subject, Sky and Background use Photoshop's own AI. Hold a button to see the area in red before you edit.",
         feat_points=["<strong>Every edit on its own layer.</strong> All edits sit in one MWP group. Your photo underneath stays locked.",
                      "<strong>One button, one undo.</strong> Ctrl+Z takes back a whole button. Before / After shows the original at any time.",
-                     "<strong>Exports are new files.</strong> The panel never saves over your original file."],
-        feat_alt="Lion walking, black and white", ps_label="Interactive preview of the real panel · the Edit tab, button for button", ps_alt="Young red fox looking at the camera",
-        specs=[("", "Photoshop panel", "Double-click to install. Mac and Windows."),
+                     "<strong>Exports are new files.</strong> The plugin never saves over your original file."],
+        feat_alt="Lion walking, black and white", ps_label="Interactive preview of the real plugin · the Edit tab, button for button", ps_alt="Young red fox looking at the camera",
+        specs=[("", "Photoshop plugin", "Double-click to install. Mac and Windows."),
                ("21", "User Manual · PDF", "21 pages. Every button, step by step, for complete beginners."),
                ("", "Installation Guide · PDF", "Setup step by step, with fixes for common problems."),
-               ("", "Built-in guide", "Hover tips and a full help page inside the panel."),
-               ("", "Video tutorials", "Installing and using the panel, in My downloads.")],
+               ("", "Built-in guide", "A tip on every button and a full help page inside the plugin."),
+               ("", "Video tutorials", "Installing and using the plugin, in My downloads.")],
         spec_note="Works with Photoshop 2023 (24.2) or newer on Mac and Windows. Not for Lightroom, iPad or phones.",
-        final_kick="MWP Photoshop Plugin Panel", final_h=["Edit with", "confidence."],
-        final_lead="The panel with both PDF guides and free updates. Or together with MWP Presets and the Lightroom Classic plugin, for Lightroom and Photoshop in the same look.",
-        plan=("MWP Photoshop Plugin Panel", "Photoshop panel", ["Photoshop panel, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get MWP Photoshop Plugin Panel"),
-        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
+        final_kick="MWP Photoshop Plugin", final_h=["Edit with", "confidence."],
+        final_lead="The plugin with a user manual, an install guide and free updates. Or get it in the full set, with every tool and guide.",
+        plan=("MWP Photoshop Plugin", "Photoshop plugin", ["Photoshop plugin, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get the plugin"),
+        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
     ),
     he=dict(
         name="התוסף לפוטושופ של MWP", name_html='התוסף לפוטושופ של <span class="grad">MWP</span>',
@@ -305,7 +305,7 @@ P["field-guides"] = dict(
         desc="Four visual photography guides: 137 one-page lessons on composition, colour, light and planning. Each is a real photo from the field, with a drawing that shows why it works. PDF, English or Hebrew.",
         hero_alt="Mountains at dusk, photographed by Matan Wild",
         kick="MWP Field Guides · PDF photography guides", h1=["What makes", "a strong image."],
-        lead="Four visual guides with 137 one-page lessons on composition, colour, light and planning. Every lesson is a real photo from the field, with a drawing that shows why it works.",
+        lead="Four visual guides with 137 one-page lessons on composition, colour, light and planning, for beginners and experienced photographers. Every lesson is a real photo from the field, with a drawing that shows why it works.",
         cta="Get the guides", cta2="Look inside", facts=["137 lessons", "English or Hebrew", "PDF for any device"],
         proof_label="Look inside", proof_kick="Look inside", proof_h=["This is what every", "lesson looks like."],
         proof_lead="Flip through real pages from the guide. A photo, a drawing and a short explanation. Nothing extra.",
@@ -330,7 +330,7 @@ P["field-guides"] = dict(
         final_kick="MWP Field Guides", final_h=["Your next shoot", "starts here."],
         final_lead="4 guides, 137 lessons and 229 pages of composition, colour, light and planning. In English or Hebrew, in one set.",
         plan=("MWP Field Guides", "Learn to shoot: before the click", ["4 field guides, English or Hebrew", "137 lessons, 229 pages", "Cheat sheets, drills and checklists"], "Get the guides"),
-        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
+        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
     ),
     he=dict(
         name="מדריכי השטח של MWP", name_html='מדריכי השטח של <span class="grad">MWP</span>',
@@ -408,9 +408,9 @@ P["lightroom-classic"] = dict(
                ("", "Video tutorials", "Installing and using the plugin, in My downloads")],
         spec_note="Needs Lightroom Classic 13 or newer on Mac or Windows. Not for Lightroom (the cloud app), Lightroom Mobile or Photoshop.",
         final_kick="Lightroom Classic Plugin", final_h=["Your whole shoot,", "in one window."],
-        final_lead="The plugin with built-in help, video tutorials and free updates. Or in the full set, with MWP Presets, MWP Photoshop Plugin Panel and the Field Guides.",
+        final_lead="The plugin with built-in help, video tutorials and free updates. Or in the full set, with MWP Presets, MWP Photoshop Plugin and the Field Guides.",
         plan=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from the card to the post", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
-        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
+        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
         bar=[("inside", "Look inside"), ("workflow", "How it works"), ("get", "Works on its own"), ("faq", "FAQs")],
     ),
     he=dict(
@@ -572,7 +572,7 @@ def page(folder, lang):
     cards = "".join(f'''<article class="card" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"><span class="no">0{k + 1}</span></div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>'''
                     for k, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
     lead = f'<p class="lead">{esc(c["inside_lead"])}</p>' if c["inside_lead"] else ""
-    if p.get("ps_show"):   # MWP Photoshop Plugin Panel: Photoshop as one centred showcase, like the Lightroom Classic one
+    if p.get("ps_show"):   # MWP Photoshop Plugin: Photoshop as one centred showcase, like the Lightroom Classic one
         ba, fa, areas, tall = p["ps_photo"]
         descs = "".join(f'<p data-pw-desc="{esc(t2)}"{"" if k == 1 else " hidden"}><span class="n">0{k + 1}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
                         for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Style", "Export"))))
@@ -581,7 +581,7 @@ def page(folder, lang):
     <div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
     <div class="lrc pws" data-pws data-r><p class="lrc-label"><i aria-hidden="true"></i><span>{esc(c["ps_label"].split(" · ")[0])}<span class="req"> · {esc(c["ps_label"].split(" · ")[1])}</span></span></p>
     <div class="lrc-stage"><div class="psw" lang="en" dir="ltr" data-no-i18n><div class="psw-bar"><i></i><i></i><i></i><span>Photoshop</span></div>
-    <div class="psw-main"><div class="psw-canvas" data-areas="{esc(json.dumps(areas))}"><div class="psw-pic{" tall" if tall else ""}"><img class="psw-after" src="{img(fa)}" alt="{esc(c["ps_alt"])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div>{f'<img class="psw-before" src="{img(ba)}" alt="" loading="lazy">' if ba else ""}</div><span class="psw-tag">{"לפני" if lang == "he" else "Before"}</span><span class="psw-sim">{"הדמיה בעמוד הזה · בפוטושופ התוסף בונה מסכות אמיתיות" if lang == "he" else "Simulated on this page · in Photoshop the panel builds real masks"}</span></div>
+    <div class="psw-main"><div class="psw-canvas" data-areas="{esc(json.dumps(areas))}"><div class="psw-pic{" tall" if tall else ""}"><img class="psw-after" src="{img(fa)}" alt="{esc(c["ps_alt"])}" loading="lazy"><div class="psw-layers"></div><div class="psw-mask"></div>{f'<img class="psw-before" src="{img(ba)}" alt="" loading="lazy">' if ba else ""}</div><span class="psw-tag">{"לפני" if lang == "he" else "Before"}</span><span class="psw-sim">{"הדמיה בעמוד הזה · בפוטושופ התוסף בונה מסכות אמיתיות" if lang == "he" else "Simulated on this page · in Photoshop the plugin builds real masks"}</span></div>
     {ps_window("/assets/img/logo-mark.png")}</div></div></div>
     <div class="lrc-desc" aria-live="polite">{descs}</div></div>
     </div>

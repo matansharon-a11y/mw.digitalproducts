@@ -11,7 +11,7 @@ NAMES = [
     ("MWP Field Guide", f"מדריך השטח של {MWP}"), ("MWP FIELD GUIDE", f"מדריך השטח של {MWP}"),
     ("MWP Presets", f"הפריסטים של {MWP}"), ("MWP PRESETS", f"הפריסטים של {MWP}"),
     ("MWP Photoshop Plugin Panel", f"התוסף לפוטושופ של {MWP}"), ("MWP PHOTOSHOP PLUGIN PANEL", f"התוסף לפוטושופ של {MWP}"),
-    ("MWP Lightroom Classic Plugin", f"התוסף ללייטרום של {MWP}"),
+    ("MWP Lightroom Classic Plugin", f"התוסף ללייטרום של {MWP}"), ("MWP Photoshop Plugin", f"התוסף לפוטושופ של {MWP}"), ("MWP PHOTOSHOP PLUGIN", f"התוסף לפוטושופ של {MWP}"),
     ("MW Photo Tours", "MW - Photo Tours"), ("MW PHOTO TOURS", "MW - Photo Tours"),
     ("Matan Wild Photography", "מתן וויילד צילום"), ("Matan Wild", "מתן שרון"),
     ("Lemon Squeezy", "למון סקוויזי"),

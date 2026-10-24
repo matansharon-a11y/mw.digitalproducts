@@ -72,3 +72,6 @@ html.rv-open{overflow:hidden}
 .rv-stage.fit{align-items:center}
 .rv-stage.fit img{max-width:min(100%,1100px);max-height:100%;object-fit:contain}
 .rv-stage.fit .rv-ph.big{max-height:100%;width:auto;height:100%}
+
+/* chip labels in both languages on pages the Hebrew build translates */
+html[lang="he"] .rv-he{display:inline}

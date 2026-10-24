@@ -11,31 +11,31 @@ CHAPTERS = [
     dict(step="Shoot", step_he="צילום", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", href="field-guides/",
          img="5275cc7bcd4fb7560d8f7163592e3122.jpg", pos="56% 55%", alt="Mountains at dusk, photographed by Matan Wild",
          title="Know what to aim for, before you press the shutter",
-         body=["137 one-page lessons on composition, colour, light and planning. Each one is a real photo from the field, with a drawing that shows why it works.",
+         body=["137 one-page lessons on composition, colour, light and planning, for beginners and experienced photographers alike. Each one is a real photo from the field, with a drawing that shows why it works.",
                "Every guide ends with drills, a checklist and a cheat sheet for your next shoot."],
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Sort", step_he="מיון", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", href="presets/#plugin",
          img="86b95f1970bb30f72735d73708d9c095.jpg", pos="80% 45%", alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",
-         title="Your whole shoot, in one window",
+         title="From the card to the post",
          body=["Find the sharpest frame in every burst, build each trip into a collection per day, and keyword species from a list of 51,471. Then edit and export, all inside Lightroom Classic.",
-               "Nothing is ever deleted. Everything it does is ordinary Lightroom settings, keywords and collections."],
-         points=["Seven tabs, from the card to the post", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
+               "Nothing is ever deleted, and every change stays in Lightroom, ready to adjust."],
+         points=["Seven tabs, from culling to export", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
          cta="See the plugin", box="86b95f1970bb30f72735d73708d9c095.jpg", gk="LIGHTROOM CLASSIC PLUGIN", sub="7 tabs · one window"),
     dict(step="Edit", step_he="מראה מוגמר", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets by Matan Wild",
          title="A natural starting point for every photo",
-         body=["50 Lightroom presets made from Matan Wild's own edits. 12 are adaptive: they find the subject, the sky and the background and treat each one on its own.",
+         body=["50 Lightroom presets built from my own edits. 12 are adaptive: they find the subject, the sky and the background, and treat each one on its own.",
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
-    dict(step="Finish", step_he="פוטושופ", tag="Photoshop panel", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
+    dict(step="Photoshop", step_he="פוטושופ", tag="Photoshop plugin", name="Photoshop Plugin", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
-         title="Photoshop, without the maze of menus",
-         body=["Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.",
-               "Your original stays locked, and one undo takes back a whole button."],
-         points=["8 one-click effects", "11 looks and 4 painted lights", "User manual and install guide"],
-         cta="See MWP Photoshop Plugin Panel", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
+         title="Photoshop, made easy.",
+         body=["Pick what to edit: the subject, the sky or the background. Pick an effect, set the strength, and the plugin builds the masks and layers for you.",
+               "Your original stays locked, and one undo takes back a whole step."],
+         points=["Learn as you go, without risking your original", "11 looks and 4 painted lights", "User manual and video tutorials"],
+         cta="See the Photoshop plugin", box="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", gk="PHOTOSHOP PLUGIN", sub="8 effects · 11 looks"),
 ]
 
 HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("st-wait");var go=function(){{h.classList.remove("st-wait")}};setTimeout(go,1500);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go)}})();</script>
@@ -46,7 +46,7 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="wrap st-hero-in">
 <p class="kick st-in" style="--i:0">Lightroom · Photoshop · Photography guides</p>
 <h1 class="st-h1"><span class="st-l"><span style="--i:1">Pro editing,</span></span> <span class="st-l"><span class="grad" style="--i:2">in a few clicks.</span></span></h1>
-<p class="lead st-in" style="--i:3">The tools photographer Matan Wild edits with, for every kind of photography. Presets for a precise starting point, and plugins for Lightroom Classic and Photoshop that do the masking for you.</p>
+<p class="lead st-in" style="--i:3">I built these tools for every kind of photographer: plugins for Lightroom Classic and Photoshop, presets, and short photography guides that are easy to use.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout<span aria-hidden="true">·</span>Free updates</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Find your tool</a></div>
 </div>
@@ -78,8 +78,8 @@ def _chapter_text(i, c):
 STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
-<h2 class="h2">Four tools. <span class="b grad">Start where you get stuck.</span></h2>
-<p class="lead">Not sure what makes a strong photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.</p>
+<h2 class="h2">Four tools. <span class="b grad">One for every step.</span></h2>
+<p class="lead">Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

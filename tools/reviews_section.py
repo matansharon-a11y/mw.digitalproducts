@@ -25,8 +25,13 @@ T = {
                filt="הצגת ביקורות על", every="הכול"),
 }
 NAMES = {"presets": ("MWP Presets", "הפריסטים של MWP"), "plugin": ("the Lightroom Classic plugin", "התוסף ללייטרום קלאסיק"),
-         "panel": ("MWP Photoshop Plugin Panel", "התוסף לפוטושופ של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
-CHIPS = [("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"), ("panel", "Photoshop Plugin Panel", "התוסף לפוטושופ"),
+         "panel": ("MWP Photoshop Plugin", "התוסף לפוטושופ של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
+def _both(e, h):
+    """A chip on a page the Hebrew build translates: each language's own label (the English name changed, the Hebrew didn't)."""
+    return f'<span class="only-en">{e}</span><span class="only-he rv-he" data-no-i18n>{h}</span>'
+
+
+CHIPS = [("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"), ("panel", "Photoshop Plugin", "התוסף לפוטושופ"),
          ("presets", "Presets", "פריסטים"), ("guides", "Field Guides", "מדריכי השטח")]
 
 
@@ -38,7 +43,7 @@ def section(lang="en", product=None, featured=False, filters=False, cls=None):
     chips = ""
     if filters:
         chips = (f'<div class="rv-filter" role="group" aria-label="{t["filt"]}" hidden><button type="button" data-rv-filter="all" aria-pressed="true">{t["every"]}</button>'
-                 + "".join(f'<button type="button" data-rv-filter="{k}" aria-pressed="false" hidden>{h if he else e}</button>' for k, e, h in CHIPS) + "</div>")
+                 + "".join(f'<button type="button" data-rv-filter="{k}" aria-pressed="false" hidden>{h if he else _both(e, h)}</button>' for k, e, h in CHIPS) + "</div>")
     more = (f'<a class="rv-all" href="{"/shop/he/" if he else "/shop/"}#reviews">{t["all"]}</a>' if featured else "")
     attrs = f' data-product="{product}"' if product else ""
     attrs += ' data-featured' if featured else ""
