@@ -22,6 +22,7 @@ NAMES = [
     ("Windows", "ווינדוס"), ("Mac", "מק"),
     ("Instagram", "אינסטגרם"), ("Facebook", "פייסבוק"), ("WhatsApp", "וואטסאפ"), ("YouTube", "יוטיוב"),
     ("Supabase", "סופאבייס"), ("MailerLite", "מיילרלייט"), ("Make.com", "מייק"), ("monday.com", "מאנדיי"),
+    ("Resend", "ריסנד"),
 ]
 _RE = [(re.compile(r"(?<![A-Za-z0-9@._/])" + re.escape(en) + r"(?![A-Za-z0-9])"), he) for en, he in NAMES]
 
