@@ -253,7 +253,7 @@ P["panel"] = dict(
         final_kick="MWP Photoshop Plugin Panel", final_h=["Edit with", "confidence."],
         final_lead="The panel with both PDF guides and free updates. Or together with MWP Presets, for Lightroom and Photoshop in the same look.",
         plan=("MWP Photoshop Plugin Panel", "Photoshop panel", ["Photoshop panel, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get MWP Photoshop Plugin Panel"),
-        plan2=("MWP Photoshop Plugin Panel + MWP Presets", "Photoshop and Lightroom", ["Everything in MWP Photoshop Plugin Panel", "50 Lightroom presets in the same look", "The Lightroom Classic plugin too"], "Get the bundle"),
+        plan2=("Presets + Photoshop Plugin Panel", "Photoshop and Lightroom", ["Everything in MWP Photoshop Plugin Panel", "50 Lightroom presets in the same look", "The Lightroom Classic plugin too"], "Get the bundle"),
     ),
     he=dict(
         name="פאנל התוסף לפוטושופ של MWP", name_html='פאנל התוסף לפוטושופ של <span class="grad">MWP</span>',
@@ -288,7 +288,7 @@ P["panel"] = dict(
         final_kick="פאנל התוסף לפוטושופ של MWP", final_h=["עורכים", "בביטחון."],
         final_lead="הפלאגין עם שני מדריכי ה-PDF ועדכונים בחינם. או יחד עם הפריסטים של MWP, ללייטרום ולפוטושופ באותו לוק.",
         plan=("פאנל התוסף לפוטושופ של MWP", "פאנל לפוטושופ", ["פאנל לפוטושופ, מק ו־ווינדוס", "מדריך למשתמש · PDF, ‏21 עמודים", "מדריך התקנה · PDF"], "לקבלת פאנל התוסף לפוטושופ של MWP"),
-        plan2=("הפאנל + הפריסטים של MWP", "פוטושופ ולייטרום", ["כל מה שיש בפאנל התוסף לפוטושופ של MWP", "50 פריסטים ללייטרום באותו לוק", "וגם התוסף ללייטרום קלאסיק"], "לקבלת החבילה"),
+        plan2=("פריסטים + פאנל התוסף לפוטושופ", "פוטושופ ולייטרום", ["כל מה שיש בפאנל התוסף לפוטושופ של MWP", "50 פריסטים ללייטרום באותו לוק", "וגם התוסף ללייטרום קלאסיק"], "לקבלת החבילה"),
     ),
 )
 

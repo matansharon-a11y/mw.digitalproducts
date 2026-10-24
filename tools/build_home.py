@@ -254,7 +254,7 @@ html = f'''<!doctype html>
 <div class="plans">
 {plan("MWP Field Guides", "Know what to aim for", '<span data-price="mwp-field-guides" data-no-i18n>$0.00</span>', ["All 4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"], "Get the Field Guides", "field-guides/#buy")}
 {plan("Presets + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "field-guides/#buy")}
-{plan("Presets + Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", "panel/#buy")}
+{plan("Presets + Photoshop Plugin Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", "panel/#buy")}
 {plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
 </div>
 </div>

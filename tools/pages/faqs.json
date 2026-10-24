@@ -100,8 +100,8 @@
     "a": "No. You choose what to edit and an effect, and the panel builds the layers and masks for you. A 21-page manual and a guide inside the panel explain every button from the start."
    },
    {
-    "q": "Presets or Panel: which do I need?",
-    "a": "If you edit in Lightroom, MWP Presets, which come with the Lightroom Classic plugin for sorting and finishing whole shoots. If you open your photos in Photoshop, MWP Photoshop Plugin Panel. If you use both apps, the Presets + Panel bundle gives you the same look in each, includes the plugin, and costs less than buying them separately."
+    "q": "MWP Presets or MWP Photoshop Plugin Panel: which do I need?",
+    "a": "If you edit in Lightroom, MWP Presets, which come with the Lightroom Classic plugin for sorting and finishing whole shoots. If you open your photos in Photoshop, MWP Photoshop Plugin Panel. If you use both apps, the Presets + Photoshop Plugin Panel bundle gives you the same look in each, includes the plugin, and costs less than buying them separately."
    },
    {
     "q": "Which Photoshop do I need?",
@@ -138,8 +138,8 @@
     "a": "לא. בוחרים מה לערוך ואפקט, והפאנל בונה בשבילכם את השכבות והמסכות. מדריך של 21 עמודים ומדריך בתוך הפאנל מסבירים כל כפתור מההתחלה."
    },
    {
-    "q": "פריסטים או פאנל: מה אני צריך?",
-    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP, שמגיעים עם התוסף ללייטרום קלאסיק למיון ולעריכה של צילומים שלמים. אם אתם פותחים את התמונות בפוטושופ, פאנל התוסף לפוטושופ של MWP. אם אתם עובדים בשתי התוכנות, חבילת הפריסטים + הפאנל נותנת את אותו מראה בשתיהן, כוללת את התוסף, ועולה פחות מלקנות כל אחד בנפרד."
+    "q": "הפריסטים של MWP או פאנל התוסף לפוטושופ של MWP: מה אני צריך?",
+    "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP, שמגיעים עם התוסף ללייטרום קלאסיק למיון ולעריכה של צילומים שלמים. אם אתם פותחים את התמונות בפוטושופ, פאנל התוסף לפוטושופ של MWP. אם אתם עובדים בשתי התוכנות, חבילת פריסטים + פאנל התוסף לפוטושופ נותנת את אותו מראה בשתיהן, כוללת את התוסף, ועולה פחות מלקנות כל אחד בנפרד."
    },
    {
     "q": "איזה פוטושופ צריך?",
