@@ -5,6 +5,7 @@
 // ============================================================================
 import { admin, clientIp, cors, EMAIL_RE, fail, html, json, notifyMake, plain, sha256Hex } from "../_shared/http.ts";
 
+const ALL_PER_HOUR = 60;   // support requests from everyone together
 const CATEGORIES = new Set(["download", "install", "refund", "other"]);
 const clip = (v: unknown, n: number) => String(v ?? "").trim().slice(0, n);
 
@@ -35,6 +36,9 @@ Deno.serve(async (req) => {
   const { count } = await db.from("support_tickets").select("id", { count: "exact", head: true })
     .eq("email", ticket.email).gte("created_at", hourAgo);
   if ((count ?? 0) >= 5) return fail(req, "We've received several messages from you already. We'll reply soon.", 429);
+  // The address can be faked, so there's also a cap for everyone together: a flood can't use up Make's operations.
+  const { count: all } = await db.from("support_tickets").select("id", { count: "exact", head: true }).gte("created_at", hourAgo);
+  if ((all ?? 0) >= ALL_PER_HOUR) return fail(req, "We've received several messages from here already. Please try again in an hour, or email us directly.", 429);
   // Changing the email mustn't get around the limit: count by (salted) IP too.
   const ip = clientIp(req);
   if (ip) {
