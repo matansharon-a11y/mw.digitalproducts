@@ -81,12 +81,13 @@ Deno.serve(async (req) => {
 
   // The same computer can run MWP Panel in Photoshop and in Photoshop (Beta). Each app keeps its own
   // plugin storage, so older copies of the plugin send a different id from each app: a computer already
-  // listed under the same name counts once.
+  // listed under the same name counts once, but only from the same network (same IP hash). Without that,
+  // any number of computers given the same name counted as one (launch audit, 24 Oct 2026).
   let { data: existing } = await db.from("license_devices").select("id")
     .eq("entitlement_id", ent.id).eq("device_id", deviceId).maybeSingle();
-  if (!existing && deviceName) {
+  if (!existing && deviceName && ipHash) {
     ({ data: existing } = await db.from("license_devices").select("id")
-      .eq("entitlement_id", ent.id).eq("device_name", deviceName)
+      .eq("entitlement_id", ent.id).eq("device_name", deviceName).eq("ip_hash", ipHash)
       .order("last_seen_at", { ascending: false }).limit(1).maybeSingle());
   }
   if (existing) {
