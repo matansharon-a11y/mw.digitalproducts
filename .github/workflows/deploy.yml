@@ -125,15 +125,30 @@ jobs:
       - name: Account safety settings
         # Accounts use email + password. New accounts must confirm their email before they can sign in,
         # so nobody can open an account on someone else's email and see their purchases. Passwords
-        # need at least 8 characters. (Only these two settings are changed.)
+        # need at least 8 characters. Emailed links (confirm, reset password, sign-in) may return to any page of
+        # the shop: Supabase sends a link whose return address isn't on its allowed list to the site URL instead,
+        # which made "Forgot password" land on the home page (24 Oct 2026). Addresses already allowed are kept.
         if: steps.ready.outputs.ok == 'true'
+        env:
+          SHOP: ${{ vars.SITE_URL || 'https://shop.mw.photography' }}
         run: |
-          code=$(curl -sS -o /tmp/auth.json -w "%{http_code}" -X PATCH \
-            "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/config/auth" \
-            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
-            -d '{"mailer_autoconfirm": false, "password_min_length": 8}')
+          api="https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/config/auth"
+          curl -sS -o /tmp/auth_before.json -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "$api"
+          allow=$(jq -r --arg want "$SHOP/**" '[(.uri_allow_list // "" | split(",") | map(select(length > 0))), [$want]] | add | unique | join(",")' /tmp/auth_before.json)
+          body=$(jq -n --arg site "$SHOP" --arg allow "$allow" \
+            '{mailer_autoconfirm: false, password_min_length: 8, site_url: $site, uri_allow_list: $allow}')
+          code=$(curl -sS -o /tmp/auth.json -w "%{http_code}" -X PATCH "$api" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" -d "$body")
           if [ "$code" != "200" ]; then echo "::error title=Account safety settings::Supabase answered $code"; exit 1; fi
           echo "Email confirmation required: $(jq -r '.mailer_autoconfirm == false' /tmp/auth.json), minimum password length: $(jq -r '.password_min_length' /tmp/auth.json)"
+          echo "Site URL: $(jq -r '.site_url' /tmp/auth.json); links may return to: $(jq -r '.uri_allow_list' /tmp/auth.json)"
+          # The reset and confirm emails must link to the emailed link itself ({{ .ConfirmationURL }}), not to the site
+          for t in recovery confirmation magic_link; do
+            body=$(jq -r ".mailer_templates_${t}_content // \"\"" /tmp/auth.json)
+            if [ -z "$body" ]; then echo "Email template $t: Supabase's default"
+            elif grep -q 'ConfirmationURL\|TokenHash' <<<"$body"; then echo "Email template $t: custom, uses the emailed link"
+            else echo "::warning title=Email template $t::It doesn't use {{ .ConfirmationURL }}, so its button can't sign anyone in or reset a password"; fi
+          done
           # Account emails (confirm, reset, sign-in links): Supabase's built-in sender allows only a few an hour, too
           # few for a launch. Report whether the project has its own email server (the host only, never the password).
           smtp=$(jq -r '.smtp_host // ""' /tmp/auth.json)

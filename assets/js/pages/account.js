@@ -480,6 +480,14 @@ function afterSignIn(user) {
 
 const user = await currentUser();
 if (user) afterSignIn(user);
+// A reset link that signed no one in (used already, over an hour old, or opened in another browser than the one that
+// asked for it): say so and offer a new link, instead of an unexplained sign-in form.
+else if (resetting || params.has("error_description") || /error=/.test(location.hash)) {
+  show("forgot");
+  setStatus(document.querySelector("#forgot-form .form-status"), T(
+    "That link didn't work here. A link works once, for an hour, in the browser where you asked for it. Enter your email for a new one.",
+    "הקישור לא עבד כאן. קישור עובד פעם אחת, למשך שעה, בדפדפן שבו ביקשתם אותו. הזינו את המייל לקבלת קישור חדש."), "error");
+}
 document.documentElement.classList.remove("acct-wait");   // the session is known: show the form if it's needed
 supabase?.auth.onAuthStateChange((event, session) => {
   if (event === "PASSWORD_RECOVERY") { recovering = true; signedOut.hidden = false; show("reset"); return; }
