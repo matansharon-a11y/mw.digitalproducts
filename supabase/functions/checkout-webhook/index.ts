@@ -21,7 +21,7 @@ type LsOrder = {
       order_number: number; identifier: string; status: string;
       user_email: string; user_name: string; currency: string;
       subtotal: number; tax: number; total: number;
-      discount_total?: number; refunded?: boolean; refunded_at?: string | null; refunded_amount?: number;
+      test_mode?: boolean; discount_total?: number; refunded?: boolean; refunded_at?: string | null; refunded_amount?: number;
       created_at?: string; urls?: { receipt?: string };
       first_order_item: { variant_id: number; product_name: string; variant_name: string; price: number };
     };
@@ -46,6 +46,9 @@ Deno.serve(async (req) => {
   const orderId = String(body.data?.id ?? "");
   const a = body.data?.attributes;
   if (!event || !orderId || !a) return text("unexpected payload", 400);
+  // Lemon Squeezy documents test mode on the order itself (data.attributes.test_mode); meta.test_mode is read too.
+  // Either one marks a test order, so a test-card purchase can never unlock anything as if it were real.
+  const testMode = a.test_mode === true || body.meta?.test_mode === true;
 
   const eventId = event === "order_refunded" ? `${event}:${orderId}:${a.refunded_at ?? ""}` : `${event}:${orderId}`;
   const { data: seen } = await db.from("webhook_events").select("event_id").eq("event_id", eventId).maybeSingle();
@@ -54,11 +57,11 @@ Deno.serve(async (req) => {
   try {
     if (event === "order_created") {
       if (a.status !== "paid") return text(`ignored status ${a.status}`);
-      await handlePaid(db, orderId, a, body.meta.custom_data ?? {}, body.meta.test_mode === true);
+      await handlePaid(db, orderId, a, body.meta.custom_data ?? {}, testMode);
     } else if (event === "order_refunded") {
       // Lemon Squeezy marks the order "refunded" (all of it) or "partial_refund" (a goodwill credit: access stays)
       const full = a.status === "refunded" || (a.status !== "partial_refund" && a.refunded === true && (a.refunded_amount ?? a.total) >= a.total);
-      await handleRefund(db, orderId, full, a, body.meta.test_mode === true);
+      await handleRefund(db, orderId, full, a, testMode);
     } else {
       return text(`ignored ${event}`);
     }

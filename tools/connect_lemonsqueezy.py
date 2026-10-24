@@ -76,7 +76,13 @@ def main():
     stores = ls("/stores")["data"]
     if not stores:
         raise SystemExit("::error::The API key sees no store.")
-    store = stores[0]
+    # the account has more than one store: connect only the one named (workflow input store_id), never a guess
+    want_store = os.environ.get("STORE_ID", "").strip()
+    pick = [s for s in stores if s["id"] == want_store] if want_store else (stores if len(stores) == 1 else [])
+    if not pick:
+        listed = ", ".join(f"{s['attributes']['name']} #{s['id']} ({s['attributes'].get('domain') or s['attributes'].get('slug')})" for s in stores)
+        raise SystemExit(f"::error::Choose the store with the store_id input. The key sees: {listed}")
+    store = pick[0]
     test = bool(ls("/users/me")["meta"].get("test_mode"))
     mode = "test mode" if test else "live"
     # The shop's products table is the live site: test checkout links never go there (a visitor would get a checkout
@@ -140,7 +146,7 @@ def main():
             "events": sorted(want | set(mine[0]["attributes"]["events"])), "secret": HOOK_SECRET}}})
         say("Webhook: updated (events and signing secret).")
     else:
-        ls("/webhooks", "POST", {"data": {"type": "webhooks", "attributes": {"url": hook_url, "events": sorted(want), "secret": HOOK_SECRET},
+        ls("/webhooks", "POST", {"data": {"type": "webhooks", "attributes": {"url": hook_url, "events": sorted(want), "secret": HOOK_SECRET, "test_mode": test},
                                           "relationships": {"store": {"data": {"type": "stores", "id": str(store["id"])}}}}})
         say(f"Webhook: created ({hook_url}).")
 

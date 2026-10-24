@@ -11,6 +11,10 @@ on:
         description: "Write to the shop (untick for a dry run that only reports)"
         type: boolean
         default: true
+      store_id:
+        description: "Lemon Squeezy store ID (needed when the account has more than one store)"
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -45,4 +49,5 @@ jobs:
           LEMONSQUEEZY_API_KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
           CHECKOUT_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_WEBHOOK_SECRET }}
           APPLY: ${{ inputs.apply }}
+          STORE_ID: ${{ inputs.store_id }}
         run: python3 tools/connect_lemonsqueezy.py
