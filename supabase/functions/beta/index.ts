@@ -16,6 +16,7 @@ import { grantAmbassador } from "../_shared/ambassador.ts";
 
 const TERMS_VERSION = "2026-10-13.5";   // must match TERMS_VERSION in tools/ambassador_terms.py
 const MAX_APPLICATIONS_PER_HOUR = 5;  // per IP
+const MAX_ALL_PER_HOUR = 100;         // from everyone together (shared with the tester code, see tester/index.ts)
 
 // The questionnaire (same order and wording as the page). Answers are kept in English labels for the team.
 const QUESTIONS: [string, string, boolean][] = [   // [key, label, required]
@@ -60,6 +61,10 @@ Deno.serve(async (req) => {
 
   const salt = Deno.env.get("IP_HASH_SALT") ?? "";
   const ipHash = clientIp(req) ? await sha256Hex(salt + clientIp(req)) : null;
+  // the address can be faked: applications and tester-code tries are also capped for everyone together
+  const { count: all } = await db.from("beta_attempts").select("id", { count: "exact", head: true })
+    .gte("created_at", new Date(Date.now() - 3600 * 1000).toISOString());
+  if ((all ?? 0) >= MAX_ALL_PER_HOUR) return fail(req, "Too many requests. Please wait a minute and try again.", 429);
   if (ipHash) {
     const hourAgo = new Date(Date.now() - 3600 * 1000).toISOString();
     const { count } = await db.from("beta_attempts").select("id", { count: "exact", head: true })

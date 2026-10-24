@@ -8,6 +8,7 @@
 import { admin, clientIp, cors, EMAIL_RE, fail, json, notifyMake, sha256Hex } from "../_shared/http.ts";
 
 const PER_IP_PER_HOUR = 10;
+const ALL_PER_HOUR = 200;   // sign-ups from everyone together
 
 const SOURCES = new Set(["free-sampler", "newsletter", "launch-waitlist"]);
 
@@ -34,6 +35,10 @@ Deno.serve(async (req) => {
       .eq("form", "subscribe").eq("ip_hash", ipHash).gte("created_at", hourAgo);
     if ((count ?? 0) >= PER_IP_PER_HOUR) return fail(req, "Too many sign-ups from here. Please try again in an hour.", 429);
   }
+  // the address can be faked: a cap for everyone together keeps a flood from using up Make's operations
+  const { count: all } = await db.from("form_attempts").select("id", { count: "exact", head: true })
+    .eq("form", "subscribe").gte("created_at", hourAgo);
+  if ((all ?? 0) >= ALL_PER_HOUR) return fail(req, "Too many sign-ups from here. Please try again in an hour.", 429);
   const { count: recent } = await db.from("form_attempts").select("id", { count: "exact", head: true })
     .eq("form", "subscribe").eq("email_hash", emailHash).gte("created_at", dayAgo);
   await db.from("form_attempts").insert({ form: "subscribe", ip_hash: ipHash, email_hash: emailHash });
