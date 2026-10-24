@@ -223,7 +223,7 @@ async function priceList() {
   return priceRows;
 }
 const FALLBACK_NAME = { "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Classic Plugin", "mwp-panel": "MWP Photoshop Plugin Panel", "mwp-field-guides": "MWP Field Guides",
-  "presets-field-guides": "Presets + Field Guides", "presets-panel": "Presets + Panel", "field-guides-panel": "Field Guides + Panel", "full-set": "The full set" };
+  "presets-field-guides": "Presets + Field Guides", "presets-panel": "Presets + Photoshop Plugin Panel", "field-guides-panel": "Field Guides + Photoshop Plugin Panel", "full-set": "The full set" };
 
 export async function addSlugToCart(slug) {
   slug = SOLD_WITH[slug] || slug;

@@ -12,7 +12,7 @@ Time: about 30 minutes, plus one real purchase.
 - Test orders don't need deleting: they stay as the record of the checks, marked "Test order" in admin → Orders, and every total (Overview, Customers, weekly report) leaves them out.
 - [ ] Test-mode checks passed: an admin test order unlocks the product; a test order from any other email unlocks nothing; a test refund removes access (Lemon Squeezy's refunds were failing in test mode on 24 Oct; asked support).
 - [ ] Accountant has answered the tax questions; decision made on shekel prices on the Hebrew site.
-- [ ] Prices confirmed by Matan (the 7 products: $59.99 Presets, $59.99 Panel, $75.99 Field Guides, $99.99 Presets + Panel, $109.99 Presets + Field Guides, $109.99 Field Guides + Panel, $149.99 Full Set).
+- [ ] Prices confirmed by Matan (the 7 products: $59.99 Presets, $59.99 Photoshop Plugin Panel, $75.99 Field Guides, $99.99 Presets + Photoshop Plugin Panel, $109.99 Presets + Field Guides, $109.99 Field Guides + Photoshop Plugin Panel, $149.99 Full Set).
 
 ## On the day
 1. **You** — Lemon Squeezy, bottom left must say **MWP Shop**. Switch **test mode off**.
