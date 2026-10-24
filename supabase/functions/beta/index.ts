@@ -93,12 +93,13 @@ Deno.serve(async (req) => {
 
   await db.from("beta_attempts").insert({ ip_hash: ipHash });
 
-  // Already in, or already waiting for an answer?
+  // Already in, or already waiting for an answer? Nothing new is saved, and the reply is the same as for a new
+  // application, so the form can't be used to find out who is an ambassador or has applied.
   const { data: known } = await db.from("customers").select("id, beta_members(status)").eq("email", email).maybeSingle();
   const bm = Array.isArray(known?.beta_members) ? known?.beta_members[0] : known?.beta_members;
-  if (bm && bm.status === "active") return json(req, { ok: true, already: "member" });
+  if (bm && bm.status === "active") return json(req, { ok: true });
   const { data: waiting } = await db.from("ambassador_applications").select("id").eq("email", email).in("status", ["new", "approved"]).limit(1);
-  if (waiting?.length) return json(req, { ok: true, already: "waiting" });
+  if (waiting?.length) return json(req, { ok: true });
   if (!bm) {
     const { data: open } = await db.rpc("ambassador_program_open");
     if (open === false) return fail(req, FULL, 409);

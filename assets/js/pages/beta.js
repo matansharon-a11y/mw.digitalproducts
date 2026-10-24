@@ -195,16 +195,7 @@ form.addEventListener("submit", async (e) => {
   btn.disabled = true;
   msg.className = "msg"; msg.textContent = T("Sending your application…", "שולחים את הבקשה…");
   try {
-    const r = await betaApply(data);
-    const title = document.getElementById("done-h");
-    const text = document.getElementById("done-text");
-    if (r?.already === "member") {
-      title.textContent = T("You're already an ambassador", "אתם כבר שגרירים");
-      text.textContent = T("Your tools are in My downloads. Sign in with this email.", "הכלים שלכם נמצאים בהורדות שלי. התחברו עם המייל הזה.");
-    } else if (r?.already === "waiting") {
-      title.textContent = T("We already have your application", "הבקשה שלכם כבר אצלנו");
-      text.textContent = T("We read every application personally, so it may take us a few days to get back to you.", "אנחנו קוראים כל טופס בעצמנו, אז ייתכן שייקח לנו כמה ימים לחזור אליכם.");
-    }
+    await betaApply(data);   // the same answer whether or not this email already applied (nothing to look up here)
     document.getElementById("step-details").hidden = true;
     document.getElementById("join-done").hidden = false;
     msg.textContent = "";
