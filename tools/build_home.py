@@ -197,7 +197,7 @@ html = f'''<!doctype html>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MWP">
 <meta property="og:title" content="Lightroom Presets, Photoshop Plugin &amp; Photography Guides · MWP">
-<meta property="og:description" content="The tools photographer Matan Wild edits with: Lightroom presets, a Photoshop plugin and photography guides, for every kind of photography.">
+<meta property="og:description" content="Tools Matan Wild built for photographers: Lightroom presets, Lightroom and Photoshop plugins and photography guides, for every kind of photography.">
 <link rel="canonical" href="https://shop.mw.photography/">
 <link rel="alternate" hreflang="en" href="https://shop.mw.photography/"><link rel="alternate" hreflang="he" href="https://shop.mw.photography/he/"><link rel="alternate" hreflang="x-default" href="https://shop.mw.photography/">
 <meta property="og:locale" content="en_US">

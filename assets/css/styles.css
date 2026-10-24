@@ -682,3 +682,6 @@ html[lang="he"] .only-en { display: none; }
 .sp-table .buy td { padding-top: 6px; padding-bottom: 24px; }
 .sp-table .buy .sp-buy { min-height: 42px; padding: 0 18px; font-size: 14px; white-space: nowrap; }
 .sp-table .buy .sp-more { display: block; margin-top: 12px; font-size: 14px; }
+
+/* two-part headings: the gold half starts its own line (24 Oct 2026) */
+.sp-hero .display .grad,.sp-h2 .grad{display:block}

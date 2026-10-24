@@ -39,7 +39,7 @@ HERO = f"""<script>(function(){{var h=document.documentElement;h.classList.add("
 <div class="wrap st-hero-in">
 <p class="kick st-in" style="--i:0">Lightroom · Photoshop · Photography guides</p>
 <h1 class="st-h1"><span class="st-l"><span style="--i:1">Pro editing,</span></span> <span class="st-l"><span class="grad" style="--i:2">in a few clicks.</span></span></h1>
-<p class="lead st-in" style="--i:3">The tools photographer Matan Wild edits with, for every kind of photography. Presets for a precise starting point, and plugins for Lightroom Classic and Photoshop that do the masking for you.</p>
+<p class="lead st-in" style="--i:3">I built these tools for photographers, for every kind of photography. Presets for a precise starting point, and plugins for Lightroom Classic and Photoshop that do the masking for you.</p>
 <p class="st-meta st-in" style="--i:3">Instant download<span aria-hidden="true">·</span>Secure checkout<span aria-hidden="true">·</span>Free updates</p>
 <div class="ctas st-in" style="--i:4"><a class="btn" href="#shop">Find your tool</a></div>
 </div>
