@@ -104,6 +104,10 @@ const HE = {
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
   "One for every step.": "לכל שלב בעבודה.",
   "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
+  // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
+  "From first cull to final export": "מהמיון ועד הפרסום",
+  "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin Panel.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
+  "Yes. The MWP Photoshop Plugin Panel installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.": "כן. MWP Photoshop Plugin Panel מותקן גם ב־Photoshop וגם ב־Photoshop (Beta), ומחשב אחד נספר פעם אחת גם אם משתמשים בשניהם. הפריסטים נמצאים ב־Camera Raw, שמשותף לשתי הגרסאות. את קובצי ה-LUT טוענים בכל אחת מהן דרך שכבת התאמה של חיפוש צבע, ואז טעינת LUT תלת־ממדי.",
   // menu and footer, one naming pattern (24 Oct 2026)
   ". If you sort and edit whole shoots in Lightroom Classic,": ". אם אתם ממיינים ועורכים צילומים שלמים בלייטרום קלאסיק,",
   "the Lightroom Classic plugin": "התוסף ללייטרום קלאסיק",

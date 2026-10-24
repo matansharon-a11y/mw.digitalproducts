@@ -25,13 +25,13 @@ T = {
                filt="הצגת ביקורות על", every="הכול"),
 }
 NAMES = {"presets": ("MWP Presets", "הפריסטים של MWP"), "plugin": ("the Lightroom Classic plugin", "התוסף ללייטרום קלאסיק"),
-         "panel": ("MWP Photoshop Plugin", "התוסף לפוטושופ של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
+         "panel": ("MWP Photoshop Plugin Panel", "התוסף לפוטושופ של MWP"), "guides": ("MWP Field Guides", "מדריכי השטח של MWP")}
 def _both(e, h):
     """A chip on a page the Hebrew build translates: each language's own label (the English name changed, the Hebrew didn't)."""
     return f'<span class="only-en">{e}</span><span class="only-he rv-he" data-no-i18n>{h}</span>'
 
 
-CHIPS = [("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"), ("panel", "Photoshop Plugin", "התוסף לפוטושופ"),
+CHIPS = [("plugin", "Lightroom Classic Plugin", "התוסף ללייטרום קלאסיק"), ("panel", "Photoshop Plugin Panel", "התוסף לפוטושופ"),
          ("presets", "Presets", "פריסטים"), ("guides", "Field Guides", "מדריכי השטח")]
 
 

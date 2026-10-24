@@ -17,7 +17,7 @@ CHAPTERS = [
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Sort", step_he="מיון", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", href="presets/#plugin",
          img="86b95f1970bb30f72735d73708d9c095.jpg", pos="80% 45%", alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",
-         title="From the card to the post",
+         title="From first cull to final export",
          body=["Find the sharpest frame in every burst, build each trip into a collection per day, and keyword species from a list of 51,471. Then edit and export, all inside Lightroom Classic.",
                "Nothing is ever deleted, and every change stays in Lightroom, ready to adjust."],
          points=["Seven tabs, from culling to export", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
@@ -29,7 +29,7 @@ CHAPTERS = [
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
-    dict(step="Photoshop", step_he="פוטושופ", tag="Photoshop plugin", name="Photoshop Plugin", slug="mwp-panel", href="panel/",
+    dict(step="Photoshop", step_he="פוטושופ", tag="Photoshop plugin", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Photoshop, made easy.",
          body=["Pick what to edit: the subject, the sky or the background. Pick an effect, set the strength, and the plugin builds the masks and layers for you.",
@@ -79,7 +79,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="wrap st-ch-head">
 <p class="kick">The collection</p>
 <h2 class="h2">Four tools. <span class="b grad">One for every step.</span></h2>
-<p class="lead">Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin.</p>
+<p class="lead">Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin Panel.</p>
 </div>
 <div class="st-track">
 <div class="st-sticky">

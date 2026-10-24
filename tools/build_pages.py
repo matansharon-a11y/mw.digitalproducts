@@ -203,7 +203,7 @@ CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 # The bundles (the home page's bundle cards)
 BUNDLES = [("Presets + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
-           ("The full set", "From the shot to the share", "full-set", ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
+           ("The full set", "From the shot to the share", "full-set", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
 
 
 def _img(prefix):
@@ -221,7 +221,7 @@ PRODUCTS = [
          line="Cull, keyword, edit and export a whole shoot in one window.",
          works="Lightroom Classic 13+ · Mac and Windows",
          alone="No presets needed.", more="Details", with_="mwp-presets"),   # bought with MWP Presets, never alone
-    dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop plugin", name="Photoshop Plugin",
+    dict(key="panel", href="panel/", slug="mwp-panel", type="Photoshop plugin", name="Photoshop Plugin Panel",
          line="Pick the animal, the sky or the background. The panel does the masks.",
          works="Photoshop 2023+ · Mac and Windows",
          cta="Add to cart", more="See the panel"),

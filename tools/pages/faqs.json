@@ -11,7 +11,7 @@
       },
       {
         "q": "Which Lightroom does the plugin work in?",
-        "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's the MWP Photoshop Plugin."
+        "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's the MWP Photoshop Plugin Panel."
       },
       {
         "q": "What's in the download?",
@@ -93,7 +93,7 @@
       },
       {
         "q": "MWP Presets or the Photoshop plugin: which do I need?",
-        "a": "If you edit in Lightroom, MWP Presets, which come with the Lightroom Classic plugin. If you finish your photos in Photoshop, the MWP Photoshop Plugin. If you use both, the full set has every tool and guide, for less than buying them separately."
+        "a": "If you edit in Lightroom, MWP Presets, which come with the Lightroom Classic plugin. If you finish your photos in Photoshop, the MWP Photoshop Plugin Panel. If you use both, the full set has every tool and guide, for less than buying them separately."
       },
       {
         "q": "Which Photoshop do I need?",
@@ -109,7 +109,7 @@
       },
       {
         "q": "Are updates included?",
-        "a": "Yes. Updates to MWP Photoshop Plugin are free: new versions appear in My downloads."
+        "a": "Yes. Updates to MWP Photoshop Plugin Panel are free: new versions appear in My downloads."
       },
       {
         "q": "Are there video tutorials?",
@@ -117,7 +117,7 @@
       },
       {
         "q": "License, computers and refunds?",
-        "a": "A personal licence for your own work and client work. MWP Photoshop Plugin works on up to 3 computers at a time, signed in with your email; changed computer? Free one up in My downloads. If it doesn't work for you, write to support within 14 days of purchase: we'll help, and if we can't, we'll refund you."
+        "a": "A personal licence for your own work and client work. MWP Photoshop Plugin Panel works on up to 3 computers at a time, signed in with your email; changed computer? Free one up in My downloads. If it doesn't work for you, write to support within 14 days of purchase: we'll help, and if we can't, we'll refund you."
       },
       {
         "q": "What if I need help?",
@@ -179,7 +179,7 @@
       },
       {
         "q": "Do the guides cover editing?",
-        "a": "No. They're about what happens before the click: composition, colour, light and planning. For the edit, the Lightroom Classic plugin, MWP Presets and MWP Photoshop Plugin carry the same approach into Lightroom and Photoshop, and all of them come in bundles with the guides."
+        "a": "No. They're about what happens before the click: composition, colour, light and planning. For the edit, the Lightroom Classic plugin, MWP Presets and MWP Photoshop Plugin Panel carry the same approach into Lightroom and Photoshop, and all of them come in bundles with the guides."
       },
       {
         "q": "Can I buy just one guide?",
@@ -233,7 +233,7 @@
       },
       {
         "q": "Which Lightroom does it work in?",
-        "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's the MWP Photoshop Plugin."
+        "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's the MWP Photoshop Plugin Panel."
       },
       {
         "q": "What does early access mean?",

@@ -47,7 +47,7 @@ ZERO = {"en": "$0.00", "he": "₪0.00"}
 
 # Words the template uses on every page
 UI = {
-    "en": {"buy": "Buy", "for": "MWP Photoshop Plugin for", "prev": "Previous", "next": "Next", "page": "Page", "raw": "RAW", "final": "FINAL",
+    "en": {"buy": "Buy", "for": "MWP Photoshop Plugin Panel for", "prev": "Previous", "next": "Next", "page": "Page", "raw": "RAW", "final": "FINAL",
            "hint": "Drag the handle to compare.", "faq_kick": "Before you buy", "faq": "FAQs",
            "spec_kick": "What you get", "spec_h": "What's in the download.", "price_kick": "Get it",
            "trust": "Instant download · Secure checkout · Free updates · Help or a refund within 14 days", "terms": "Full terms",
@@ -98,7 +98,7 @@ P["presets"] = dict(
                pre=dict(line="A finished look on every photo, in one click.",
                         three=[("50", "presets in five collections"), ("12", "adapt to each photo"), ("33", "LUTs for Photoshop and video")],
                         sets_cap="Five collections"),
-               plug=dict(line="Your whole shoot in one window, from the card to the post.", cap="The plugin's real window. Click a tab."),
+               plug=dict(line="Your whole shoot, from first cull to final export.", cap="The plugin's real window. Click a tab."),
                look_kick="From RAW to final", look_h=["One click.", "A finished look."],
                sets_kick="50 presets", sets_h=["Five collections,", "every kind of light."],
                feat_line="They find the subject, the sky and the background, and adjust each one on its own.",
@@ -140,7 +140,7 @@ P["presets"] = dict(
         final_kick="MWP for Lightroom", final_h=["Two tools,", "one purchase."],
         final_lead="The presets and the plugin together, one price. Free updates, kept in your account.",
         plan=("Lightroom Presets", "50 presets and 33 LUTs", ["50 Lightroom presets, desktop and mobile", "33 LUTs for photo and video", "Video tutorials and an install guide"], "Get the presets"),
-        plan2=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from the card to the post", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
+        plan2=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from culling to export", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
     ),
     he=dict(
         name="MWP ללייטרום", name_html='MWP <span class="grad">ללייטרום</span>',
@@ -221,11 +221,11 @@ P["panel"] = dict(
               | {"Eye": "radial-gradient(ellipse 4% 3% at 46.3% 29.2%, #000 55%, transparent 100%), radial-gradient(ellipse 4% 3% at 59.6% 29.2%, #000 55%, transparent 100%)"}, True),
     bundle="full-set",   # Matan, 24 Oct 2026: the Photoshop plugin sells alone or in the full set
     en=dict(
-        name="MWP Photoshop Plugin", name_html='MWP <span class="grad">Photoshop Plugin</span>',
+        name="MWP Photoshop Plugin Panel", name_html='MWP <span class="grad">Photoshop Plugin Panel</span>',
         title="Photoshop Plugin for Easy Photo Editing · MWP",
         desc="Edit photos in Photoshop and learn as you go, without risking your original. Pick the subject, the sky or the background, pick an effect, set the strength. Mac and Windows.",
         hero_alt="A tiger, photographed by Matan Wild",
-        kick="MWP Photoshop Plugin", h1=["Photoshop,", "made easy."],
+        kick="MWP Photoshop Plugin Panel", h1=["Photoshop,", "made easy."],
         lead="Pick what to edit: the subject, the sky or the background. Pick an effect, set the strength, and the plugin builds the masks and layers for you. Your original stays locked.",
         cta="Get the plugin", cta2="Compare RAW and final",
         facts=["Learn as you go, without risking your original", "Photoshop 2023 or newer · Mac and Windows"],
@@ -250,10 +250,10 @@ P["panel"] = dict(
                ("", "Built-in guide", "A tip on every button and a full help page inside the plugin."),
                ("", "Video tutorials", "Installing and using the plugin, in My downloads.")],
         spec_note="Works with Photoshop 2023 (24.2) or newer on Mac and Windows. Not for Lightroom, iPad or phones.",
-        final_kick="MWP Photoshop Plugin", final_h=["Edit with", "confidence."],
+        final_kick="MWP Photoshop Plugin Panel", final_h=["Edit with", "confidence."],
         final_lead="The plugin with a user manual, an install guide and free updates. Or get it in the full set, with every tool and guide.",
-        plan=("MWP Photoshop Plugin", "Photoshop plugin", ["Photoshop plugin, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get the plugin"),
-        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
+        plan=("MWP Photoshop Plugin Panel", "Photoshop plugin", ["Photoshop plugin, Mac and Windows", "User Manual · PDF, 21 pages", "Installation Guide · PDF"], "Get the plugin"),
+        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
     ),
     he=dict(
         name="התוסף לפוטושופ של MWP", name_html='התוסף לפוטושופ של <span class="grad">MWP</span>',
@@ -330,7 +330,7 @@ P["field-guides"] = dict(
         final_kick="MWP Field Guides", final_h=["Your next shoot", "starts here."],
         final_lead="4 guides, 137 lessons and 229 pages of composition, colour, light and planning. In English or Hebrew, in one set.",
         plan=("MWP Field Guides", "Learn to shoot: before the click", ["4 field guides, English or Hebrew", "137 lessons, 229 pages", "Cheat sheets, drills and checklists"], "Get the guides"),
-        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
+        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
     ),
     he=dict(
         name="מדריכי השטח של MWP", name_html='מדריכי השטח של <span class="grad">MWP</span>',
@@ -379,7 +379,7 @@ P["lightroom-classic"] = dict(
         title="Lightroom Classic Plugin · MWP",
         desc="A Lightroom Classic plugin by photographer Matan Wild: cull bursts, keyword trips and species, edit the subject, the sky or the background, and export for Instagram, web and print. Mac and Windows; no presets needed.",
         hero_alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",
-        kick="MWP · a Lightroom Classic plugin", h1=["From the card", "to the post."],
+        kick="MWP · a Lightroom Classic plugin", h1=["From first cull", "to final export."],
         lead="Cull, keyword, edit and export a whole shoot, in one window inside Lightroom Classic.",
         lrc_cap="Interactive preview of the real plugin · click a tab",
         cta="Get the plugin",
@@ -408,9 +408,9 @@ P["lightroom-classic"] = dict(
                ("", "Video tutorials", "Installing and using the plugin, in My downloads")],
         spec_note="Needs Lightroom Classic 13 or newer on Mac or Windows. Not for Lightroom (the cloud app), Lightroom Mobile or Photoshop.",
         final_kick="Lightroom Classic Plugin", final_h=["Your whole shoot,", "in one window."],
-        final_lead="The plugin with built-in help, video tutorials and free updates. Or in the full set, with MWP Presets, MWP Photoshop Plugin and the Field Guides.",
-        plan=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from the card to the post", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
-        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
+        final_lead="The plugin with built-in help, video tutorials and free updates. Or in the full set, with MWP Presets, MWP Photoshop Plugin Panel and the Field Guides.",
+        plan=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from culling to export", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
+        plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
         bar=[("inside", "Look inside"), ("workflow", "How it works"), ("get", "Works on its own"), ("faq", "FAQs")],
     ),
     he=dict(
@@ -572,7 +572,7 @@ def page(folder, lang):
     cards = "".join(f'''<article class="card" data-r style="--d:{k * 0.08:.2f}s"><div class="ph"><img src="{img(im)}" alt="{esc(alt)}" loading="lazy"><span class="no">0{k + 1}</span></div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>'''
                     for k, (im, (t, d, alt)) in enumerate(zip(p["cards"], c["cards"])))
     lead = f'<p class="lead">{esc(c["inside_lead"])}</p>' if c["inside_lead"] else ""
-    if p.get("ps_show"):   # MWP Photoshop Plugin: Photoshop as one centred showcase, like the Lightroom Classic one
+    if p.get("ps_show"):   # MWP Photoshop Plugin Panel: Photoshop as one centred showcase, like the Lightroom Classic one
         ba, fa, areas, tall = p["ps_photo"]
         descs = "".join(f'<p data-pw-desc="{esc(t2)}"{"" if k == 1 else " hidden"}><span class="n">0{k + 1}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
                         for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Style", "Export"))))
