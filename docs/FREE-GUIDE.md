@@ -9,6 +9,8 @@ Built and **switched on** 25 Oct 2026 (Matan approved the words, the privacy lin
    seconds), at most once every 14 days, never again after signing up, never to someone signed in, and never on My
    downloads, thank-you, legal, support, the ambassador and tester pages, the reader or the admin. `#free-guide`
    opens it from a link. `?gift=preview` shows it on any page, even while it's off.
+**monday:** every sign-up is a row on **Shop Leads · Free guide** (Digital Shop workspace, board 5106641452): name, email, phone, language, Marketing OK, Signed up, Status Waiting for email → Confirmed (+ date). The person is also on Shop Customers (new row, or their existing one updated).
+
 2. **Sign-up** (`subscribe`, source `free-guide`): name, phone, language and consent are kept in `subscribers`, and
    monday **Shop Customers** gets the person at once (Free guide = Waiting for email, Phone, Language, Signed up,
    Source = Free guide). Then the page emails a **sign-in link** that works in any browser (`giftSignup` in api.js).
