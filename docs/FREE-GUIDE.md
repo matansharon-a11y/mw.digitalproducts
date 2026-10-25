@@ -28,7 +28,7 @@ Every confirmed sign-up also sends Matan a monday notification (Make modules 172
 
 ## The welcome emails (Mailchimp)
 Customer Journey **"MWP Shop · Free guide welcome"** (Mailchimp → Automations, builder id 550; built 25 Oct 2026,
-**a draft until Matan turns it on**):
+**turned on 25 Oct 2026, on Matan's OK**):
 - Trigger: tag **Shop: free guide** (only people who ticked the marketing box get it). Entry filter: not tagged
   guide_sample_en / guide_sample_he (those came through the mw-phototours.com pop-up and get that site's own guide email;
   its two journeys skip Shop: free guide in return).
