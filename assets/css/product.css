@@ -191,7 +191,7 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .small a{color:var(--ink2)}
 @media (max-width:760px){.prices{grid-template-columns:minmax(0,1fr)}.plan{padding:36px 26px 28px}}
 /* the Field Guides page: each guide on its own, under the set */
-.singles{max-width:920px;margin:48px auto 0;text-align:center}
+.singles{max-width:920px;margin:40px auto 48px;text-align:center}   /* above the set and the bundles (Matan, 25 Oct 2026) */
 .singles-h{margin:0;font-size:clamp(22px,2.2vw,28px);font-weight:500;letter-spacing:-.02em}
 .singles-line{margin:8px 0 0;color:var(--ink2);font-size:15.5px}
 .singles-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
