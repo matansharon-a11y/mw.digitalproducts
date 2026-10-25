@@ -18,9 +18,12 @@ const COVERS = {
   "mwp-lightroom-plugin": ["assets/pages/img/86b95f1970bb30f72735d73708d9c095.jpg", "60% 45%"],   // photographer behind a long lens
   "mwp-panel": ["assets/pages/img/8f730b9bb76b93ca707cae719a309479.jpg", "50% 40%"],     // tiger: face and stride
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"], // lioness: face
+  "mwp-field-guides-sample": ["assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122-1200.webp", "50% 40%"],   // as in the pop-up
 };
 const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin panel", guide: "PDF field guides", bundle: "Bundle" };
-const SLUG_TAGS = { "mwp-lightroom-plugin": "Lightroom Classic plugin" };   // a plugin that isn't the Photoshop panel
+const SLUG_TAGS = { "mwp-lightroom-plugin": "Lightroom Classic plugin",   // a plugin that isn't the Photoshop panel
+                    "mwp-field-guides-sample": "Free sample" };            // the sign-up gift (gift.js)
+const SAMPLE = "mwp-field-guides-sample";
 // A product with extra downloads (product_extra_files) shows one button per app: the main zip gets this label.
 const MAIN_LABEL = { "mwp-presets": "Presets" };   // beside it: "Lightroom Classic plugin"
 const PLAY_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
@@ -65,6 +68,8 @@ function tutorialsHTML(videos) {
 function libraryHTML(items, extras = { files: [], videos: [] }) {
   // a product that can't be shown is skipped, not fatal; a bundle shows as the products in it (its own row has no file)
   items = onePerProduct(items.filter((i) => i.products && i.products.category !== "bundle"));
+  // the free sample steps aside once the full guides are theirs (bought, or to read as an ambassador or tester)
+  if (items.some((i) => i.products.slug === "mwp-field-guides")) items = items.filter((i) => i.products.slug !== SAMPLE);
   if (!items.length) {
     return `<div class="glass lib-empty stack">
       <p>Nothing on this email yet.</p>
@@ -96,6 +101,7 @@ function libraryHTML(items, extras = { files: [], videos: [] }) {
             ${files.map((x) => `<button class="dl" type="button" data-download="${esc(p.slug)}" data-file="${esc(x.file_key)}">${DL_ICON}<span>${esc(x.label)}</span></button>`).join("")}</div>`
         : `<button class="dl" type="button" data-download="${esc(p.slug)}">${DL_ICON}<span>Download</span></button>`}
       ${tutorialsHTML(videos)}
+      ${p.slug === SAMPLE ? `<p class="lib-more"><a class="link" href="/field-guides/">Get the full Field Guides</a> <span class="meta">137 lessons in four guides</span></p>` : ""}
     </article>`;
   }).join("");
 }

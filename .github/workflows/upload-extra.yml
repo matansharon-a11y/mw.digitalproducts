@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       slug: { description: "Product slug (the Lightroom Classic plugin is its own product since 23 Oct 2026: upload it in the admin as mwp-lightroom-plugin's file)", required: true }
-      file_key: { description: "Key", required: true }
+      file_key: { description: "Key (main = the product's own file, e.g. the free Field Guides sample)", required: true }
       label: { description: "Button in My downloads", required: true }
       version: { description: "Version", required: true }
       file_name: { description: "File name (.zip)", required: true }

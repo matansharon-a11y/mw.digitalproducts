@@ -27,6 +27,7 @@
 //                        retries only 3 times.
 // ============================================================================
 import { admin, notifyMake, plain, requestPersonalCopies } from "../_shared/http.ts";
+import { mondayPhone, parsePhone } from "../_shared/phone.ts";
 import { applications, applicationsCallback } from "./applications.ts";
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
@@ -71,6 +72,7 @@ Deno.serve(async (req) => {
       case "reconcile": return reply(await reconcile(db));
       case "month_close": return reply(await monthClose(db));
       case "account": return reply(await account(db, String(body.user_id ?? "")));
+      case "lead": return reply(await lead(db, String(body.email ?? "")));
       case "downloaded": return reply(await downloaded(db, String(body.entitlement_id ?? "")));
       case "ambassador_status": return reply(await ambassadorStatus(db, String(body.member_id ?? "")));
       case "tester": return reply(await tester(db, String(body.tester_id ?? ""), String(body.action ?? "")));
@@ -346,6 +348,28 @@ async function account(db: ReturnType<typeof admin>, userId: string) {
     type: "account", email, name: name || email,
     source: ambassador ? "Ambassador program" : "Account",
     joined_on: day(new Date(user.email_confirmed_at ?? user.created_at)),
+  });
+  return { ok: true };
+}
+
+// ---------------------------------------------------------------- free-guide sign-up confirmed → monday + Mailchimp
+// The database calls this once the person clicked their sign-in link (grant_free_sample). Make marks them confirmed
+// on Shop Customers and, only when they agreed to marketing, adds them to Mailchimp (tags MWP Shop, Shop: free guide).
+async function lead(db: ReturnType<typeof admin>, email: string) {
+  email = email.trim().toLowerCase();
+  if (!email) return { skipped: "no email" };
+  const { data: s } = await db.from("subscribers").select("name, phone, lang, consent, confirmed_at")
+    .eq("email", email).eq("source", "free-guide").maybeSingle();
+  if (!s?.confirmed_at) return { skipped: "not a confirmed free-guide sign-up" };
+  const name = plain(String(s.name ?? "").trim());
+  const [first, ...rest] = name.split(/\s+/);
+  await notifyMake("MAKE_WEBHOOK_URL", {
+    type: "lead_confirmed", email, name: name || email, first_name: first ?? "", last_name: rest.join(" "),
+    phone: parsePhone(String(s.phone ?? ""), s.lang).e164, phone_cv: mondayPhone("phone_mm8f7tjs", String(s.phone ?? ""), s.lang),
+    language: s.lang === "he" ? "he" : "en", language_label: s.lang === "he" ? "Hebrew" : "English",
+    marketing: s.consent ? "yes" : "no", confirmed_on: day(new Date(s.confirmed_at)),
+    newsletter_label: s.consent ? "Subscribed" : "Not subscribed",
+    newsletter_cv: s.consent ? '"color_mm801rf2":{"label":"Subscribed"},' : "",
   });
   return { ok: true };
 }

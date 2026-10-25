@@ -1,4 +1,5 @@
-"""Puts an extra download (product_extra_files, e.g. MWP Panel's Lightroom Classic plugin) into the shop without the
+"""Puts an extra download (product_extra_files), or with key "main" a product's own file (product_files: e.g. the free
+Field Guides sample), into the shop without the
 file ever being readable in this public repository. Run by .github/workflows/upload-extra.yml ("Upload an extra download").
 
 1. The run makes a key pair; the private key never leaves the runner. It pushes the public key to a temporary branch
@@ -79,13 +80,21 @@ try:
     sh("unzip", "-tq", zip_path)   # a real, intact zip
     size = os.path.getsize(zip_path)
 
-    path = f"{SLUG}/{FILE_KEY}/v{VERSION}/{NAME}"
+    main = FILE_KEY == "main"   # the product's own file (product_files), e.g. the free Field Guides sample
+    path = f"{SLUG}/v{VERSION}/{NAME}" if main else f"{SLUG}/{FILE_KEY}/v{VERSION}/{NAME}"
     call(f"/storage/v1/object/presets/{urllib.parse.quote(path)}", "POST", raw=open(zip_path, "rb").read(),
          headers={"Content-Type": "application/zip", "x-upsert": "true"})
-    call("/rest/v1/product_extra_files?on_conflict=product_id,file_key", "POST",
-         {"product_id": product[0]["id"], "file_key": FILE_KEY, "label": LABEL, "path": path, "size_bytes": size,
-          "version": VERSION, "uploaded_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())},
-         {"Prefer": "resolution=merge-duplicates,return=minimal"})
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    if main:
+        call("/rest/v1/product_files?on_conflict=product_id", "POST",
+             {"product_id": product[0]["id"], "path": path, "size_bytes": size, "version": VERSION, "uploaded_at": now},
+             {"Prefer": "resolution=merge-duplicates,return=minimal"})
+        call(f"/rest/v1/products?id=eq.{product[0]['id']}", "PATCH", {"version": VERSION}, {"Prefer": "return=minimal"})
+    else:
+        call("/rest/v1/product_extra_files?on_conflict=product_id,file_key", "POST",
+             {"product_id": product[0]["id"], "file_key": FILE_KEY, "label": LABEL, "path": path, "size_bytes": size,
+              "version": VERSION, "uploaded_at": now},
+             {"Prefer": "resolution=merge-duplicates,return=minimal"})
     summary = f"Uploaded **{LABEL}** for {SLUG}: `{path}` ({size:,} bytes), version {VERSION}. Owners see it in My downloads now."
     print(summary)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
