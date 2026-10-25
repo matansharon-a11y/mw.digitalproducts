@@ -230,3 +230,19 @@ export const testerLink = (email, lang) => callFunction("tester", { action: "lin
 export const testerJoin = (form) => callFunction("tester", { action: "join", ...form });
 export const testerMe = () => callFunction("tester", { action: "me" }, { auth: true });
 export const subscribe = (email, source = "free-sampler") => callFunction("subscribe", { email, source });
+
+// The free Field Guides sample (gift.js): keep the details, then email a sign-in link that opens their account.
+// The link is the kind that works in any browser (#access_token, handled on My downloads), not only in the one that
+// asked for it: people fill the pop-up on a phone and open the email in their mail app.
+export async function giftSignup({ name, email, phone, consent, lang }) {
+  email = email.trim().toLowerCase();
+  await callFunction("subscribe", { source: "free-guide", name, email, phone, consent, lang });
+  const once = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, flowType: "implicit" },
+  });
+  const { error } = await once.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: `${CONFIG.SITE_URL}/account/?gift=1`, shouldCreateUser: true, data: { name } },
+  });
+  if (error) throw new ApiError(error.message, error.status);
+}

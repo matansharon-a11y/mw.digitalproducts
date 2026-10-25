@@ -1091,6 +1091,10 @@ const HE = {
   "With MWP Presets, in one purchase, or in a bundle": "עם הפריסטים של MWP, ברכישה אחת, או בחבילה",
   "With the plugin, in one purchase, or in a bundle": "עם התוסף, ברכישה אחת, או בחבילה",
   "The Lightroom Classic plugin": "התוסף ללייטרום קלאסיק",
+  // My downloads: the free Field Guides sample (sign-up gift, 25 Oct 2026; drafts for Matan)
+  "Free sample": "טעימה חינמית",
+  "Get the full Field Guides": "למדריכי השטח המלאים",
+  "137 lessons in four guides": "137 שיעורים בארבעה מדריכים",
   "MWP Presets and the Lightroom Classic plugin": "הפריסטים של MWP והתוסף ללייטרום קלאסיק",
   "Not sure what makes a strong wildlife photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.": "לא בטוחים מה עושה צילום חיות בר חזק? מתחילים במדריכי השטח. לייטרום מבלבל? הפריסטים של MWP, או התוסף שלנו ללייטרום קלאסיק. פוטושופ מרגיש כמו מבוך של תפריטים? התוסף לפוטושופ של MWP.",
   "Yes. Our": "כן. ה",
