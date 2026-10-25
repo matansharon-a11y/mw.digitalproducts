@@ -223,8 +223,19 @@ lead_route = [
                      "status": "subscribed", "email_type": "html", "language": "{{1.language}}", "interests": {},
                      "merge_fields": {"FNAME": "{{1.first_name}}", "LNAME": "{{1.last_name}}", "PHONE": "{{1.phone}}", "ADDRESS": {}},
                      "tags": [{"name": "MWP Shop", "status": "active"}, {"name": "Shop: free guide", "status": "active"}]},
-          "metadata": {"designer": {"x": 0, "y": 0, "name": "Mailchimp: MWP Shop"}},
-          "filter": f("Agreed to marketing", ("{{1.marketing}}", "text:equal", "yes"))}],
+          "metadata": {"designer": {"x": 0, "y": 0, "name": "Mailchimp: MWP Shop (Hebrew)"}},
+          "filter": f("Agreed, Hebrew", ("{{1.marketing}}", "text:equal", "yes"), ("{{1.language}}", "text:notequal", "en"))}],
+        # English speakers carry the audience's own tag lang_en: the newsletters' Hebrew segment is everyone without it
+        # (Matan, 25 Oct 2026). Never the welcome_he / welcome_en tags: those belong to the tours' welcome emails.
+        [{"id": 171, "module": "mailchimp:addUpdateASubscriber", "version": 2,
+          "parameters": {"__IMTCONN__": MAILCHIMP},
+          "mapper": {"select": "list", "list": MC_LIST, "email_address": "{{1.email}}", "createOrUpdate": True,
+                     "status": "subscribed", "email_type": "html", "language": "en", "interests": {},
+                     "merge_fields": {"FNAME": "{{1.first_name}}", "LNAME": "{{1.last_name}}", "PHONE": "{{1.phone}}", "ADDRESS": {}},
+                     "tags": [{"name": "MWP Shop", "status": "active"}, {"name": "Shop: free guide", "status": "active"},
+                              {"name": "lang_en", "status": "active"}]},
+          "metadata": {"designer": {"x": 0, "y": 0, "name": "Mailchimp: MWP Shop (English, lang_en)"}},
+          "filter": f("Agreed, English", ("{{1.marketing}}", "text:equal", "yes"), ("{{1.language}}", "text:equal", "en"))}],
         [gql(169, q_lead_change, {"id": "{{162.body.data.lead.items[1].id}}",
                                   "cv": '{"lead_status":{"label":"Confirmed"},' + LEAD_PHONE +
                                         '"marketing":{"label":"{{switch(1.marketing; "yes"; "Yes"; "No")}}"},'
