@@ -809,6 +809,7 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 /* each product's part */
 .lr-sec{scroll-margin-top:110px}
 #faq{scroll-margin-top:130px}
+#faq.sec{padding-top:clamp(64px,8vw,112px)}   /* the same room above "FAQs" as on the home page, whatever section comes before it (Jeinna, 26 Oct 2026) */
 /* the Lightroom page's two offers (Jeinna, 25 Oct 2026): the plugin with the presets included, or the presets alone */
 #offers{scroll-margin-top:130px}
 .lr-offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,24px);margin-top:clamp(20px,2.6vw,32px)}
