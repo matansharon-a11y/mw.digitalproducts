@@ -716,8 +716,8 @@ def page(folder, lang):
 <img src="{img(p["final_img"])}" alt="" loading="lazy">
 <div class="wrap">
 <div class="head c" data-r><p class="kick">{esc(c["final_kick"])}</p>{h(c["final_h"])}<p class="lead">{esc(c["final_lead"])}</p></div>
-{launch_block(lang)}<div class="prices">{plan(c["plan"], slug, hi=True)}{plan(c["plan2"], p["bundle"], badge="" if p.get("slug_b") else u["bundle"])}</div>
 {singles_block(c, lang)}
+{launch_block(lang)}<div class="prices">{plan(c["plan"], slug, hi=True)}{plan(c["plan2"], p["bundle"], badge="" if p.get("slug_b") else u["bundle"])}</div>
 <p class="small">{u["trust"]} · <a href="/legal/">{u["terms"]}</a></p>
 </div>
 </section>''')
