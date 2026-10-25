@@ -161,9 +161,16 @@ def menu_button(lang="en"):
     otherwise trap a fixed panel inside it) and opens / closes it."""
     he = lang == "he"
     label = "תפריט" if he else "Menu"
+    # "Your account" also shows who is signed in, with Sign out (or Sign in): cart.js fills it in (25 Oct 2026: the
+    # header's separate account icon came off, the ☰ menu holds the account).
+    account_extra = (f'<p class="sm-who" data-sm-who hidden></p>'
+                     f'<a href="/account/" data-sm-signin>{"התחברות או יצירת חשבון" if he else "Sign in or create an account"}</a>'
+                     f'<button class="sm-signout" type="button" data-sm-signout hidden>{"התנתקות" if he else "Sign out"}</button>')
     groups = "".join(
         f'<section class="sm-group"><h2 class="sm-h">{t[1] if he else t[0]}</h2>'
-        + "".join(f'<a href="{he_href(href) if he else href}">{h if he else e}</a>' for href, e, h in links) + "</section>"
+        + (account_extra[:account_extra.index("<a ")] if t[0] == "Your account" else "")
+        + "".join(f'<a href="{he_href(href) if he else href}">{h if he else e}</a>' for href, e, h in links)
+        + (account_extra[account_extra.index("<a "):] if t[0] == "Your account" else "") + "</section>"
         for t, links in MENU_GROUPS)
     social = "".join(f'<a class="sm-social-a" href="{url}" target="_blank" rel="noopener" aria-label="{name}">{icon}<span>{name}</span></a>'
                      for name, url, icon in SOCIAL)
@@ -225,6 +232,11 @@ html .sm-h{margin:0 0 6px;font-size:11.5px;font-weight:700;letter-spacing:.18em;
 html[dir=rtl] .sm-h,html[dir=rtl] .sm-title{letter-spacing:.04em}
 html .sm-group a{display:flex;align-items:center;min-height:44px;color:#FEFBF1;font-size:16.5px;text-decoration:none;border-radius:10px;transition:color .2s}
 html .sm-group a:hover{color:#F4AF56}
+html .sm-who{margin:0 0 4px;color:#9CB1C2;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html .sm-who b{color:#FEFBF1;font-weight:600}
+html .sm-signout{display:flex;align-items:center;min-height:44px;padding:0;border:0;background:none;color:#9CB1C2;font:inherit;font-size:16.5px;cursor:pointer}
+html .sm-signout:hover{color:#F4AF56}
+html .sm-signout[hidden],html .sm-who[hidden],html .site-menu [data-sm-signin][hidden]{display:none}
 html .sm-social{padding:14px 24px 0}
 html .sm-social-row{display:flex;gap:10px;flex-wrap:wrap}
 html .sm-social-a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 12px;border:1px solid rgba(254,251,241,.14);border-radius:999px;color:#FEFBF1;font-size:14px;text-decoration:none;transition:border-color .2s,color .2s}

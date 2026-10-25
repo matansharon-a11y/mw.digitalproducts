@@ -351,8 +351,7 @@ function showTip(el) {
 }
 
 export function navIconsInner() {
-  return `<button class="nav-ico" type="button" data-cart aria-label="${T("Cart", "עגלה")}" aria-haspopup="dialog">${SVG.cart}<span class="count" hidden>0</span><span class="tip">${T("Cart", "עגלה")}</span></button>
-    <button class="nav-ico" type="button" data-account aria-label="${T("Account", "חשבון")}" aria-haspopup="menu" aria-expanded="false">${SVG.user}<span class="tip">${T("Account", "חשבון")}</span></button>`;
+  return `<button class="nav-ico" type="button" data-cart aria-label="${T("Cart", "עגלה")}" aria-haspopup="dialog">${SVG.cart}<span class="count" hidden>0</span><span class="tip">${T("Cart", "עגלה")}</span></button>`;
 }
 
 // ---------------------------------------------------------------- account menu
@@ -487,6 +486,23 @@ export function initCart() {
   // My downloads takes what the buyer now owns out of the saved cart (account.js), then tells the cart here
   window.addEventListener("mwp-cart-changed", () => { memory = null; refresh(); });
   refresh();
+  // The ☰ menu's "Your account": who is signed in, and Sign out; else Sign in (the header has no account icon since
+  // 25 Oct 2026). Only someone with a saved sign-in loads the account code.
+  (async () => {
+    let saved = false;
+    try { saved = Object.keys(localStorage).some((k) => /^sb-.*-auth-token$/.test(k)); } catch { /* blocked */ }
+    if (!saved) return;
+    const { api, user } = await accountUser();
+    if (!user) return;
+    document.querySelectorAll("[data-sm-who]").forEach((p) => {
+      p.innerHTML = `${T("Signed in as", "מחוברים בתור")} <b data-no-i18n>${esc(user.email)}</b>`; p.hidden = false;
+    });
+    document.querySelectorAll("[data-sm-signin]").forEach((a) => { a.hidden = true; });
+    document.querySelectorAll("[data-sm-signout]").forEach((b) => {
+      b.hidden = false;
+      b.addEventListener("click", async () => { if (api) await api.signOut(); location.href = "/account/"; });
+    });
+  })();
   // where the visitor came from (…?utm_source=…), kept for the visit and sent with the checkout
   try { const src = new URLSearchParams(location.search).get("utm_source"); if (src) sessionStorage.setItem("utm_source", src.slice(0, 64)); } catch { /* blocked */ }
   // Back from signing in for checkout (…?cart=1): open the cart where they left off.

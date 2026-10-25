@@ -28,7 +28,6 @@ def navr(lang, btn=""):
     return (f'<div class="navr">'
             f'<div class="nav-icons">'
             f'<button class="nav-ico" type="button" data-cart aria-label="{t("Cart", "עגלה")}" aria-haspopup="dialog">{CART}<span class="count" hidden>0</span><span class="tip">{t("Cart", "עגלה")}</span></button>'
-            f'<button class="nav-ico" type="button" data-account aria-label="{t("Account", "חשבון")}" aria-haspopup="menu" aria-expanded="false">{USER}<span class="tip">{t("Account", "חשבון")}</span></button>'
             f'</div>{toggle}{btn}</div>')
 
 # Same header look as the home page. "html " prefix so it wins over the page styles the runtime moves into <head>.

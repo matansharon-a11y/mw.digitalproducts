@@ -523,6 +523,7 @@ const HE = {
   "Email me a sign-in link": "שלחו לי קישור כניסה",
   "Signed in as": "מחוברים בתור",
   "Sign out": "התנתקות",
+  "Sign in or create an account": "התחברות או יצירת חשבון",
   "Download links are created when you click and expire after 5 minutes. Trouble?": "קישורי ההורדה נוצרים כשלוחצים ותקפים ל-5 דקות. יש בעיה?",
   "Download .zip": "הורדת קובץ zip.",
   "Nothing on this email yet.": "עדיין אין רכישות במייל הזה.",

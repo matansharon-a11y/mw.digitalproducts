@@ -517,7 +517,6 @@ def nav_right(lang, folder):
              f'<span class="on" aria-current="true">EN</span><a href="/{folder}/he/" hreflang="he" lang="he" onclick="try{{localStorage.setItem(\'mwp_lang\',\'he\')}}catch(e){{}}">עב</a>')
     return (f'<div class="navr"><div class="nav-icons">'
             f'<button class="nav-ico" type="button" data-cart aria-label="{t("Cart", "עגלה")}" aria-haspopup="dialog">{CART}<span class="count" hidden>0</span><span class="tip">{t("Cart", "עגלה")}</span></button>'
-            f'<button class="nav-ico" type="button" data-account aria-label="{t("Account", "חשבון")}" aria-haspopup="menu" aria-expanded="false">{USER}<span class="tip">{t("Account", "חשבון")}</span></button>'
             f'</div><div class="lang-toggle" role="group" aria-label="{UI[lang]["lang"]}">{other}</div></div>')
 
 
