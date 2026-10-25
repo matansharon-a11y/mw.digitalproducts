@@ -25,6 +25,23 @@ Built and **switched on** 25 Oct 2026 (Matan approved the words, the privacy lin
 
 Every new account gets the sample too (not only pop-up sign-ups), once its file is uploaded.
 
+## The welcome emails (Mailchimp)
+Customer Journey **"MWP Shop · Free guide welcome"** (Mailchimp → Automations, builder id 550; built 25 Oct 2026,
+**a draft until Matan turns it on**):
+- Trigger: tag **Shop: free guide** (only people who ticked the marketing box get it). Entry filter: not tagged
+  guide_sample_en / guide_sample_he (those came through the mw-phototours.com pop-up and get that site's own guide email;
+  its two journeys skip Shop: free guide in return).
+- If tagged **lang_en**: EN 1 → 3 days → EN 2. Otherwise (Hebrew): HE 1 → 3 days → HE 2. Sender "Matan Wild · MWP" /
+  "מתן וויילד · MWP", from contact@matanwildphotography.com.
+- Content: `tools/build_emails.py` writes `assets/email/<id>.html`; each step imports its page by URL
+  (shop.mw.photography/assets/email/…), and Mailchimp fetches it again at send time, so a change to the builder goes
+  live with the next deploy. No prices in these emails.
+- Test emails of all four went to contact@ on 25 Oct 2026 and arrived (unsubscribe link and address filled in).
+- At launch (once the shop takes orders): add emails 3 (`3-tools-*`) and 4 (`4-full-guides-*`) to both branches, a
+  few days apart.
+- Launch email to the whole audience: Mailchimp drafts **"MWP Shop launch · English / Hebrew (draft, needs Matan's
+  OK)"** (`5-launch-*`), copies of the October newsletters' audiences (English = lang_en; Hebrew = everyone else).
+
 ## The PDF
 `tools/make_guide_sample.py` builds it from the four guides: a cover, "Hi, I'm Matan", then one complete section of
 each guide (its opening page + 4 lessons, 16 lessons in all), and a closing page with the link to the full guides.
