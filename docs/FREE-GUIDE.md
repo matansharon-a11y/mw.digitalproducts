@@ -13,7 +13,7 @@ Built 25 Oct 2026, **switched off** until Matan approves the words and the PDF.
    monday **Shop Customers** gets the person at once (Free guide = Waiting for email, Phone, Language, Signed up,
    Source = Free guide). Then the page emails a **sign-in link** that works in any browser (`giftSignup` in api.js).
 3. **They click the link** → their account is created and confirmed → the database (`grant_free_sample`, migration
-   `20261025000001`) gives them the sample, fills their name and phone where empty, records their consent, and the
+   `20261025090001`) gives them the sample, fills their name and phone where empty, records their consent, and the
    scheduler (`lead`) tells Make: Shop Customers → Free guide = Confirmed; **Mailchimp** (audience MW-Photo Tours,
    tags **MWP Shop** + **Shop: free guide**) only when they ticked the marketing box.
 4. **My downloads** shows "Free sample · MWP Field Guides · free sample", their stamped copy in their language, and

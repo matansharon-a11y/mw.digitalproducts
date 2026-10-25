@@ -2,7 +2,7 @@
 // subscribe — sign-ups. Stores the address with its consent, then Make.com adds it to monday (Shop Customers).
 //   source 'free-guide' (the shop's pop-up, 25 Oct 2026): also full name, phone and language. Nothing is given here
 //   (anyone can type any email): the page then emails a sign-in link, and when it's clicked the database gives the
-//   free Field Guides sample and applies these details (grant_free_sample, migration 20261025000001).
+//   free Field Guides sample and applies these details (grant_free_sample, migration 20261025090001).
 // Repeat sign-ups are harmless (upsert). The sampler is re-sent at most once a day per
 // address, and one IP can sign up 10 times an hour, so a script can't use up the Make.com
 // operations or send the sampler to strangers over and over.

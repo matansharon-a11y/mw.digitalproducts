@@ -1,6 +1,6 @@
 // The free Field Guides sample pop-up (Matan, 25 Oct 2026): full name, email and phone → a sign-in link by email →
 // their account opens on My downloads with the sample inside (the database gives it once the email is confirmed:
-// grant_free_sample, migration 20261025000001). Loaded by nav.js on the shop's public pages.
+// grant_free_sample, migration 20261025090001). Loaded by nav.js on the shop's public pages.
 //
 // When it shows: after 30 seconds, or halfway down the page, or when a desktop visitor heads for the tab bar, never
 // in the first 8 seconds. At most once every 14 days, never again after signing up, never to someone signed in, and
