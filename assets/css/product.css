@@ -191,16 +191,16 @@ html.menu-open .pbar{opacity:0;visibility:hidden}
 .small a{color:var(--ink2)}
 @media (max-width:760px){.prices{grid-template-columns:minmax(0,1fr)}.plan{padding:36px 26px 28px}}
 /* the Field Guides page: each guide on its own, under the set */
-.singles{max-width:920px;margin:40px auto 48px;text-align:center}   /* above the set and the bundles (Matan, 25 Oct 2026) */
-.singles-h{margin:0;font-size:clamp(22px,2.2vw,28px);font-weight:500;letter-spacing:-.02em}
-.singles-line{margin:8px 0 0;color:var(--ink2);font-size:15.5px}
-.singles-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
-.single{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 14px 18px;border-radius:20px;border:1px solid var(--line);background:rgba(254,251,241,.025)}
-.single-nm{margin:0;font-size:17px;font-weight:600}
-.single-pr{margin:0 0 6px;color:var(--ink2);font-size:15px}
-.single .ghost{min-height:42px;padding:0 18px;font-size:14px}
+.singles{max-width:920px;margin:32px auto 44px;text-align:center}   /* above the set and the bundles (Matan, 25 Oct 2026); one line + four buttons (Jeinna, 26 Oct 2026) */
+.singles-line{margin:0;color:var(--ink2);font-size:16px}
+.singles-line [data-price]{color:var(--ink);font-weight:600}
+.singles-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:18px}
+.single-btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;border:1.5px solid rgba(242,165,65,.6);background:rgba(242,165,65,.08);color:var(--ink);font-weight:600;font-size:16px;text-decoration:none;cursor:pointer;transition:background .25s,border-color .25s,transform .25s var(--ease),color .25s}
+.single-btn svg{width:20px;height:20px;color:var(--gold);flex:none;transition:color .25s}
+.single-btn:hover,.single-btn:focus-visible{background:var(--grad);border-color:transparent;color:#1A1208;transform:translateY(-1px)}
+.single-btn:hover svg,.single-btn:focus-visible svg{color:#1A1208}
 .singles-owned{margin:18px 0 0;color:var(--ink2)}
-@media (max-width:760px){.singles-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.singles-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.single-btn{justify-content:center;padding:0 14px}}
 
 /* ---------- FAQ ---------- */
 .faq{margin:36px 0 0}   /* the full content width, like every other section (Jeinna, 25 Oct 2026) */

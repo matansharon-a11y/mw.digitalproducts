@@ -200,6 +200,9 @@ def site_footer(lang="en"):
 
 
 SITE_CSS = """
+/* Gradient text is painted only inside its own box, and the tight headline line height cut off g, y, p and Hebrew
+   descenders (Jeinna, 26 Oct 2026). Extra room below and above, given back with a negative margin so nothing moves. */
+html .grad,html .specs dt b,html .lr-three b,html .pc-num,html .pc-count b,html .pc-dev .pc-dev-n{padding-block:.12em .36em;margin-block:-.12em -.36em}
 html:not(.prices-on) [data-price]{visibility:hidden}
 html:not(.prices-on) .btn .pr{display:none}   /* a buy button reads "Get …" until its price is in, never "Get … ·" */
 .btn .pr:has([data-price]:empty){display:none}   /* …and stays so for a product whose price isn't set yet */

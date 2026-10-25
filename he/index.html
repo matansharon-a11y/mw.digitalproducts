@@ -363,6 +363,9 @@ html .nav .links + .navr{margin-inline-start:0}
 @media (max-width:600px){html .nav .wrap{height:64px;gap:10px}html .nav .navr .btn.sm{display:none}html .nav .nav-ico{width:38px;height:38px}html .nav .lang-toggle{padding-left:10px;margin-inline-start:2px}html[lang=he] .nav .lang-toggle{padding:0 10px 0 0}}
 
 
+/* Gradient text is painted only inside its own box, and the tight headline line height cut off g, y, p and Hebrew
+   descenders (Jeinna, 26 Oct 2026). Extra room below and above, given back with a negative margin so nothing moves. */
+html .grad,html .specs dt b,html .lr-three b,html .pc-num,html .pc-count b,html .pc-dev .pc-dev-n{padding-block:.12em .36em;margin-block:-.12em -.36em}
 html:not(.prices-on) [data-price]{visibility:hidden}
 html:not(.prices-on) .btn .pr{display:none}   /* a buy button reads "Get …" until its price is in, never "Get … ·" */
 .btn .pr:has([data-price]:empty){display:none}   /* …and stays so for a product whose price isn't set yet */
@@ -625,7 +628,7 @@ html[lang=he] .only-en{display:none!important}html:not([lang=he]) .only-he{displ
 .st-hero-in .ctas{margin-top:36px}
 .st-h1{margin:18px 0 0;font-size:clamp(52px,8.4vw,132px);line-height:.94;font-weight:400;letter-spacing:-.04em;color:#FEFBF1}
 .st-h1 .grad{font-weight:600}
-.st-l{display:block;overflow:hidden;padding-bottom:.22em;margin-bottom:-.16em}
+.st-l{display:block;overflow:hidden;padding-bottom:.46em;margin-bottom:-.4em}   /* room for descenders (and Hebrew) below the mask */
 .st-l > span{display:inline-block;will-change:transform,opacity;backface-visibility:hidden;animation:strise 1.6s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * .14s + .1s)}
 @keyframes strise{from{transform:translate3d(0,110%,0);opacity:0}50%{opacity:1}to{transform:translate3d(0,0,0);opacity:1}}
 /* hold the intro until the fonts are in, so the words do not swap typeface mid-animation */

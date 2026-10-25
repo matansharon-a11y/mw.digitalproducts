@@ -352,8 +352,7 @@ P["field-guides"] = dict(
         spec_note="",
         final_kick="MWP Field Guides", final_h=["Your next shoot", "starts here."],
         # single guides (Matan, 25 Oct 2026; DRAFT copy, waiting for his OK): shown under the two price cards
-        singles=dict(h="Or start with one guide", line="Each guide on its own, in English or Hebrew. All four together cost less.",
-                     cta="Add to cart", owned="You already have all four guides."),
+        singles=dict(line=("Or just one guide, ", " each"), aria="Add {} to cart", owned="You already have all four guides."),
         final_lead="4 guides, 137 lessons and 229 pages of composition, colour, light and planning. In English or Hebrew, in one set.",
         plan=("MWP Field Guides", "Learn to shoot: before the click", ["4 field guides, English or Hebrew", "137 lessons, 229 pages", "Cheat sheets, drills and checklists"], "Get the guides"),
         plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
@@ -387,8 +386,7 @@ P["field-guides"] = dict(
                ("229", "עמודים", "נפתחים בכל מכשיר, בעברית או באנגלית: בוחרים שפה אחת")],
         spec_note="",
         final_kick="מדריכי השטח של MWP", final_h=["יוצאים לצלם,", "עם תוכנית."],
-        singles=dict(h="או מתחילים במדריך אחד", line="כל מדריך בנפרד, באנגלית או בעברית. ארבעתם יחד עולים פחות.",
-                     cta="הוספה לעגלה", owned="כל ארבעת המדריכים כבר אצלכם."),
+        singles=dict(line=("או רק מדריך אחד, ", " כל אחד"), aria="הוספת {} לעגלה", owned="כל ארבעת המדריכים כבר אצלכם."),
         final_lead="4 מדריכים, 137 שיעורים ו-229 עמודים של קומפוזיציה, צבע, אור ותכנון. בעברית או באנגלית, בסט אחד.",
         plan=("מדריכי השטח של MWP", "לצלם עם תוכנית", ["4 מדריכי שטח, עברית או אנגלית", "137 שיעורים, 229 עמודים", "דפי סיכום, תרגילים וצ׳קליסטים"], "לרכישת הסט"),
         plan2=("הסט המלא", "מהצילום ועד הפרסום", ["התוסף ללייטרום קלאסיק", "התוסף לפוטושופ של MWP", "הפריסטים של MWP: ‏50 פריסטים ו-33 קובצי LUT", "מדריכי השטח של MWP: ‏4 מדריכים, 137 שיעורים"], "לסט המלא"),
@@ -696,12 +694,12 @@ def page(folder, lang):
         already owns the four guides (the set, or a bundle with it); cart.js refuses them too."""
         if "singles" not in c or not SINGLE_GUIDES_LIVE:
             return ""
-        S = c["singles"]
-        cards = "".join(f'<div class="single" data-r><p class="single-nm">{esc(name)}</p><p class="single-pr">{price(sl, lang)}</p>'
-                        f'<a class="ghost" href="#buy" data-add-to-cart="{sl}">{esc(S["cta"])}</a></div>'
-                        for sl, name in SINGLE_GUIDES[lang])
-        return (f'<div class="singles" data-singles><h3 class="singles-h">{esc(S["h"])}</h3><p class="singles-line">{esc(S["line"])}</p>'
-                f'<div class="singles-row">{cards}</div><p class="singles-owned" hidden>{esc(S["owned"])}</p></div>')
+        S = c["singles"]   # one short line with the price said once, then a clear button per guide (Jeinna, 26 Oct 2026)
+        btns = "".join(f'<a class="single-btn" href="#buy" data-add-to-cart="{sl}" aria-label="{esc(S["aria"].format(name))}">{CART}<span>{esc(name)}</span></a>'
+                       for sl, name in SINGLE_GUIDES[lang])
+        first = SINGLE_GUIDES[lang][0][0]
+        return (f'<div class="singles" data-singles data-r><p class="singles-line">{esc(S["line"][0])}{price(first, lang)}{esc(S["line"][1])}</p>'
+                f'<div class="singles-row">{btns}</div><p class="singles-owned" hidden>{esc(S["owned"])}</p></div>')
 
     def plan(data, s, hi=False, badge=""):
         name, sub, pts, cta = data

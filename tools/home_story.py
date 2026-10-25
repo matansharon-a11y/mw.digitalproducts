@@ -139,7 +139,7 @@ html[lang=he] .only-en{display:none!important}html:not([lang=he]) .only-he{displ
 .st-hero-in .ctas{margin-top:36px}
 .st-h1{margin:18px 0 0;font-size:clamp(52px,8.4vw,132px);line-height:.94;font-weight:400;letter-spacing:-.04em;color:#FEFBF1}
 .st-h1 .grad{font-weight:600}
-.st-l{display:block;overflow:hidden;padding-bottom:.22em;margin-bottom:-.16em}
+.st-l{display:block;overflow:hidden;padding-bottom:.46em;margin-bottom:-.4em}   /* room for descenders (and Hebrew) below the mask */
 .st-l > span{display:inline-block;will-change:transform,opacity;backface-visibility:hidden;animation:strise 1.6s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * .14s + .1s)}
 @keyframes strise{from{transform:translate3d(0,110%,0);opacity:0}50%{opacity:1}to{transform:translate3d(0,0,0);opacity:1}}
 /* hold the intro until the fonts are in, so the words do not swap typeface mid-animation */
