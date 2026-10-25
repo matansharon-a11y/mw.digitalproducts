@@ -82,9 +82,10 @@ def slug_for(name):
         return None
     # MWP Presets comes with the Lightroom Classic plugin (one purchase), so a name with "preset" is never the plugin
     # (the Photoshop one is "MWP Photoshop Plugin Panel" since 24 Oct 2026: a name with "photoshop" or "panel" is never this one)
-    if ("lightroom classic" in t or "plugin" in t) and not any(w in t for w in ("preset", "photoshop", "panel")):
+    if ("lightroom classic" in t or "plugin" in t) and not any(w in t for w in ("preset", "photoshop", "panel", "+")):
         return "mwp-lightroom-plugin"
-    parts = frozenset(p for p, w in (("presets", "preset"), ("panel", "panel"), ("guides", "guide")) if w in t)
+    # a bundle's Lightroom part is the plugin with the presets ("Lightroom Plugin + ...", 25 Oct 2026): same bundles as before
+    parts = frozenset(p for p, w in (("presets", "preset"), ("presets", "lightroom"), ("panel", "panel"), ("guides", "guide")) if w in t)
     return {frozenset({"presets"}): "mwp-presets", frozenset({"panel"}): "mwp-panel", frozenset({"guides"}): "mwp-field-guides",
             frozenset({"presets", "panel"}): "presets-panel", frozenset({"presets", "guides"}): "presets-field-guides",
             frozenset({"guides", "panel"}): "field-guides-panel"}.get(parts)

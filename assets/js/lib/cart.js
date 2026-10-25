@@ -9,6 +9,7 @@ const SVG = {
   cart: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>',
   dl: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
   edit: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg>',
+  receipt: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg>',
   help: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></svg>',
   x: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
 };
@@ -89,11 +90,20 @@ function save(items) {
   refresh();
 }
 let memory = null;
-// sold only with another product: a cart saved before 23 Oct 2026 may still hold the plugin on its own (it becomes
-// MWP Presets, which includes it; refreshCart() fills in its name and price)
-const SOLD_WITH = { "mwp-lightroom-plugin": "mwp-presets" };
-const items = () => memory || (memory = getCart().map((i) => SOLD_WITH[i.slug] ? { ...i, slug: SOLD_WITH[i.slug] } : i)
-  .filter((i, n, all) => all.findIndex((j) => j.slug === i.slug) === n));
+// What each product includes, the same as checkout-webhook BUNDLES (plus the four single guides inside the set). The
+// cart uses it so nobody pays twice: the Lightroom Classic plugin comes with MWP Presets (Jeinna, 25 Oct 2026), and a
+// bundle includes its parts.
+const GUIDES = ["field-guide-planning", "field-guide-composition", "field-guide-light", "field-guide-colour"];
+const INCLUDES = {
+  "mwp-lightroom-plugin": ["mwp-presets"],
+  "mwp-field-guides": GUIDES,
+  "presets-panel": ["mwp-lightroom-plugin", "mwp-presets", "mwp-panel"],
+  "presets-field-guides": ["mwp-lightroom-plugin", "mwp-presets", "mwp-field-guides", ...GUIDES],
+  "field-guides-panel": ["mwp-field-guides", "mwp-panel", ...GUIDES],
+  "full-set": ["mwp-lightroom-plugin", "mwp-presets", "mwp-panel", "mwp-field-guides", ...GUIDES],
+};
+const includes = (a, b) => (INCLUDES[a] || []).includes(b);
+const items = () => memory || (memory = getCart().filter((i, n, all) => all.findIndex((j) => j.slug === i.slug) === n));
 
 // A cart keeps what it had when each item was added. Bring names, prices and checkout links up to date from the
 // live price list (a cart filled before launch had no checkout links yet; a price may have changed since).
@@ -182,7 +192,7 @@ function render() {
 // price card the button sits in; else the nearest price before it in the same section; else the button's
 // words; else the page's own product. Names, prices and checkout links come from the public price list.
 // MWP Presets and the Lightroom Classic plugin are one purchase (Jeinna, 23 Oct 2026): the plugin's buttons add MWP Presets.
-const PAGE_PRODUCT = { presets: "mwp-presets", "lightroom-classic": "mwp-presets", panel: "mwp-panel", "field-guides": "mwp-field-guides" };
+const PAGE_PRODUCT = { presets: "mwp-presets", "lightroom-classic": "mwp-lightroom-plugin", panel: "mwp-panel", "field-guides": "mwp-field-guides" };
 const IMG = "/assets/pages/img/";
 const COVER = {
   "mwp-presets": "c88e041b857fb964607aaec43ad1753d.jpg", "mwp-lightroom-plugin": "86b95f1970bb30f72735d73708d9c095.jpg", "mwp-panel": "8f730b9bb76b93ca707cae719a309479.jpg",
@@ -192,9 +202,6 @@ const COVER = {
   "field-guide-planning": "0cf44582c4078749d18156eec10c90d3.jpg", "field-guide-composition": "0cf44582c4078749d18156eec10c90d3.jpg",
   "field-guide-light": "0cf44582c4078749d18156eec10c90d3.jpg", "field-guide-colour": "0cf44582c4078749d18156eec10c90d3.jpg",
 };
-// Single Field Guides (Matan, 25 Oct 2026): never offered to someone who has all four. These include all four guides.
-const GUIDE_SETS = ["mwp-field-guides", "presets-field-guides", "field-guides-panel", "full-set"];
-const isSingleGuide = (slug) => slug.startsWith("field-guide-");
 const SLUGS = Object.keys(COVER);
 
 function slugFor(a) {
@@ -211,10 +218,10 @@ function slugFor(a) {
   if (near) return near;
   const t = a.textContent.toLowerCase().replace(/\s+/g, " ");
   if (/full set|everything/.test(t)) return "full-set";
-  if (/presets ?\+ ?panel/.test(t)) return "presets-panel";
-  if (/presets ?\+ ?field|field guides ?\+ ?presets/.test(t)) return "presets-field-guides";
+  if (/(presets|lightroom plugin) ?\+ ?(photoshop plugin )?panel/.test(t)) return "presets-panel";
+  if (/(presets|lightroom plugin) ?\+ ?field|field guides ?\+ ?presets/.test(t)) return "presets-field-guides";
   if (/field guides ?\+ ?panel/.test(t)) return "field-guides-panel";
-  if (/lightroom classic|plugin/.test(t)) return "mwp-presets";
+  if (/lightroom (classic )?plugin/.test(t) && !/\+/.test(t)) return "mwp-lightroom-plugin";
   const folder = (href.match(/^(?:\.\.\/)?([\w-]+)\/#buy/) || [])[1] || location.pathname.split("/").filter(Boolean)[0];
   return PAGE_PRODUCT[folder] || null;
 }
@@ -233,34 +240,33 @@ async function priceList() {
 }
 const FALLBACK_NAME = { "field-guide-planning": "MWP Field Guide: Planning", "field-guide-composition": "MWP Field Guide: Composition",
   "field-guide-light": "MWP Field Guide: Light", "field-guide-colour": "MWP Field Guide: Colour", "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Classic Plugin", "mwp-panel": "MWP Photoshop Plugin Panel", "mwp-field-guides": "MWP Field Guides",
-  "presets-field-guides": "Presets + Field Guides", "presets-panel": "Presets + Photoshop Plugin Panel", "field-guides-panel": "Field Guides + Photoshop Plugin Panel", "full-set": "The full set" };
+  "presets-field-guides": "Lightroom Plugin + Field Guides", "presets-panel": "Lightroom Plugin + Photoshop Plugin Panel", "field-guides-panel": "Field Guides + Photoshop Plugin Panel", "full-set": "The full set" };
 
 export async function addSlugToCart(slug) {
-  slug = SOLD_WITH[slug] || slug;
-  if (isSingleGuide(slug)) {
-    // the set (or a bundle with it) is in the cart: it already has this guide
-    if (items().some((i) => GUIDE_SETS.includes(i.slug))) {
-      notice = T("The Field Guides in your cart already include this guide.", "מדריכי השטח בעגלה כבר כוללים את המדריך הזה.");
-      openCart(); return;
-    }
-    // they own all four already (bought, alone or in a bundle). Only checked for someone with a saved sign-in, so
-    // visitors who aren't signed in don't load the account code.
-    let signedIn = false;
-    try { signedIn = Object.keys(localStorage).some((k) => /^sb-.*-auth-token$/.test(k)); } catch { /* blocked */ }
-    const { api, user } = signedIn ? await accountUser() : { api: null, user: null };
-    if (user && api) {
-      try {
-        const lib = await api.myLibrary();
-        if (lib.some((i) => i.products?.slug === "mwp-field-guides" && !i.view_only)) {
-          notice = T("You already have all four Field Guides. Find them in My downloads.", "כל ארבעת מדריכי השטח כבר אצלכם. הם מחכים בעמוד ההורדות שלי.");
-          openCart(); return;
-        }
-      } catch { /* couldn't check: the page itself hides the single guides from owners */ }
-    }
-  } else if (GUIDE_SETS.includes(slug) && items().some((i) => isSingleGuide(i.slug))) {
-    // all four guides replace any single guide already in the cart
-    save(items().filter((i) => !isSingleGuide(i.slug)));
-    notice = T("Single guides were taken out: this includes all four.", "המדריכים הבודדים הוצאו מהעגלה: כאן כלולים כל הארבעה.");
+  // already covered by something in the cart (the plugin includes the presets; a bundle includes its parts)
+  if (items().some((i) => i.slug === slug || includes(i.slug, slug))) {
+    notice = items().some((i) => i.slug === slug) ? "" : T("This is already included in something in your cart.", "זה כבר כלול במשהו שנמצא בעגלה.");
+    openCart(); return;
+  }
+  // already theirs (bought, alone or as part of something). Only checked for someone with a saved sign-in, so
+  // visitors who aren't signed in don't load the account code.
+  let signedIn = false;
+  try { signedIn = Object.keys(localStorage).some((k) => /^sb-.*-auth-token$/.test(k)); } catch { /* blocked */ }
+  const { api, user } = signedIn ? await accountUser() : { api: null, user: null };
+  if (user && api) {
+    try {
+      const own = new Set((await api.myLibrary()).filter((i) => !i.view_only && i.products).map((i) => i.products.slug));
+      if (own.has(slug) || [...own].some((o) => includes(o, slug))) {
+        notice = T("You already have this. Find it in My downloads.", "זה כבר אצלכם. הוא מחכה בעמוד ההורדות שלי.");
+        openCart(); return;
+      }
+    } catch { /* couldn't check: checkout still works, and support can refund a double purchase */ }
+  }
+  // it includes things already in the cart: they come out, so nothing is paid twice
+  const inside = items().filter((i) => includes(slug, i.slug));
+  if (inside.length) {
+    save(items().filter((i) => !includes(slug, i.slug)));
+    notice = T("Taken out of your cart: this already includes it.", "הוצאנו מהעגלה את מה שכבר כלול כאן.");
   }
   let r = null;
   try { r = (await priceList())[slug] || null; } catch { /* offline: add it with its name, the price shows later */ }
@@ -364,6 +370,7 @@ function menuHTML(user) {
     : `<div class="who"><span class="av out">${SVG.user}</span><div><small>${T("Not signed in", "לא מחוברים")}</small><b>${T("Your MWP account", "החשבון שלכם ב-MWP")}</b></div></div>`;
   return `${who}
     <a href="/account/" role="menuitem">${SVG.dl}<span>${T("My downloads", "ההורדות שלי")}</span></a>
+    ${user ? `<a href="/account/#orders" role="menuitem">${SVG.receipt}<span>${T("Order history", "היסטוריית הזמנות")}</span></a>` : ""}
     ${user ? `<a href="/account/#details" role="menuitem">${SVG.edit}<span>${T("My details", "הפרטים שלי")}</span></a>` : ""}
     <a href="/support/" role="menuitem">${SVG.help}<span>${T("Help", "עזרה")}</span></a>
     <div class="sep"></div>

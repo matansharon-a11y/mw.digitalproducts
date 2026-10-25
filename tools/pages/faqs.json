@@ -2,8 +2,8 @@
   "presets": {
     "en": [
       {
-        "q": "Do I get both?",
-        "a": "Yes. MWP Presets and the Lightroom Classic plugin come together, in one purchase. Neither needs the other: the presets work in Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw; the plugin works in Lightroom Classic 13 or newer."
+        "q": "Plugin or presets: what's the difference?",
+        "a": "The Lightroom Classic plugin sorts, keywords, edits and exports a whole shoot inside Lightroom Classic 13 or newer, and MWP Presets are included with it. MWP Presets alone are 50 presets and 33 LUTs for Lightroom Classic, Lightroom, Lightroom Mobile and Camera Raw. Buy the plugin and you get both; buy the presets and you get the presets."
       },
       {
         "q": "Which programs do they work in?",
@@ -44,8 +44,8 @@
     ],
     "he": [
       {
-        "q": "מקבלים את שניהם?",
-        "a": "כן. הפריסטים של MWP והתוסף ללייטרום קלאסיק מגיעים יחד, ברכישה אחת. כל אחד מהם עובד גם לבד: הפריסטים עובדים בלייטרום קלאסיק, בלייטרום, בלייטרום מובייל ובקאמרה ראו; התוסף עובד בלייטרום קלאסיק 13 ומעלה."
+        "q": "תוסף או פריסטים: מה ההבדל?",
+        "a": "התוסף ללייטרום קלאסיק ממיין, מתייג, עורך ומייצא צילום שלם בתוך לייטרום קלאסיק 13 ומעלה, והפריסטים של MWP כלולים בו. הפריסטים של MWP לבד הם 50 פריסטים ו־33 קובצי LUT ללייטרום קלאסיק, ללייטרום, ללייטרום מובייל ולקאמרה ראו. קונים את התוסף ומקבלים את שניהם; קונים את הפריסטים ומקבלים את הפריסטים."
       },
       {
         "q": "באילו תוכנות הם עובדים?",
@@ -93,11 +93,11 @@
       },
       {
         "q": "MWP Presets or the Photoshop plugin: which do I need?",
-        "a": "If you edit in Lightroom, MWP Presets, which come with the Lightroom Classic plugin. If you finish your photos in Photoshop, MWP Photoshop Plugin Panel. If you use both, the Presets + Photoshop Plugin Panel bundle gives you both for less, and the full set adds the Field Guides."
+        "a": "If you edit in Lightroom Classic, the Lightroom Classic plugin, with MWP Presets included; for the presets alone, MWP Presets. If you finish your photos in Photoshop, MWP Photoshop Plugin Panel. If you use both, the Lightroom Plugin + Photoshop Plugin Panel bundle gives you all of it for less, and the full set adds the Field Guides."
       },
       {
         "q": "Which Photoshop do I need?",
-        "a": "Photoshop 2023 (version 24.2) or newer, on Mac or Windows, from a Creative Cloud subscription. It does not run in Lightroom, on iPad or on phones. Working in Lightroom Classic? MWP Presets come with a plugin for it."
+        "a": "Photoshop 2023 (version 24.2) or newer, on Mac or Windows, from a Creative Cloud subscription. It does not run in Lightroom, on iPad or on phones. Working in Lightroom Classic? There's the Lightroom Classic plugin, with MWP Presets included."
       },
       {
         "q": "Can it ruin my photo?",
@@ -131,11 +131,11 @@
       },
       {
         "q": "פריסטים או תוסף לפוטושופ: מה מתאים לי?",
-        "a": "אם אתם עורכים בלייטרום, הפריסטים של MWP, שמגיעים יחד עם התוסף ללייטרום קלאסיק. אם אתם מסיימים את התמונות בפוטושופ, התוסף לפוטושופ של MWP. ואם אתם עובדים בשתי התוכנות, החבילה פריסטים + התוסף לפוטושופ נותנת את שניהם במחיר נמוך יותר, והסט המלא מוסיף גם את מדריכי השטח."
+        "a": "אם אתם עורכים בלייטרום קלאסיק, התוסף ללייטרום קלאסיק, והפריסטים של MWP כלולים בו; לפריסטים לבד, הפריסטים של MWP. אם אתם מסיימים את התמונות בפוטושופ, התוסף לפוטושופ של MWP. ואם אתם עובדים בשתי התוכנות, החבילה התוסף ללייטרום + התוסף לפוטושופ נותנת את הכול במחיר נמוך יותר, והסט המלא מוסיף גם את מדריכי השטח."
       },
       {
         "q": "איזה פוטושופ צריך?",
-        "a": "פוטושופ 2023 (גרסה 24.2) ומעלה, ב-Mac או ב-Windows, עם מנוי קריאייטיב קלאוד. הוא לא עובד בלייטרום, ב-iPad או בטלפון. עובדים בלייטרום קלאסיק? הפריסטים של MWP מגיעים עם התוסף ללייטרום קלאסיק."
+        "a": "פוטושופ 2023 (גרסה 24.2) ומעלה, ב-Mac או ב-Windows, עם מנוי קריאייטיב קלאוד. הוא לא עובד בלייטרום, ב-iPad או בטלפון. עובדים בלייטרום קלאסיק? יש את התוסף ללייטרום קלאסיק, והפריסטים של MWP כלולים בו."
       },
       {
         "q": "זה יכול להרוס לי את התמונה?",
@@ -229,7 +229,7 @@
     "en": [
       {
         "q": "Do I need MWP Presets to use the plugin?",
-        "a": "No. The plugin has its own looks inside and works without the presets. It comes together with MWP Presets, in one purchase."
+        "a": "No. The plugin has its own looks inside and works without the presets. MWP Presets are included with it anyway."
       },
       {
         "q": "Which Lightroom does it work in?",
@@ -255,7 +255,7 @@
     "he": [
       {
         "q": "צריך את הפריסטים של MWP כדי להשתמש בתוסף?",
-        "a": "לא. יש בתוסף לוקים משלו והוא עובד בלי הפריסטים. הוא מגיע יחד עם הפריסטים של MWP, ברכישה אחת."
+        "a": "לא. יש בתוסף לוקים משלו והוא עובד בלי הפריסטים. הפריסטים של MWP כלולים בו בכל מקרה."
       },
       {
         "q": "באיזה לייטרום הוא עובד?",

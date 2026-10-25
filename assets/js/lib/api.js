@@ -186,6 +186,14 @@ export async function myExtras() {
   return { files: files.error ? [] : files.data || [], videos: videos.error ? [] : videos.data || [] };
 }
 
+// The signed-in person's orders (newest first): number, date, total, status and what each bought. Only their own:
+// my_orders() reads the login, never an id or email from here.
+export async function myOrders() {
+  const { data, error } = await requireClient().rpc("my_orders");
+  if (error) throw new ApiError(error.message);
+  return data || [];
+}
+
 // ---------------------------------------------------------------- Edge Functions
 async function callFunction(name, body, { auth = false } = {}) {
   const headers = { "content-type": "application/json", apikey: CONFIG.SUPABASE_ANON_KEY };

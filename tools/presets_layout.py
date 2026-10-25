@@ -1,11 +1,11 @@
-"""The Lightroom page (/presets/): MWP Presets and the Lightroom Classic plugin, two tools sold together as one purchase
-(Jeinna, 23 Oct 2026: one price, one Add to cart; neither is sold alone). build_products.py calls sections() for
-P["presets"] (layout="collections", own_page=True: no template hero, no download list and no closing price cards, so
-every tool is introduced once and the pair is bought from two places only: under the two cards and in the sticky bar).
+"""The Lightroom page (/presets/): the Lightroom Classic plugin and MWP Presets on one page, with two clear offers
+(Jeinna, 25 Oct 2026): the plugin with the presets included ($69.99), or the presets alone ($19.99). Buying the plugin
+unlocks the presets (checkout-webhook BUNDLES). build_products.py calls sections() for P["presets"]
+(layout="collections", own_page=True: no template hero, no download list and no closing price cards).
 
 Redesign (Jeinna, 23 Oct 2026): land, see both tools, understand the difference, buy. No repeats.
   top       h1 and the two tools side by side (mockup, type, name, one line, where it works, Learn more),
-            then one buy row for both: what you get, price, Add to cart
+            then the two offers side by side (#offers): what's included, price, Add to cart; the plugin's is marked
   presets   its head (name, one line) → the before / after slider → three big numbers → the five collections
   plugin    its head (name, one line) → the plugin's real window (interactive) → three steps (sort, edit, share)
 The template then adds the reviews (when there are any) and the FAQs. The sticky bar links Presets · Plugin · FAQs.
@@ -37,9 +37,14 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
                    f'<div class="mk-pw-looks">{looks}</div><p class="mk-pw-sl"><i></i></p></div></div></div></div><div class="mk-base"></div></div>'),
     }
 
-    def buy(cta):   # one price and one button for both: buying MWP Presets unlocks the plugin (checkout-webhook)
-        return (f'<div class="lr-buy"><span class="lr-pr">{price("mwp-presets", lang)}</span>'
-                f'<a class="btn" href="#buy" data-add-to-cart="mwp-presets">{esc(cta)}</a></div>')
+    def offer(o, slug, hi):   # one of the two ways to buy: what's in it, its price, its own Add to cart
+        li = "".join(f"<li>{CHECK}<span>{esc(x)}</span></li>" for x in o["has"])
+        badge = f'<span class="lr-badge">{esc(o["badge"])}</span>' if o.get("badge") else ""
+        return (f'<article class="lr-offer{" hi" if hi else ""}">{badge}'
+                f'<p class="lr-type">{esc(o["type"])}</p><h2 class="lr-offer-h">{esc(o["name"])}</h2><ul class="lr-has">{li}</ul>'
+                f'<p class="lr-meta">{esc(o["meta"])}</p>'
+                f'<div class="lr-buy"><span class="lr-pr">{price(slug, lang)}</span>'
+                f'<a class="{"btn" if hi else "ghost"}" href="#offers" data-add-to-cart="{slug}">{esc(o["cta"])}</a></div></article>')
 
     out = []
     # ---------------------------------------------------------------- top: the two products
@@ -51,16 +56,16 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
                   f'<p class="lr-line">{esc(cd["line"])}</p><p class="lr-meta">{esc(cd["meta"])}</p>'
                   f'<div class="lr-foot"><a class="lr-more" href="#{key}">{esc(cd["more"])}</a></div></div></article>')
     T = k["top"]
-    B = k["both"]
+    O = k["offers"]
     out.append(f'''<section class="lr-top" id="top">
 <div class="wrap">
 <div class="lr-head"><p class="kick in" style="--i:0">{esc(T["kick"])}</p><h1 class="lr-h1 in" style="--i:1">{esc(T["h1"][0])} <span class="grad">{esc(T["h1"][1])}</span></h1></div>
 <div class="lr-cards">{cards}</div>
-<div class="lr-both in" style="--i:4"><div><p class="lr-type">{esc(B["type"])}</p><p class="lr-both-h">{esc(B["name"])}</p></div>{buy(B["cta"])}</div>
+<div class="lr-offers in" id="offers" style="--i:4">{offer(O["plugin"], "mwp-lightroom-plugin", True)}{offer(O["presets"], "mwp-presets", False)}</div>
 </div>
 </section>''')
 
-    def head(key, cd, line):   # a tool's own head: name, one line (the pair is bought at the top and in the bar)
+    def head(key, cd, line):   # a tool's own head: name, one line (bought from the two offers at the top)
         return (f'<header class="lr-sh" data-r><div><p class="lr-type">{esc(cd["type"])}</p><h2 class="lr-sh-h">{esc(cd["name"])}</h2>'
                 f'<p class="lr-sh-line">{esc(line)}</p></div></header>')
 

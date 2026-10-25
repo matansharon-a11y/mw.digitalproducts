@@ -14,7 +14,7 @@ from lrc_preview import window as lrc_window
 from ps_preview import window as ps_window
 import presets_layout
 from reviews_section import section as reviews_section
-from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, launch_block
+from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, launch_block, SINGLE_GUIDES_LIVE
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://shop.mw.photography"
@@ -22,6 +22,12 @@ import hashlib
 CSS_V = hashlib.sha1(open(os.path.join(ROOT, "assets/css/product.css"), "rb").read()).hexdigest()[:8]   # fresh CSS after every change
 RV_V = hashlib.sha1(open(os.path.join(ROOT, "assets/css/reviews.css"), "rb").read()).hexdigest()[:8]
 FAQS = json.load(open(os.path.join(ROOT, "tools/pages/faqs.json"), encoding="utf-8"))
+if not SINGLE_GUIDES_LIVE:   # until the single guides go on sale, "Can I buy just one guide?" keeps its earlier answer
+    for _lang, _a in (("en", "Not at the moment. The four guides come as one set, in the language you choose, and together they cost less than four separate guides would."),
+                      ("he", "כרגע לא. ארבעת המדריכים מגיעים כסט אחד, בשפה שבוחרים, ויחד הם עולים פחות מארבעה מדריכים נפרדים.")):
+        for _f in FAQS["field-guides"][_lang]:
+            if _f["q"] in ("Can I buy just one guide?", "אפשר לקנות מדריך אחד?"):
+                _f["a"] = _a
 
 
 def img(prefix, webp=True):
@@ -77,19 +83,19 @@ P["presets"] = dict(
     # where each photo's subject sits, so a 4:5 crop keeps it: the lioness's face, the lava, the lion, the eagle, the tiger
     card_focus=["38% 50%", "66% 50%", "50% 22%", "50% 30%", "38% 45%"], feat_focus="50% 18%",
     layout="collections", adobe_img="0015a37d",   # its own layout: tools/presets_layout.py
-    # the Lightroom page: MWP Presets and the Lightroom Classic plugin, two tools sold together as one purchase
+    # the Lightroom page: the Lightroom Classic plugin (presets included) or MWP Presets alone (Jeinna, 25 Oct 2026)
     # (Jeinna, 23 Oct 2026): one price and one Add to cart (mwp-presets; buying it unlocks the plugin)
     bundle="full-set", own_page=True,
     pre_img="649e2d2b", plug_img="86b95f19",   # the two mockups' photos (the dune, the photographer): each picture once on the page
     en=dict(
         name="MWP for Lightroom", name_html='MWP <span class="grad">for Lightroom</span>',
         title="Lightroom Presets & Lightroom Classic Plugin · MWP",
-        desc="Two Lightroom tools in one purchase by photographer Matan Wild: 50 presets with 33 LUTs, and a Lightroom Classic plugin to sort, keyword, edit and export.",
+        desc="Lightroom tools by photographer Matan Wild: a Lightroom Classic plugin to sort, keyword, edit and export, with 50 presets and 33 LUTs included. Or the presets alone.",
         hero_alt="Lioness in golden grass, photographed by Matan Wild",
         kick="MWP · for Lightroom", h1=["Pro editing", "in Lightroom."],
-        lead="Presets for the look. A plugin for the workflow. Both in one purchase.",
+        lead="Presets for the look. A plugin for the workflow. The plugin comes with the presets.",
         cta="Presets", cta_b="Plugin", cta2="Compare RAW and final",
-        facts=["50 presets and 33 LUTs", "Lightroom Classic plugin", "Both in one purchase"],
+        facts=["Lightroom Classic plugin", "50 presets and 33 LUTs", "Presets included with the plugin"],
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The same photo,", "before and after."],
         proof_lead="Each example shows the RAW file beside the same file with one preset, plus white balance and exposure.",
         pairs=["Light and Scene · Blue Hour", "Light and Scene · Macro Ground"],
@@ -100,7 +106,13 @@ P["presets"] = dict(
                             meta="Lightroom Classic 13+ · Mac and Windows", cta="Add to cart", more="Learn more",
                             alt="The Lightroom Classic plugin's window over a photo of a photographer in the field")],
                top=dict(kick="Lightroom presets + Lightroom Classic plugin", h1=["Pro editing", "in Lightroom."]),
-               both=dict(type="Both in one purchase", name="Lightroom Classic Plugin + Lightroom Presets", cta="Add to cart"),
+               # the two ways to buy (Jeinna, 25 Oct 2026): the plugin with the presets included, or the presets alone
+               offers=dict(plugin=dict(badge="Presets included", type="Plugin + presets", name="Lightroom Classic Plugin",
+                                       has=["The Lightroom Classic plugin: sort, keyword, edit and export", "MWP Presets included: 50 presets and 33 LUTs", "Free updates for both"],
+                                       meta="Plugin: Lightroom Classic 13+ · Mac and Windows", cta="Add to cart"),
+                           presets=dict(type="Presets only", name="Lightroom Presets",
+                                        has=["50 presets, 12 that adapt to each photo", "50 mobile files and 33 LUTs", "Free updates"],
+                                        meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", cta="Add to cart")),
                pre=dict(line="A finished look on every photo, in one click.",
                         three=[("50", "presets in five collections"), ("12", "adapt to each photo"), ("33", "LUTs for Photoshop and video")],
                         sets_cap="Five collections"),
@@ -143,7 +155,7 @@ P["presets"] = dict(
                      ("Lightroom Classic Plugin", [("", "The plugin", "Lightroom Classic 13 or newer, Mac and Windows. Add it once in File › Plug-in Manager"),
                                                                      ("", "Built-in help", "A Help button in the window and a tip on every step")])],
         spec_note="Adaptive presets need Lightroom Classic 11+, Lightroom 5+ or Camera Raw 14+.",
-        final_kick="MWP for Lightroom", final_h=["Two tools,", "one purchase."],
+        final_kick="MWP for Lightroom", final_h=["The plugin,", "presets included."],
         final_lead="The presets and the plugin together, one price. Free updates, kept in your account.",
         plan=("Lightroom Presets", "50 presets and 33 LUTs", ["50 Lightroom presets, desktop and mobile", "33 LUTs for photo and video", "Video tutorials and an install guide"], "Get the presets"),
         plan2=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from sorting to sharing", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
@@ -151,12 +163,12 @@ P["presets"] = dict(
     he=dict(
         name="MWP ללייטרום", name_html='MWP <span class="grad">ללייטרום</span>',
         title="פריסטים ללייטרום ותוסף ללייטרום קלאסיק · MWP",
-        desc="שני כלים ללייטרום ברכישה אחת, מאת הצלם מתן שרון: 50 פריסטים ללייטרום עם 33 קובצי LUT, ותוסף ללייטרום קלאסיק למיון, תיוג, עריכה וייצוא של צילום שלם.",
+        desc="כלים ללייטרום מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק למיון, תיוג, עריכה וייצוא, עם 50 פריסטים ו־33 קובצי LUT כלולים. או הפריסטים לבד.",
         hero_alt="לביאה בעשב זהוב, צילום: מתן שרון",
         kick="MWP · ללייטרום", h1=["עריכה מקצועית", "בלייטרום."],
-        lead="פריסטים למראה. תוסף לתהליך העבודה. שניהם ברכישה אחת.",
+        lead="פריסטים למראה. תוסף לתהליך העבודה. התוסף מגיע עם הפריסטים.",
         cta="פריסטים", cta_b="תוסף", cta2="מ-RAW לתמונה הסופית",
-        facts=["50 פריסטים ו־33 קובצי LUT", "תוסף ללייטרום קלאסיק", "שניהם ברכישה אחת"],
+        facts=["תוסף ללייטרום קלאסיק", "50 פריסטים ו־33 קובצי LUT", "הפריסטים כלולים בתוסף"],
         proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["אותה תמונה,", "לפני ואחרי."],
         proof_lead="בכל דוגמה רואים את קובץ ה-RAW לצד אותו קובץ עם פריסט אחד, איזון לבן וחשיפה.",
         pairs=["אור וסצנה · שעה כחולה", "אור וסצנה · קרקע במאקרו"],
@@ -167,7 +179,12 @@ P["presets"] = dict(
                             meta="לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה", more="לפרטים",
                             alt="החלון של התוסף ללייטרום קלאסיק מעל צילום של צלם בשטח")],
                top=dict(kick="פריסטים ללייטרום + תוסף ללייטרום קלאסיק", h1=["עריכה מקצועית", "בלייטרום."]),
-               both=dict(type="שניהם ברכישה אחת", name="התוסף ללייטרום קלאסיק + פריסטים ללייטרום", cta="הוספה לעגלה"),
+               offers=dict(plugin=dict(badge="הפריסטים כלולים", type="תוסף + פריסטים", name="התוסף ללייטרום קלאסיק",
+                                       has=["התוסף ללייטרום קלאסיק: מיון, תיוג, עריכה וייצוא", "הפריסטים של MWP כלולים: 50 פריסטים ו־33 קובצי LUT", "עדכונים חינם לשניהם"],
+                                       meta="התוסף: לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה"),
+                           presets=dict(type="פריסטים בלבד", name="פריסטים ללייטרום",
+                                        has=["50 פריסטים, 12 מהם מתאימים את עצמם לכל תמונה", "50 קבצים לנייד ו־33 קובצי LUT", "עדכונים חינם"],
+                                        meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", cta="הוספה לעגלה")),
                pre=dict(line="מראה מוגמר לכל תמונה, בלחיצה אחת.",
                         three=[("50", "פריסטים בחמישה אוספים"), ("12", "מתאימים את עצמם לכל תמונה"), ("33", "קובצי LUT לפוטושופ ולווידאו")],
                         sets_cap="חמישה אוספים"),
@@ -210,7 +227,7 @@ P["presets"] = dict(
                      ("התוסף ללייטרום קלאסיק", [("", "התוסף", "לייטרום קלאסיק 13 ומעלה, Mac / Windows. מוסיפים אותו פעם אחת ב-File › Plug-in Manager"),
                                                            ("", "עזרה מובנית", "כפתור עזרה בחלון וטיפ לכל צעד")])],
         spec_note="הפריסטים האדפטיביים דורשים לייטרום קלאסיק 11 ומעלה, לייטרום 5 ומעלה או קאמרה ראו 14 ומעלה.",
-        final_kick="MWP ללייטרום", final_h=["שני כלים,", "רכישה אחת."],
+        final_kick="MWP ללייטרום", final_h=["התוסף,", "עם הפריסטים."],
         final_lead="הפריסטים והתוסף יחד, במחיר אחד. עדכונים בחינם, והכול נשמר בחשבון שלכם.",
         plan=("פריסטים ללייטרום", "50 פריסטים ו־33 קובצי LUT", ["50 פריסטים ללייטרום, למחשב ולנייד", "33 קובצי LUT לתמונות ולווידאו", "סרטוני הדרכה ומדריך התקנה"], "לרכישת הפריסטים"),
         plan2=("התוסף ללייטרום קלאסיק", "תוסף ללייטרום קלאסיק", ["שבע לשוניות: ממיון ועד ייצוא", "לייטרום קלאסיק 13 ומעלה, Mac / Windows", "עזרה מובנית וסרטוני הדרכה"], "לרכישת התוסף"),
@@ -380,8 +397,8 @@ P["field-guides"] = dict(
 
 
 P["lightroom-classic"] = dict(
-    # the fourth product, sold only together with MWP Presets, as one purchase (Jeinna, 23 Oct 2026): buying MWP
-    # Presets (or a bundle with it) unlocks it. It has no page or price of its own.
+    # the Lightroom Classic plugin (Jeinna, 25 Oct 2026): sold with MWP Presets included (buying it unlocks them), on the
+    # Lightroom page (/presets/); it has no page of its own.
     forward="/presets/#plugin",   # shown on the Lightroom page (/presets/); this dict holds its words
     slug="mwp-lightroom-plugin", hero_img="86b95f19", hero_pos="88% 45%", final_img="d73281c0",
     bundle="full-set",
@@ -404,8 +421,8 @@ P["lightroom-classic"] = dict(
         phases=[("Sort the shoot", "Hundreds of frames down to the few worth editing.", [0, 1]),
                 ("Edit the photo", "The subject, the sky and the colour, one tab at a time.", [2, 3, 4, 5]),
                 ("Share it", "The right size for each place, with your watermark.", [6])],
-        get=dict(kick="Comes with MWP Presets", h=["Works on its own.", "No presets needed."],
-                 lead="It has its own looks inside, and it comes together with MWP Presets in one purchase.",
+        get=dict(kick="MWP Presets included", h=["Works on its own.", "Presets included."],
+                 lead="It has its own looks inside, and MWP Presets come with it.",
                  points=["Everything it does is ordinary Lightroom settings, masks and collections. Nothing is locked in.",
                          "Sorting never deletes a photo.",
                          "Early access: it works today, and new features arrive as free updates."],
@@ -443,8 +460,8 @@ P["lightroom-classic"] = dict(
         phases=[("ממיינים", "מאות פריימים, עד המעטים ששווה לערוך.", [0, 1]),
                 ("עורכים", "הנושא, השמיים והצבע, לשונית אחר לשונית.", [2, 3, 4, 5]),
                 ("משתפים", "הגודל הנכון לכל מקום, עם סימן המים שלכם.", [6])],
-        get=dict(kick="מגיע עם הפריסטים של MWP", h=["עובד לבד.", "לא צריך פריסטים."],
-                 lead="יש בו לוקים משלו, והוא מגיע יחד עם הפריסטים של MWP ברכישה אחת.",
+        get=dict(kick="הפריסטים של MWP כלולים", h=["עובד לבד.", "הפריסטים כלולים."],
+                 lead="יש בו לוקים משלו, והפריסטים של MWP מגיעים איתו.",
                  points=["כל מה שהוא עושה הוא הגדרות, מסכות ואוספים רגילים של לייטרום. שום דבר לא נעול.",
                          "המיון אף פעם לא מוחק תמונה.",
                          "גישה מוקדמת: הוא עובד כבר היום, ותכונות חדשות מגיעות כעדכונים חינמיים."],
@@ -678,7 +695,7 @@ def page(folder, lang):
     def singles_block(c, lang):
         """The Field Guides page: each guide on its own, under the set. product-page.js hides it from anyone who
         already owns the four guides (the set, or a bundle with it); cart.js refuses them too."""
-        if "singles" not in c:
+        if "singles" not in c or not SINGLE_GUIDES_LIVE:
             return ""
         S = c["singles"]
         cards = "".join(f'<div class="single" data-r><p class="single-nm">{esc(name)}</p><p class="single-pr">{price(sl, lang)}</p>'
@@ -713,6 +730,8 @@ def page(folder, lang):
            f'<nav>{"".join(f"<a href=#{i}>{esc(t)}</a>" for i, t in bar_links)}</nav>'
            # a page with two products to choose from shows no price or Buy: its links are the two products
            + ('</div></div>' if p.get("slug_b") else
+              # the Lightroom page: two offers, so Buy takes them to the choice instead of picking one for them
+              f'<a class="btn sm" href="#offers">{u["buy"]}</a></div></div>' if p.get("own_page") else
               f'<span class="pp">{price(slug, lang)}</span><a class="btn sm" href="#buy" data-add-to-cart="{slug}">{u["buy"]}</a></div></div>'))
 
     redirect = ("" if he else

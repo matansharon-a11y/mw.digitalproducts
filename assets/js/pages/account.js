@@ -1,6 +1,6 @@
 // My downloads: magic-link sign-in, then the customer's library with secure download buttons.
 import { initChrome, toast } from "../lib/ui.js";
-import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, myExtras, requestDownload, signedTerms, sendFeedback, panelDevices, removePanelDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
+import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, myExtras, myOrders, requestDownload, signedTerms, sendFeedback, panelDevices, removePanelDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
 import { EMAIL_RE, setBusy, setStatus } from "./shared-forms.js";
 import { countLabel } from "../lib/catalog.js";
 
@@ -143,6 +143,26 @@ function forgetOwned(items) {
   } catch { /* storage blocked: nothing saved to tidy */ }
 }
 
+// ---------------------------------------------------------------- Order history (account menu → Order history)
+const STATUS = { paid: ["Paid", "שולם"], refunded: ["Refunded", "הוחזר"], partially_refunded: ["Partly refunded", "הוחזר חלקית"] };
+async function showOrders() {
+  const box = document.getElementById("orders");
+  if (!box) return;
+  let orders = [];
+  try { orders = await myOrders(); } catch { box.hidden = true; return; }
+  if (!orders.length) { box.hidden = true; return; }   // ambassadors and testers: nothing bought, nothing to show
+  const he = document.documentElement.lang === "he";
+  const fmt = (c, cur) => { try { return new Intl.NumberFormat(he ? "he-IL" : "en-US", { style: "currency", currency: cur || "USD" }).format(c / 100); } catch { return (c / 100).toFixed(2) + " " + cur; } };
+  document.getElementById("orders-list").innerHTML = orders.map((o) => {
+    const [en, hb] = STATUS[o.status] || [o.status, o.status];
+    return `<div class="order-row"><div><p class="order-items" data-no-i18n>${esc(o.items || "")}</p>
+      <p class="meta">${shortDate(o.created_at)} · ${he ? "הזמנה" : "Order"} #${esc(o.order_number || "")}</p></div>
+      <div class="order-sum"><b data-no-i18n>${fmt(o.total_cents, o.currency)}</b><span class="order-st order-st--${esc(o.status)}">${he ? hb : en}</span></div></div>`;
+  }).join("");
+  box.hidden = false;
+  if (location.hash === "#orders") box.scrollIntoView();
+}
+
 async function showLibrary(user) {
   signedOut.hidden = true;
   signedIn.hidden = false;
@@ -169,6 +189,7 @@ async function showLibrary(user) {
     forgetOwned(items);
     if (items.some((i) => PANEL_SLUGS.includes(i.products?.slug))) showDevices();
     showSignedTerms();
+    showOrders();
     // ambassadors and testers (their Field Guides are read online) can send feedback to the team
     document.getElementById("feedback").hidden = !items.some((i) => i.view_only);
     // ambassadors and testers didn't pay: no "Instant download after payment" bar for them

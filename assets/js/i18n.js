@@ -95,6 +95,7 @@ const HE = {
   "I founded MW Photo Tours in 2023. I lead nature and wildlife photography expeditions abroad and workshops in Israel, run the MWP photographers' community and publish the monthly magazine The Wild Side of Photography.": "ייסדתי את MW Photo Tours ב-2023. אני מוביל מסעות צילום טבע וחיות בר בחו״ל וסדנאות בישראל, מנהל את קהילת הצלמים של MWP ומוציא את המגזין החודשי The Wild Side of Photography.",
   "The plugins, the presets and the guides come out of that work: the edits and the lessons I share with photographers in the field, made so you can use them at home.": "התוספים, הפריסטים והמדריכים נולדו מהעבודה הזאת: אותן עריכות ואותם שיעורים שאני מעביר לצלמים בשטח, עכשיו אצלכם בבית.",
   "The presets and the Lightroom plugin come as one purchase. Save more with a bundle.": "הפריסטים והתוסף ללייטרום נמכרים יחד. בחבילה חוסכים עוד.",
+  "The Lightroom plugin comes with the presets included. Save more with a bundle.": "התוסף ללייטרום מגיע עם הפריסטים. בחבילה חוסכים עוד.",
   "A plugin: a window of tools inside Photoshop": "תוסף: חלון כלים בתוך פוטושופ",
   "The plugin, a 21-page User Manual, an Installation Guide": "התוסף, מדריך למשתמש של 21 עמודים, מדריך התקנה",
   "On its own, or in the full set": "בנפרד, או בחבילה",
@@ -115,7 +116,7 @@ const HE = {
   "Seven tabs, from sorting to sharing": "שבע לשוניות: ממיון ועד ייצוא",
   "Sort, keyword, edit and export a whole shoot in one window.": "מיון, תיוג, עריכה וייצוא של צילום שלם, בחלון אחד.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
-  "(version 13 or newer) that sorts, organises, edits and exports a whole shoot. It comes with MWP Presets, in one purchase.": "שפיתחתי (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילומים שלמים, מהמיון ועד הפרסום. הוא מגיע עם הפריסטים של MWP, ברכישה אחת.",
+  "(version 13 or newer) that sorts, organises, edits and exports a whole shoot. MWP Presets are included with it.": "שפיתחתי (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילומים שלמים, מהמיון ועד הפרסום. הפריסטים של MWP כלולים בו.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
   "Pro editing in a few clicks: Lightroom presets, plugins for Lightroom Classic and Photoshop, and photography guides by photographer Matan Wild.": "עריכה מקצועית בכמה קליקים: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום ומדריכי צילום מאת הצלם מתן שרון. הורדה מיידית ועדכונים חינם.",
   "Compare Lightroom Presets, Plugins & Guides · MWP Shop": "השוואה: פריסטים ללייטרום, תוספים ומדריכי צילום · החנות של MWP",
@@ -341,7 +342,7 @@ const HE = {
   "Subject · Pop": "נושא · הבלטה",
   "Background": "רקע",
   "Panel": "פאנל",
-  "Presets + Photoshop Plugin Panel": "פריסטים + התוסף לפוטושופ",
+  "Lightroom Plugin + Photoshop Plugin Panel": "התוסף ללייטרום + התוסף לפוטושופ",
   "Field Guides + Photoshop Plugin Panel": "מדריכי השטח + התוסף לפוטושופ",
   "Learn the shot, then finish it in Photoshop": "לומדים לצלם, ואז מסיימים בפוטושופ",
   "The first products are being prepared. Check back soon.": "המוצרים הראשונים בהכנה. חזרו בקרוב.",
@@ -525,6 +526,8 @@ const HE = {
   "Download links are created when you click and expire after 5 minutes. Trouble?": "קישורי ההורדה נוצרים כשלוחצים ותקפים ל-5 דקות. יש בעיה?",
   "Download .zip": "הורדת קובץ zip.",
   "Nothing on this email yet.": "עדיין אין רכישות במייל הזה.",
+  "Order history": "היסטוריית הזמנות",
+  "Everything you've bought with this account. Your receipts come by email from Lemon Squeezy.": "כל מה שקניתם בחשבון הזה. הקבלות מגיעות במייל מלמון סקוויזי.",
   "Adding your order…": "מוסיפים את ההזמנה שלכם…",
   "Your payment went through. Your downloads appear here in a moment.": "התשלום עבר. ההורדות שלכם יופיעו כאן בעוד רגע.",
   "Bought with a different email? Sign out and use that one, or": "קניתם עם מייל אחר? התנתקו והיכנסו איתו, או",
@@ -908,7 +911,7 @@ const HE = {
   "Learn it in the field": "לומדים בשטח",
   "All 4 PDF guides, 137 lessons": "כל 4 המדריכים, 137 שיעורים",
   "Get the presets": "לפריסטים",
-  "Presets + Field Guides": "פריסטים + מדריכי השטח",
+  "Lightroom Plugin + Field Guides": "התוסף ללייטרום + מדריכי השטח",
   "Shoot it, then edit it": "מצלמים, ואז עורכים",
   "MWP Presets: 50 presets and 33 LUTs": "MWP Presets: ‏50 פריסטים ו-33 קובצי LUT",
   "MWP Field Guides: 4 PDF guides, 137 lessons": "מדריכי השטח: 4 מדריכים, 137 שיעורים",
@@ -1076,6 +1079,10 @@ const HE = {
   "How you buy it": "איך קונים",
   "On its own, or in a bundle": "בנפרד, או בחבילה",
   "Together, in one purchase, or in a bundle": "יחד, ברכישה אחת, או בחבילה",
+  "On its own, with MWP Presets included, or in a bundle": "בנפרד, עם הפריסטים של MWP כלולים, או בחבילה",
+  "On its own, or included with the plugin and in bundles": "בנפרד, או כלולים בתוסף ובחבילות",
+  "MWP Presets included": "הפריסטים של MWP כלולים",
+  "The plugin, with MWP Presets included; built-in help, video tutorials": "התוסף, עם הפריסטים של MWP כלולים; עזרה מובנית וסרטוני הדרכה",
   "All four, one guide at a time, or in a bundle": "כל הארבעה, מדריך אחד בכל פעם, או בחבילה",
   "Or one guide:": "או מדריך אחד:",
   "The presets and the plugin, one purchase": "הפריסטים והתוסף, ברכישה אחת",
@@ -1141,6 +1148,8 @@ function translate(text) {
 
 // Names in Hebrew (Matan: everything in Hebrew, except MWP, which always stays in Latin letters). Same list as tools/he_names.py.
 const NAMES = [
+  ["Lightroom Plugin + Photoshop Plugin Panel", "התוסף ללייטרום + התוסף לפוטושופ"],
+  ["Lightroom Plugin + Field Guides", "התוסף ללייטרום + מדריכי השטח"],
   ["MWP - PS Panel", "התוסף לפוטושופ של MWP"],
   ["MWP - Signature Preset Pack", "הפריסטים של MWP"],
   ["MWP Field Guides", "מדריכי השטח של MWP"],

@@ -211,6 +211,11 @@ LANG_GUARD = ('<script>try{if(localStorage.getItem("mwp_lang")==="he"){var d=doc
 # The bundles sell at launch prices until this moment (Israel time). The block shows a live countdown and hides
 # itself when the time is up; after that, change the prices (new migration or the admin) and Lemon Squeezy.
 LAUNCH_END = "2026-11-15T23:59:00+02:00"
+
+# Single Field Guides (Matan, 25 Oct 2026): built, and off on the pages until each guide has its Lemon Squeezy product
+# (checkout link) and Matan's shekel price. True shows them on the Field Guides page, the Compare page and the FAQ
+# "Can I buy just one guide?" (build_products.py, build_pages.py). Their products and personal copies work either way.
+SINGLE_GUIDES_LIVE = False
 LAUNCH_TEXT = {
     "en": ("Launch offer", "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.",
            ("days", "hrs", "min", "sec")),
