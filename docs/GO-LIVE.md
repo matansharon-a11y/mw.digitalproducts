@@ -39,9 +39,8 @@ Time: about 30 minutes, plus one real purchase.
 1. **Email limits first** (before any ads or the launch email): Resend plan up from the free 100 a day (Matan's purchase), then Supabase → Authentication → Rate limits above 30 an hour.
 2. **Welcome series**: turn on Mailchimp "MWP Shop · Free guide welcome" if it's still a draft, and add emails 3 and 4 (`assets/email/3-tools-*`, `4-full-guides-*`) to both branches (docs/FREE-GUIDE.md).
 3. **Launch email**: send the Mailchimp drafts "MWP Shop launch · English / Hebrew" (send a test to contact@ first).
-4. **Ambassadors**: their Lemon Squeezy affiliate links (or utm links) for their posts.
-5. **Ads**: point them at the free guide (`https://shop.mw.photography/#free-guide`, Hebrew `/he/#free-guide`), Hebrew and English versions.
-6. **Watch**: the first English pop-up sign-up gets lang_en in Mailchimp and the English welcome email.
+4. **Ads**: point them at the free guide (`https://shop.mw.photography/#free-guide`, Hebrew `/he/#free-guide`), Hebrew and English versions.
+5. **Watch**: the first English pop-up sign-up gets lang_en in Mailchimp and the English welcome email.
 
 ## If something goes wrong
 - **Checkout broken or wrong price:** in Lemon Squeezy, unpublish the product (it stops selling at once), then fix and re-run Connect.
