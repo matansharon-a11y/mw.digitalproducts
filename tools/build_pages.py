@@ -775,11 +775,12 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
 
       <h2 id="privacy">Privacy</h2>
       <p>We collect only what we need to sell and deliver your products: your name, email, country and what you bought. In My details you can also add a phone number; it's optional. Payment details are handled by the checkout provider and never reach us.</p>
+      <p>If you ask for our free Field Guides sample, we also keep your phone number and the language you signed up in. Only if you tick the box do we send you tips and offers by email and WhatsApp (through Mailchimp).</p>
       <p><strong>Your personal copy.</strong> Presets and field guides are made for you: your name, email and licence number (for example MWP-1A2B3C4D) are added at the foot of each PDF page and in the file's details, as a note inside preset and LUT files, and in a LICENSED-TO.txt file in the pack. It doesn't change how the files work; it lets a shared copy be traced back to its licence.</p>
       <p><strong>Downloads and computers.</strong> Each pack can be downloaded up to 5 times a day. MWP Photoshop Plugin Panel works on up to 3 computers; for each one we keep a computer ID, its name and system (for example "Dana-MacBook (Mac)") and when it was last used. You can see and remove computers in My downloads. For downloads and activations we keep a scrambled form of your IP address, never the address itself.</p>
       <p><strong>Support.</strong> When you contact support we keep your name, email and message so we can answer you.</p>
       <p>We use your email to deliver your files, answer support requests and, if you agreed, send occasional news and new releases. You can unsubscribe from any email. The site uses no advertising or analytics trackers; your browser only remembers your language, your cart and your sign-in.</p>
-      <p>Our service providers: Supabase (database, sign-in and file storage), Lemon Squeezy (checkout), Resend (account emails), MailerLite (newsletters), Make.com and monday.com (order and support handling). To see, correct or delete your data, write to support.</p>
+      <p>Our service providers: Supabase (database, sign-in and file storage), Lemon Squeezy (checkout), Resend (account emails), Mailchimp (newsletters), Make.com and monday.com (order and support handling). To see, correct or delete your data, write to support.</p>
       </div>
     </div>
   </section>""", "static.js")

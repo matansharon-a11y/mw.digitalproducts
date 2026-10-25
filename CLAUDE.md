@@ -52,7 +52,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - Testers get exactly what ambassadors get (Matan, 13 Oct 2026; migration `20261013000034`): MWP Presets, the Lightroom Classic plugin (from 24 Oct 2026) and MWP Panel to download (stamped personal copies, 5-minute links, daily limit; Panel on 2 computers) and the Field Guides to read online only (`view_only`). Once signed in, the testers page sends them to My downloads, like ambassadors. Removing takes back the free access (purchases stay; an active ambassador keeps the program's access).
 - Both actions go to monday's Shop Testers board (scheduler job `tester` → Make `type: "tester"`).
 
-## Free Field Guides sample: the sign-up gift (25 Oct 2026, switched off until Matan approves)
+## Free Field Guides sample: the sign-up gift (switched on 25 Oct 2026)
 - Pop-up (full name, email, phone, marketing tick box) → sign-in link → account with the free sample in My downloads; leads in monday Shop Customers (Free guide: Waiting for email / Confirmed, Phone, Language, Signed up) and, with consent, Mailchimp (audience MW-Photo Tours, tags MWP Shop + Shop: free guide). Everything, and how to switch it on: `docs/FREE-GUIDE.md`. Make routes: `subscribe` with source `free-guide`, and `lead_confirmed` (docs/make_blueprint.py). Never send the gift's people to Mailchimp without the tick.
 
 ## Payments safety (launch audit, 24 Oct 2026)

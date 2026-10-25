@@ -186,7 +186,7 @@ def menu_button(lang="en"):
 
 
 FOOTER_LINKS = [("/field-guides/", "Photography guides", "מדריכי צילום"), ("/presets/#plugin", "Lightroom plugin", "תוסף ללייטרום"),
-                ("/presets/#presets", "Presets", "פריסטים"), ("/panel/", "Photoshop plugin", "תוסף לפוטושופ"), ("/shop/", "All products", "כל המוצרים"), ("/account/", "My downloads", "ההורדות שלי"),
+                ("/presets/#presets", "Presets", "פריסטים"), ("/panel/", "Photoshop plugin", "תוסף לפוטושופ"), ("/shop/", "All products", "כל המוצרים"), ("/#free-guide", "Free guide", "מדריך חינם"), ("/account/", "My downloads", "ההורדות שלי"),
                 ("/support/", "Contact support", "פנייה לתמיכה"), ("/legal/#refunds", "Refunds", "החזרים"),
                 ("/legal/#terms", "Terms", "תנאים"), ("/legal/#privacy", "Privacy", "פרטיות")]
 
