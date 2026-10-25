@@ -74,6 +74,12 @@ def slug_for(name):
     t = name.lower()
     if "full set" in t or "full-set" in t:
         return "full-set"
+    # a single Field Guide ("MWP Field Guide: Light"): "guide" without "guides", and no other product in the name
+    if "guide" in t and "guides" not in t and not any(w in t for w in ("preset", "panel", "plugin")):
+        for key, words in (("planning", ("planning",)), ("composition", ("composition",)), ("light", ("light",)), ("colour", ("colour", "color"))):
+            if any(w in t for w in words):
+                return f"field-guide-{key}"
+        return None
     # MWP Presets comes with the Lightroom Classic plugin (one purchase), so a name with "preset" is never the plugin
     # (the Photoshop one is "MWP Photoshop Plugin Panel" since 24 Oct 2026: a name with "photoshop" or "panel" is never this one)
     if ("lightroom classic" in t or "plugin" in t) and not any(w in t for w in ("preset", "photoshop", "panel")):
