@@ -17,13 +17,14 @@ Built and **switched on** 25 Oct 2026 (Matan approved the words, the privacy lin
 3. **They click the link** → their account is created and confirmed → the database (`grant_free_sample`, migration
    `20261025090001`) gives them the sample, fills their name and phone where empty, records their consent, and the
    scheduler (`lead`) tells Make: Shop Customers → Free guide = Confirmed; **Mailchimp** (audience MW-Photo Tours; English sign-ups also get the audience's own **lang_en** tag, because the newsletters' Hebrew segment is everyone without it; never the welcome_he / welcome_en tags,
-   tags **MWP Shop** + **Shop: free guide**) only when they ticked the marketing box.
+   tags **MWP Shop** + **Shop: free guide**); the box is required, so that's everyone.
 4. **My downloads** shows "Free sample · MWP Field Guides · free sample", their stamped copy in their language, and
    "Get the full Field Guides" under it. The card steps aside once they own the full guides.
 
 **The email** they get is Supabase's "Confirm signup" template, kept in `supabase/templates/confirmation.html` (+ `confirmation_subject.txt`) and set by the deploy after `tools/check_email_template.go` renders every version: free guide or regular sign-up, Hebrew or English (from the account's metadata: `gift`, `lang`). It never shows the typed name. Someone who already has an account gets the regular sign-in link email instead. Clicking it (or any sign-in afterwards) confirms their sign-up just the same (migration `20261025090005`).
 
-Every new account gets the sample too (not only pop-up sign-ups), once its file is uploaded.
+**No consent, no guide (Matan, 25 Oct 2026).** The sample comes with joining the mailing list: the pop-up's box is required (gift.js and the `subscribe` function both refuse without it), and the database gives the sample only to a confirmed free-guide sign-up that ticked it (migration `20261025090007`). Plain accounts (buyers, ambassadors) no longer get it. Accounts that got it before this (the 25 Oct backfill, and test sign-ups) still have it.
+Every confirmed sign-up also sends Matan a monday notification (Make modules 172/173).
 
 ## The welcome emails (Mailchimp)
 Customer Journey **"MWP Shop · Free guide welcome"** (Mailchimp → Automations, builder id 550; built 25 Oct 2026,

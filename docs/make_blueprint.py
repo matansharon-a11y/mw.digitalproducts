@@ -204,6 +204,9 @@ subscribe_route = [
 MAILCHIMP = 10006193        # Matan's Mailchimp connection
 MC_LIST = "efdeac6ec5"      # MW-Photo Tours audience
 CONFIRMED_COLS = '"color_mm8fc7jc":{"label":"{{1.language_label}}"},"color_mm8fazp":{"label":"Confirmed"}'
+# a monday notification to Matan for every confirmed sign-up (Matan, 25 Oct 2026)
+q_notify_lead = "mutation ($id: ID!, $text: String!) { create_notification(user_id: %d, target_id: $id, text: $text, target_type: Project) { text } }" % MATAN
+LEAD_NOTE = "New free guide sign-up: {{1.name}} ({{1.language_label}}), now on the newsletter."
 lead_route = [
     gql(162, q_find_cust_lead, {"email": "{{1.email}}"}, "Find customer",
         f("Free guide confirmed", ("{{1.type}}", "text:equal", "lead_confirmed"))),
@@ -240,13 +243,15 @@ lead_route = [
                                   "cv": '{"lead_status":{"label":"Confirmed"},' + LEAD_PHONE +
                                         '"marketing":{"label":"{{switch(1.marketing; "yes"; "Yes"; "No")}}"},'
                                         '"confirmed_on":{"date":"{{1.confirmed_on}}"}}'},
-             "Leads board: confirmed", f("Lead on the board", ("{{162.body.data.lead.items[1].id}}", "exist", None)))],
+             "Leads board: confirmed", f("Lead on the board", ("{{162.body.data.lead.items[1].id}}", "exist", None))),
+         gql(172, q_notify_lead, {"id": "{{162.body.data.lead.items[1].id}}", "text": LEAD_NOTE}, "Tell Matan")],
         [gql(170, q_lead_create, {"name": "{{1.name}}",
                                   "cv": '{"email":{"email":"{{1.email}}","text":"{{1.email}}"},' + LEAD_PHONE +
                                         '"lead_status":{"label":"Confirmed"},"language":{"label":"{{1.language_label}}"},'
                                         '"marketing":{"label":"{{switch(1.marketing; "yes"; "Yes"; "No")}}"},'
                                         '"confirmed_on":{"date":"{{1.confirmed_on}}"}}'},
-             "Leads board: confirmed (sign-up missed)", f("Not on the board", ("{{162.body.data.lead.items[1].id}}", "notexist", None)))],
+             "Leads board: confirmed (sign-up missed)", f("Not on the board", ("{{162.body.data.lead.items[1].id}}", "notexist", None))),
+         gql(173, q_notify_lead, {"id": "{{170.body.data.create_item.id}}", "text": LEAD_NOTE}, "Tell Matan")],
     ]),
 ]
 
