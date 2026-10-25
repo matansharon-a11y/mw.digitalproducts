@@ -7,6 +7,7 @@ Now:       1 right after they confirm (the tag "Shop: free guide"): how to use t
            2 three days later: one photo from RAW to final
 At launch: 3 the Lightroom and Photoshop tools · 4 the full Field Guides (only once the shop can take orders:
            Lemon Squeezy approved, docs/GO-LIVE.md)
+           5 the launch email to the whole MW-Photo Tours audience (Mailchimp drafts, sent only on Matan's OK)
 Voice: anthropic-skills mwp-content-voice. No prices here (they live in the shop and change), no invented facts.
 """
 import os
@@ -68,6 +69,19 @@ EMAILS = {
         body=["בטעימה היה פרק אחד מכל מדריך. מדריכי השטח המלאים של MWP הם 137 שיעורים בארבעה מדריכים על קומפוזיציה, אור, צבע ותכנון, 229 עמודים בעברית או באנגלית.",
               "הם נכתבו לרגע שלפני הלחיצה על הכפתור, כדי שהתמונה כבר תהיה שם כשאתם פותחים את העריכה."],
         button=("למדריכי השטח המלאים", f"{SHOP}/field-guides/he/")),
+    # ---------------------------------------------------------------- launch: one email to the existing audience
+    "5-launch-en": dict(lang="en", subject="The MWP Shop is open", preheader="The tools we edit with on our expeditions, and a free guide to start.",
+        kick="MWP SHOP", title=("Our editing tools, ", "now yours."), foot="list",
+        img=f"{SHOP}/assets/pages/img/8f730b9bb76b93ca707cae719a309479.jpg",
+        body=["The tools we edit with on our own expeditions are now in one shop: the Lightroom Classic plugin (MWP Presets included), the Photoshop Plugin Panel, MWP Presets on their own, and the MWP Field Guides.",
+              "Not sure where to start? The free Field Guides sample is 16 lessons on composition, light, colour and planning. Leave your details on the shop and it waits in your account."],
+        button=("Visit the shop", f"{SHOP}/shop/")),
+    "5-launch-he": dict(lang="he", subject="החנות של MWP פתוחה", preheader="הכלים שאנחנו עורכים איתם במסעות, ומדריך חינמי להתחלה.",
+        kick="החנות של MWP", title=("כלי העריכה שלנו, ", "עכשיו אצלכם."), foot="list",
+        img=f"{SHOP}/assets/pages/img/8f730b9bb76b93ca707cae719a309479.jpg",
+        body=["הכלים שאנחנו עורכים איתם במסעות שלנו נמצאים עכשיו בחנות אחת: התוסף ללייטרום קלאסיק (כולל הפריסטים של MWP), פאנל התוסף לפוטושופ, הפריסטים של MWP לבד, ומדריכי השטח של MWP.",
+              "לא בטוחים מאיפה להתחיל? הטעימה החינמית ממדריכי השטח היא 16 שיעורים על קומפוזיציה, אור, צבע ותכנון. השאירו פרטים בחנות והיא תחכה לכם בחשבון."],
+        button=("לחנות", f"{SHOP}/shop/he/")),
 }
 
 FOOT = {
@@ -75,6 +89,11 @@ FOOT = {
            "Matan Wild · MWP", "Unsubscribe"),
     "he": ("קיבלתם את המייל כי ביקשתם את הטעימה החינמית ממדריכי השטח ב-shop.mw.photography ואישרתם לקבל טיפים והצעות.",
            "מתן וויילד · MWP", "הסרה מרשימת התפוצה"),
+}
+# the launch email goes to the whole audience, not only the gift's people
+LIST_NOTE = {
+    "en": "You're getting this because you're on the MW Photo Tours mailing list.",
+    "he": "קיבלתם את המייל כי אתם ברשימת התפוצה של MW Photo Tours.",
 }
 
 
@@ -84,6 +103,8 @@ def html(e):
     font = "Heebo,Arial,sans-serif" if he else "'Google Sans',Arial,sans-serif"
     paras = "".join(f'<p style="margin:0 0 14px;font-size:16px;line-height:1.65;color:#CDD7DD;">{p}</p>' for p in e["body"])
     note, sign, unsub = FOOT[e["lang"]]
+    if e.get("foot") == "list":
+        note = LIST_NOTE[e["lang"]]
     kick_style = "" if he else "letter-spacing:2px;"
     return f"""<!doctype html>
 <html lang="{e['lang']}" dir="{d}">
