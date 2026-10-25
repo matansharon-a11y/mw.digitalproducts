@@ -81,7 +81,7 @@ function show() {
   };
   document.addEventListener("keydown", onKey);
   wrap.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", close));
-  requestAnimationFrame(() => wrap.classList.add("is-on"));
+  setTimeout(() => wrap.classList.add("is-on"), 20);   // not requestAnimationFrame: it waits while the tab is in the background
   setTimeout(() => card.querySelector('input[name="name"]').focus({ preventScroll: true }), 250);
 
   const form = card.querySelector("form"), msg = card.querySelector(".gift__msg"), btn = card.querySelector(".gift__btn");
