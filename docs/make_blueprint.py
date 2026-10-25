@@ -139,16 +139,68 @@ support_route = [
 q_find_cust = """query ($email: String!) {
   cust: items_page_by_column_values(board_id: %d, limit: 1, columns: [{column_id: "email_mm80mvf8", column_values: [$email]}]) { items { id } }
 }""" % B_CUS
+# The free Field Guides sample (25 Oct 2026): the pop-up's sign-up arrives as type "subscribe", source "free-guide",
+# with name, phone, language and marketing consent; the shop sends the Phone column value (phone_cv) and the
+# Newsletter value (newsletter_cv, only when they agreed: it never downgrades someone already subscribed) ready-made.
+# Shop Customers columns added for it: Phone, Language, Free guide (Waiting for email / Confirmed), Signed up.
+q_create_labels = ("mutation ($name: String!, $cv: JSON!) { create_item(board_id: %d, group_id: \"topics\", item_name: $name, "
+                   "column_values: $cv, create_labels_if_missing: true) { id } }" % B_CUS)
+GUIDE_COLS = ('"color_mm8fc7jc":{"label":"{{1.language}}"},"color_mm8fazp":{"label":"Waiting for email"},'
+              '"date_mm8fvxh9":{"date":"{{1.signed_up_on}}"}')
 subscribe_route = [
     gql(14, q_find_cust, {"email": "{{1.email}}"}, "Find customer",
         f("Sign-up", ("{{1.type}}", "text:equal", "subscribe"))),
     router(15, [
         [gql(16, q_change % B_CUS, {"id": "{{14.body.data.cust.items[1].id}}", "cv": '{"color_mm801rf2":{"label":"Subscribed"}}'},
-             "Mark subscribed", f("Known", ("{{14.body.data.cust.items[1].id}}", "exist", None)))],
+             "Mark subscribed", f("Known", ("{{14.body.data.cust.items[1].id}}", "exist", None),
+                                  ("{{1.source}}", "text:notequal", "free-guide")))],
         [gql(17, q_create % B_CUS, {"name": "{{1.email}}", "group": "topics",
                                     "cv": '{"email_mm80mvf8":{"email":"{{1.email}}","text":"{{1.email}}"},'
                                           '"color_mm801rf2":{"label":"Subscribed"},"dropdown_mm80egg7":{"labels":["Newsletter"]}}'},
-             "New subscriber", f("New", ("{{14.body.data.cust.items[1].id}}", "notexist", None)))],
+             "New subscriber", f("New", ("{{14.body.data.cust.items[1].id}}", "notexist", None),
+                                 ("{{1.source}}", "text:notequal", "free-guide")))],
+        [gql(160, q_change % B_CUS, {"id": "{{14.body.data.cust.items[1].id}}",
+                                     # a fixed field first: "{{{" would confuse Make's template parser
+                                     "cv": '{"color_mm8fazp":{"label":"Waiting for email"},{{1.phone_cv}}{{1.newsletter_cv}}'
+                                           '"color_mm8fc7jc":{"label":"{{1.language}}"},"date_mm8fvxh9":{"date":"{{1.signed_up_on}}"}}'},
+             "Free guide: known person", f("Known, free guide", ("{{14.body.data.cust.items[1].id}}", "exist", None),
+                                           ("{{1.source}}", "text:equal", "free-guide")))],
+        [gql(161, q_create_labels, {"name": "{{1.name}}",
+                                    "cv": '{"email_mm80mvf8":{"email":"{{1.email}}","text":"{{1.email}}"},{{1.phone_cv}}' + GUIDE_COLS + ','
+                                          '"color_mm806z0h":{"label":"New"},"color_mm801rf2":{"label":"{{1.newsletter_label}}"},'
+                                          '"dropdown_mm80egg7":{"labels":["Free guide"]}}'},
+             "Free guide: new person", f("New, free guide", ("{{14.body.data.cust.items[1].id}}", "notexist", None),
+                                         ("{{1.source}}", "text:equal", "free-guide")))],
+    ]),
+]
+
+# ---------------------------------------------------------------- free guide confirmed (they clicked the emailed link)
+# The scheduler's "lead" job: Shop Customers → Free guide = Confirmed; and, only when they agreed to marketing,
+# Mailchimp (the company audience "MW-Photo Tours", tags MWP Shop + Shop: free guide: the shop's list).
+MAILCHIMP = 10006193        # Matan's Mailchimp connection
+MC_LIST = "efdeac6ec5"      # MW-Photo Tours audience
+CONFIRMED_COLS = '"color_mm8fc7jc":{"label":"{{1.language_label}}"},"color_mm8fazp":{"label":"Confirmed"}'
+lead_route = [
+    gql(162, q_find_cust, {"email": "{{1.email}}"}, "Find customer",
+        f("Free guide confirmed", ("{{1.type}}", "text:equal", "lead_confirmed"))),
+    router(163, [
+        [gql(164, q_change % B_CUS, {"id": "{{162.body.data.cust.items[1].id}}",
+                                     "cv": '{"color_mm8fazp":{"label":"Confirmed"},{{1.phone_cv}}{{1.newsletter_cv}}'
+                                           '"color_mm8fc7jc":{"label":"{{1.language_label}}"}}'},
+             "Mark confirmed", f("Known", ("{{162.body.data.cust.items[1].id}}", "exist", None)))],
+        [gql(165, q_create_labels, {"name": "{{1.name}}",
+                                    "cv": '{"email_mm80mvf8":{"email":"{{1.email}}","text":"{{1.email}}"},{{1.phone_cv}}' + CONFIRMED_COLS + ','
+                                          '"date_mm8fvxh9":{"date":"{{1.confirmed_on}}"},"color_mm806z0h":{"label":"New"},'
+                                          '"color_mm801rf2":{"label":"{{1.newsletter_label}}"},"dropdown_mm80egg7":{"labels":["Free guide"]}}'},
+             "New (sign-up missed)", f("New", ("{{162.body.data.cust.items[1].id}}", "notexist", None)))],
+        [{"id": 166, "module": "mailchimp:addUpdateASubscriber", "version": 2,
+          "parameters": {"__IMTCONN__": MAILCHIMP},
+          "mapper": {"select": "list", "list": MC_LIST, "email_address": "{{1.email}}", "createOrUpdate": True,
+                     "status": "subscribed", "email_type": "html", "language": "{{1.language}}", "interests": {},
+                     "merge_fields": {"FNAME": "{{1.first_name}}", "LNAME": "{{1.last_name}}", "PHONE": "{{1.phone}}", "ADDRESS": {}},
+                     "tags": [{"name": "MWP Shop", "status": "active"}, {"name": "Shop: free guide", "status": "active"}]},
+          "metadata": {"designer": {"x": 0, "y": 0, "name": "Mailchimp: MWP Shop"}},
+          "filter": f("Agreed to marketing", ("{{1.marketing}}", "text:equal", "yes"))}],
     ]),
 ]
 
@@ -429,7 +481,8 @@ blueprint = {
          "metadata": {"designer": {"x": 0, "y": 0}}},
         router(2, [order_route, refund_route, support_route, subscribe_route,
                    product_route, approvals_route, weekly_route, payout_route, ambassador_route, account_route, downloaded_route, ambassador_status_route, terms_pdf_route, tester_route,
-                   application_route, applications_request_route, application_decided_route, feedback_route, customer_deleted_route]),
+                   application_route, applications_request_route, application_decided_route, feedback_route, customer_deleted_route,
+                   lead_route]),
     ],
     # sequential: False. With it on, one incomplete run (kept for review: dlq) holds every later event until someone
     # resolves it in Make; that froze the shop's monday sync and emails on 13 Oct 2026. Off, a failed run waits for

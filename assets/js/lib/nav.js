@@ -84,4 +84,20 @@
 
   let tries = 0;
   (function poll() { if (!watch() && tries++ < 40) setTimeout(poll, 150); })();
+
+  // The free Field Guides sample pop-up (assets/js/lib/gift.js). GIFT_ON stays false until Matan approves its words;
+  // until then it loads only for ?gift=preview or the #free-guide link. Its code downloads only when it's needed.
+  const GIFT_ON = false;
+  window.MWP_GIFT = { on: GIFT_ON };
+  let giftLoaded = false;
+  const loadGift = () => {
+    if (giftLoaded) return;
+    giftLoaded = true;
+    const s = document.createElement("script");
+    s.type = "module"; s.src = "/assets/js/lib/gift.js";
+    document.head.append(s);
+  };
+  const wantGift = () => GIFT_ON || location.hash === "#free-guide" || new URLSearchParams(location.search).get("gift") === "preview";
+  if (wantGift()) loadGift();
+  else window.addEventListener("hashchange", () => { if (location.hash === "#free-guide") loadGift(); });
 })();
