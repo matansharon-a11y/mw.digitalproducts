@@ -16,7 +16,7 @@ Built and **switched on** 25 Oct 2026 (Matan approved the words, the privacy lin
    Source = Free guide). Then the page emails a **sign-in link** that works in any browser (`giftSignup` in api.js).
 3. **They click the link** → their account is created and confirmed → the database (`grant_free_sample`, migration
    `20261025090001`) gives them the sample, fills their name and phone where empty, records their consent, and the
-   scheduler (`lead`) tells Make: Shop Customers → Free guide = Confirmed; **Mailchimp** (audience MW-Photo Tours,
+   scheduler (`lead`) tells Make: Shop Customers → Free guide = Confirmed; **Mailchimp** (audience MW-Photo Tours; English sign-ups also get the audience's own **lang_en** tag, because the newsletters' Hebrew segment is everyone without it; never the welcome_he / welcome_en tags,
    tags **MWP Shop** + **Shop: free guide**) only when they ticked the marketing box.
 4. **My downloads** shows "Free sample · MWP Field Guides · free sample", their stamped copy in their language, and
    "Get the full Field Guides" under it. The card steps aside once they own the full guides.
