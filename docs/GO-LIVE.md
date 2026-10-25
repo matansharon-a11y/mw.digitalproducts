@@ -17,6 +17,7 @@ Time: about 30 minutes, plus one real purchase.
 ## On the day
 1. **You** — Lemon Squeezy, bottom left must say **MWP Shop**. Switch **test mode off**.
 2. **Claude** — Products (live): check all 7 are there (copied to live on 24 Oct) with the right price, tax category, "Display on storefront" off, confirmation button → `shop.mw.photography/thank-you/`, receipt button → `shop.mw.photography/account/`.
+   - **Also copy to live (added 25 Oct 2026, test mode only so far):** the four single guides "MWP Field Guide: Planning / Composition / Light / Colour" ($29.99 each; ⋯ → Copy to Live Mode). Connect Lemon Squeezy matched them in test mode (run #12).
 3. **You** — Settings → API → **+** → "MWP Shop live" → create. Copy the key (shown once) straight into GitHub → mw.digitalproducts → Settings → Secrets and variables → Actions → `LEMONSQUEEZY_API_KEY` → Update. Never paste it anywhere else. Tell Claude "live key is in".
 4. **Claude** — run Actions → **Deploy** once (any push to main does it): the missed-orders check gets the live key.
 5. **Claude** — run Actions → **Connect Lemon Squeezy** with `store_id` 502637, "Write to the shop" ticked. The summary must say: key in **live**, every product **connected** with no "price differs", and "Webhook: created, signing secret set on the function as LS_WEBHOOK_SECRET_LIVE".
