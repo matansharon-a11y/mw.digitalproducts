@@ -139,6 +139,16 @@ support_route = [
 q_find_cust = """query ($email: String!) {
   cust: items_page_by_column_values(board_id: %d, limit: 1, columns: [{column_id: "email_mm80mvf8", column_values: [$email]}]) { items { id } }
 }""" % B_CUS
+# Shop Leads · Free guide (Matan, 25 Oct 2026): one row per free-guide sign-up, Waiting for email → Confirmed.
+B_LEAD = 5106641452
+q_find_cust_lead = """query ($email: String!) {
+  cust: items_page_by_column_values(board_id: %d, limit: 1, columns: [{column_id: "email_mm80mvf8", column_values: [$email]}]) { items { id } }
+  lead: items_page_by_column_values(board_id: %d, limit: 1, columns: [{column_id: "email", column_values: [$email]}]) { items { id } }
+}""" % (B_CUS, B_LEAD)
+LEAD_PHONE = '{{replace(1.phone_cv; "phone_mm8f7tjs"; "phone")}}'   # the shop's Phone value, for this board's column
+q_lead_create = ("mutation ($name: String!, $cv: JSON!) { create_item(board_id: %d, group_id: \"topics\", item_name: $name, "
+                 "column_values: $cv, create_labels_if_missing: true) { id } }" % B_LEAD)
+q_lead_change = "mutation ($id: ID!, $cv: JSON!) { change_multiple_column_values(board_id: %d, item_id: $id, column_values: $cv) { id } }" % B_LEAD
 # The free Field Guides sample (25 Oct 2026): the pop-up's sign-up arrives as type "subscribe", source "free-guide",
 # with name, phone, language and marketing consent; the shop sends the Phone column value (phone_cv) and the
 # Newsletter value (newsletter_cv, only when they agreed: it never downgrades someone already subscribed) ready-made.
@@ -148,7 +158,7 @@ q_create_labels = ("mutation ($name: String!, $cv: JSON!) { create_item(board_id
 GUIDE_COLS = ('"color_mm8fc7jc":{"label":"{{1.language}}"},"color_mm8fazp":{"label":"Waiting for email"},'
               '"date_mm8fvxh9":{"date":"{{1.signed_up_on}}"}')
 subscribe_route = [
-    gql(14, q_find_cust, {"email": "{{1.email}}"}, "Find customer",
+    gql(14, q_find_cust_lead, {"email": "{{1.email}}"}, "Find customer",
         f("Sign-up", ("{{1.type}}", "text:equal", "subscribe"))),
     router(15, [
         [gql(16, q_change % B_CUS, {"id": "{{14.body.data.cust.items[1].id}}", "cv": '{"color_mm801rf2":{"label":"Subscribed"}}'},
@@ -171,6 +181,20 @@ subscribe_route = [
                                           '"dropdown_mm80egg7":{"labels":["Free guide"]}}'},
              "Free guide: new person", f("New, free guide", ("{{14.body.data.cust.items[1].id}}", "notexist", None),
                                          ("{{1.source}}", "text:equal", "free-guide")))],
+        [gql(167, q_lead_create, {"name": "{{1.name}}",
+                                  "cv": '{"email":{"email":"{{1.email}}","text":"{{1.email}}"},' + LEAD_PHONE +
+                                        '"lead_status":{"label":"Waiting for email"},"language":{"label":"{{1.language}}"},'
+                                        '"marketing":{"label":"{{switch(1.marketing; "yes"; "Yes"; "No")}}"},'
+                                        '"signed_up":{"date":"{{1.signed_up_on}}"}}'},
+             "Leads board: new", f("New lead", ("{{14.body.data.lead.items[1].id}}", "notexist", None),
+                                   ("{{1.source}}", "text:equal", "free-guide")))],
+        [gql(168, q_lead_change, {"id": "{{14.body.data.lead.items[1].id}}",
+                                  "cv": '{"lead_status":{"label":"Waiting for email"},' + LEAD_PHONE +
+                                        '"language":{"label":"{{1.language}}"},'
+                                        '"marketing":{"label":"{{switch(1.marketing; "yes"; "Yes"; "No")}}"},'
+                                        '"signed_up":{"date":"{{1.signed_up_on}}"}}'},
+             "Leads board: again", f("Signed up again", ("{{14.body.data.lead.items[1].id}}", "exist", None),
+                                     ("{{1.source}}", "text:equal", "free-guide")))],
     ]),
 ]
 
@@ -181,7 +205,7 @@ MAILCHIMP = 10006193        # Matan's Mailchimp connection
 MC_LIST = "efdeac6ec5"      # MW-Photo Tours audience
 CONFIRMED_COLS = '"color_mm8fc7jc":{"label":"{{1.language_label}}"},"color_mm8fazp":{"label":"Confirmed"}'
 lead_route = [
-    gql(162, q_find_cust, {"email": "{{1.email}}"}, "Find customer",
+    gql(162, q_find_cust_lead, {"email": "{{1.email}}"}, "Find customer",
         f("Free guide confirmed", ("{{1.type}}", "text:equal", "lead_confirmed"))),
     router(163, [
         [gql(164, q_change % B_CUS, {"id": "{{162.body.data.cust.items[1].id}}",
@@ -201,6 +225,17 @@ lead_route = [
                      "tags": [{"name": "MWP Shop", "status": "active"}, {"name": "Shop: free guide", "status": "active"}]},
           "metadata": {"designer": {"x": 0, "y": 0, "name": "Mailchimp: MWP Shop"}},
           "filter": f("Agreed to marketing", ("{{1.marketing}}", "text:equal", "yes"))}],
+        [gql(169, q_lead_change, {"id": "{{162.body.data.lead.items[1].id}}",
+                                  "cv": '{"lead_status":{"label":"Confirmed"},' + LEAD_PHONE +
+                                        '"marketing":{"label":"{{switch(1.marketing; "yes"; "Yes"; "No")}}"},'
+                                        '"confirmed_on":{"date":"{{1.confirmed_on}}"}}'},
+             "Leads board: confirmed", f("Lead on the board", ("{{162.body.data.lead.items[1].id}}", "exist", None)))],
+        [gql(170, q_lead_create, {"name": "{{1.name}}",
+                                  "cv": '{"email":{"email":"{{1.email}}","text":"{{1.email}}"},' + LEAD_PHONE +
+                                        '"lead_status":{"label":"Confirmed"},"language":{"label":"{{1.language_label}}"},'
+                                        '"marketing":{"label":"{{switch(1.marketing; "yes"; "Yes"; "No")}}"},'
+                                        '"confirmed_on":{"date":"{{1.confirmed_on}}"}}'},
+             "Leads board: confirmed (sign-up missed)", f("Not on the board", ("{{162.body.data.lead.items[1].id}}", "notexist", None)))],
     ]),
 ]
 
