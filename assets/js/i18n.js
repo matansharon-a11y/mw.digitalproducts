@@ -72,7 +72,7 @@ const HE = {
   "Photoshop and Lightroom Classic plugin": "פלאגין לפוטושופ וללייטרום קלאסיק",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
   "I built these tools for every kind of photographer: plugins for Lightroom Classic and Photoshop, presets, and short photography guides that are easy to use.": "פיתחתי את הכלים האלה במיוחד בשבילכם: תוסף ללייטרום, תוסף לפוטושופ, פריסטים ומדריכי צילום קצרים וקלים לשימוש.",
-  "Not sure what makes a strong photo? Start with the Field Guides. Lost in Lightroom? The Lightroom Classic plugin and MWP Presets. Photoshop feels like a maze of menus? The MWP Photoshop Plugin.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
+  "Not sure what makes a strong photo? Start with the Field Guides. Lost in Lightroom? The Lightroom Classic plugin and MWP Presets. Photoshop feels like a maze of menus? The MWP Photoshop Plugin.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? התוסף ללייטרום קלאסיק והפריסטים. עובדים בפוטושופ? התוסף לפוטושופ.",
   "137 one-page lessons on composition, colour, light and planning, for beginners and experienced photographers alike. Each one is a real photo from the field, with a drawing that shows why it works.": "ארבעה מדריכים על קומפוזיציה, צבע, אור ותכנון, למתחילים ולמתקדמים. בכל עמוד תמונה ושרטוט שמראה למה היא עובדת.",
   "Nothing is ever deleted, and every change stays in Lightroom, ready to adjust.": "שום תמונה לא נמחקת, וכל שינוי נשאר בלייטרום, פתוח לעריכה.",
   "50 Lightroom presets built from my own edits. 12 are adaptive: they find the subject, the sky and the background, and treat each one on its own.": "50 פריסטים ללייטרום שבניתי מהעריכות שלי. 12 מהם אדפטיביים: הם מזהים את הנושא, השמיים והרקע, ומטפלים בכל אחד בנפרד.",
@@ -94,7 +94,7 @@ const HE = {
   "I'm Matan.": "להכיר.",
   "I founded MW Photo Tours in 2023. I lead nature and wildlife photography expeditions abroad and workshops in Israel, run the MWP photographers' community and publish the monthly magazine The Wild Side of Photography.": "ייסדתי את MW Photo Tours ב-2023. אני מוביל מסעות צילום טבע וחיות בר בחו״ל וסדנאות בישראל, מנהל את קהילת הצלמים של MWP ומוציא את המגזין החודשי The Wild Side of Photography.",
   "The plugins, the presets and the guides come out of that work: the edits and the lessons I share with photographers in the field, made so you can use them at home.": "התוספים, הפריסטים והמדריכים נולדו מהעבודה הזאת: אותן עריכות ואותם שיעורים שאני מעביר לצלמים בשטח, עכשיו אצלכם בבית.",
-  "The presets and the Lightroom plugin come as one purchase. Save more with a bundle.": "הפריסטים והתוסף ללייטרום נמכרים יחד. בחבילה חוסכים עוד.",
+  "The presets and the Lightroom plugin come as one purchase. Save more with a bundle.": "התוסף ללייטרום והפריסטים נמכרים יחד. בחבילה חוסכים עוד.",
   "The Lightroom plugin comes with the presets included. Save more with a bundle.": "התוסף ללייטרום מגיע עם הפריסטים. בחבילה חוסכים עוד.",
   "A plugin: a window of tools inside Photoshop": "תוסף: חלון כלים בתוך פוטושופ",
   "The plugin, a 21-page User Manual, an Installation Guide": "התוסף, מדריך למשתמש של 21 עמודים, מדריך התקנה",
@@ -102,9 +102,9 @@ const HE = {
   "Four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin, Lightroom presets and LUTs, and PDF photography guides. Compare them, or save with a bundle.": "ארבעה כלים מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום וקובצי LUT, ומדריכי צילום. השוו ביניהם, או חסכו עם חבילה.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
   "One for every step.": "לכל שלב בעבודה.",
-  "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
+  "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? התוסף ללייטרום קלאסיק והפריסטים. עובדים בפוטושופ? התוסף לפוטושופ.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
-  "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin Panel.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
+  "Out shooting? The Field Guides. Editing in Lightroom? The Lightroom Classic plugin and MWP Presets. Working in Photoshop? The MWP Photoshop Plugin Panel.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? התוסף ללייטרום קלאסיק והפריסטים. עובדים בפוטושופ? התוסף לפוטושופ.",
   "Yes. The MWP Photoshop Plugin Panel installs in both Photoshop and Photoshop (Beta), and one computer counts once even if you use both. The presets live in Camera Raw, which both apps share. The LUTs load in either app from Color Lookup, then Load 3D LUT.": "כן. MWP Photoshop Plugin Panel מותקן גם ב־Photoshop וגם ב־Photoshop (Beta), ומחשב אחד נספר פעם אחת גם אם משתמשים בשניהם. הפריסטים נמצאים ב־Camera Raw, שמשותף לשתי הגרסאות. את קובצי ה-LUT טוענים בכל אחת מהן דרך שכבת התאמה של חיפוש צבע, ואז טעינת LUT תלת־ממדי.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
   "11 looks and 4 light effects": "11 לוקים ו־4 אפקטי אור",
@@ -151,7 +151,7 @@ const HE = {
   "Pro editing,": "עריכה מקצועית,",
   "in a few clicks.": "בכמה קליקים.",
   "The tools photographer Matan Wild edits with, for every kind of photography. Presets for a precise starting point, and plugins for Lightroom Classic and Photoshop that do the masking for you.": "פיתחתי את הכלים האלה במיוחד בשבילכם: תוסף ללייטרום, תוסף לפוטושופ, פריסטים ומדריכי צילום קצרים וקלים לשימוש.",
-  "Not sure what makes a strong photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? הפריסטים והתוסף ללייטרום קלאסיק. עובדים בפוטושופ? התוסף לפוטושופ.",
+  "Not sure what makes a strong photo? Start with the Field Guides. Lightroom feels confusing? MWP Presets, or our Lightroom Classic plugin. Photoshop feels like a maze of menus? MWP Photoshop Plugin Panel.": "מתחילים לצלם? מדריכי השטח. עורכים בלייטרום? התוסף ללייטרום קלאסיק והפריסטים. עובדים בפוטושופ? התוסף לפוטושופ.",
   "50 Lightroom presets made from Matan Wild's own edits. 12 are adaptive: they find the subject, the sky and the background and treat each one on its own.": "50 פריסטים ללייטרום שבניתי מהעריכות שלי. 12 מהם אדפטיביים: הם מזהים את הנושא, השמיים והרקע, ומטפלים בכל אחד בנפרד.",
   "Pick the subject, the sky or the background. Pick an effect. Set the strength. The panel builds the masks and layers for you.": "בוחרים מה לערוך: הנושא, השמיים או הרקע. בוחרים אפקט וקובעים עוצמה, והתוסף בונה את המסכות והשכבות לבד.",
   "MWP Presets, Lightroom presets by Matan Wild": "הפריסטים של MWP, פריסטים ללייטרום מאת מתן שרון",
@@ -1107,7 +1107,7 @@ const HE = {
   "No presets needed.": "לא צריך פריסטים.",
   "Presets for the look. A plugin for the workflow. Each sold on its own.": "פריסטים למראה. תוסף לתהליך העבודה. כל אחד נמכר בנפרד.",
   "Pick yours.": "איזה מתאים לכם?",
-  "The presets and the plugin come as one purchase. Or save with a bundle.": "הפריסטים והתוסף ללייטרום נמכרים יחד. בחבילה חוסכים עוד.",
+  "The presets and the plugin come as one purchase. Or save with a bundle.": "התוסף ללייטרום והפריסטים נמכרים יחד. בחבילה חוסכים עוד.",
 };
 
 // Text built from numbers or names.

@@ -89,7 +89,7 @@ P["presets"] = dict(
     pre_img="649e2d2b", plug_img="86b95f19",   # the two mockups' photos (the dune, the photographer): each picture once on the page
     en=dict(
         name="MWP for Lightroom", name_html='MWP <span class="grad">for Lightroom</span>',
-        title="Lightroom Presets & Lightroom Classic Plugin · MWP",
+        title="Lightroom Classic Plugin + Presets · MWP",
         desc="Lightroom tools by photographer Matan Wild: a Lightroom Classic plugin to sort, keyword, edit and export, with 50 presets and 33 LUTs included. Or the presets alone.",
         hero_alt="Lioness in golden grass, photographed by Matan Wild",
         kick="MWP · for Lightroom", h1=["Pro editing", "in Lightroom."],
@@ -105,7 +105,7 @@ P["presets"] = dict(
                        dict(type="Plugin", name="Lightroom Classic Plugin", line="Sort, keyword, edit and export a whole shoot, in one window inside Lightroom Classic.",
                             meta="Lightroom Classic 13+ · Mac and Windows", cta="Add to cart", more="Learn more",
                             alt="The Lightroom Classic plugin's window over a photo of a photographer in the field")],
-               top=dict(kick="Lightroom presets + Lightroom Classic plugin", h1=["Pro editing", "in Lightroom."]),
+               top=dict(kick="Lightroom Classic plugin + presets", h1=["Pro editing", "in Lightroom."]),
                # the two ways to buy (Jeinna, 25 Oct 2026): the plugin with the presets included, or the presets alone
                offers=dict(plugin=dict(badge="Presets included", type="Plugin + presets", name="Lightroom Classic Plugin",
                                        has=["The Lightroom Classic plugin: sort, keyword, edit and export", "MWP Presets included: 50 presets and 33 LUTs", "Free updates for both"],
@@ -162,7 +162,7 @@ P["presets"] = dict(
     ),
     he=dict(
         name="MWP ללייטרום", name_html='MWP <span class="grad">ללייטרום</span>',
-        title="פריסטים ללייטרום ותוסף ללייטרום קלאסיק · MWP",
+        title="תוסף ללייטרום קלאסיק + פריסטים · MWP",
         desc="כלים ללייטרום מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק למיון, תיוג, עריכה וייצוא, עם 50 פריסטים ו־33 קובצי LUT כלולים. או הפריסטים לבד.",
         hero_alt="לביאה בעשב זהוב, צילום: מתן שרון",
         kick="MWP · ללייטרום", h1=["עריכה מקצועית", "בלייטרום."],
@@ -178,7 +178,7 @@ P["presets"] = dict(
                        dict(type="תוסף", name="התוסף ללייטרום קלאסיק", line="ממיינים, מתייגים, עורכים ומייצאים צילום שלם, בלי לצאת מלייטרום קלאסיק.",
                             meta="לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה", more="לפרטים",
                             alt="החלון של התוסף ללייטרום קלאסיק מעל צילום של צלם בשטח")],
-               top=dict(kick="פריסטים ללייטרום + תוסף ללייטרום קלאסיק", h1=["עריכה מקצועית", "בלייטרום."]),
+               top=dict(kick="תוסף ללייטרום קלאסיק + פריסטים", h1=["עריכה מקצועית", "בלייטרום."]),
                offers=dict(plugin=dict(badge="הפריסטים כלולים", type="תוסף + פריסטים", name="התוסף ללייטרום קלאסיק",
                                        has=["התוסף ללייטרום קלאסיק: מיון, תיוג, עריכה וייצוא", "הפריסטים של MWP כלולים: 50 פריסטים ו־33 קובצי LUT", "עדכונים חינם לשניהם"],
                                        meta="התוסף: לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה"),
