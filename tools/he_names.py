@@ -23,7 +23,7 @@ NAMES = [
     ("Camera Raw", "קאמרה ראו"), ("Premiere Pro", "פרמייר פרו"), ("DaVinci Resolve", "דה־וינצ׳י ריזולב"),
     ("Final Cut Pro", "פיינל קאט פרו"), ("Adobe", "אדובי"),
     ("Instagram", "אינסטגרם"), ("Facebook", "פייסבוק"), ("WhatsApp", "וואטסאפ"), ("YouTube", "יוטיוב"),
-    ("Supabase", "סופאבייס"), ("MailerLite", "מיילרלייט"), ("Make.com", "מייק"), ("monday.com", "מאנדיי"),
+    ("Supabase", "סופאבייס"), ("MailerLite", "מיילרלייט"), ("Mailchimp", "מיילצ׳ימפ"), ("Make.com", "מייק"), ("monday.com", "מאנדיי"),
     ("Resend", "ריסנד"),
 ]
 _RE = [(re.compile(r"(?<![A-Za-z0-9@._/])" + re.escape(en) + r"(?![A-Za-z0-9])"), he) for en, he in NAMES]

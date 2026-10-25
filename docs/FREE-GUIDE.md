@@ -1,6 +1,6 @@
 # The free Field Guides sample (sign-up gift)
 
-Built 25 Oct 2026, **switched off** until Matan approves the words and the PDF.
+Built and **switched on** 25 Oct 2026 (Matan approved the words, the privacy line and the sample).
 
 ## How it works
 1. **Pop-up** (`assets/js/lib/gift.js`, styles `assets/css/gift.css`, loaded by `nav.js` only when needed): full name,
@@ -33,7 +33,7 @@ English and Hebrew, 23 pages each. The cover (the mountains photo, as in the pop
 | Colour | Colour and the subject: what pulls the eye, one accent, background sets the mood, colour in the eyes | 21, 22, 23, 26, 28 |
 | Planning | Know the animal: their hours, follow the food, read the trail, read the body | 6–10 |
 
-## To switch it on (after Matan approves)
+## Switching it on (done 25 Oct 2026; the steps, for the record)
 1. **Upload the PDF**: Actions → **Upload an extra download** → slug `mwp-field-guides-sample`, key `main`, label
    `Free sample`, version `1.0`, file `MWP-Field-Guides-Sample.zip`; Claude sends the zip encrypted
    (tools/upload_extra.py).

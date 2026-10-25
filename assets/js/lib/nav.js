@@ -87,7 +87,7 @@
 
   // The free Field Guides sample pop-up (assets/js/lib/gift.js). GIFT_ON stays false until Matan approves its words;
   // until then it loads only for ?gift=preview or the #free-guide link. Its code downloads only when it's needed.
-  const GIFT_ON = false;
+  const GIFT_ON = true;   // switched on 25 Oct 2026 (Matan approved the words and the sample)
   window.MWP_GIFT = { on: GIFT_ON };
   let giftLoaded = false;
   const loadGift = () => {
