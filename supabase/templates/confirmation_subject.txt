@@ -1,0 +1,1 @@
+{{ if .Data.gift }}{{ if .Data.lang }}{{ if eq .Data.lang "he" }}המדריך החינמי שלכם מחכה{{ else }}Your free Field Guides sample is waiting{{ end }}{{ else }}Your free Field Guides sample is waiting{{ end }}{{ else }}{{ if .Data.lang }}{{ if eq .Data.lang "he" }}אישור כתובת המייל{{ else }}Confirm your email address{{ end }}{{ else }}Confirm your email address{{ end }}{{ end }}

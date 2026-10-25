@@ -138,8 +138,13 @@ jobs:
           api="https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/config/auth"
           curl -sS -o /tmp/auth_before.json -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "$api"
           allow=$(jq -r --arg want "$SHOP/**" '[(.uri_allow_list // "" | split(",") | map(select(length > 0))), [$want]] | add | unique | join(",")' /tmp/auth_before.json)
+          # The "Confirm signup" email (supabase/templates: free-guide or regular, Hebrew or English), checked first:
+          # a template that fails to render would stop every sign-up email, so a broken one stops the deploy instead.
+          go run tools/check_email_template.go supabase/templates/confirmation.html supabase/templates/confirmation_subject.txt
           body=$(jq -n --arg site "$SHOP" --arg allow "$allow" \
-            '{mailer_autoconfirm: false, password_min_length: 8, site_url: $site, uri_allow_list: $allow}')
+            --rawfile tpl supabase/templates/confirmation.html --rawfile subj supabase/templates/confirmation_subject.txt \
+            '{mailer_autoconfirm: false, password_min_length: 8, site_url: $site, uri_allow_list: $allow,
+              mailer_templates_confirmation_content: $tpl, mailer_subjects_confirmation: ($subj | rtrimstr("\n"))}')
           code=$(curl -sS -o /tmp/auth.json -w "%{http_code}" -X PATCH "$api" \
             -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" -d "$body")
           if [ "$code" != "200" ]; then echo "::error title=Account safety settings::Supabase answered $code"; exit 1; fi
