@@ -1,0 +1,55 @@
+{{/*
+  Supabase "Confirm signup" email (set by the deploy, .github/workflows/deploy.yml → Account safety settings).
+  Four versions from the new account's metadata: .Data.gift (the free Field Guides sample pop-up, gift.js) and
+  .Data.lang ("he" → Hebrew; anything else → English). Nested ifs, never `eq` on a missing key: a template error
+  would stop every sign-up email. No name in the email: anyone can type anyone's email into the pop-up, so a typed
+  name must never reach someone else's inbox from our address. Copy approved by Matan, 25 Oct 2026.
+*/}}{{ $he := false }}{{ if .Data.lang }}{{ if eq .Data.lang "he" }}{{ $he = true }}{{ end }}{{ end }}<!doctype html>
+<html lang="{{ if $he }}he{{ else }}en{{ end }}" dir="{{ if $he }}rtl{{ else }}ltr{{ end }}">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="dark light"></head>
+<body style="margin:0;padding:0;background:#0A0908;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0A0908;">
+<tr><td align="center" style="padding:28px 14px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#100E0C;border:1px solid #2a2724;border-radius:18px;overflow:hidden;font-family:{{ if $he }}Heebo,Arial,sans-serif{{ else }}'Google Sans',Arial,sans-serif{{ end }};color:#FEFBF1;" dir="{{ if $he }}rtl{{ else }}ltr{{ end }}">
+<tr><td style="padding:22px 28px 0;text-align:{{ if $he }}right{{ else }}left{{ end }};">
+<img src="https://shop.mw.photography/assets/img/logo-mark.png" width="34" height="36" alt="MWP" style="display:inline-block;border:0;">
+</td></tr>
+{{ if .Data.gift }}
+<tr><td style="padding:18px 28px 0;">
+<img src="https://shop.mw.photography/assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122.jpg" width="504" alt="" style="display:block;width:100%;max-width:504px;height:auto;border:0;border-radius:12px;">
+</td></tr>
+<tr><td style="padding:26px 28px 6px;text-align:{{ if $he }}right{{ else }}left{{ end }};">
+{{ if $he }}
+<p style="margin:0 0 10px;color:#F4AF56;font-size:12px;font-weight:bold;">מדריכי השטח של MWP · טעימה חינמית</p>
+<h1 style="margin:0 0 14px;font-size:26px;line-height:1.25;font-weight:normal;color:#FEFBF1;">המדריך החינמי שלכם <b style="color:#F4AF56;">מחכה.</b></h1>
+<p style="margin:0 0 12px;font-size:16px;line-height:1.6;color:#CDD7DD;">16 שיעורים מארבעת מדריכי השטח: קומפוזיציה, אור, צבע ותכנון.</p>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#CDD7DD;">לחצו על הכפתור כדי לפתוח את חשבון MWP החינמי שלכם. המדריך מחכה בהורדות שלי.</p>
+{{ else }}
+<p style="margin:0 0 10px;color:#F4AF56;font-size:12px;font-weight:bold;letter-spacing:2px;">MWP FIELD GUIDES · FREE SAMPLE</p>
+<h1 style="margin:0 0 14px;font-size:26px;line-height:1.25;font-weight:normal;color:#FEFBF1;">Your free guide <b style="color:#F4AF56;">is waiting.</b></h1>
+<p style="margin:0 0 12px;font-size:16px;line-height:1.6;color:#CDD7DD;">16 lessons from the four Field Guides: composition, light, colour and planning.</p>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#CDD7DD;">Click the button to open your free MWP account. The guide is waiting in My downloads.</p>
+{{ end }}
+</td></tr>
+{{ else }}
+<tr><td style="padding:26px 28px 6px;text-align:{{ if $he }}right{{ else }}left{{ end }};">
+{{ if $he }}
+<h1 style="margin:0 0 14px;font-size:24px;line-height:1.3;font-weight:normal;color:#FEFBF1;">אישור כתובת המייל</h1>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#CDD7DD;">לחצו על הכפתור כדי לאשר את כתובת המייל ולסיים לפתוח את חשבון MWP שלכם.</p>
+{{ else }}
+<h1 style="margin:0 0 14px;font-size:24px;line-height:1.3;font-weight:normal;color:#FEFBF1;">Confirm your email address</h1>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#CDD7DD;">Click the button to confirm this email address and finish creating your MWP account.</p>
+{{ end }}
+</td></tr>
+{{ end }}
+<tr><td style="padding:0 28px 8px;text-align:{{ if $he }}right{{ else }}left{{ end }};">
+<a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#F4AF56;color:#0A0908;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 28px;border-radius:64px;">{{ if .Data.gift }}{{ if $he }}למדריך החינמי{{ else }}Get my free guide{{ end }}{{ else }}{{ if $he }}אישור המייל{{ else }}Confirm my email{{ end }}{{ end }}</a>
+</td></tr>
+<tr><td style="padding:22px 28px 26px;text-align:{{ if $he }}right{{ else }}left{{ end }};font-size:12px;line-height:1.6;color:#9CB1C2;">
+{{ if $he }}הקישור עובד פעם אחת. לא ביקשתם? פשוט התעלמו מהמייל.<br>מתן וויילד · MWP · <a href="https://shop.mw.photography/he/" style="color:#9CB1C2;">shop.mw.photography</a>{{ else }}The link works once. Didn't ask for this? Just ignore this email.<br>Matan Wild · MWP · <a href="https://shop.mw.photography/" style="color:#9CB1C2;">shop.mw.photography</a>{{ end }}
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

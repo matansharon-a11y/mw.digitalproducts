@@ -123,7 +123,8 @@ export async function signInWithPassword(email, password) {
 export async function signUpWithPassword(email, password, { name = "", redirectPath = "/account/" } = {}) {
   const { data, error } = await requireClient().auth.signUp({
     email: email.trim().toLowerCase(), password,
-    options: { emailRedirectTo: back(redirectPath), data: name ? { name } : {} },
+    // lang: the confirmation email comes in the language of the page they signed up on (supabase/templates)
+    options: { emailRedirectTo: back(redirectPath), data: { ...(name ? { name } : {}), lang: document.documentElement.lang === "he" ? "he" : "en" } },
   });
   if (error) {
     if (/already registered|already exists/i.test(error.message)) return "exists";
@@ -242,7 +243,8 @@ export async function giftSignup({ name, email, phone, consent, lang }) {
   });
   const { error } = await once.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: `${CONFIG.SITE_URL}/account/?gift=1`, shouldCreateUser: true, data: { name } },
+    // gift + lang pick the free-guide version of the confirmation email, in their language (supabase/templates)
+    options: { emailRedirectTo: `${CONFIG.SITE_URL}/account/?gift=1`, shouldCreateUser: true, data: { name, gift: "1", lang } },
   });
   if (error) throw new ApiError(error.message, error.status);
 }

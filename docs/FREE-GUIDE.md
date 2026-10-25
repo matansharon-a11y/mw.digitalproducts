@@ -19,6 +19,8 @@ Built and **switched on** 25 Oct 2026 (Matan approved the words, the privacy lin
 4. **My downloads** shows "Free sample · MWP Field Guides · free sample", their stamped copy in their language, and
    "Get the full Field Guides" under it. The card steps aside once they own the full guides.
 
+**The email** they get is Supabase's "Confirm signup" template, kept in `supabase/templates/confirmation.html` (+ `confirmation_subject.txt`) and set by the deploy after `tools/check_email_template.go` renders every version: free guide or regular sign-up, Hebrew or English (from the account's metadata: `gift`, `lang`). It never shows the typed name. Someone who already has an account gets the regular sign-in link email instead.
+
 Every new account gets the sample too (not only pop-up sign-ups), once its file is uploaded.
 
 ## The PDF
