@@ -87,7 +87,7 @@ home_css = """
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";flex:none;width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(242,165,65,.6);display:flex;align-items:center;justify-content:center;color:#F2A541;font-size:18px;font-weight:500}
 .faq details[open] summary::after{content:"\\2212"}
-.faq details div{padding:0 0 26px;color:#CDD7DD;font-size:17px;line-height:1.7;max-width:680px}
+.faq details div{padding:0 0 26px;color:#CDD7DD;font-size:17px;line-height:1.7;max-width:760px}
 
 #faq.sec{padding-bottom:56px}
 /* About Matan: full width. The photo runs to the edge of the page on the end side and fades into the dark;
