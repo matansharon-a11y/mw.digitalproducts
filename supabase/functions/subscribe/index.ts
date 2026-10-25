@@ -32,7 +32,9 @@ Deno.serve(async (req) => {
   const name = guide ? text(body.name, 120) : "";
   const phone = guide ? text(body.phone, 40).replace(/[^\d+()\- ]/g, "") : "";
   const lang = body.lang === "he" ? "he" : "en";
-  const consent = guide ? body.consent === true : true;   // the free guide comes either way; consent = marketing
+  // The free guide comes with joining the mailing list (Matan, 25 Oct 2026): no consent, no guide.
+  const consent = guide ? body.consent === true : true;
+  if (guide && !consent) return fail(req, "Tick the box to get the free guide.");
   if (guide && name.length < 2) return fail(req, "Please enter your full name.");
   if (guide && !/^\+?[\d()\- ]{7,24}$/.test(phone) || guide && phone.replace(/\D/g, "").length < 7)
     return fail(req, "Please enter a valid phone number.");

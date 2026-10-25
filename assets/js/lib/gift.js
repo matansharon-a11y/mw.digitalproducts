@@ -53,12 +53,12 @@ function show() {
           <label><span>${T("Email", "מייל")}</span><input name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" dir="ltr"></label>
           <label><span>${T("Phone", "טלפון")}</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="40" dir="ltr" placeholder="${he() ? "+972 50 123 4567" : "+1 555 123 4567"}"></label>
           <input class="gift__hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <label class="gift__check"><input type="checkbox" name="consent"> <span>${T("Send me tips and offers from MWP by email and WhatsApp. You can stop anytime.",
-            "שלחו לי טיפים והצעות מ-MWP במייל ובוואטסאפ. אפשר להפסיק בכל עת.")}</span></label>
+          <label class="gift__check"><input type="checkbox" name="consent" required> <span>${T("Send me the guide, plus tips and offers from MWP by email and WhatsApp. You can stop anytime.",
+            "שלחו לי את המדריך, וגם טיפים והצעות מ-MWP במייל ובוואטסאפ. אפשר להפסיק בכל עת.")}</span></label>
           <button class="gift__btn" type="submit">${T("Send me the free guide", "שלחו לי את המדריך")}</button>
           <p class="gift__msg" role="status"></p>
-          <p class="gift__fine">${T('By signing up you create a free MWP account. <a href="/legal/#privacy">Privacy</a>',
-            'ההרשמה פותחת לכם חשבון MWP חינמי. <a href="/legal/#privacy">פרטיות</a>')}</p>
+          <p class="gift__fine">${T('By signing up you create a free MWP account and join our mailing list. <a href="/legal/#privacy">Privacy</a>',
+            'ההרשמה פותחת לכם חשבון MWP חינמי ומצרפת אתכם לרשימת התפוצה שלנו. <a href="/legal/#privacy">פרטיות</a>')}</p>
         </form>
       </div>
     </div>`;
@@ -93,6 +93,8 @@ function show() {
     if ((d.name || "").trim().length < 2) return bad(T("Please enter your full name.", "נא למלא שם מלא."));
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((d.email || "").trim())) return bad(T("Please enter a valid email.", "נא למלא מייל תקין."));
     if ((d.phone || "").replace(/\D/g, "").length < 7) return bad(T("Please enter a valid phone number.", "נא למלא מספר טלפון תקין."));
+    // the guide comes with joining the mailing list (Matan, 25 Oct 2026): no tick, no guide
+    if (!form.consent.checked) return bad(T("Tick the box to get the free guide.", "כדי לקבל את המדריך, סמנו את התיבה."));
     btn.disabled = true;
     msg.className = "gift__msg"; msg.textContent = T("Sending…", "שולחים…");
     try {
