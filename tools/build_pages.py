@@ -246,7 +246,7 @@ COMPARE = [
 
 
 def _compare():
-    cols = "".join(f'<th scope="col"><a href="{d["href"]}">{("MWP " + d["name"]) if d["key"] != "plugin" else "Lightroom Classic Plugin"}</a><span>{d["type"]}</span></th>' for d in PRODUCTS)
+    cols = "".join(f'<th scope="col"><a href="{d["href"]}">{("MWP " + d["name"]) if d["key"] != "plugin" else "Lightroom Plugin + Presets"}</a><span>{d["type"]}</span></th>' for d in PRODUCTS)
     rows = "".join(f'<tr><th scope="row">{q}</th>{"".join(f"<td>{a}</td>" for a in ans)}</tr>' for q, ans in COMPARE)
     def price(d):
         if d.get("with_"):
@@ -270,7 +270,7 @@ def _itemlist():
     """schema.org ItemList of the four product pages, for search engines."""
     data = {"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [
         {"@type": "ListItem", "position": n + 1, "url": f"https://shop.mw.photography/{d['href']}",
-         "name": ("MWP " + d["name"]) if d["key"] != "plugin" else "MWP Lightroom Classic Plugin"} for n, d in enumerate(PRODUCTS)]}
+         "name": ("MWP " + d["name"]) if d["key"] != "plugin" else "MWP Lightroom Plugin + Presets"} for n, d in enumerate(PRODUCTS)]}
     return '<script type="application/ld+json">' + json.dumps(data) + "</script>"
 
 

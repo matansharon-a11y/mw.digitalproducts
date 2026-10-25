@@ -239,7 +239,7 @@ async function priceList() {
   return priceRows;
 }
 const FALLBACK_NAME = { "field-guide-planning": "MWP Field Guide: Planning", "field-guide-composition": "MWP Field Guide: Composition",
-  "field-guide-light": "MWP Field Guide: Light", "field-guide-colour": "MWP Field Guide: Colour", "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Classic Plugin", "mwp-panel": "MWP Photoshop Plugin Panel", "mwp-field-guides": "MWP Field Guides",
+  "field-guide-light": "MWP Field Guide: Light", "field-guide-colour": "MWP Field Guide: Colour", "mwp-presets": "MWP Presets", "mwp-lightroom-plugin": "MWP Lightroom Plugin + Presets", "mwp-panel": "MWP Photoshop Plugin Panel", "mwp-field-guides": "MWP Field Guides",
   "presets-field-guides": "Lightroom Plugin + Field Guides", "presets-panel": "Lightroom Plugin + Photoshop Plugin Panel", "field-guides-panel": "Field Guides + Photoshop Plugin Panel", "full-set": "The full set" };
 
 export async function addSlugToCart(slug) {

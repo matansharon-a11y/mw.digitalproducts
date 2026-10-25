@@ -1148,6 +1148,8 @@ function translate(text) {
 
 // Names in Hebrew (Matan: everything in Hebrew, except MWP, which always stays in Latin letters). Same list as tools/he_names.py.
 const NAMES = [
+  ["MWP Lightroom Plugin + Presets", "התוסף ללייטרום + פריסטים של MWP"],
+  ["Lightroom Plugin + Presets", "התוסף ללייטרום + פריסטים"],
   ["Lightroom Plugin + Photoshop Plugin Panel", "התוסף ללייטרום + התוסף לפוטושופ"],
   ["Lightroom Plugin + Field Guides", "התוסף ללייטרום + מדריכי השטח"],
   ["MWP - PS Panel", "התוסף לפוטושופ של MWP"],

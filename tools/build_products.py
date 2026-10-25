@@ -107,7 +107,7 @@ P["presets"] = dict(
                             alt="The Lightroom Classic plugin's window over a photo of a photographer in the field")],
                top=dict(kick="Lightroom Classic plugin + presets", h1=["Pro editing", "in Lightroom."]),
                # the two ways to buy (Jeinna, 25 Oct 2026): the plugin with the presets included, or the presets alone
-               offers=dict(plugin=dict(badge="Presets included", type="Plugin + presets", name="Lightroom Classic Plugin",
+               offers=dict(plugin=dict(badge="Presets included", type="Plugin + presets", name="Lightroom Plugin + Presets",
                                        has=["The Lightroom Classic plugin: sort, keyword, edit and export", "MWP Presets included: 50 presets and 33 LUTs", "Free updates for both"],
                                        meta="Plugin: Lightroom Classic 13+ · Mac and Windows", cta="Add to cart"),
                            presets=dict(type="Presets only", name="Lightroom Presets",
@@ -179,7 +179,7 @@ P["presets"] = dict(
                             meta="לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה", more="לפרטים",
                             alt="החלון של התוסף ללייטרום קלאסיק מעל צילום של צלם בשטח")],
                top=dict(kick="תוסף ללייטרום קלאסיק + פריסטים", h1=["עריכה מקצועית", "בלייטרום."]),
-               offers=dict(plugin=dict(badge="הפריסטים כלולים", type="תוסף + פריסטים", name="התוסף ללייטרום קלאסיק",
+               offers=dict(plugin=dict(badge="הפריסטים כלולים", type="תוסף + פריסטים", name="התוסף ללייטרום + פריסטים",
                                        has=["התוסף ללייטרום קלאסיק: מיון, תיוג, עריכה וייצוא", "הפריסטים של MWP כלולים: 50 פריסטים ו־33 קובצי LUT", "עדכונים חינם לשניהם"],
                                        meta="התוסף: לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה"),
                            presets=dict(type="פריסטים בלבד", name="פריסטים ללייטרום",

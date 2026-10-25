@@ -5,6 +5,7 @@ import re
 
 MWP = "MWP"
 NAMES = [
+    ("MWP Lightroom Plugin + Presets", f"התוסף ללייטרום + פריסטים של {MWP}"), ("Lightroom Plugin + Presets", "התוסף ללייטרום + פריסטים"),
     ("Lightroom Plugin + Photoshop Plugin Panel", "התוסף ללייטרום + התוסף לפוטושופ"), ("Lightroom Plugin + Field Guides", "התוסף ללייטרום + מדריכי השטח"),
     ("MWP - PS Panel", f"התוסף לפוטושופ של {MWP}"),
     ("MWP - Signature Preset Pack", f"הפריסטים של {MWP}"),
