@@ -1,6 +1,7 @@
 """The shop's Mailchimp emails: the free-guide welcome series (Matan, 25 Oct 2026). One design for all (dark like the
 shop, logo, one photo, one gold button, Mailchimp's unsubscribe + address in the footer), English and Hebrew.
-Writes docs/emails/<id>.html; paste each into Mailchimp (automation "MWP Shop · Free guide welcome", Code your own).
+Writes assets/email/<id>.html, served at shop.mw.photography/assets/email/, so Mailchimp imports each by URL
+(automation "MWP Shop · Free guide welcome": Code your own → Import from URL).
 
 Now:       1 right after they confirm (the tag "Shop: free guide"): how to use the sample
            2 three days later: one photo from RAW to final
@@ -11,7 +12,7 @@ Voice: anthropic-skills mwp-content-voice. No prices here (they live in the shop
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, "docs/emails")
+OUT = os.path.join(ROOT, "assets/email")
 SHOP = "https://shop.mw.photography"
 LOGO = f"{SHOP}/assets/img/logo-mark.png"
 
