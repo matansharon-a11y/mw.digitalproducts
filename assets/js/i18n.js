@@ -1201,7 +1201,7 @@ const NAMES = [
   ["WhatsApp", "וואטסאפ"],
   ["YouTube", "יוטיוב"],
   ["Supabase", "סופאבייס"],
-  ["MailerLite", "מיילרלייט"], ["Mailchimp", "מיילצ׳ימפ"],
+  ["Field Guides · free sample", "מדריכי השטח · טעימה חינמית"], ["MailerLite", "מיילרלייט"], ["Mailchimp", "מיילצ׳ימפ"],
   ["Make.com", "מייק"],
   ["monday.com", "מאנדיי"],
   ["Resend", "ריסנד"],
