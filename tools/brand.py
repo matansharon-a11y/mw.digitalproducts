@@ -121,15 +121,61 @@ def he_href(href):
     return href
 
 
+# The top bar (25 Oct 2026): five main links on wide screens, everything else in the ☰ menu (Matan wants it). Hiding
+# the main links altogether would make people find things less often (NN/g), so on desktop they stay in view;
+# on phones and tablets the ☰ menu holds them.
+PRIMARY_LINKS = [("/presets/", "Lightroom", "לייטרום"), ("/panel/", "Photoshop Plugin", "תוסף לפוטושופ"),
+                 ("/field-guides/", "Photography Guides", "מדריכי צילום"), ("/shop/", "Compare", "השוואה"), ("/#bundles", "Bundles", "חבילות")]
+
+# The ☰ menu: a side panel in groups. Shop, About, the account, and the social accounts (Jeinna, 25 Oct 2026:
+# Instagram and Facebook from Matan's sites, WhatsApp on +972 53-743-2878).
+MENU_GROUPS = [
+    (("Shop", "חנות"), [("/presets/", "Lightroom Plugin + Presets", "התוסף ללייטרום + פריסטים"),
+                        ("/presets/#presets", "Presets only", "פריסטים בלבד"),
+                        ("/panel/", "Photoshop Plugin Panel", "פאנל התוסף לפוטושופ"),
+                        ("/field-guides/", "Photography Guides", "מדריכי צילום"),
+                        ("/shop/", "Compare all", "השוואה בין כולם"), ("/#bundles", "Bundles", "חבילות")]),
+    (("More", "עוד"), [("/#about", "About Matan", "על מתן")]),
+    (("Your account", "החשבון שלי"), [("/account/", "My downloads", "ההורדות שלי"), ("/account/#orders", "Order history", "היסטוריית הזמנות"),
+                                      ("/account/#details", "My details", "הפרטים שלי"), ("/support/", "Help and support", "עזרה ותמיכה")]),
+]
+SOCIAL = [
+    ("Instagram", "https://www.instagram.com/mw_phototours",
+     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>'),
+    ("Facebook", "https://www.facebook.com/people/MW-Photo-Tours/61580936126537/",
+     '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.5V21h3Z"/></svg>'),
+    ("WhatsApp", "https://wa.me/972537432878",
+     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 19.5l1.1-3.7A8 8 0 1 1 8.4 18.6l-3.9.9Z"/><path d="M9.3 8.6c.2-.4.5-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.5c.1.2 0 .5-.1.6l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.1.4-.2.6-.1l1.5.6c.3.1.4.3.4.5v.5c0 .3 0 .5-.4.7-.5.3-1.4.5-2.4.1-2-.8-3.6-2.4-4.4-4.4-.4-1-.2-1.9.1-2.4Z" fill="currentColor" stroke="none"/></svg>'),
+]
+
+
 def site_links(lang="en", current=""):
     he = lang == "he"
-    return "".join(f'<a href="{he_href(href) if he else href}"{" aria-current=\"page\" class=\"is-active\"" if current and href == current else ""}>{h if he else e}</a>'
-                   for href, e, h in SITE_LINKS)
+    cur = current.split("#")[0]
+    return "".join(f'<a href="{he_href(href) if he else href}"{" aria-current=\"page\" class=\"is-active\"" if cur and href == cur else ""}>{h if he else e}</a>'
+                   for href, e, h in PRIMARY_LINKS)
 
 
 def menu_button(lang="en"):
-    label = "תפריט" if lang == "he" else "Menu"
-    return f'<button class="nav-menu" type="button" aria-label="{label}" aria-expanded="false" aria-controls="site-links">{MENU_ICON}</button>'
+    """The ☰ button and its side panel. nav.js moves the panel to the end of the page (the header's blur would
+    otherwise trap a fixed panel inside it) and opens / closes it."""
+    he = lang == "he"
+    label = "תפריט" if he else "Menu"
+    groups = "".join(
+        f'<section class="sm-group"><h2 class="sm-h">{t[1] if he else t[0]}</h2>'
+        + "".join(f'<a href="{he_href(href) if he else href}">{h if he else e}</a>' for href, e, h in links) + "</section>"
+        for t, links in MENU_GROUPS)
+    social = "".join(f'<a class="sm-social-a" href="{url}" target="_blank" rel="noopener" aria-label="{name}">{icon}<span>{name}</span></a>'
+                     for name, url, icon in SOCIAL)
+    close = "סגירה" if he else "Close"
+    return (f'<button class="nav-menu" type="button" aria-label="{label}" aria-expanded="false" aria-controls="site-menu">{MENU_ICON}</button>'
+            f'<div class="sm-scrim" data-sm-close hidden></div>'
+            f'<aside class="site-menu" id="site-menu" role="dialog" aria-modal="true" aria-label="{label}" hidden>'
+            f'<div class="sm-top"><span class="sm-title">{label}</span><button class="sm-x" type="button" data-sm-close aria-label="{close}">'
+            '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+            f'<nav class="sm-body" aria-label="{label}">{groups}</nav>'
+            f'<div class="sm-social"><h2 class="sm-h">{"עקבו אחרינו" if he else "Follow"}</h2><div class="sm-social-row">{social}</div></div>'
+            '</aside>')
 
 
 FOOTER_LINKS = [("/field-guides/", "Photography guides", "מדריכי צילום"), ("/presets/#plugin", "Lightroom plugin", "תוסף ללייטרום"),
@@ -157,21 +203,36 @@ html[lang=he] .site-foot .sf-brand{letter-spacing:.3em;direction:ltr}
 html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
 html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
 html .site-foot a:hover{color:#FEFBF1}
-html .nav .nav-menu{display:none;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu:hover{background:rgba(254,251,241,.06);color:#F4AF56}
 html .nav .nav-menu svg path{transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-origin:12px 12px}
 html.menu-open .nav .nav-menu .m1{transform:translateY(4px) rotate(45deg)}
 html.menu-open .nav .nav-menu .m2{transform:translateY(-4px) rotate(-45deg)}
-@media (max-width:1100px){
-  html .nav .nav-menu{display:inline-flex}
-  html .nav .links{display:flex!important;position:fixed;inset:64px 0 auto 0;z-index:39;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:8px 24px 28px;background:rgba(10,9,8,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(254,251,241,.08);opacity:0;transform:translateY(-8px);pointer-events:none;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s}
-  html.menu-open .nav .links{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .3s ease,transform .3s ease}
-  html .nav .links a{padding:18px 0;font-size:17px;letter-spacing:.02em;border-bottom:1px solid rgba(254,251,241,.07)}
-  html .nav .links a::after{display:none}
-  html.menu-open{overflow:hidden}
-  html.menu-open .nav{background:rgba(10,9,8,.96)}
-}
+/* the ☰ side panel (moved to the end of <body> by nav.js) */
+html .sm-scrim{position:fixed;inset:0;z-index:89;background:rgba(0,0,0,.55);opacity:0;transition:opacity .25s ease}
+html .site-menu{position:fixed;top:0;bottom:0;inset-inline-end:0;z-index:90;width:min(380px,100vw);display:flex;flex-direction:column;gap:6px;padding:0 0 24px;overflow-y:auto;background:#121110;border-inline-start:1px solid rgba(254,251,241,.08);box-shadow:-30px 0 80px -30px rgba(0,0,0,.8);color:#FEFBF1;font-family:"Google Sans",Heebo,sans-serif;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+html[dir=rtl] .site-menu{transform:translateX(-100%)}
+html.menu-open .sm-scrim{opacity:1}
+html.menu-open .site-menu{transform:none}
+html .site-menu[hidden],html .sm-scrim[hidden]{display:none}
+html .sm-top{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px 24px;background:#121110}
+html[dir=rtl] .sm-top{padding:14px 24px 10px 18px}
+html .sm-title{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9CB1C2}
+html .sm-x{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:50%;background:none;color:#FEFBF1;cursor:pointer}
+html .sm-x:hover{background:rgba(254,251,241,.07)}
+html .sm-group{padding:10px 24px 14px;border-bottom:1px solid rgba(254,251,241,.07)}
+html .sm-h{margin:0 0 6px;font-size:11.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#F4AF56}
+html[dir=rtl] .sm-h,html[dir=rtl] .sm-title{letter-spacing:.04em}
+html .sm-group a{display:flex;align-items:center;min-height:44px;color:#FEFBF1;font-size:16.5px;text-decoration:none;border-radius:10px;transition:color .2s}
+html .sm-group a:hover{color:#F4AF56}
+html .sm-social{padding:14px 24px 0}
+html .sm-social-row{display:flex;gap:10px;flex-wrap:wrap}
+html .sm-social-a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 12px;border:1px solid rgba(254,251,241,.14);border-radius:999px;color:#FEFBF1;font-size:14px;text-decoration:none;transition:border-color .2s,color .2s}
+html .sm-social-a:hover{border-color:#F4AF56;color:#F4AF56}
+html .site-menu a:focus-visible,html .sm-x:focus-visible,html .nav .nav-menu:focus-visible{outline:2px solid #F4AF56;outline-offset:2px}
+html.menu-open{overflow:hidden}
 @media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
-@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path{transition:none!important}}
+@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path,html .site-menu,html .sm-scrim{transition:none!important}}
 """
 
 

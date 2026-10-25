@@ -46,18 +46,39 @@
     pairs.forEach(([, sec]) => io.observe(sec));
     return true;
   }
-  // Phones and tablets: the menu button opens the links as a panel under the header.
+  // The ☰ menu (25 Oct 2026): a side panel with the shop, the account and the social accounts, on every screen size.
+  // The panel and its backdrop move to the end of <body>: the header's blur would trap a fixed panel inside it.
   function menu() {
     const btn = document.querySelector(".nav .nav-menu");
-    const links = document.querySelector(".nav .links");
-    if (!btn || !links) return;
-    links.id = links.id || "site-links";
-    const set = (open) => { root.classList.toggle("menu-open", open); btn.setAttribute("aria-expanded", String(open)); };
-    btn.addEventListener("click", () => set(!root.classList.contains("menu-open")));
-    links.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && root.classList.contains("menu-open")) { set(false); btn.focus(); } });
-    document.addEventListener("click", (e) => { if (root.classList.contains("menu-open") && !e.target.closest(".nav")) set(false); });
-    matchMedia("(min-width: 1101px)").addEventListener("change", (m) => { if (m.matches) set(false); });
+    const panel = document.getElementById("site-menu");
+    const scrim = document.querySelector(".sm-scrim");
+    if (!btn || !panel) return;
+    document.body.append(scrim || "", panel);
+    let closing = 0;
+    const set = (open) => {
+      clearTimeout(closing);
+      btn.setAttribute("aria-expanded", String(open));
+      if (open) {
+        panel.hidden = false; if (scrim) scrim.hidden = false;
+        requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("menu-open")));   // after it's shown: slides in
+        setTimeout(() => panel.querySelector("a, button")?.focus({ preventScroll: true }), 60);
+      } else if (!panel.hidden) {
+        root.classList.remove("menu-open");
+        closing = setTimeout(() => { panel.hidden = true; if (scrim) scrim.hidden = true; }, 320);   // after it slides out
+        btn.focus({ preventScroll: true });
+      }
+    };
+    btn.addEventListener("click", () => set(panel.hidden));
+    document.addEventListener("click", (e) => { if (e.target.closest("[data-sm-close]")) set(false); });
+    panel.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });   // a link to this page's section
+    document.addEventListener("keydown", (e) => {
+      if (panel.hidden) return;
+      if (e.key === "Escape") { set(false); return; }
+      if (e.key !== "Tab") return;   // keep the keyboard inside the open panel
+      const f = [...panel.querySelectorAll("a, button")];
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    });
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", menu) : menu();
 

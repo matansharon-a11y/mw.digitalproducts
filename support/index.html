@@ -70,21 +70,36 @@ html[lang=he] .site-foot .sf-brand{letter-spacing:.3em;direction:ltr}
 html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
 html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
 html .site-foot a:hover{color:#FEFBF1}
-html .nav .nav-menu{display:none;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
+html .nav .nav-menu:hover{background:rgba(254,251,241,.06);color:#F4AF56}
 html .nav .nav-menu svg path{transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-origin:12px 12px}
 html.menu-open .nav .nav-menu .m1{transform:translateY(4px) rotate(45deg)}
 html.menu-open .nav .nav-menu .m2{transform:translateY(-4px) rotate(-45deg)}
-@media (max-width:1100px){
-  html .nav .nav-menu{display:inline-flex}
-  html .nav .links{display:flex!important;position:fixed;inset:64px 0 auto 0;z-index:39;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:8px 24px 28px;background:rgba(10,9,8,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(254,251,241,.08);opacity:0;transform:translateY(-8px);pointer-events:none;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s}
-  html.menu-open .nav .links{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .3s ease,transform .3s ease}
-  html .nav .links a{padding:18px 0;font-size:17px;letter-spacing:.02em;border-bottom:1px solid rgba(254,251,241,.07)}
-  html .nav .links a::after{display:none}
-  html.menu-open{overflow:hidden}
-  html.menu-open .nav{background:rgba(10,9,8,.96)}
-}
+/* the ☰ side panel (moved to the end of <body> by nav.js) */
+html .sm-scrim{position:fixed;inset:0;z-index:89;background:rgba(0,0,0,.55);opacity:0;transition:opacity .25s ease}
+html .site-menu{position:fixed;top:0;bottom:0;inset-inline-end:0;z-index:90;width:min(380px,100vw);display:flex;flex-direction:column;gap:6px;padding:0 0 24px;overflow-y:auto;background:#121110;border-inline-start:1px solid rgba(254,251,241,.08);box-shadow:-30px 0 80px -30px rgba(0,0,0,.8);color:#FEFBF1;font-family:"Google Sans",Heebo,sans-serif;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+html[dir=rtl] .site-menu{transform:translateX(-100%)}
+html.menu-open .sm-scrim{opacity:1}
+html.menu-open .site-menu{transform:none}
+html .site-menu[hidden],html .sm-scrim[hidden]{display:none}
+html .sm-top{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px 24px;background:#121110}
+html[dir=rtl] .sm-top{padding:14px 24px 10px 18px}
+html .sm-title{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9CB1C2}
+html .sm-x{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:50%;background:none;color:#FEFBF1;cursor:pointer}
+html .sm-x:hover{background:rgba(254,251,241,.07)}
+html .sm-group{padding:10px 24px 14px;border-bottom:1px solid rgba(254,251,241,.07)}
+html .sm-h{margin:0 0 6px;font-size:11.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#F4AF56}
+html[dir=rtl] .sm-h,html[dir=rtl] .sm-title{letter-spacing:.04em}
+html .sm-group a{display:flex;align-items:center;min-height:44px;color:#FEFBF1;font-size:16.5px;text-decoration:none;border-radius:10px;transition:color .2s}
+html .sm-group a:hover{color:#F4AF56}
+html .sm-social{padding:14px 24px 0}
+html .sm-social-row{display:flex;gap:10px;flex-wrap:wrap}
+html .sm-social-a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 12px;border:1px solid rgba(254,251,241,.14);border-radius:999px;color:#FEFBF1;font-size:14px;text-decoration:none;transition:border-color .2s,color .2s}
+html .sm-social-a:hover{border-color:#F4AF56;color:#F4AF56}
+html .site-menu a:focus-visible,html .sm-x:focus-visible,html .nav .nav-menu:focus-visible{outline:2px solid #F4AF56;outline-offset:2px}
+html.menu-open{overflow:hidden}
 @media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
-@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path{transition:none!important}}
+@media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path,html .site-menu,html .sm-scrim{transition:none!important}}
 </style>
   <script src="assets/js/lib/nav.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700&family=Heebo:wght@300..900&display=swap">
@@ -98,9 +113,9 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <nav class="nav site-header" aria-label="Main">
 <div class="wrap container">
 <a class="brand" href="/" aria-label="MWP, home"><img src="/assets/img/logo-mark.png" alt="MWP" width="36" height="38"></a>
-<div class="links"><a href="/field-guides/">Photography Guides</a><a href="/presets/#plugin">Lightroom Plugin</a><a href="/presets/#presets">Presets</a><a href="/panel/">Photoshop Plugin</a><a href="/shop/">Compare</a><a href="/#bundles">Bundles</a><a href="/#about">About Matan</a></div>
+<div class="links"><a href="/presets/">Lightroom</a><a href="/panel/">Photoshop Plugin</a><a href="/field-guides/">Photography Guides</a><a href="/shop/">Compare</a><a href="/#bundles">Bundles</a></div>
 <div class="navr"></div>
-<button class="nav-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-links"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg></button>
+<button class="nav-menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-menu"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 8h16"/><path class="m2" d="M4 16h16"/></svg></button><div class="sm-scrim" data-sm-close hidden></div><aside class="site-menu" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden><div class="sm-top"><span class="sm-title">Menu</span><button class="sm-x" type="button" data-sm-close aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><nav class="sm-body" aria-label="Menu"><section class="sm-group"><h2 class="sm-h">Shop</h2><a href="/presets/">Lightroom Plugin + Presets</a><a href="/presets/#presets">Presets only</a><a href="/panel/">Photoshop Plugin Panel</a><a href="/field-guides/">Photography Guides</a><a href="/shop/">Compare all</a><a href="/#bundles">Bundles</a></section><section class="sm-group"><h2 class="sm-h">More</h2><a href="/#about">About Matan</a></section><section class="sm-group"><h2 class="sm-h">Your account</h2><a href="/account/">My downloads</a><a href="/account/#orders">Order history</a><a href="/account/#details">My details</a><a href="/support/">Help and support</a></section></nav><div class="sm-social"><h2 class="sm-h">Follow</h2><div class="sm-social-row"><a class="sm-social-a" href="https://www.instagram.com/mw_phototours" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a class="sm-social-a" href="https://www.facebook.com/people/MW-Photo-Tours/61580936126537/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.5V21h3Z"/></svg><span>Facebook</span></a><a class="sm-social-a" href="https://wa.me/972537432878" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 19.5l1.1-3.7A8 8 0 1 1 8.4 18.6l-3.9.9Z"/><path d="M9.3 8.6c.2-.4.5-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.5c.1.2 0 .5-.1.6l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.1.4-.2.6-.1l1.5.6c.3.1.4.3.4.5v.5c0 .3 0 .5-.4.7-.5.3-1.4.5-2.4.1-2-.8-3.6-2.4-4.4-4.4-.4-1-.2-1.9.1-2.4Z" fill="currentColor" stroke="none"/></svg><span>WhatsApp</span></a></div></div></aside>
 </div>
 </nav>
 <main id="main">
@@ -149,6 +164,6 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</div>
 </div>
 </footer>
-<script type="module" src="assets/js/pages/support.js?v=d181a374"></script>
+<script type="module" src="assets/js/pages/support.js?v=c470ad63"></script>
 </body>
 </html>
