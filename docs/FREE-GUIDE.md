@@ -24,7 +24,7 @@ Every new account gets the sample too (not only pop-up sign-ups), once its file 
 ## The PDF
 `tools/make_guide_sample.py` builds it from the four guides: a cover, "Hi, I'm Matan", then one complete section of
 each guide (its opening page + 4 lessons, 16 lessons in all), and a closing page with the link to the full guides.
-English and Hebrew, 23 pages each. The cover and closing page are simple placeholders until Ksenia designs them.
+English and Hebrew, 23 pages each. The cover (the mountains photo, as in the pop-up) and the closing page (the four guide covers and a gold button to the full guides) are designed in the brand style in the script.
 
 | Guide | Section | Pages |
 |---|---|---|
