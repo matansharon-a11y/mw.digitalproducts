@@ -37,7 +37,7 @@ Time: about 30 minutes, plus one real purchase.
 
 ## Marketing launch (after the first real purchase, each on Matan's OK)
 1. **Email limits first** (before any ads or the launch email): Resend plan up from the free 100 a day (Matan's purchase), then Supabase → Authentication → Rate limits above 30 an hour.
-2. **Welcome series**: turn on Mailchimp "MWP Shop · Free guide welcome" if it's still a draft, and add emails 3 and 4 (`assets/email/3-tools-*`, `4-full-guides-*`) to both branches (docs/FREE-GUIDE.md).
+2. **Welcome series** (Mailchimp "MWP Shop · Free guide welcome", on since 25 Oct 2026): add emails 3 and 4 (`assets/email/3-tools-*`, `4-full-guides-*`) to both branches (docs/FREE-GUIDE.md).
 3. **Launch email**: send the Mailchimp drafts "MWP Shop launch · English / Hebrew" (send a test to contact@ first).
 4. **Ads**: point them at the free guide (`https://shop.mw.photography/#free-guide`, Hebrew `/he/#free-guide`), Hebrew and English versions.
 5. **Watch**: the first English pop-up sign-up gets lang_en in Mailchimp and the English welcome email.
