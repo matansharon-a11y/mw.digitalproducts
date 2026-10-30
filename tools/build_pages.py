@@ -2,7 +2,7 @@
 import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reviews_section import section as reviews_section
-from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
@@ -781,6 +781,63 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
       <p><strong>Support.</strong> When you contact support we keep your name, email and message so we can answer you.</p>
       <p>We use your email to deliver your files, answer support requests and, if you agreed, send occasional news and new releases. You can unsubscribe from any email. The site uses no advertising or analytics trackers; your browser only remembers your language, your cart and your sign-in.</p>
       <p>Our service providers: Supabase (database, sign-in and file storage), Lemon Squeezy (checkout), Resend (account emails), Mailchimp (newsletters), Make.com and monday.com (order and support handling). To see, correct or delete your data, write to support.</p>
+      </div>
+    </div>
+  </section>""", "static.js")
+
+# Accessibility statement (Jeinna, 30 Oct 2026): adapted from mw-phototours.com's statement. Israeli law (regulation
+# 35ה of the Service Accessibility Regulations, 2013) requires one. DRAFT until Matan approves it. It lists only what
+# this site really does (checked 30 Oct 2026); the widget line appears only once the Nagishna widget is licensed here.
+A11Y_DONE = [("A “Skip to content” link at the top of every page", "קישור „דילוג לתוכן” בראש כל עמוד"),
+             ("Full keyboard use of the menu, the cart and every pop-up window; Esc closes them", "שימוש מלא במקלדת בתפריט, בעגלה ובכל חלון קופץ; מקש Esc סוגר אותם"),
+             ("Text alternatives for the site's images", "טקסט חלופי לתמונות באתר"),
+             ("Labels for every form field", "תוויות לכל שדות הטפסים"),
+             ("Motion and animations stop when your device is set to reduce motion", "תנועה ואנימציות נעצרות כשבמכשיר מוגדרת הפחתת תנועה"),
+             ("The site in Hebrew (right to left) and English, with each page's language set for screen readers", "האתר בעברית (מימין לשמאל) ובאנגלית, ושפת כל עמוד מוגדרת לקוראי מסך"),
+             ("A layout that adapts to phones, tablets and computers", "תצוגה שמתאימה את עצמה לטלפון, לטאבלט ולמחשב")]
+if NAGISHNA_SRC:
+    A11Y_DONE.append(("An accessibility menu (the icon on the side of every page): larger or smaller text, colour contrast and highlighted links",
+                      "תפריט נגישות (הסמל בצד כל עמוד): הגדלה והקטנה של טקסט, שינוי ניגודיות צבעים והדגשת קישורים"))
+A11Y_UPDATED = ("30 October 2026", "30/10/2026")
+_en_li = "".join(f"<li>{e}</li>" for e, h in A11Y_DONE)
+_he_li = "".join(f"<li>{h}</li>" for e, h in A11Y_DONE)
+page("accessibility.html", "Accessibility statement · MWP",
+ "How the MWP Shop is made accessible, and who to contact about accessibility.",
+ f"""  <!-- DRAFT FOR APPROVAL (Matan): adapted from the statement on mw-phototours.com. -->
+  <section class="page-hero">
+    <div class="container stack">
+      <p class="kick">MWP</p>
+      <h1 class="display"><span class="only-en" data-no-i18n>Accessibility statement</span><span class="only-he" data-no-i18n>הצהרת נגישות</span></h1>
+      <p class="meta"><span class="only-en" data-no-i18n>Last updated {A11Y_UPDATED[0]}</span><span class="only-he" data-no-i18n>עודכנה בתאריך {A11Y_UPDATED[1]}</span></p>
+    </div>
+  </section>
+  <section class="section--tight">
+    <div class="container container--text">
+      <div class="prose only-en" data-no-i18n>
+      <p>This statement is published as required by regulation 35E of Israel's Equal Rights for Persons with Disabilities (Service Accessibility Adjustments) Regulations, 2013.</p>
+      <h2>Our commitment</h2>
+      <p>MW Photo Tours believes in equal opportunity for every visitor, including people with disabilities. We work so that everyone can browse this shop, shop.mw.photography, and read everything published on it.</p>
+      <h2>What we've done</h2>
+      <ul>{_en_li}</ul>
+      <p>We keep working to make the site accessible in line with Israeli standard and law. Even so, some parts may not yet be fully accessible. If you come across a problem, please write to us and we'll do our best to fix it within a reasonable time.</p>
+      <p>To help us fix it quickly, please tell us what you were trying to do, which page you were on and what went wrong, along with your operating system, your browser and its version, and any assistive technology you use.</p>
+      <h2>Physical accessibility</h2>
+      <p>The shop operates online only; there is no place that receives the public.</p>
+      <h2>Accessibility contact</h2>
+      <p>Questions or requests about accessibility: Lior, at <a href="mailto:contact@matanwildphotography.com">contact@matanwildphotography.com</a> or by phone on <a href="tel:+972537432878" dir="ltr">053-743-2878</a>.</p>
+      </div>
+      <div class="prose only-he" dir="rtl" lang="he" data-no-i18n>
+      <p>הצהרה זו מפורסמת על פי החובה הנקובה בתקנה 35ה לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע״ג–2013.</p>
+      <h2>מבוא</h2>
+      <p>MW Photo Tours מאמינה במתן שוויון הזדמנויות לכל הגולשים, ובהם אנשים עם מוגבלות. אנחנו פועלים כדי שכולם יוכלו לגלוש בחנות שלנו, shop.mw.photography, ולקרוא את כל התכנים שמפורסמים בה.</p>
+      <h2>התאמות הנגישות שבוצעו באתר</h2>
+      <ul>{_he_li}</ul>
+      <p>אנחנו ממשיכים לפעול להנגשת האתר לפי דרישות התקן והדין הישראלי. יחד עם זאת, ייתכן שתמצאו רכיבים שעדיין אינם מונגשים במלואם. אם נתקלתם בבעיה, כתבו לנו ונעשה מאמץ לתקן אותה תוך זמן סביר.</p>
+      <p>כדי לזרז את הטיפול, כדאי לפרט מה ניסיתם לעשות, באיזה עמוד ומה הבעיה שנתקלתם בה, וכן את מערכת ההפעלה, סוג הדפדפן וגרסתו, וטכנולוגיה מסייעת שבה השתמשתם, אם רלוונטי.</p>
+      <h2>התאמות נגישות פיזיות</h2>
+      <p>פעילות האתר מקוונת בלבד, ואין קבלת קהל.</p>
+      <h2>פרטי יצירת קשר בנושאי נגישות</h2>
+      <p>פניות, שאלות או בקשות בנושאי נגישות: ליאור, בדואר האלקטרוני <a href="mailto:contact@matanwildphotography.com">contact@matanwildphotography.com</a> או בטלפון <a href="tel:+972537432878" dir="ltr">053-743-2878</a>.</p>
       </div>
     </div>
   </section>""", "static.js")

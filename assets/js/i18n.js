@@ -202,6 +202,12 @@ const HE = {
   "Payments processed securely by Lemon Squeezy ·": "התשלומים מעובדים בצורה מאובטחת על ידי Lemon Squeezy ·",
   "Terms": "תנאים",
   "Privacy": "פרטיות",
+  "Free guide": "מדריך חינם",
+  "Privacy policy": "מדיניות פרטיות",
+  "Accessibility statement": "הצהרת נגישות",
+  "Cookie settings": "הגדרות עוגיות",
+  "All rights reserved ©": "כל הזכויות שמורות ©",
+  "Legal": "מסמכים משפטיים",
   "Language": "שפה",
 
   // home

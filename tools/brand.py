@@ -187,16 +187,28 @@ def menu_button(lang="en"):
 
 FOOTER_LINKS = [("/field-guides/", "Photography guides", "מדריכי צילום"), ("/presets/#plugin", "Lightroom plugin", "תוסף ללייטרום"),
                 ("/presets/#presets", "Presets", "פריסטים"), ("/panel/", "Photoshop plugin", "תוסף לפוטושופ"), ("/shop/", "All products", "כל המוצרים"), ("/#free-guide", "Free guide", "מדריך חינם"), ("/account/", "My downloads", "ההורדות שלי"),
-                ("/support/", "Contact support", "פנייה לתמיכה"), ("/legal/#refunds", "Refunds", "החזרים"),
-                ("/legal/#terms", "Terms", "תנאים"), ("/legal/#privacy", "Privacy", "פרטיות")]
+                ("/support/", "Contact support", "פנייה לתמיכה")]
+# The bottom row, as on mw-phototours.com (Jeinna, 30 Oct 2026): rights line, the legal pages and Cookie settings.
+LEGAL_LINKS = [("/legal/#terms", "Terms", "תנאים"), ("/legal/#refunds", "Refunds", "החזרים"),
+               ("/legal/#privacy", "Privacy policy", "מדיניות פרטיות"), ("/accessibility/", "Accessibility statement", "הצהרת נגישות")]
+# The accessibility widget (Nagishna, as on mw-phototours.com). Its licence is issued per domain: the tour site's
+# licence names mw-phototours.com and the widget blocks itself anywhere else. Paste the loader address of a licence
+# for mw.photography here (https://nagishna.co.il/s/<id>) and rebuild; empty = no widget.
+NAGISHNA_SRC = ""
 
 
 def site_footer(lang="en"):
     he = lang == "he"
     links = "".join(f'<a href="{he_href(href) if he else href}">{h if he else e}</a>' for href, e, h in FOOTER_LINKS)
     credit = "כל הצילומים: מתן שרון · contact@matanwildphotography.com" if he else "All photos: Matan Wild · contact@matanwildphotography.com"
+    legal = "".join(f'<a href="{href}">{h if he else e}</a>' for href, e, h in LEGAL_LINKS)
+    rights = "כל הזכויות שמורות © <span data-year>2026</span> MW Photo Tours" if he else "All rights reserved © <span data-year>2026</span> MW Photo Tours"
+    widget = f'\n<script src="{NAGISHNA_SRC}" defer></script>' if NAGISHNA_SRC else ""
     return (f'<footer class="site-foot">\n<div class="wrap container">\n<div class="sf-brand">{"MW - Photo Tours" if he else "MW PHOTO TOURS"}</div>\n'
-            f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n<div class="sf-credit">{credit}</div>\n</div>\n</footer>')
+            f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n<div class="sf-credit">{credit}</div>\n'
+            f'<div class="sf-legal"><p class="sf-rights">{rights}</p><nav class="sf-terms" aria-label="{"מסמכים משפטיים" if he else "Legal"}">{legal}'
+            f'<button class="sf-cookies" type="button" data-cookie-settings>{"הגדרות עוגיות" if he else "Cookie settings"}</button></nav></div>\n'
+            f'</div>\n</footer>{widget}')
 
 
 SITE_CSS = """
@@ -213,6 +225,18 @@ html[lang=he] .site-foot .sf-brand{letter-spacing:.3em;direction:ltr}
 html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
 html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
 html .site-foot a:hover{color:#FEFBF1}
+html .site-foot .sf-legal{flex-basis:100%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 24px;padding-top:18px;border-top:1px solid rgba(156,177,194,.12);font-size:12.5px}
+html .site-foot .sf-rights{margin:0}
+html .site-foot .sf-terms{display:flex;flex-wrap:wrap;gap:6px 20px}
+html .site-foot .sf-cookies{padding:0;border:0;background:none;color:#9CB1C2;font:inherit;cursor:pointer;transition:color .2s}
+html .site-foot .sf-cookies:hover{color:#FEFBF1}
+html .site-foot a:focus-visible,html .site-foot .sf-cookies:focus-visible{outline:2px solid #F4AF56;outline-offset:3px;border-radius:3px}
+.ck-scrim{position:fixed;inset:0;z-index:300;background:rgba(10,9,8,.6)}
+.ck-box{position:fixed;z-index:301;inset-inline:16px;bottom:16px;max-width:460px;margin-inline:auto;padding:24px 24px 20px;border-radius:18px;border:1px solid rgba(254,251,241,.12);background:#16130F;color:#FEFBF1;font:400 15px/1.6 "Google Sans","Heebo",sans-serif;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.ck-box h2{margin:0 0 8px;font-size:19px;font-weight:600}
+.ck-box p{margin:0 0 12px;color:#CDD7DD}
+.ck-box a{color:#F4AF56}
+.ck-box .ck-close{min-height:44px;padding:0 22px;border:0;border-radius:999px;background:linear-gradient(90deg,#E4AA7C,#F4AF56);color:#1A1208;font:700 15px "Google Sans","Heebo",sans-serif;cursor:pointer}
 html .nav .nav-menu{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;margin-inline-start:4px;padding:0;border:0;border-radius:50%;background:transparent;color:#FEFBF1;cursor:pointer}
 html .nav .nav-menu:hover{background:rgba(254,251,241,.06);color:#F4AF56}
 html .nav .nav-menu svg path{transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-origin:12px 12px}

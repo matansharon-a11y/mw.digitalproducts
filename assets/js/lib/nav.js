@@ -82,6 +82,48 @@
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", menu) : menu();
 
+  // Footer: the current year, and "Cookie settings" (30 Oct 2026). The shop keeps only what it needs to work (sign-in,
+  // cart, language, last prices seen) and has no advertising or analytics cookies, so there's nothing to switch on or
+  // off: the window says so plainly. If a tracker is ever added, this becomes a real consent choice first.
+  function footer() {
+    document.querySelectorAll(".site-foot [data-year]").forEach((el) => { el.textContent = new Date().getFullYear(); });
+    let box = null, back = null;
+    const close = () => {
+      if (!box) return;
+      box.remove(); box = null;
+      if (back) back.focus({ preventScroll: true });
+    };
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-cookie-settings]");
+      if (btn) {
+        e.preventDefault();
+        back = btn;
+        const he = /^he/.test(document.documentElement.lang);
+        const t = he
+          ? { h: "עוגיות באתר", p: "אנחנו שומרים בדפדפן רק את מה שהחנות צריכה כדי לעבוד: החיבור לחשבון, העגלה, השפה והמחירים האחרונים שראיתם. אין באתר עוגיות פרסום או מדידה, כך שאין מה להפעיל או לכבות.", a: "למדיניות הפרטיות", c: "סגירה" }
+          : { h: "Cookies on this site", p: "We only keep what the shop needs to work: your sign-in, your cart, your language and the last prices you saw. There are no advertising or analytics cookies, so there's nothing to switch on or off.", a: "Read our privacy policy", c: "Close" };
+        close();
+        box = document.createElement("div");
+        box.innerHTML = `<div class="ck-scrim" data-ck-close></div><div class="ck-box" role="dialog" aria-modal="true" aria-labelledby="ck-h" dir="${he ? "rtl" : "ltr"}" lang="${he ? "he" : "en"}"><h2 id="ck-h">${t.h}</h2><p>${t.p}</p><p><a href="/legal/#privacy">${t.a}</a></p><button class="ck-close" type="button" data-ck-close>${t.c}</button></div>`;
+        box.setAttribute("data-no-i18n", "");
+        document.body.append(box);
+        box.querySelector(".ck-close").focus({ preventScroll: true });
+        return;
+      }
+      if (box && e.target.closest("[data-ck-close]")) close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (!box) return;
+      if (e.key === "Escape") close();
+      else if (e.key === "Tab") {   // keep the keyboard inside the window
+        const f = [...box.querySelectorAll("a, button")];
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+  }
+  document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", footer) : footer();
+
   let tries = 0;
   (function poll() { if (!watch() && tries++ < 40) setTimeout(poll, 150); })();
 
