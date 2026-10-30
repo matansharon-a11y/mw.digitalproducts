@@ -113,6 +113,9 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - **Accessibility statement** `/accessibility/` (`build_pages.py`, `A11Y_DONE`; English and Hebrew in `only-en` / `only-he` blocks): required in Israel (regulation 35ה, 2013). Adapted from the tour site's statement; it lists only what this site really does, so update `A11Y_DONE` and the date when that changes. Contact: Lior, contact@matanwildphotography.com, 053-743-2878 (as on the tour site). Needs Matan's approval.
 - **Accessibility widget (Nagishna):** the tour site's licence names mw-phototours.com and the widget blocks itself on any other domain. With a licence for mw.photography, paste its loader address (`https://nagishna.co.il/s/<id>`) into `NAGISHNA_SRC` in `tools/brand.py` and rebuild: the widget then loads on every page and the statement lists it.
 
+## November Sale (offer box with a countdown)
+- The offer box on the home, shop and product pages (`launch_block()`, `LAUNCH_TEXT`, `LAUNCH_END` in `tools/brand.py`) is titled **November Sale** / מבצע נובמבר and runs to **30 November 2026, 23:59 Israel time** (Jeinna, 30 Oct 2026; it was a launch offer ending 15 November). It hides itself when time is up; then change the bundle prices (new migration or the admin) and in Lemon Squeezy.
+
 ## Cart and header icons
 - `assets/js/lib/cart.js` adds the Cart icon to the header on every page (`navIconsInner()`), and fills the ☰ menu's account lines for a signed-in visitor. The product and sales pages ship the same Cart icon from `tools/build_products.py` / `tools/unify_pages.py`. Don't bring back a separate Account icon (Jeinna, 25 Oct 2026).
 

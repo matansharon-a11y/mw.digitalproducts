@@ -125,6 +125,7 @@ const HE = {
   "Launch offer": "מבצע השקה",
   "November Sale": "מבצע נובמבר",
   "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.": "החבילות במחירי השקה עד 15 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
+  "Bundles at sale prices until 30 November. After that, prices go up and some bundles leave the shop.": "החבילות במחירי מבצע עד 30 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
   "days": "ימים",
   "hrs": "שעות",
   "min": "דקות",
