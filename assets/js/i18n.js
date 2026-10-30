@@ -123,6 +123,7 @@ const HE = {
   "Compare four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and PDF photography guides.": "ארבעה כלים מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום וקובצי LUT, ומדריכי צילום. השוו ביניהם, או חסכו עם חבילה.",
   // launch offer (24 Oct 2026)
   "Launch offer": "מבצע השקה",
+  "November Sale": "מבצע נובמבר",
   "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.": "החבילות במחירי השקה עד 15 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
   "days": "ימים",
   "hrs": "שעות",

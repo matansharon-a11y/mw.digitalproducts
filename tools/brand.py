@@ -309,7 +309,7 @@ LANG_GUARD = ('<script>try{if(localStorage.getItem("mwp_lang")==="he"){var d=doc
               '<style>html.he-wait body{visibility:hidden}</style>')
 
 
-# ---------------------------------------------------------------- launch offer (Matan, 24 Oct 2026)
+# ---------------------------------------------------------------- launch offer (Matan, 24 Oct 2026); titled "November Sale" since 30 Oct 2026 (Jeinna)
 # The bundles sell at launch prices until this moment (Israel time). The block shows a live countdown and hides
 # itself when the time is up; after that, change the prices (new migration or the admin) and Lemon Squeezy.
 LAUNCH_END = "2026-11-15T23:59:00+02:00"
@@ -319,9 +319,9 @@ LAUNCH_END = "2026-11-15T23:59:00+02:00"
 # "Can I buy just one guide?" (build_products.py, build_pages.py). Their products and personal copies work either way.
 SINGLE_GUIDES_LIVE = True
 LAUNCH_TEXT = {
-    "en": ("Launch offer", "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.",
+    "en": ("November Sale", "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.",
            ("days", "hrs", "min", "sec")),
-    "he": ("מבצע השקה", "החבילות במחירי השקה עד 15 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
+    "he": ("מבצע נובמבר", "החבילות במחירי השקה עד 15 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
            ("ימים", "שעות", "דקות", "שניות")),
 }
 LAUNCH_CSS = """
