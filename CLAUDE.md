@@ -108,6 +108,11 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 ## MWP Panel in Photoshop and Photoshop (Beta)
 - Both apps keep separate plugin storage, so `tools/panel-license/license.js` works out the device id from the computer, and the `license` function counts a computer already listed under the same name once, but only from the same network (same IP hash; launch audit, 24 Oct 2026: before, any number of computers with one name counted once). The plugin's manifest needs no `maxVersion` (see `tools/panel-license/README.md`).
 
+## Footer legal row, cookies and accessibility (30 Oct 2026, as on mw-phototours.com)
+- Every footer (`site_footer()` in `tools/brand.py`) ends with "All rights reserved © year MW Photo Tours" (year filled in by `nav.js`) and `LEGAL_LINKS`: Terms, Refunds, Privacy policy, Accessibility statement, plus a **Cookie settings** button. It opens a short window (`nav.js`) saying the shop keeps only what it needs to work and has no advertising or analytics cookies. If a tracker is ever added, this must become a real consent choice first.
+- **Accessibility statement** `/accessibility/` (`build_pages.py`, `A11Y_DONE`; English and Hebrew in `only-en` / `only-he` blocks): required in Israel (regulation 35ה, 2013). Adapted from the tour site's statement; it lists only what this site really does, so update `A11Y_DONE` and the date when that changes. Contact: Lior, contact@matanwildphotography.com, 053-743-2878 (as on the tour site). Needs Matan's approval.
+- **Accessibility widget (Nagishna):** the tour site's licence names mw-phototours.com and the widget blocks itself on any other domain. With a licence for mw.photography, paste its loader address (`https://nagishna.co.il/s/<id>`) into `NAGISHNA_SRC` in `tools/brand.py` and rebuild: the widget then loads on every page and the statement lists it.
+
 ## Cart and header icons
 - `assets/js/lib/cart.js` adds the Cart icon to the header on every page (`navIconsInner()`), and fills the ☰ menu's account lines for a signed-in visitor. The product and sales pages ship the same Cart icon from `tools/build_products.py` / `tools/unify_pages.py`. Don't bring back a separate Account icon (Jeinna, 25 Oct 2026).
 
