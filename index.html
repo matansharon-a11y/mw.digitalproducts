@@ -377,7 +377,8 @@ html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
 html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
 html .site-foot a:hover{color:#FEFBF1}
 html .site-foot .sf-legal{flex-basis:100%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 24px;padding-top:18px;border-top:1px solid rgba(156,177,194,.12);font-size:12.5px}
-html .site-foot .sf-rights{margin:0}
+html .site-foot .sf-credits{display:grid;gap:4px}   /* the rights line with the photo credit under it, as on mw-phototours.com (Jeinna, 30 Oct 2026) */
+html .site-foot .sf-rights,html .site-foot .sf-credit{margin:0}
 html .site-foot .sf-terms{display:flex;flex-wrap:wrap;gap:6px 20px}
 html .site-foot .sf-cookies{padding:0;border:0;background:none;color:#9CB1C2;font:inherit;cursor:pointer;transition:color .2s}
 html .site-foot .sf-cookies:hover{color:#FEFBF1}
@@ -1202,8 +1203,7 @@ c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(
 <div class="wrap container">
 <div class="sf-brand">MW PHOTO TOURS</div>
 <nav class="sf-links" aria-label="Footer"><a href="/field-guides/">Photography guides</a><a href="/presets/#plugin">Lightroom plugin</a><a href="/presets/#presets">Presets</a><a href="/panel/">Photoshop plugin</a><a href="/shop/">All products</a><a href="/#free-guide">Free guide</a><a href="/account/">My downloads</a><a href="/support/">Contact support</a></nav>
-<div class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</div>
-<div class="sf-legal"><p class="sf-rights">All rights reserved © <span data-year>2026</span> MW Photo Tours</p><nav class="sf-terms" aria-label="Legal"><a href="/legal/#terms">Terms</a><a href="/legal/#refunds">Refunds</a><a href="/legal/#privacy">Privacy policy</a><a href="/accessibility/">Accessibility statement</a><button class="sf-cookies" type="button" data-cookie-settings>Cookie settings</button></nav></div>
+<div class="sf-legal"><div class="sf-credits"><p class="sf-rights">All rights reserved © <span data-year>2026</span> MW Photo Tours</p><p class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</p></div><nav class="sf-terms" aria-label="Legal"><a href="/legal/#terms">Terms</a><a href="/legal/#refunds">Refunds</a><a href="/legal/#privacy">Privacy policy</a><a href="/accessibility/">Accessibility statement</a><button class="sf-cookies" type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </div>
 </footer>
 </div>

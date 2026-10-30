@@ -205,8 +205,9 @@ def site_footer(lang="en"):
     rights = "כל הזכויות שמורות © <span data-year>2026</span> MW Photo Tours" if he else "All rights reserved © <span data-year>2026</span> MW Photo Tours"
     widget = f'\n<script src="{NAGISHNA_SRC}" defer></script>' if NAGISHNA_SRC else ""
     return (f'<footer class="site-foot">\n<div class="wrap container">\n<div class="sf-brand">{"MW - Photo Tours" if he else "MW PHOTO TOURS"}</div>\n'
-            f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n<div class="sf-credit">{credit}</div>\n'
-            f'<div class="sf-legal"><p class="sf-rights">{rights}</p><nav class="sf-terms" aria-label="{"מסמכים משפטיים" if he else "Legal"}">{legal}'
+            f'<nav class="sf-links" aria-label="{"קישורים" if he else "Footer"}">{links}</nav>\n'
+            f'<div class="sf-legal"><div class="sf-credits"><p class="sf-rights">{rights}</p><p class="sf-credit">{credit}</p></div>'
+            f'<nav class="sf-terms" aria-label="{"מסמכים משפטיים" if he else "Legal"}">{legal}'
             f'<button class="sf-cookies" type="button" data-cookie-settings>{"הגדרות עוגיות" if he else "Cookie settings"}</button></nav></div>\n'
             f'</div>\n</footer>{widget}')
 
@@ -226,7 +227,8 @@ html .site-foot .sf-links{display:flex;flex-wrap:wrap;gap:8px 22px}
 html .site-foot a{color:#9CB1C2;text-decoration:none;transition:color .2s}
 html .site-foot a:hover{color:#FEFBF1}
 html .site-foot .sf-legal{flex-basis:100%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 24px;padding-top:18px;border-top:1px solid rgba(156,177,194,.12);font-size:12.5px}
-html .site-foot .sf-rights{margin:0}
+html .site-foot .sf-credits{display:grid;gap:4px}   /* the rights line with the photo credit under it, as on mw-phototours.com (Jeinna, 30 Oct 2026) */
+html .site-foot .sf-rights,html .site-foot .sf-credit{margin:0}
 html .site-foot .sf-terms{display:flex;flex-wrap:wrap;gap:6px 20px}
 html .site-foot .sf-cookies{padding:0;border:0;background:none;color:#9CB1C2;font:inherit;cursor:pointer;transition:color .2s}
 html .site-foot .sf-cookies:hover{color:#FEFBF1}
