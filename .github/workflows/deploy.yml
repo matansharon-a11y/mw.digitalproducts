@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir _site
           cp *.html robots.txt sitemap.xml favicon.ico .nojekyll _site/
-          cp -r assets admin presets lightroom-classic panel field-guides beta account shop product support legal thank-you read testers he _site/
+          cp -r assets admin presets lightroom-classic panel field-guides beta account shop product support legal accessibility thank-you read testers he _site/
           # The current prices written into the pages, so they show at once (the browser still checks the live ones).
           python3 tools/bake_prices.py _site
           # Fresh scripts after every deploy: each page asks for the current version of every script it uses.
