@@ -497,6 +497,25 @@ document.getElementById("sign-out")?.addEventListener("click", async () => {
 const preset = params.get("email");
 if (preset && EMAIL_RE.test(preset)) emails.forEach((i) => { i.value = preset; });
 if (next && /checkout|cart=1/.test(next)) document.getElementById("auth-why").hidden = false;
+// From the Ambassador page, after accepting the terms (?from=ambassador): their name, and a note that the account
+// must use the email they applied with (their tools are tied to it).
+if (params.get("from") === "ambassador") {
+  const nm = (params.get("name") || "").trim().slice(0, 80);
+  const su = document.getElementById("su-name");
+  if (nm && su && !su.value) su.value = nm;
+  for (const view of signedOut.querySelectorAll('[data-view="signup"], [data-view="signin"]')) {
+    const note = document.createElement("p");
+    note.className = "auth-note auth-amb";
+    note.textContent = view.dataset.view === "signup"
+      ? T("Welcome to the Ambassador Program. Create your account with the email you applied with, confirm it from the email we send, and your tools will be here.",
+          "ברוכים הבאים לתוכנית השגרירים. פתחו חשבון עם המייל שאיתו נרשמתם, אשרו אותו מהמייל שנשלח אליכם, והכלים שלכם יחכו כאן.")
+      : T("Welcome to the Ambassador Program. Sign in with the email you applied with, and your tools will be here.",
+          "ברוכים הבאים לתוכנית השגרירים. התחברו עם המייל שאיתו נרשמתם, והכלים שלכם יחכו כאן.");
+    note.setAttribute("data-no-i18n", "");
+    view.querySelectorAll(".auth-note").forEach((n) => { n.hidden = true; });   // the buyers' note doesn't apply to them
+    view.prepend(note);
+  }
+}
 show(params.get("mode") === "signup" ? "signup" : "signin");
 
 let recovering = resetting;

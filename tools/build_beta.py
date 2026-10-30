@@ -378,7 +378,8 @@ html .nav .wrap,html.nav-scrolled .nav .wrap{{height:80px;transition:none}}
 <div class="wrap">
 <h1 class="h1 hero-h reveal" id="hero-h" style="--d:.08s">Create with MWP.<br><span class="grad">Join our Ambassador Program.</span></h1>
 <p class="lead reveal" id="hero-lead" style="--d:.16s">A small group of selected photographers gets MWP Presets, MWP Photoshop Plugin Panel and the Field Guides free. In return, create with them, share your work and tell us what you think.</p>
-<p class="reveal hero-cta" style="--d:.24s;margin-top:34px"><button type="button" class="btn" data-apply id="apply-cta">Apply now</button><button type="button" class="btn" data-terms id="accept-cta" hidden>Read and accept the terms</button><a class="btn" id="downloads-cta" href="/account/" hidden>Go to My downloads</a></p>
+<p class="reveal hero-cta" style="--d:.24s;margin-top:34px"><button type="button" class="btn" data-apply id="apply-cta">Apply now</button><button type="button" class="btn" data-terms id="accept-cta" hidden>Read and accept the terms</button><a class="btn" id="downloads-cta" href="/account/?mode=signup" hidden>Create your account</a></p>
+<p class="hero-signin" id="signin-cta" style="margin:18px 0 0;font-size:15px" hidden><a href="/account/" style="color:#F4AF56;text-underline-offset:3px">I already have an account: sign in</a></p>
 <p class="full-note reveal" id="full-note" style="--d:.24s" hidden><span class="dot"></span>The Ambassador Program is full. Thank you for your interest.</p>
 </div>
 </section>

@@ -87,16 +87,19 @@ document.querySelectorAll("[data-open]").forEach((a) => a.addEventListener("clic
 }));
 // ---------------------------------------------------------------- after approval: accept the terms (?accept=<token>)
 const acceptToken = new URLSearchParams(location.search).get("accept") || "";
+let acceptName = "";
 const heroH = document.getElementById("hero-h");
 const heroLead = document.getElementById("hero-lead");
 function heroCta(which) {
   for (const id of ["apply-cta", "accept-cta", "downloads-cta"]) document.getElementById(id).hidden = id !== which;
+  if (which !== "downloads-cta") document.getElementById("signin-cta").hidden = true;
 }
 if (acceptToken) {
   heroCta(null);
   betaAcceptInfo(acceptToken).then((r) => {
-    const first = (r.name || "").trim().split(/\s+/)[0];
-    if (r.accepted) return showAccepted(r.email);
+    acceptName = (r.name || "").trim();
+    const first = acceptName.split(/\s+/)[0];
+    if (r.accepted) return showAccepted(r.email, r.name);
     heroH.innerHTML = T(`Welcome${first ? `, ${esc(first)}` : ""}.<br><span class="grad">One last step.</span>`,
       `ברוכים הבאים${first ? `, ${esc(first)}` : ""}.<br><span class="grad">עוד צעד אחד.</span>`);
     heroLead.textContent = T("You're approved for the MWP Ambassador Program. Read and accept the terms, and your tools are ready.",
@@ -106,13 +109,27 @@ if (acceptToken) {
     heroLead.textContent = err.message || T("This link isn't valid any more. Please contact us.", "הקישור הזה כבר לא בתוקף. צרו איתנו קשר.");
   });
 }
-function showAccepted(email) {
-  heroH.innerHTML = T(`You're <span class="grad">in.</span>`, `אתם <span class="grad">בפנים.</span>`);
+// After accepting: the account comes first (Jeinna, 30 Oct 2026). The tools are only reachable signed in (My downloads
+// and the reader ask the server, which checks the account's confirmed email), so the next step is creating that account
+// with the email they applied with, already filled in.
+function showAccepted(email, name) {
+  heroH.innerHTML = T(`You're in.<br><span class="grad">Now create your account.</span>`, `אתם בפנים.<br><span class="grad">עכשיו פותחים חשבון.</span>`);
   heroLead.textContent = email
-    ? T(`Your tools are waiting in My downloads. Sign in, or create your account, with ${email}.`,
-        `הכלים שלכם מחכים בהורדות שלי. התחברו, או פתחו חשבון, עם ${email}.`)
-    : T("Your tools are waiting in My downloads.", "הכלים שלכם מחכים בהורדות שלי.");
+    ? T(`Your tools are ready. Create your MWP account with ${email} (the email you applied with) to download them.`,
+        `הכלים שלכם מוכנים. פתחו חשבון MWP עם ${email} (המייל שאיתו נרשמתם) כדי להוריד אותם.`)
+    : T("Your tools are ready. Create your MWP account with the email you applied with to download them.",
+        "הכלים שלכם מוכנים. פתחו חשבון MWP עם המייל שאיתו נרשמתם כדי להוריד אותם.");
+  const q = new URLSearchParams({ mode: "signup", from: "ambassador" });
+  if (email) q.set("email", email);
+  if (name) q.set("name", name);
+  const cta = document.getElementById("downloads-cta");
+  cta.href = `/account/?${q}`;
+  cta.textContent = T("Create your account", "פתיחת חשבון");
   heroCta("downloads-cta");
+  const signin = document.getElementById("signin-cta");
+  signin.querySelector("a").href = `/account/?${new URLSearchParams(email ? { email, from: "ambassador" } : { from: "ambassador" })}`;
+  signin.querySelector("a").textContent = T("I already have an account: sign in", "כבר יש לי חשבון: התחברות");
+  signin.hidden = false;
 }
 const esc = (v) => String(v).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 document.getElementById("agree-btn").addEventListener("click", async () => {
@@ -122,7 +139,7 @@ document.getElementById("agree-btn").addEventListener("click", async () => {
   try {
     const r = await betaAccept(acceptToken, he() ? "he" : "en");
     closeModal(termsModal);
-    showAccepted(r.email);
+    showAccepted(r.email, acceptName);
   } catch (err) {
     alert(err.message);
   } finally { btn.disabled = false; }
