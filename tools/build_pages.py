@@ -823,7 +823,7 @@ page("accessibility.html", "Accessibility statement · MWP",
       <h2>Physical accessibility</h2>
       <p>The shop operates online only; there is no place that receives the public.</p>
       <h2>Accessibility contact</h2>
-      <p>Questions or requests about accessibility: Lior, at <a href="mailto:contact@matanwildphotography.com">contact@matanwildphotography.com</a> or by phone on <a href="tel:+972537432878" dir="ltr">053-743-2878</a>.</p>
+      <p>Questions or requests about accessibility: write to <a href="mailto:contact@matanwildphotography.com">contact@matanwildphotography.com</a> or by phone on <a href="tel:+972537432878" dir="ltr">053-743-2878</a>.</p>
       </div>
       <div class="prose only-he" dir="rtl" lang="he" data-no-i18n>
       <p>הצהרה זו מפורסמת על פי החובה הנקובה בתקנה 35ה לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע״ג–2013.</p>
@@ -836,7 +836,7 @@ page("accessibility.html", "Accessibility statement · MWP",
       <h2>התאמות נגישות פיזיות</h2>
       <p>פעילות האתר מקוונת בלבד, ואין קבלת קהל.</p>
       <h2>פרטי יצירת קשר בנושאי נגישות</h2>
-      <p>פניות, שאלות או בקשות בנושאי נגישות: ליאור, בדואר האלקטרוני <a href="mailto:contact@matanwildphotography.com">contact@matanwildphotography.com</a> או בטלפון <a href="tel:+972537432878" dir="ltr">053-743-2878</a>.</p>
+      <p>פניות, שאלות או בקשות בנושאי נגישות: בדואר האלקטרוני <a href="mailto:contact@matanwildphotography.com">contact@matanwildphotography.com</a> או בטלפון <a href="tel:+972537432878" dir="ltr">053-743-2878</a>.</p>
       </div>
     </div>
   </section>""", "static.js")
