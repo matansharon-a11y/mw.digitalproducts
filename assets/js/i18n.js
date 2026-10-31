@@ -209,6 +209,7 @@ const HE = {
   "Free guide": "מדריך חינם",
   "Privacy policy": "מדיניות פרטיות",
   "Accessibility statement": "הצהרת נגישות",
+  "Accessibility": "נגישות",
   "Cookie settings": "הגדרות עוגיות",
   "All rights reserved ©": "כל הזכויות שמורות ©",
   "Legal": "מסמכים משפטיים",

@@ -2,6 +2,12 @@
 // section in view gets the gold underline. Works on the home page and the sales pages.
 (function () {
   "use strict";
+  // The accessibility menu (a11y.js, 31 Oct 2026): loaded at once, so a visitor's saved settings apply as the page opens.
+  if (!document.getElementById("mwp-a11y-js")) {
+    const a = document.createElement("script");
+    a.id = "mwp-a11y-js"; a.src = "/assets/js/lib/a11y.js"; a.async = true;
+    (document.head || document.documentElement).append(a);
+  }
   // An emailed account link (reset password, confirm email, sign in) that lands on another page than My downloads,
   // e.g. the home page when the email's button points at the site's address: forward it there, code and all.
   (function forwardAccountLink() {

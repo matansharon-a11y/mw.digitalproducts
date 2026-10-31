@@ -135,7 +135,7 @@ MENU_GROUPS = [
                         ("/panel/", "Photoshop Plugin Panel", "פאנל התוסף לפוטושופ"),
                         ("/field-guides/", "Photography Guides", "מדריכי צילום"),
                         ("/shop/", "Compare all", "השוואה בין כולם"), ("/#bundles", "Bundles", "חבילות")]),
-    (("More", "עוד"), [("/#about", "About Matan", "על מתן")]),
+    (("More", "עוד"), [("/#about", "About Matan", "על מתן"), ("#a11y", "Accessibility", "נגישות")]),   # #a11y opens the accessibility menu (a11y.js)
     (("Your account", "החשבון שלי"), [("/account/", "My downloads", "ההורדות שלי"), ("/account/#orders", "Order history", "היסטוריית הזמנות"),
                                       ("/account/#details", "My details", "הפרטים שלי"), ("/support/", "Help and support", "עזרה ותמיכה")]),
 ]
