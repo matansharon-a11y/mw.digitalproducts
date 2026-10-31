@@ -795,8 +795,8 @@ A11Y_DONE = [("A “Skip to content” link at the top of every page", "קישו
              ("Motion and animations stop when your device is set to reduce motion", "תנועה ואנימציות נעצרות כשבמכשיר מוגדרת הפחתת תנועה"),
              ("The site in Hebrew (right to left) and English, with each page's language set for screen readers", "האתר בעברית (מימין לשמאל) ובאנגלית, ושפת כל עמוד מוגדרת לקוראי מסך"),
              ("A layout that adapts to phones, tablets and computers", "תצוגה שמתאימה את עצמה לטלפון, לטאבלט ולמחשב")]
-A11Y_DONE.append(("An accessibility menu (the small button in the corner of every page, “Accessibility” in the menu, or “Accessibility settings” on the first Tab): larger text, high contrast, underlined links, more text spacing and stopping animations",
-                  "תפריט נגישות (הכפתור הקטן בפינת כל עמוד, „נגישות” בתפריט, או „הגדרות נגישות” בלחיצה הראשונה על Tab): הגדלת טקסט, ניגודיות גבוהה, הדגשת קישורים, ריווח טקסט ועצירת אנימציות"))
+A11Y_DONE.append(("An accessibility menu (the round blue button on the side of every page, “Accessibility” in the menu, “Accessibility settings” on the first Tab, or Alt+Shift+A): accessibility profiles; text size, page zoom and line, letter and word spacing; a readable font and text alignment; colour and contrast modes; highlighted links, headings and image descriptions; large cursors, a reading guide and mask, stopping animations, keyboard focus, read aloud, screen reader support and page regions; muting media, hiding images, a reading view and an on-screen keyboard",
+                  "תפריט נגישות (הכפתור הכחול העגול בצד כל עמוד, „נגישות” בתפריט, „הגדרות נגישות” בלחיצה הראשונה על Tab, או Alt+Shift+A): פרופילי נגישות; גודל טקסט, הגדלת תצוגה וריווח שורות, אותיות ומילים; גופן קריא ויישור טקסט; מצבי צבע וניגודיות; הדגשת קישורים, כותרות ותיאורי תמונות; סמנים גדולים, קו הנחיה ומסכת קריאה, עצירת הנפשות, ניווט מקלדת, הקראה, התאמה לקורא מסך וניווט אזורים; השתקת מדיה, הסתרת תמונות, תצוגה קריאה ומקלדת וירטואלית"))
 A11Y_UPDATED = ("31 October 2026", "31/10/2026")
 _en_li = "".join(f"<li>{e}</li>" for e, h in A11Y_DONE)
 _he_li = "".join(f"<li>{h}</li>" for e, h in A11Y_DONE)
