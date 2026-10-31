@@ -2,6 +2,7 @@
 import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reviews_section import section as reviews_section
+import bundle_cards
 from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
@@ -201,11 +202,7 @@ page("index.html",
 
 CHECK_G = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
 GO = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
-# The bundles (the home page's bundle cards)
-BUNDLES = [("Lightroom Plugin + Field Guides", "Shoot it, then edit it", "presets-field-guides", ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
-           ("Lightroom Plugin + Photoshop Plugin Panel", "The same look in Lightroom and Photoshop", "presets-panel", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", False),
-           ("Field Guides + Photoshop Plugin Panel", "Learn the shot, then finish it in Photoshop", "field-guides-panel", ["MWP Photoshop Plugin Panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", False),
-           ("The full set", "From the shot to the share", "full-set", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", True)]
+# The bundles: tools/bundle_cards.py (the same cards as the home page)
 
 
 def _img(prefix):
@@ -274,14 +271,6 @@ def _itemlist():
     return '<script type="application/ld+json">' + json.dumps(data) + "</script>"
 
 
-def _bundle(name, sub, slug, pts, cta, hi):
-    li = "".join(f"<li>{CHECK_G}<span>{x}</span></li>" for x in pts)
-    return (f'<div class="bundle{" hi" if hi else ""}">{"<span class=badge>Everything</span>" if hi else ""}<h3>{name}</h3><p class="sub">{sub}</p>'
-            f'<div class="amt"><span data-price="{slug}" data-no-i18n>$0.00</span></div>'
-            f'<p class="deal"><s><span data-price="{slug}" data-was data-no-i18n></span></s> <span class="save" data-save="{slug}" data-no-i18n hidden></span></p><ul>{li}</ul>'
-            f'<a class="btn" href="#buy" data-add-to-cart="{slug}">{cta}</a></div>')
-
-
 page("shop.html", "Compare Lightroom Presets, Plugins &amp; Guides · MWP Shop",
  "Compare four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and PDF photography guides.",
  f"""  <section class="page-hero sp-hero">
@@ -305,7 +294,8 @@ page("shop.html", "Compare Lightroom Presets, Plugins &amp; Guides · MWP Shop",
       <h2 class="display sp-h2" id="bundles-h">Buy together. <span class="grad">Pay less.</span></h2>
       <p class="lead">Every bundle with MWP Presets includes the Lightroom Classic plugin.</p>
       {launch_block()}
-      <div class="bundles">{"".join(_bundle(*b) for b in BUNDLES)}</div>
+      {bundle_cards.CSS_LINK}
+      {bundle_cards.cards()}
     </div>
   </section>
   {_itemlist()}""", "shop.js",

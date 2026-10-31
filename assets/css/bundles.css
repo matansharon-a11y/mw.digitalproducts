@@ -1,0 +1,131 @@
+/* The bundles section (Oct 2026 redesign): tools/bundle_cards.py. Each card opens with every product in the bundle
+   .bx on its device,.bx then the name,.bx what's inside,.bx the price and the button. The full set leads as a wide card. */
+.bx{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:56px;text-align:start}
+.bx .bx-card{position:relative;display:flex;flex-direction:column;min-width:0;border-radius:28px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(254,251,241,.05),rgba(254,251,241,.015) 60%,rgba(254,251,241,.03));
+  border:1px solid rgba(254,251,241,.09);box-shadow:inset 0 1px 0 rgba(254,251,241,.06),0 30px 60px -40px rgba(0,0,0,.8);
+  transition:transform .6s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s}
+.bx .bx-card:hover{transform:translateY(-4px);border-color:rgba(254,251,241,.16)}
+.bx .bx-hero{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:stretch;
+  border:1px solid transparent;background:linear-gradient(180deg,#1a1510,#0f0d0b) padding-box,
+  linear-gradient(160deg,rgba(244,175,86,.9),rgba(244,175,86,.12) 55%,rgba(244,175,86,.5)) border-box;
+  box-shadow:0 50px 100px -50px rgba(244,175,86,.4),0 30px 60px -40px rgba(0,0,0,.8)}
+/* the stage */
+.bx .bx-stage{position:relative;margin:10px 10px 0;aspect-ratio:16/10.5;border-radius:20px;overflow:hidden;container-type:inline-size;
+  background:radial-gradient(ellipse 70% 60% at 50% 38%,rgba(244,175,86,.17),rgba(244,175,86,0) 70%),linear-gradient(180deg,#19140f,#0c0b09 85%)}
+.bx .bx-hero .bx-stage{margin:12px;aspect-ratio:auto;min-height:440px}
+.bx .bx-stage{display:flex;align-items:center}
+.bx .bx-scene{position:relative;width:100%;aspect-ratio:16/10.5;max-height:100%}
+.bx .bx-glow{position:absolute;inset:auto 8% 2% 8%;height:30%;background:radial-gradient(ellipse at 50% 100%,rgba(244,175,86,.14),rgba(0,0,0,0) 70%);pointer-events:none}
+.bx .bx-floor{position:absolute;left:-20%;right:-20%;bottom:0;height:8%;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,0));border-top:1px solid rgba(254,251,241,.05)}
+.bx .dv{position:absolute;left:var(--x);bottom:var(--y);width:var(--w);z-index:var(--z);container-type:inline-size;
+  filter:drop-shadow(0 2.4cqw 2.6cqw rgba(0,0,0,.55));transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.bx .bx-card:hover .dv-lap,.bx .bx-card:hover .dv-tab{transform:translateY(-1.5%)}
+.bx .bx-card:hover .dv-ph{transform:translateY(-3%)}
+.bx .dv img{display:block}
+.bx .dv p{margin:0}
+/* laptop: the Lightroom Classic plugin's window over a photo */
+.bx .lap-lid{padding:2.2cqw 2.2cqw 2.4cqw;border-radius:3.4cqw 3.4cqw 0 0;background:linear-gradient(180deg,#26262a,#141416);border:1px solid rgba(255,255,255,.14);border-bottom:0}
+.bx .lap-scr{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:.8cqw;background:#000}
+.bx .dv-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 30%;filter:brightness(.62)}
+.bx .lp-win{position:absolute;left:11%;right:11%;bottom:7%;padding:1.3cqw 1.5cqw 1.6cqw;border-radius:1.2cqw;background:rgba(32,32,35,.95);border:1px solid rgba(255,255,255,.09);box-shadow:0 2cqw 4cqw rgba(0,0,0,.5);color:#d8d8d8;font-size:1.75cqw;line-height:1.2}
+.bx .lp-bar{display:flex;align-items:center;gap:.6cqw;color:#9c9c9c}
+.bx .lp-bar i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:#5a5a5e}
+.bx .lp-bar span{flex:1;text-align:center;margin-inline-end:3.4cqw}
+.bx .lp-tabs{display:flex;justify-content:space-between;margin-top:1.3cqw;padding:.5cqw;border-radius:.8cqw;background:#1a1a1c}
+.bx .lp-tabs span{padding:.5cqw 1cqw;border-radius:.6cqw;color:#a9a9a9}
+.bx .lp-tabs .on{background:#45454a;color:#fff}
+.bx .lp-looks{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqw;margin-top:1.4cqw}
+.bx .lp-looks figure{margin:0;text-align:center;color:#b5b5b5;font-size:1.5cqw}
+.bx .lp-looks img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:.6cqw;outline:1px solid rgba(255,255,255,.08)}
+.bx .lp-looks .on img{outline:.35cqw solid #F4AF56;outline-offset:.2cqw}
+.bx .lp-looks figcaption{margin-top:.6cqw}
+.bx .lp-sl{margin-top:1.4cqw;height:.45cqw;border-radius:1cqw;background:#3d3d41}
+.bx .lp-sl i{display:block;width:62%;height:100%;border-radius:inherit;background:#cfcfcf}
+.bx .lap-base{position:relative;height:2.6cqw;margin:0 -6%;border-radius:0 0 2.2cqw 2.2cqw / 0 0 2.6cqw 2.6cqw;background:linear-gradient(180deg,#4a4a4f,#232326 60%,#151517)}
+.bx .lap-base::before{content:"";position:absolute;left:41%;right:41%;top:0;height:42%;border-radius:0 0 1.4cqw 1.4cqw;background:#1b1b1d}
+/* monitor: Photoshop with MWP Photoshop Plugin Panel docked, the fox on the canvas */
+.bx .mon-frame{padding:1.3cqw;border-radius:1.8cqw;background:linear-gradient(180deg,#232326,#121214);border:1px solid rgba(255,255,255,.12)}
+.bx .mon-scr{display:flex;flex-direction:column;aspect-ratio:16/10;overflow:hidden;border-radius:.6cqw;background:#1d1d1f;color:#d6d6d6;font-size:1.45cqw;line-height:1.2}
+.bx .ps-bar{display:flex;align-items:center;gap:.6cqw;height:4.4cqw;padding:0 1.4cqw;background:#2a2a2c;border-bottom:1px solid #111;color:#a8a8a8}
+.bx .ps-bar i{width:1cqw;height:1cqw;border-radius:50%;background:#58585c}
+.bx .ps-bar span{flex:1;text-align:center;margin-inline-end:3cqw}
+.bx .ps-body{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 37%;min-height:0}
+.bx .ps-canvas{display:flex;align-items:center;justify-content:center;background:#232325;min-height:0}
+.bx .ps-canvas img{height:86%;width:auto;aspect-ratio:4/5;object-fit:cover;box-shadow:0 1cqw 2cqw rgba(0,0,0,.5)}
+.bx .ps-panel{display:flex;flex-direction:column;gap:.85cqw;padding:1.3cqw;background:#2b2b2e;border-inline-start:1px solid #161617;overflow:hidden}
+.bx .ps-brand{display:flex;align-items:center;gap:.8cqw;font-weight:700;letter-spacing:.14em;font-size:1.25cqw;color:#e8e8e8}
+.bx .ps-brand i{width:2.4cqw;height:2.4cqw;border-radius:50%;border:1px solid #F4AF56;background:radial-gradient(circle,#4a3a26,#1d1a16)}
+.bx .ps-tabs{display:flex;justify-content:space-between;border-bottom:1px solid #3c3c40;color:#a5a5a5}
+.bx .ps-tabs span{padding:.5cqw .2cqw .8cqw}
+.bx .ps-tabs .on{color:#fff;box-shadow:inset 0 -.25cqw 0 #fff}
+.bx .ps-h{font-size:1.15cqw;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9a9a9a}
+.bx .ps-chips{display:flex;flex-wrap:wrap;gap:.55cqw}
+.bx .ps-chips span{padding:.35cqw .9cqw;border-radius:9cqw;border:1px solid #535357}
+.bx .ps-chips .on{background:#ececec;border-color:#ececec;color:#141414;font-weight:700}
+.bx .ps-fx{display:grid;grid-template-columns:1fr 1fr;gap:.55cqw}
+.bx .ps-fx span{padding:.6cqw .9cqw;border-radius:.5cqw;border:1px solid #47474b;background:#252527}
+.bx .ps-sl{height:.45cqw;margin-top:.4cqw;border-radius:1cqw;background:#444448}
+.bx .ps-sl i{display:block;width:58%;height:100%;border-radius:inherit;background:#F4AF56}
+.bx .mon-neck{width:12%;height:6.5cqw;margin:0 auto;background:linear-gradient(90deg,#1a1a1c,#3a3a3e 50%,#1a1a1c)}
+.bx .mon-foot{width:32%;height:1.5cqw;margin:0 auto;border-radius:1cqw 1cqw .4cqw .4cqw;background:linear-gradient(180deg,#45454a,#1c1c1e)}
+/* tablet: a real Field Guides spread */
+.bx .tab-frame{padding:2.3cqw;border-radius:4.2cqw;background:linear-gradient(180deg,#1e1e21,#0e0e10);border:1px solid rgba(255,255,255,.15)}
+.bx .tab-scr{aspect-ratio:16/10;overflow:hidden;border-radius:1.6cqw;background:#0b1820}
+.bx .tab-scr img{width:100%;height:100%;object-fit:cover}
+html[lang=he] .bx .bx-en,html:not([lang=he]) .bx .bx-he{display:none}
+/* phone: MWP Presets in Lightroom mobile */
+.bx .ph-frame{padding:4.6cqw;border-radius:17cqw;background:linear-gradient(180deg,#232326,#0d0d0f);border:1px solid rgba(255,255,255,.16)}
+.bx .ph-scr{position:relative;display:flex;flex-direction:column;aspect-ratio:9/19;overflow:hidden;border-radius:13cqw;background:#141416;color:#ddd}
+.bx .ph-scr img{width:100%;height:66%;object-fit:cover;object-position:50% 30%;margin-top:18%}
+.bx .ph-lbl{margin:7cqw 7cqw 0 !important;font-size:7.5cqw;font-weight:700;color:#fff}
+.bx .ph-strip{display:flex;flex-wrap:wrap;gap:3cqw;padding:4cqw 7cqw 0;font-size:6.2cqw}
+.bx .ph-strip span{padding:1.4cqw 3.6cqw;border-radius:9cqw;background:#2a2a2d;color:#bdbdbd}
+.bx .ph-strip .on{background:#F4AF56;color:#0A0908;font-weight:700}
+.bx .ph-isl{position:absolute;top:4cqw;left:35%;right:35%;height:7cqw;border-radius:9cqw;background:#000}
+/* the words */
+.bx .bx-body{position:relative;display:flex;flex-direction:column;flex:1;padding:26px 28px 28px}
+.bx .bx-hero .bx-body{padding:48px 44px 44px 20px;justify-content:center}
+html[dir=rtl] .bx .bx-hero .bx-body{padding:48px 20px 44px 44px}
+.bx .bx-badge{align-self:flex-start;margin-bottom:14px;padding:6px 14px;border-radius:64px;background:linear-gradient(90deg,#E4AA7C,#F4AF56);color:#0A0908;font-size:10.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;box-shadow:0 8px 20px -6px rgba(242,165,65,.6)}
+.bx .bx-count{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#F4AF56}
+.bx .bx-name{margin:8px 0 0;font-size:22px;font-weight:600;letter-spacing:-.015em;line-height:1.2;color:#FEFBF1;text-wrap:balance}
+.bx .bx-hero .bx-name{font-size:clamp(30px,3vw,42px);font-weight:500;letter-spacing:-.03em;line-height:1.08}
+.bx .bx-line{margin:8px 0 0;font-size:15px;line-height:1.5;color:#8C979F}
+.bx .bx-hero .bx-line{font-size:17px}
+.bx .bx-inc{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.bx .bx-inc li{display:flex;gap:12px;align-items:center}
+.bx .bx-ic{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:11px;color:#F4AF56;background:rgba(244,175,86,.09);box-shadow:inset 0 0 0 1px rgba(244,175,86,.22)}
+.bx .bx-it{display:flex;flex-direction:column;min-width:0}
+.bx .bx-it b{font-size:14.5px;font-weight:600;line-height:1.35;color:#FEFBF1}
+.bx .bx-it small{font-size:12.5px;line-height:1.4;color:#7E8A93}
+.bx .bx-buy{display:flex;flex-direction:column;gap:16px;margin-top:auto;padding-top:26px}
+.bx .bx-price{padding-top:20px;border-top:1px solid rgba(254,251,241,.08)}
+.bx .bx-now{display:block;font-size:34px;font-weight:300;letter-spacing:-.03em;line-height:1;color:#FEFBF1;font-variant-numeric:tabular-nums}
+.bx .bx-hero .bx-now{font-size:clamp(38px,3.4vw,50px);color:#F2C27F}
+.bx .deal{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0 0;font-size:14px;color:#7E8A93}
+.bx .deal:has(s span:empty){display:none}
+.bx .deal .save{padding:4px 10px;border-radius:64px;background:rgba(244,175,86,.12);box-shadow:inset 0 0 0 1px rgba(244,175,86,.32);color:#F4C27F;font-size:12px;font-weight:700}
+.bx .bx-buy .btn,.bx .bx-out{display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;border-radius:14px;font-weight:700;text-decoration:none}
+.bx .bx-buy .btn{box-shadow:0 14px 34px -12px rgba(242,165,65,.6)}
+.bx .bx-out{border:1px solid rgba(254,251,241,.18);color:#FEFBF1;background:none;transition:border-color .3s,color .3s,background .3s}
+.bx .bx-out:hover{border-color:#F2A541;color:#F2A541;background:rgba(242,165,65,.06)}
+.bx .bx-out:focus-visible,.bx .bx-buy .btn:focus-visible{outline:2px solid #F4AF56;outline-offset:3px}
+html[lang=he] .bx .bx-count,html[lang=he] .bx .bx-badge{letter-spacing:.03em}
+@media (max-width:1100px){
+  .bx{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bx .bx-hero{grid-template-columns:minmax(0,1fr)}
+  .bx .bx-hero .bx-stage{min-height:0;aspect-ratio:16/10;margin:10px 10px 0}
+  .bx .bx-hero .bx-body,html[dir=rtl] .bx .bx-hero .bx-body{padding:30px 32px 32px}
+  .bx .bx-card:last-child{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+  .bx .bx-card:last-child .bx-stage{margin:10px;aspect-ratio:auto;min-height:300px}
+}
+@media (max-width:700px){
+  .bx{grid-template-columns:minmax(0,1fr);gap:18px;margin-top:40px}
+  .bx .bx-card:last-child{display:flex}
+  .bx .bx-card:last-child .bx-stage{margin:8px 8px 0;aspect-ratio:16/10.5;min-height:0}
+  .bx .bx-stage,.bx .bx-hero .bx-stage{margin:8px 8px 0;border-radius:18px}
+  .bx .bx-body,.bx .bx-hero .bx-body,html[dir=rtl] .bx .bx-hero .bx-body{padding:22px 22px 24px}
+  .bx .bx-hero .bx-name{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){.bx .bx-card,.bx .dv{transition:none}.bx .bx-card:hover,.bx .bx-card:hover .dv{transform:none}}

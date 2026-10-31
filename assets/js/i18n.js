@@ -943,6 +943,11 @@ const HE = {
   "The full set": "הסט המלא",
   "From the shot to the share": "מהצילום ועד הפרסום",
   "Get the full set": "לסט המלא",
+  "4 tools": "4 כלים",
+  "3 tools": "3 כלים",
+  "2 tools": "2 כלים",
+  "Lightroom Classic 13+": "לייטרום קלאסיק 13 ומעלה",
+  "Photoshop 2023+": "פוטושופ 2023 ומעלה",
   "[Bundle prices and discounts: Matan to decide]": "[מחירים והנחות לחבילות: לקביעת מתן]",
 
   // home and shop, copy rewrite (Oct 2026, drafts for Matan)

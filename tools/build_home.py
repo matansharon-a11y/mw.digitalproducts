@@ -16,6 +16,7 @@ ba_css += "\n@media (max-width:600px){.ba{aspect-ratio:4/5;border-radius:18px}.r
 
 IMG = "assets/pages/img/"
 import home_fx, home_story
+import bundle_cards
 from reviews_section import section as reviews_section
 import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(__file__))
 from brand import NAV_CSS, FONTS, SITE_CSS, site_links, menu_button, site_footer, use_webp, BRAND, ICONS, LANG_GUARD, launch_block, LAUNCH_CSS
@@ -160,15 +161,6 @@ def card(href, img, alt, tag, name, line, points, cta):
 </div>
 </article>'''
 
-def plan(title, sub, price, points, cta, href, hi=False):
-    lis = "".join(f"<li>{CHECK}<span>{p}</span></li>" for p in points)
-    tag = '<span class="tagx">EVERYTHING</span>' if hi else ""
-    btn = "btn sm" if hi else "ghost sm"
-    slug = re.search(r'data-price="([^"]+)"', price).group(1)
-    deal = ("" if slug.startswith("mwp-") else   # bundles: the sum of the parts struck out, and the saving
-            f'<p class="deal"><s><span data-price="{slug}" data-was data-no-i18n></span></s> <span class="save" data-save="{slug}" data-no-i18n hidden></span></p>')
-    return f'<div class="plan{" hi" if hi else ""}">{tag}<div><h3 class="h3">{title}</h3><p class="small" style="margin-top: 6px">{sub}</p></div><div class="price">{price}{deal}</div><ul>{lis}</ul><a class="{btn}" href="{href}">{cta}</a></div>'
-
 PAIRS = [
     ("Presets · Blue Hour", "3c14b23dbb00f051684ad60fb205ed10.jpg", "fbaf19aea2af10f26b2949ab31fff094.jpg", "Light and Scene", "Blue Hour", "100%", "FINAL · MWP PRESET"),
     ("Presets · Macro Ground", "7c359a77f23f632596ebda32f1e9a72f.jpg", "84c2340ddf79f1f703f8c905e9b986be.jpg", "Light and Scene", "Macro Ground", "100%", "FINAL · MWP PRESET"),
@@ -253,12 +245,8 @@ html = f'''<!doctype html>
 <p class="lead">Every bundle costs less than buying its parts separately.</p>
 {launch_block()}
 </div>
-<div class="plans">
-{plan("Lightroom Plugin + Field Guides", "Shoot it, then edit it", '<span data-price="presets-field-guides" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "field-guides/#buy")}
-{plan("Lightroom Plugin + Photoshop Plugin Panel", "The same look in Lightroom and Photoshop", '<span data-price="presets-panel" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs"], "Get the bundle", "panel/#buy")}
-{plan("Field Guides + Photoshop Plugin Panel", "Learn the shot, then finish it in Photoshop", '<span data-price="field-guides-panel" data-no-i18n>$0.00</span>', ["MWP Photoshop Plugin Panel", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the bundle", "panel/#buy")}
-{plan("The full set", "From the shot to the share", '<span data-price="full-set" data-no-i18n>$0.00</span>', ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set", "presets/#buy", hi=True)}
-</div>
+{bundle_cards.CSS_LINK}
+{bundle_cards.cards()}
 </div>
 </section>
 
