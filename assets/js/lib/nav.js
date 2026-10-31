@@ -89,22 +89,25 @@
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", menu) : menu();
 
   // Footer year, and the cookie notice (Jeinna, 31 Oct 2026; laid out like the one on mw-phototours.com, in the shop's
-  // colours). The shop keeps only what it needs to work and has no analytics or advertising cookies, so the first-visit
-  // card says so plainly ("Got it" / "Cookie settings") instead of offering choices that would change nothing, and the
-  // settings window lists the categories with Analytics and Advertising marked "Not used". If a tracker is ever added,
-  // it must stay off until its category is switched on here, and Accept all / Reject all come back.
-  const CK_KEY = "mwp_cookie_ok";
+  // colours). First visit: a card with Accept all / Reject all / Customize. The settings window has Necessary (always
+  // on) and real switches for Analytics and Advertising. The choice is kept per category (mwp_cookie_consent:
+  // {analytics, ads, date}) and given to the page as window.MWP_CONSENT plus a "mwp:consent" event. The shop uses no
+  // analytics or advertising cookies today, and the window says so; anything added later must load only when its
+  // category is on (check MWP_CONSENT, and listen for the event).
+  const CK_KEY = "mwp_cookie_consent";
   const CK = {
-    en: { title: "We value your privacy", text: "This shop uses only the cookies it needs to work: keeping you signed in, your cart and your language. No analytics or advertising cookies.",
-          ok: "Got it", settings: "Cookie settings", mTitle: "Cookie settings", intro: "This is everything the shop keeps in your browser. You can delete it at any time in your browser's settings.",
+    en: { title: "We value your privacy", text: "We use the cookies the shop needs to work: keeping you signed in, your cart and your language. You can accept or reject all others.",
+          accept: "Accept all", reject: "Reject all", custom: "Customize", mTitle: "Cookie settings", intro: "This is everything the shop keeps in your browser. You can change your choice here at any time, or delete it all in your browser's settings.",
           nec: "Necessary", always: "Always active", necText: "Keep you signed in, remember your cart, your language, the last prices you saw, and your accessibility and cookie choices. The shop can't work without them.",
-          ana: "Analytics", anaText: "Counting visits or tracking how you use the site.", ads: "Advertising", adsText: "Advertising or social media pixels and tracking for ads.", none: "Not used",
-          lemon: "Payment happens on the checkout of Lemon Squeezy, our payment provider, which has its own cookie notice.", privacy: "Privacy policy", done: "Done", close: "Close" },
-    he: { title: "הפרטיות שלכם חשובה לנו", text: "בחנות הזאת יש רק את העוגיות שהיא צריכה כדי לעבוד: החיבור לחשבון, העגלה והשפה. אין עוגיות מדידה או פרסום.",
-          ok: "הבנתי", settings: "הגדרות עוגיות", mTitle: "הגדרות עוגיות", intro: "כאן כל מה שהחנות שומרת בדפדפן שלכם. אפשר למחוק אותו בכל רגע בהגדרות הדפדפן.",
+          ana: "Analytics", anaText: "Counting visits and seeing how the site is used, to improve it.", ads: "Advertising", adsText: "Advertising and social media pixels, to show you relevant ads elsewhere.",
+          today: "The shop doesn't use analytics or advertising cookies today. Your choice is saved and applies if we ever add them.",
+          lemon: "Payment happens on the checkout of Lemon Squeezy, our payment provider, which has its own cookie notice.", privacy: "Privacy policy", save: "Save my choices", close: "Close", on: "On", off: "Off" },
+    he: { title: "הפרטיות שלכם חשובה לנו", text: "אנחנו משתמשים בעוגיות שהחנות צריכה כדי לעבוד: החיבור לחשבון, העגלה והשפה. את כל השאר אפשר לאשר או לדחות.",
+          accept: "קבלת הכול", reject: "דחיית הכול", custom: "התאמה אישית", mTitle: "הגדרות עוגיות", intro: "כאן כל מה שהחנות שומרת בדפדפן שלכם. אפשר לשנות את הבחירה כאן בכל רגע, או למחוק הכול בהגדרות הדפדפן.",
           nec: "הכרחיות", always: "פעילות תמיד", necText: "שומרות את החיבור לחשבון, את העגלה, את השפה, את המחירים האחרונים שראיתם ואת הבחירות שלכם בנגישות ובעוגיות. החנות לא יכולה לעבוד בלעדיהן.",
-          ana: "אנליטיקה", anaText: "ספירת ביקורים או מעקב אחרי השימוש שלכם באתר.", ads: "פרסום", adsText: "פיקסלים של פרסום או של רשתות חברתיות, ומעקב לצורכי פרסומות.", none: "לא בשימוש",
-          lemon: "התשלום מתבצע בקופה של למון סקוויזי, ספקית התשלומים שלנו, ולה הודעת עוגיות משלה.", privacy: "מדיניות הפרטיות", done: "סגירה", close: "סגירה" },
+          ana: "אנליטיקה", anaText: "ספירת ביקורים והבנה של אופן השימוש באתר, כדי לשפר אותו.", ads: "פרסום", adsText: "פיקסלים של פרסום ושל רשתות חברתיות, להצגת פרסומות רלוונטיות במקומות אחרים.",
+          today: "החנות לא משתמשת היום בעוגיות אנליטיקה או פרסום. הבחירה שלכם נשמרת ותחול אם נוסיף אותן בעתיד.",
+          lemon: "התשלום מתבצע בקופה של למון סקוויזי, ספקית התשלומים שלנו, ולה הודעת עוגיות משלה.", privacy: "מדיניות הפרטיות", save: "שמירת הבחירות שלי", close: "סגירה", on: "פעיל", off: "כבוי" },
   };
   const CK_CSS = `
 .ck-card{position:fixed;z-index:110;right:88px;bottom:20px;width:min(400px,calc(100vw - 112px));padding:20px 20px 18px;border-radius:18px;border:1px solid rgba(244,175,86,.3);background:#16130F;color:#FEFBF1;font:400 14.5px/1.55 "Google Sans","Heebo",sans-serif;box-shadow:0 24px 60px rgba(0,0,0,.55);opacity:0;transform:translateY(12px);transition:opacity .35s ease,transform .35s ease}
@@ -133,6 +136,14 @@
 .ck-lemon{margin:4px 0 14px;padding-top:12px;border-top:1px solid rgba(254,251,241,.08);color:#9CB1C2;font-size:13.5px}
 .ck-box .ck-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .ck-box a{color:#F4AF56}
+.ck-sw{position:relative;flex:none;width:48px;height:28px;border-radius:999px;border:1.5px solid rgba(254,251,241,.3);background:rgba(254,251,241,.08);cursor:pointer;transition:background .2s,border-color .2s}
+.ck-sw::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:19px;height:19px;border-radius:50%;background:#CDD7DD;transition:inset-inline-start .2s,background .2s}
+.ck-sw[aria-checked="true"]{background:#F4AF56;border-color:#F4AF56}
+.ck-sw[aria-checked="true"]::after{inset-inline-start:24px;background:#1A1208}
+.ck-sw:focus-visible{outline:3px solid #FEFBF1;outline-offset:2px}
+.ck-today{margin:0;padding:12px 0 0;border-top:1px solid rgba(254,251,241,.08);color:#CDD7DD;font-size:13.5px}
+.ck-btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+.ck-card .ck-row .ck-btn{flex:1 1 auto}
 @media (max-width:700px){.ck-card{right:16px;left:16px;width:auto;bottom:76px}}
 @media print{.ck-card{display:none!important}}`;
   function footer() {
@@ -143,10 +154,17 @@
     document.head.append(st);
     const he = () => /^he/.test(document.documentElement.lang);
     const T = () => CK[he() ? "he" : "en"];
-    let seen = false;
-    try { seen = !!localStorage.getItem(CK_KEY); } catch { /* storage blocked: show the card */ }
+    let consent = null;
+    try { consent = JSON.parse(localStorage.getItem(CK_KEY) || "null"); } catch { /* storage blocked: show the card */ }
+    window.MWP_CONSENT = { analytics: !!consent?.analytics, ads: !!consent?.ads, decided: !!consent };
     let card = null, box = null, back = null;
-    const agree = () => { try { localStorage.setItem(CK_KEY, new Date().toISOString().slice(0, 10)); } catch { /* storage blocked */ } };
+    function decide(analytics, ads) {
+      consent = { analytics: !!analytics, ads: !!ads, date: new Date().toISOString().slice(0, 10) };
+      try { localStorage.setItem(CK_KEY, JSON.stringify(consent)); } catch { /* storage blocked */ }
+      window.MWP_CONSENT = { analytics: consent.analytics, ads: consent.ads, decided: true };
+      document.dispatchEvent(new CustomEvent("mwp:consent", { detail: window.MWP_CONSENT }));
+      hideCard(); closeBox();
+    }
     function hideCard() { if (!card) return; card.classList.remove("on"); const c = card; card = null; setTimeout(() => c.remove(), 350); }
     function showCard() {
       const t = T();
@@ -156,7 +174,7 @@
       card.setAttribute("data-no-i18n", "");
       card.dir = he() ? "rtl" : "ltr";
       card.lang = he() ? "he" : "en";
-      card.innerHTML = `<h2 id="ck-card-h">${t.title}</h2><p>${t.text}</p><div class="ck-row"><button type="button" class="ck-btn gold" data-ck-ok>${t.ok}</button><button type="button" class="ck-btn line" data-cookie-settings>${t.settings}</button></div>`;
+      card.innerHTML = `<h2 id="ck-card-h">${t.title}</h2><p>${t.text}</p><div class="ck-row"><button type="button" class="ck-btn gold" data-ck-accept>${t.accept}</button><button type="button" class="ck-btn line" data-ck-reject>${t.reject}</button><button type="button" class="ck-btn line" data-cookie-settings>${t.custom}</button></div>`;
       document.body.append(card);
       requestAnimationFrame(() => requestAnimationFrame(() => card && card.classList.add("on")));
     }
@@ -171,21 +189,29 @@
       const t = T();
       box = document.createElement("div");
       box.setAttribute("data-no-i18n", "");
-      const cat = (h, tag, on, p) => `<div class="ck-cat"><div class="ck-ct"><h3>${h}</h3><span class="ck-tag ${on ? "on" : "off"}">${tag}</span></div><p>${p}</p></div>`;
+      const sw = (key, on, label) => `<button type="button" class="ck-sw" role="switch" data-ck-sw="${key}" aria-checked="${on}" aria-label="${label}"></button>`;
+      const cat = (h, right, p) => `<div class="ck-cat"><div class="ck-ct"><h3>${h}</h3>${right}</div><p>${p}</p></div>`;
       box.innerHTML = `<div class="ck-scrim" data-ck-close></div><div class="ck-box" role="dialog" aria-modal="true" aria-labelledby="ck-h" dir="${he() ? "rtl" : "ltr"}" lang="${he() ? "he" : "en"}">
 <div class="ck-head"><h2 id="ck-h">${t.mTitle}</h2><button type="button" class="ck-x" data-ck-close aria-label="${t.close}">×</button></div>
 <p class="ck-intro">${t.intro}</p>
-${cat(t.nec, t.always, true, t.necText)}${cat(t.ana, t.none, false, t.anaText)}${cat(t.ads, t.none, false, t.adsText)}
+${cat(t.nec, `<span class="ck-tag on">${t.always}</span>`, t.necText)}${cat(t.ana, sw("analytics", !!consent?.analytics, t.ana), t.anaText)}${cat(t.ads, sw("ads", !!consent?.ads, t.ads), t.adsText)}
+<p class="ck-today">${t.today}</p>
 <p class="ck-lemon">${t.lemon}</p>
-<div class="ck-foot"><a href="/legal/#privacy">${t.privacy}</a><button type="button" class="ck-btn gold" data-ck-done>${t.done}</button></div></div>`;
+<div class="ck-foot"><a href="/legal/#privacy">${t.privacy}</a><div class="ck-btns"><button type="button" class="ck-btn line" data-ck-reject>${t.reject}</button><button type="button" class="ck-btn line" data-ck-save>${t.save}</button><button type="button" class="ck-btn gold" data-ck-accept>${t.accept}</button></div></div></div>`;
       document.body.append(box);
-      box.querySelector("[data-ck-done]").focus({ preventScroll: true });
+      box.querySelector("[data-ck-sw]").focus({ preventScroll: true });
     }
     document.addEventListener("click", (e) => {
       const set = e.target.closest("[data-cookie-settings]");
       if (set) { e.preventDefault(); openBox(set); return; }
-      if (e.target.closest("[data-ck-ok]")) { agree(); hideCard(); return; }
-      if (box && e.target.closest("[data-ck-done]")) { agree(); hideCard(); closeBox(); return; }
+      const s = e.target.closest("[data-ck-sw]");
+      if (s) { s.setAttribute("aria-checked", String(s.getAttribute("aria-checked") !== "true")); return; }
+      if (e.target.closest("[data-ck-accept]")) { decide(true, true); return; }
+      if (e.target.closest("[data-ck-reject]")) { decide(false, false); return; }
+      if (box && e.target.closest("[data-ck-save]")) {
+        const on = (k) => box.querySelector(`[data-ck-sw="${k}"]`).getAttribute("aria-checked") === "true";
+        decide(on("analytics"), on("ads")); return;
+      }
       if (box && e.target.closest("[data-ck-close]")) closeBox();
     });
     document.addEventListener("keydown", (e) => {
@@ -196,7 +222,7 @@ ${cat(t.nec, t.always, true, t.necText)}${cat(t.ana, t.none, false, t.anaText)}$
       if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
       else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
     });
-    if (!seen && !/^\/admin/.test(location.pathname)) setTimeout(showCard, 600);
+    if (!consent && !/^\/admin/.test(location.pathname)) setTimeout(showCard, 600);
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", footer) : footer();
 
