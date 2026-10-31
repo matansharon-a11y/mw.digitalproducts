@@ -117,6 +117,13 @@
 .a11y-fab:focus-visible{outline:3px solid #FFD400;outline-offset:3px}
 @media (max-width:700px){.a11y-fab{width:46px;height:46px;right:auto;inset-inline-end:14px}.a11y-fab svg{width:26px;height:26px}}
 html.a11y-open .a11y-fab{display:none}
+.a11y-hdr{position:relative;flex:none;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.a11y-hdr .a11y-dot{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:${BLUE};color:#FFFFFF;box-shadow:0 0 0 1.5px rgba(255,255,255,.85);transition:transform .2s,box-shadow .2s}
+.a11y-hdr .a11y-dot svg{width:20px;height:20px}
+.a11y-hdr:hover .a11y-dot{transform:scale(1.08);box-shadow:0 0 0 2px #FFFFFF}
+.a11y-hdr:focus-visible{outline:3px solid #FFD400;outline-offset:2px}
+@media (max-width:600px){.a11y-hdr{width:38px;height:38px}.a11y-hdr .a11y-dot{width:28px;height:28px}.a11y-hdr .a11y-dot svg{width:18px;height:18px}}
+@media print{.a11y-hdr{display:none!important}}
 .a11y-skip{position:fixed;z-index:2147483001;top:8px;inset-inline-start:8px;padding:10px 16px;border-radius:999px;background:#FFFFFF;color:#0A0A0A;font:600 15px/1.2 Arial,"Heebo",sans-serif;border:2px solid ${BLUE};cursor:pointer;transform:translateY(-220%);transition:transform .15s}
 .a11y-skip:focus{transform:none;outline:3px solid #FFD400;outline-offset:2px}
 .a11y-scrim{position:fixed;inset:0;z-index:2147483001;background:rgba(0,0,0,.35)}
@@ -184,12 +191,12 @@ html.a11y-f-contrastLow{filter:contrast(.7) saturate(.8)}
 html.a11y-f-sepia{filter:sepia(.55) saturate(.9)}
 html.a11y-f-mono{filter:grayscale(1)}
 html.a11y-f-saturate{filter:saturate(2)}
-html.a11y-c-dark body,html.a11y-c-dark body *:not(img):not(video):not(picture):not(svg):not(svg *){background-color:#000000!important;background-image:none!important;color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;border-color:#FFFFFF!important;text-shadow:none!important}
+html.a11y-c-dark body,html.a11y-c-dark body *:not(img):not(video):not(picture):not(svg):not(svg *):not(.a11y-hdr):not(.a11y-hdr *){background-color:#000000!important;background-image:none!important;color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;border-color:#FFFFFF!important;text-shadow:none!important}
 html.a11y-c-dark body :is(a,a *){color:#FFE600!important;-webkit-text-fill-color:#FFE600!important}
-html.a11y-c-light body,html.a11y-c-light body *:not(img):not(video):not(picture):not(svg):not(svg *){background-color:#FFFFFF!important;background-image:none!important;color:#000000!important;-webkit-text-fill-color:#000000!important;border-color:#000000!important;text-shadow:none!important}
+html.a11y-c-light body,html.a11y-c-light body *:not(img):not(video):not(picture):not(svg):not(svg *):not(.a11y-hdr):not(.a11y-hdr *){background-color:#FFFFFF!important;background-image:none!important;color:#000000!important;-webkit-text-fill-color:#000000!important;border-color:#000000!important;text-shadow:none!important}
 html.a11y-c-light body :is(a,a *){color:#0B2A8C!important;-webkit-text-fill-color:#0B2A8C!important}
 html.a11y-c-light body svg{color:#000000!important}
-html.a11y-c-blackYellow body,html.a11y-c-blackYellow body *:not(img):not(video):not(picture):not(svg):not(svg *){background-color:#000000!important;background-image:none!important;color:#FFE600!important;-webkit-text-fill-color:#FFE600!important;border-color:#FFE600!important;text-shadow:none!important}
+html.a11y-c-blackYellow body,html.a11y-c-blackYellow body *:not(img):not(video):not(picture):not(svg):not(svg *):not(.a11y-hdr):not(.a11y-hdr *){background-color:#000000!important;background-image:none!important;color:#FFE600!important;-webkit-text-fill-color:#FFE600!important;border-color:#FFE600!important;text-shadow:none!important}
 html.a11y-c-blackYellow body :is(a,a *){color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important}
 html.a11y-links body a{text-decoration:underline!important;text-underline-offset:3px!important;text-decoration-thickness:2px!important;outline:2px solid #FFB000!important;outline-offset:2px!important}
 html.a11y-headings body :is(h1,h2,h3,h4,h5,h6){outline:3px solid ${BLUE}!important;outline-offset:4px!important;background-color:rgba(11,94,215,.12)!important}
@@ -215,7 +222,7 @@ html.a11y-speak body :is(p,li,h1,h2,h3,h4,h5,h6,a,button,span,td,th,label,dd,dt,
   (doc.head || root).append(style);
 
   // ---------------------------------------------------------------- applying the settings
-  const SKIPSCALE = "#mwp-a11y, .ui-en, svg, script, style, .a11y-alttag, .a11y-regtag";
+  const SKIPSCALE = "#mwp-a11y, .a11y-hdr, .ui-en, svg, script, style, .a11y-alttag, .a11y-regtag";
   function textEls(scope) {
     const out = [];
     const all = scope.nodeType === 1 ? [scope, ...scope.querySelectorAll("*")] : [...scope.querySelectorAll("*")];
@@ -614,9 +621,31 @@ ${card("data-readview", false, "read", t("readView"))}${card("data-vkb", !!host.
     else if (!e.shiftKey && doc.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
   });
 
-  function start() {
-    root.append(host);
-    const fab = doc.createElement("button");
+  // Where it sits (Jeinna, 31 Oct 2026, after looking at well-known Israeli sites): in the top bar, beside the cart and
+  // the language switch, as El Al and Leumi do: always in the same place, easy to find, covering nothing, on computers
+  // and phones alike. A page without our top bar (the Ambassador page) gets the round button on the side instead.
+  let hdr = null, fab = null;
+  function placeInHeader() {
+    const icons = doc.querySelector(".nav .nav-icons, .site-header .nav-icons, .nav-icons");
+    if (!icons) return false;
+    if (!hdr) {
+      hdr = doc.createElement("button");
+      hdr.type = "button";
+      hdr.className = "a11y-hdr";
+      hdr.setAttribute("data-a11y-open", "");
+      hdr.setAttribute("data-no-i18n", "");
+      hdr.setAttribute("aria-haspopup", "dialog");
+      hdr.innerHTML = `<span class="a11y-dot">${I.access}</span>`;
+    }
+    hdr.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open);
+    hdr.title = W[pageHe() ? "he" : "en"].title;
+    if (hdr.parentNode !== icons || icons.firstChild !== hdr) icons.prepend(hdr);
+    if (fab) { fab.remove(); fab = null; }
+    return true;
+  }
+  function floating() {
+    if (fab || (hdr && hdr.isConnected)) return;
+    fab = doc.createElement("button");
     fab.type = "button";
     fab.className = "a11y-fab";
     fab.setAttribute("data-a11y-open", "");
@@ -624,6 +653,12 @@ ${card("data-readview", false, "read", t("readView"))}${card("data-vkb", !!host.
     fab.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open);
     fab.innerHTML = I.access;
     host.append(fab);
+  }
+  function start() {
+    root.append(host);
+    if (!placeInHeader()) setTimeout(() => { if (!placeInHeader()) floating(); }, 2500);   // the cart script draws some top bars a moment later
+    // some pages redraw their top bar: put the button back if it's gone
+    new MutationObserver(() => { if (hdr && !hdr.isConnected) placeInHeader(); else if (!hdr && fab && doc.querySelector(".nav-icons")) placeInHeader(); }).observe(doc.body, { childList: true, subtree: true });
     const skip = doc.createElement("button");
     skip.type = "button";
     skip.className = "a11y-skip";
@@ -633,7 +668,8 @@ ${card("data-readview", false, "read", t("readView"))}${card("data-vkb", !!host.
     const first = doc.querySelector("a.skip, a.skip-link, .skip-link, a[href$='#main']");
     if (first && first.parentNode) first.after(skip); else doc.body.prepend(skip);
     new MutationObserver(() => {   // the page's language toggle
-      fab.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open);
+      if (hdr) { hdr.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open); hdr.title = W[pageHe() ? "he" : "en"].title; }
+      if (fab) fab.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open);
       skip.textContent = W[pageHe() ? "he" : "en"].settingsLink;
     }).observe(root, { attributes: true, attributeFilter: ["lang"] });
     apply();
