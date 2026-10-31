@@ -222,7 +222,7 @@ html.a11y-speak body :is(p,li,h1,h2,h3,h4,h5,h6,a,button,span,td,th,label,dd,dt,
   (doc.head || root).append(style);
 
   // ---------------------------------------------------------------- applying the settings
-  const SKIPSCALE = "#mwp-a11y, .a11y-hdr, .ui-en, svg, script, style, .a11y-alttag, .a11y-regtag";
+  const SKIPSCALE = "#mwp-a11y, .a11y-hdr, .site-header, nav.nav, .skip, .skip-link, .a11y-skip, .ui-en, svg, script, style, .a11y-alttag, .a11y-regtag";   // the top bar keeps its size: it holds the accessibility button
   function textEls(scope) {
     const out = [];
     const all = scope.nodeType === 1 ? [scope, ...scope.querySelectorAll("*")] : [...scope.querySelectorAll("*")];
@@ -256,7 +256,7 @@ html.a11y-speak body :is(p,li,h1,h2,h3,h4,h5,h6,a,button,span,td,th,label,dd,dt,
   let spacingStyle = null;
   function applySpacing() {
     const rules = [];
-    const sel = "body :is(p,li,h1,h2,h3,h4,h5,h6,dd,dt,td,th,label,a,span,blockquote,figcaption,button,div,summary)";
+    const sel = "body :is(p,li,h1,h2,h3,h4,h5,h6,dd,dt,td,th,label,a,span,blockquote,figcaption,button,div,summary):not(.site-header *):not(nav.nav *)";
     if (s.line) rules.push(`line-height:${LINE[s.line]}!important`);
     if (s.letter) rules.push(`letter-spacing:${LETTER[s.letter]}em!important`);
     if (s.word) rules.push(`word-spacing:${WORD[s.word]}em!important`);
@@ -281,10 +281,12 @@ html.a11y-speak body :is(p,li,h1,h2,h3,h4,h5,h6,a,button,span,td,th,label,dd,dt,
     c.toggle("a11y-noimg", !!s.hideImages);
     c.toggle("a11y-speak", !!s.speak);
   }
+  // Page zoom: everything but the top bar, which holds the accessibility button and must stay on screen at any zoom
+  let zoomStyle = null;
   function applyZoom() {
-    if (!doc.body) return;
     const z = ZOOM[s.zoom] / 100;
-    if (z === 1) doc.body.style.removeProperty("zoom"); else doc.body.style.setProperty("zoom", String(z));
+    if (!zoomStyle) { zoomStyle = doc.createElement("style"); zoomStyle.id = "mwp-a11y-zoom"; (doc.head || root).append(zoomStyle); }
+    zoomStyle.textContent = z === 1 ? "" : `body > :not(.site-header):not(.nav):not(header):not(.a11y-skip):not(.skip):not(.skip-link):not(script):not(style){zoom:${z}}`;
   }
   function applyMedia() {
     doc.querySelectorAll("video, audio").forEach((m) => {
