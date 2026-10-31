@@ -112,18 +112,12 @@
   const css = `
 #mwp-a11y{all:initial}
 #mwp-a11y *{box-sizing:border-box}
-.a11y-fab{position:fixed;z-index:2147483000;top:50%;right:20px;transform:translateY(-50%);width:54px;height:54px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:50%;border:3px solid #FFFFFF;background:${BLUE};color:#FFFFFF;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.15);transition:transform .2s,box-shadow .2s}
-.a11y-fab:hover{transform:translateY(-50%) scale(1.06);box-shadow:0 8px 26px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.15)}
+.a11y-fab{position:fixed;z-index:2147483000;right:20px;bottom:20px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:50%;border:3px solid #FFFFFF;background:${BLUE};color:#FFFFFF;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.15);transition:transform .2s,box-shadow .2s}
+.a11y-fab:hover{transform:scale(1.06);box-shadow:0 8px 26px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.15)}
 .a11y-fab:focus-visible{outline:3px solid #FFD400;outline-offset:3px}
-@media (max-width:700px){.a11y-fab{width:46px;height:46px;right:auto;inset-inline-end:14px}.a11y-fab svg{width:26px;height:26px}}
+@media (max-width:700px){.a11y-fab{width:48px;height:48px;right:16px;bottom:16px}.a11y-fab svg{width:26px;height:26px}}
+html.menu-open .a11y-fab,html.cart-open .a11y-fab{display:none}
 html.a11y-open .a11y-fab{display:none}
-.a11y-hdr{position:relative;flex:none;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.a11y-hdr .a11y-dot{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:${BLUE};color:#FFFFFF;box-shadow:0 0 0 1.5px rgba(255,255,255,.85);transition:transform .2s,box-shadow .2s}
-.a11y-hdr .a11y-dot svg{width:20px;height:20px}
-.a11y-hdr:hover .a11y-dot{transform:scale(1.08);box-shadow:0 0 0 2px #FFFFFF}
-.a11y-hdr:focus-visible{outline:3px solid #FFD400;outline-offset:2px}
-@media (max-width:600px){.a11y-hdr{width:38px;height:38px}.a11y-hdr .a11y-dot{width:28px;height:28px}.a11y-hdr .a11y-dot svg{width:18px;height:18px}}
-@media print{.a11y-hdr{display:none!important}}
 .a11y-skip{position:fixed;z-index:2147483001;top:8px;inset-inline-start:8px;padding:10px 16px;border-radius:999px;background:#FFFFFF;color:#0A0A0A;font:600 15px/1.2 Arial,"Heebo",sans-serif;border:2px solid ${BLUE};cursor:pointer;transform:translateY(-220%);transition:transform .15s}
 .a11y-skip:focus{transform:none;outline:3px solid #FFD400;outline-offset:2px}
 .a11y-scrim{position:fixed;inset:0;z-index:2147483001;background:rgba(0,0,0,.35)}
@@ -406,7 +400,7 @@ html.a11y-speak body :is(p,li,h1,h2,h3,h4,h5,h6,a,button,span,td,th,label,dd,dt,
   }
 
   // ---------------------------------------------------------------- the panel
-  let panel = null, back = null;
+  let panel = null, back = null, fab = null;
   const pressed = (on) => `aria-pressed="${on ? "true" : "false"}"`;
   const card = (attr, on, icon, label) => `<button type="button" class="a11y-card" ${attr} ${pressed(on)}>${I[icon]}<span>${label}</span></button>`;
   function slider(key, label, icon, steps, fmt) {
@@ -553,6 +547,14 @@ ${card("data-readview", false, "read", t("readView"))}${card("data-vkb", !!host.
       + KB[kbLang].map((r) => `<div class="a11y-krow" dir="${kbLang === "he" ? "rtl" : "ltr"}">${r.map((k) => `<button type="button" data-key="${k}">${k}</button>`).join("")}</div>`).join("")
       + `<div class="a11y-krow"><button type="button" data-kbl>${kbLang === "he" ? "EN" : "עב"}</button><button type="button" class="w" data-key=" ">${t("vkbSpace")}</button><button type="button" data-kback>${t("vkbBack")}</button><button type="button" data-kenter>${t("vkbEnter")}</button><button type="button" data-kclose aria-label="${t("vkbClose")}">✕</button></div>`;
   }
+  // the corner button sits above the on-screen keyboard while it's open, so the menu stays reachable
+  function liftFab() {
+    if (!fab) return;
+    const kb = host.querySelector(".a11y-vkb");
+    fab.style.bottom = kb ? `${kb.getBoundingClientRect().height + 24}px` : "";
+  }
+  new MutationObserver(liftFab).observe(host, { childList: true });
+  addEventListener("resize", liftFab, { passive: true });
   function typeKey(fn) {
     const f = lastField;
     if (!f || !f.isConnected) { toast(t("vkbNoField")); return; }
@@ -567,7 +569,7 @@ ${card("data-readview", false, "read", t("readView"))}${card("data-vkb", !!host.
     if (k) { typeKey((f) => { const a = f.selectionStart ?? f.value.length, b = f.selectionEnd ?? f.value.length; f.value = f.value.slice(0, a) + k.dataset.key + f.value.slice(b); try { f.setSelectionRange(a + 1, a + 1); } catch { /* email fields */ } }); return; }
     if (e.target.closest(".a11y-vkb [data-kback]")) { typeKey((f) => { const a = f.selectionStart ?? f.value.length, b = f.selectionEnd ?? f.value.length; const from = a === b ? Math.max(0, a - 1) : a; f.value = f.value.slice(0, from) + f.value.slice(b); try { f.setSelectionRange(from, from); } catch { /* email fields */ } }); return; }
     if (e.target.closest(".a11y-vkb [data-kenter]")) { const f = lastField; if (f && f.form) f.form.requestSubmit ? f.form.requestSubmit() : f.form.submit(); return; }
-    if (e.target.closest(".a11y-vkb [data-kbl]")) { kbLang = kbLang === "he" ? "en" : "he"; vkb(false); return; }
+    if (e.target.closest(".a11y-vkb [data-kbl]")) { kbLang = kbLang === "he" ? "en" : "he"; vkb(false); liftFab(); return; }
     if (e.target.closest(".a11y-vkb [data-kclose]")) { host.querySelector(".a11y-vkb")?.remove(); return; }
     if (!panel || !e.target.closest(".a11y-panel, .a11y-scrim")) return;
     if (e.target.closest("[data-a11y-close]")) { close(); return; }
@@ -623,44 +625,22 @@ ${card("data-readview", false, "read", t("readView"))}${card("data-vkb", !!host.
     else if (!e.shiftKey && doc.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
   });
 
-  // Where it sits (Jeinna, 31 Oct 2026, after looking at well-known Israeli sites): in the top bar, beside the cart and
-  // the language switch, as El Al and Leumi do: always in the same place, easy to find, covering nothing, on computers
-  // and phones alike. A page without our top bar (the Ambassador page) gets the round button on the side instead.
-  let hdr = null, fab = null;
-  function placeInHeader() {
-    const icons = doc.querySelector(".nav .nav-icons, .site-header .nav-icons, .nav-icons");
-    if (!icons) return false;
-    if (!hdr) {
-      hdr = doc.createElement("button");
-      hdr.type = "button";
-      hdr.className = "a11y-hdr";
-      hdr.setAttribute("data-a11y-open", "");
-      hdr.setAttribute("data-no-i18n", "");
-      hdr.setAttribute("aria-haspopup", "dialog");
-      hdr.innerHTML = `<span class="a11y-dot">${I.access}</span>`;
-    }
-    hdr.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open);
-    hdr.title = W[pageHe() ? "he" : "en"].title;
-    if (hdr.parentNode !== icons || icons.firstChild !== hdr) icons.prepend(hdr);
-    if (fab) { fab.remove(); fab = null; }
-    return true;
-  }
+  // Where it sits (Jeinna, 31 Oct 2026): the bottom-right corner of every page, in both languages, on computers and phones
   function floating() {
-    if (fab || (hdr && hdr.isConnected)) return;
+    if (fab) return;
     fab = doc.createElement("button");
     fab.type = "button";
     fab.className = "a11y-fab";
     fab.setAttribute("data-a11y-open", "");
     fab.setAttribute("aria-haspopup", "dialog");
     fab.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open);
+    fab.title = W[pageHe() ? "he" : "en"].title;
     fab.innerHTML = I.access;
     host.append(fab);
   }
   function start() {
     root.append(host);
-    if (!placeInHeader()) setTimeout(() => { if (!placeInHeader()) floating(); }, 2500);   // the cart script draws some top bars a moment later
-    // some pages redraw their top bar: put the button back if it's gone
-    new MutationObserver(() => { if (hdr && !hdr.isConnected) placeInHeader(); else if (!hdr && fab && doc.querySelector(".nav-icons")) placeInHeader(); }).observe(doc.body, { childList: true, subtree: true });
+    floating();
     const skip = doc.createElement("button");
     skip.type = "button";
     skip.className = "a11y-skip";
@@ -670,8 +650,7 @@ ${card("data-readview", false, "read", t("readView"))}${card("data-vkb", !!host.
     const first = doc.querySelector("a.skip, a.skip-link, .skip-link, a[href$='#main']");
     if (first && first.parentNode) first.after(skip); else doc.body.prepend(skip);
     new MutationObserver(() => {   // the page's language toggle
-      if (hdr) { hdr.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open); hdr.title = W[pageHe() ? "he" : "en"].title; }
-      if (fab) fab.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open);
+      if (fab) { fab.setAttribute("aria-label", W[pageHe() ? "he" : "en"].open); fab.title = W[pageHe() ? "he" : "en"].title; }
       skip.textContent = W[pageHe() ? "he" : "en"].settingsLink;
     }).observe(root, { attributes: true, attributeFilter: ["lang"] });
     apply();
