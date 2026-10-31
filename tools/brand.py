@@ -219,6 +219,8 @@ html .grad,html .specs dt b,html .lr-three b,html .pc-num,html .pc-count b,html 
 html:not(.prices-on) [data-price]{visibility:hidden}
 html:not(.prices-on) .btn .pr{display:none}   /* a buy button reads "Get …" until its price is in, never "Get … ·" */
 .btn .pr:has([data-price]:empty){display:none}   /* …and stays so for a product whose price isn't set yet */
+.sale-was{font-size:.62em;font-weight:400;opacity:.6;text-decoration-thickness:1.5px;margin-inline-end:.1em}   /* November Sale: the original price, struck through */
+.btn .sale-was,.cart-row .sale-was{font-size:.85em}
 html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
 html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
 html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
@@ -312,21 +314,22 @@ LANG_GUARD = ('<script>try{if(localStorage.getItem("mwp_lang")==="he"){var d=doc
 # ---------------------------------------------------------------- launch offer (Matan, 24 Oct 2026); titled "November Sale" since 30 Oct 2026 (Jeinna)
 # The bundles sell at launch prices until this moment (Israel time). The block shows a live countdown and hides
 # itself when the time is up; after that, change the prices (new migration or the admin) and Lemon Squeezy.
-LAUNCH_END = "2026-11-30T23:59:00+02:00"   # the whole of November (Jeinna, 30 Oct 2026; was 15 November)
+LAUNCH_START = "2026-11-01T00:00:00+02:00"   # November Sale: 15% off everything, 20% off the full set (Jeinna, with Matan's OK, 30 Oct 2026)
+LAUNCH_END = "2026-11-30T23:59:00+02:00"   # the whole of November (Jeinna, 30 Oct 2026; was 15 November). Same dates as assets/js/lib/sale.js
 
 # Single Field Guides (Matan, 25 Oct 2026): on sale, $29.99 / ₪89 each (migration 20261025090008). Was off until each guide had its Lemon Squeezy product
 # (checkout link) and Matan's shekel price. True shows them on the Field Guides page, the Compare page and the FAQ
 # "Can I buy just one guide?" (build_products.py, build_pages.py). Their products and personal copies work either way.
 SINGLE_GUIDES_LIVE = True
-LAUNCH_TEXT = {
-    "en": ("November Sale", "Bundles at sale prices until 30 November. After that, prices go up and some bundles leave the shop.",
-           ("days", "hrs", "min", "sec")),
-    "he": ("מבצע נובמבר", "החבילות במחירי מבצע עד 30 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
-           ("ימים", "שעות", "דקות", "שניות")),
+LAUNCH_TEXT = {   # title, the line before the sale starts, the line during it, the countdown's units
+    "en": ("November Sale", "Starts 1 November: 15% off everything, and 20% off the full set.",
+           "15% off everything, and 20% off the full set. Until 30 November.", ("days", "hrs", "min", "sec")),
+    "he": ("מבצע נובמבר", "מתחיל ב-1 בנובמבר: 15% הנחה על הכול, ו-20% הנחה על הסט המלא.",
+           "15% הנחה על הכול, ו-20% הנחה על הסט המלא. עד 30 בנובמבר.", ("ימים", "שעות", "דקות", "שניות")),
 }
 LAUNCH_CSS = """
 .launch{margin:28px auto 0;max-width:720px;padding:18px 22px 20px;border:1px solid rgba(244,175,86,.45);border-radius:14px;background:rgba(244,175,86,.06);text-align:center}
-.launch[hidden]{display:none}
+.launch[hidden],.launch-line[hidden]{display:none}
 .launch-kick{margin:0;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#F4AF56}
 html[lang=he] .launch-kick{letter-spacing:normal;font-size:14px}
 .launch-line{margin:8px auto 0;max-width:560px;color:#CDD7DD;font-size:15px;line-height:1.5}
@@ -336,8 +339,9 @@ html[lang=he] .launch-kick{letter-spacing:normal;font-size:14px}
 .launch-count i{margin-top:3px;font-style:normal;font-size:11px;color:#9CB1C2}
 """
 LAUNCH_JS = ('<script>(function(){document.querySelectorAll(".launch[data-launch-end]").forEach(function(el){'
-             'var end=Date.parse(el.getAttribute("data-launch-end"));'
-             'function tick(){var s=Math.floor((end-Date.now())/1000);if(!(s>0)){el.hidden=true;return false}el.hidden=false;'
+             'var start=Date.parse(el.getAttribute("data-launch-start")||0),end=Date.parse(el.getAttribute("data-launch-end"));'
+             'function tick(){var now=Date.now(),soon=now<start,s=Math.floor(((soon?start:end)-now)/1000);if(!(s>0)){el.hidden=true;return false}el.hidden=false;'
+             'el.querySelectorAll("[data-phase]").forEach(function(p){p.hidden=p.getAttribute("data-phase")!==(soon?"soon":"on")});'
              'var v={d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60};'
              'el.querySelectorAll("[data-u]").forEach(function(b){var n=v[b.getAttribute("data-u")];b.textContent=(n<10?"0":"")+n});return true}'
              'if(tick())setInterval(tick,1000)})})();</script>')
@@ -345,7 +349,8 @@ LAUNCH_JS = ('<script>(function(){document.querySelectorAll(".launch[data-launch
 
 def launch_block(lang="en"):
     """The launch-offer notice with its countdown (hidden until the script runs, and after the offer ends)."""
-    kick, line, units = LAUNCH_TEXT["he" if lang == "he" else "en"]
+    kick, soon, line, units = LAUNCH_TEXT["he" if lang == "he" else "en"]
     cells = "".join(f'<span><b data-u="{k}">00</b><i>{u}</i></span>' for k, u in zip("dhms", units))
-    return (f'<div class="launch" data-launch-end="{LAUNCH_END}" hidden><p class="launch-kick">{kick}</p>'
-            f'<p class="launch-line">{line}</p><div class="launch-count" aria-hidden="true">{cells}</div></div>{LAUNCH_JS}')
+    return (f'<div class="launch" data-launch-start="{LAUNCH_START}" data-launch-end="{LAUNCH_END}" hidden><p class="launch-kick">{kick}</p>'
+            f'<p class="launch-line" data-phase="soon">{soon}</p><p class="launch-line" data-phase="on" hidden>{line}</p>'
+            f'<div class="launch-count" aria-hidden="true">{cells}</div></div>{LAUNCH_JS}')

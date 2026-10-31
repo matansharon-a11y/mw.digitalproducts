@@ -66,6 +66,8 @@ html .grad,html .specs dt b,html .lr-three b,html .pc-num,html .pc-count b,html 
 html:not(.prices-on) [data-price]{visibility:hidden}
 html:not(.prices-on) .btn .pr{display:none}   /* a buy button reads "Get …" until its price is in, never "Get … ·" */
 .btn .pr:has([data-price]:empty){display:none}   /* …and stays so for a product whose price isn't set yet */
+.sale-was{font-size:.62em;font-weight:400;opacity:.6;text-decoration-thickness:1.5px;margin-inline-end:.1em}   /* November Sale: the original price, struck through */
+.btn .sale-was,.cart-row .sale-was{font-size:.85em}
 html .site-foot{padding:40px 0;border-top:1px solid rgba(156,177,194,.15);background:#0A0908}
 html .site-foot .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px 32px;color:#9CB1C2;font:400 13px/1.5 "Google Sans","Heebo",sans-serif}
 html .site-foot .sf-brand{font-weight:800;letter-spacing:.3em;color:#FEFBF1}
@@ -158,6 +160,6 @@ html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],
 <div class="sf-legal"><div class="sf-credits"><p class="sf-rights">All rights reserved © <span data-year>2026</span> MW Photo Tours</p><p class="sf-credit">All photos: Matan Wild · contact@matanwildphotography.com</p></div><nav class="sf-terms" aria-label="Legal"><a href="/legal/#terms">Terms</a><a href="/legal/#refunds">Refunds</a><a href="/legal/#privacy">Privacy policy</a><a href="/accessibility/">Accessibility statement</a><button class="sf-cookies" type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </div>
 </footer>
-<script type="module" src="assets/js/pages/product.js?v=2eceeb3b"></script>
+<script type="module" src="assets/js/pages/product.js?v=b44ceb12"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@
 // dollars (SHOW_ILS, also in cart.js and tools/bake_prices.py; Matan, 24 Oct 2026). Checkout still charges
 // dollars, so every Hebrew section with prices says so (ilsNotes), and the cart shows the dollar amount.
 import { CONFIG } from "../config.js";
+import { saleFor, salePrice } from "./sale.js";
 
 let rows = null;
 
@@ -19,15 +20,19 @@ const fmt = (cents, cur) => {
 };
 
 function textFor(el) {
-  const r = rows && rows[el.dataset.price];
+  const slug = el.dataset.price;
+  const r = rows && rows[slug];
   const was = el.hasAttribute("data-was");
-  if (he()) {
-    const c = r ? (was ? r.compare_at_ils_cents : r.price_ils_cents) : null;
-    return !c ? "" : fmt(c, "ILS");   // no price (or "before" price) set: show nothing, never ₪0.00
-  }
-  const c = r ? (was ? r.compare_at_cents : r.price_cents) : null;
-  if (!c) return "";   // no price set yet (a new product): show nothing, never $0.00
-  return fmt(c, r?.currency || "USD");
+  const [c, cur] = he()
+    ? [r ? (was ? r.compare_at_ils_cents : r.price_ils_cents) : null, "ILS"]
+    : [r ? (was ? r.compare_at_cents : r.price_cents) : null, r?.currency || "USD"];
+  if (!c) return "";   // no price (or "before" price) set: show nothing, never 0.00
+  if (was || !saleFor(slug)) return fmt(c, cur);
+  // November Sale (sale.js): the original struck through, then the sale price. A bundle card already strikes
+  // through the sum of its parts (data-was), so there only the sale price shows.
+  const now = fmt(salePrice(c, slug, cur), cur);
+  const hasWas = el.closest("section, .plan, .cart-panel")?.querySelector(`[data-was][data-price="${slug}"]`);
+  return hasWas ? now : `<s class="sale-was">${fmt(c, cur)}</s> ${now}`;
 }
 
 // <span data-save="slug">: "Save $20.00" when the bundle has a "before" price, else nothing.
@@ -35,8 +40,9 @@ function saveFor(el) {
   const r = rows && rows[el.dataset.save];
   if (!r) return "";
   const [now, was, cur] = he() ? [r.price_ils_cents, r.compare_at_ils_cents, "ILS"] : [r.price_cents, r.compare_at_cents, r.currency || "USD"];
-  if (!was || !now || was <= now) return "";
-  return (document.documentElement.lang === "he" ? "חוסכים " : "Save ") + fmt(was - now, cur);
+  const sale = salePrice(now, el.dataset.save, cur);   // during the sale, the saving includes it
+  if (!was || !sale || was <= sale) return "";
+  return (document.documentElement.lang === "he" ? "חוסכים " : "Save ") + fmt(was - sale, cur);
 }
 
 // One line at the end of every Hebrew section that shows prices: checkout charges dollars. Taken away again
@@ -62,7 +68,7 @@ function paint(root = document) {
   if (!rows) return;   // no prices yet: keep what the page has (the prices baked in at deploy, or hidden placeholders)
   root.querySelectorAll("[data-price]").forEach((el) => {
     const t = textFor(el);
-    if (el.textContent !== t) el.textContent = t;
+    if (el.innerHTML !== t) el.innerHTML = t;   // only our own formatted prices (and <s> during the sale)
   });
   root.querySelectorAll("[data-save]").forEach((el) => {
     const t = saveFor(el);
@@ -79,7 +85,8 @@ function productData() {
   if (!src || !rows) return;
   const p = JSON.parse(src.textContent);
   const r = rows[p.slug];
-  const [cents, cur] = r ? (he() ? [r.price_ils_cents, "ILS"] : [r.price_cents, r.currency || "USD"]) : [0, ""];
+  const [base, cur] = r ? (he() ? [r.price_ils_cents, "ILS"] : [r.price_cents, r.currency || "USD"]) : [0, ""];
+  const cents = salePrice(base, p.slug, cur);
   if (!cents) return;
   const ld = {
     "@context": "https://schema.org", "@type": "Product", name: p.name, description: p.description, image: p.image,

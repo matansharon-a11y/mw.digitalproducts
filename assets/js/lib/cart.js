@@ -1,4 +1,5 @@
-// Header icons (account menu + cart) and the cart drawer. Standalone: no imports, works on every shop page.
+import { saleFor, salePrice } from "./sale.js";
+// Header icons (account menu + cart) and the cart drawer. Works on every shop page; its one import is the sale (sale.js).
 // Icons show no text; the label appears only on hover, keyboard focus, or when tapped/clicked.
 const KEY = "mwp_cart";
 const he = () => document.documentElement.lang === "he";
@@ -142,9 +143,13 @@ function money(cents, cur) {
 // 2026). So in Hebrew every row also shows the dollar amount charged, and the total says it plainly. The same
 // switch is in prices.js and tools/bake_prices.py.
 const SHOW_ILS = true;
+// November Sale (sale.js): rows and totals use the sale price; the original is struck through beside it.
+const usdOf = (i) => salePrice(i.price_cents, i.slug, i.currency);
+const ilsOf = (i) => salePrice(i.price_ils_cents, i.slug, "ILS");
 function priceOf(i) {
-  if (!(SHOW_ILS && he() && i.price_ils_cents != null)) return money(i.price_cents, i.currency);
-  return `${money(i.price_ils_cents, "ILS")}<span class="usd">בקופה: ${money(i.price_cents, i.currency)}</span>`;
+  const was = (c, cur) => (saleFor(i.slug) && c != null ? `<s class="sale-was">${money(c, cur)}</s> ` : "");
+  if (!(SHOW_ILS && he() && i.price_ils_cents != null)) return was(i.price_cents, i.currency) + money(usdOf(i), i.currency);
+  return `${was(i.price_ils_cents, "ILS")}${money(ilsOf(i), "ILS")}<span class="usd">בקופה: ${money(usdOf(i), i.currency)}</span>`;
 }
 
 let notice = "";   // a one-time line at the top of the cart (why something wasn't added)
@@ -164,24 +169,24 @@ function render() {
   body.innerHTML = top + list.map((i) => `<div class="cart-row">
       ${i.image ? `<img src="${esc(i.image)}" alt="">` : `<span class="cart-ph"></span>`}
       <div><div class="nm" data-no-i18n>${esc(i.name)}</div><div class="pr">${priceOf(i)}</div></div>
-      <div class="acts">${several && i.checkout_url ? `<a class="pay" data-checkout href="${esc(i.checkout_url)}">${T("Pay", "לתשלום")}</a>` : ""}<button type="button" data-remove="${esc(i.slug)}">${T("Remove", "הסרה")}</button></div>
+      <div class="acts">${several && i.checkout_url ? `<a class="pay" data-checkout data-slug="${esc(i.slug)}" href="${esc(i.checkout_url)}">${T("Pay", "לתשלום")}</a>` : ""}<button type="button" data-remove="${esc(i.slug)}">${T("Remove", "הסרה")}</button></div>
     </div>`).join("");
   const ils = SHOW_ILS && he() && list.every((i) => i.price_ils_cents != null);
   const cur = ils ? "ILS" : list[0].currency;
   const known = list.every((i) => (ils ? i.price_ils_cents : i.price_cents) != null);
-  const total = list.reduce((s, i) => s + ((ils ? i.price_ils_cents : i.price_cents) || 0), 0);
+  const total = list.reduce((s, i) => s + ((ils ? ilsOf(i) : usdOf(i)) || 0), 0);
   const ready = list.filter((i) => i.checkout_url);
   let go, note = "";
   if (!ready.length) {
     go = `<a class="cart-go" aria-disabled="true">${T("Checkout", "לתשלום")}</a>`;
     note = T("Checkout opens at launch.", "התשלום ייפתח בהשקה.");
   } else if (!several) {
-    go = `<a class="cart-go" data-checkout href="${esc(ready[0].checkout_url)}">${T("Checkout", "לתשלום")}</a>`;
+    go = `<a class="cart-go" data-checkout data-slug="${esc(ready[0].slug)}" href="${esc(ready[0].checkout_url)}">${T("Checkout", "לתשלום")}</a>`;
   } else {
     go = "";
     note = T("Each product has its own secure checkout. Tap Pay next to each one.", "לכל מוצר יש תשלום מאובטח משלו. לחצו על \"לתשלום\" ליד כל מוצר.");
   }
-  const usdTotal = list.reduce((s, i) => s + (i.price_cents || 0), 0);
+  const usdTotal = list.reduce((s, i) => s + (usdOf(i) || 0), 0);
   const charge = ils && list.every((i) => i.price_cents != null)
     ? `<p class="cart-note cart-usd">המחירים מוצגים בשקלים. התשלום בקופה הוא בדולרים: ${money(usdTotal, list[0].currency)} בסך הכול.</p>` : "";
   foot.innerHTML = `${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}`;
@@ -313,6 +318,10 @@ async function goToCheckout(link) {
   let utm = null;
   try { utm = sessionStorage.getItem("utm_source") || new URLSearchParams(location.search).get("utm_source"); } catch { /* blocked */ }
   if (utm) url.searchParams.set("checkout[custom][source]", utm.slice(0, 64));
+  // November Sale: the product's Lemon Squeezy discount code, so checkout charges the price the cart showed
+  const slug = link.dataset.slug || items().find((i) => i.checkout_url && new URL(i.checkout_url, location.href).pathname === url.pathname)?.slug;
+  const sale = saleFor(slug);
+  if (sale) url.searchParams.set("checkout[discount_code]", sale.code);
   try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
   else location.href = url.toString();

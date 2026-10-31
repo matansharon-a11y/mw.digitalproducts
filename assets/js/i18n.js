@@ -124,6 +124,8 @@ const HE = {
   // launch offer (24 Oct 2026)
   "Launch offer": "מבצע השקה",
   "November Sale": "מבצע נובמבר",
+  "Starts 1 November: 15% off everything, and 20% off the full set.": "מתחיל ב-1 בנובמבר: 15% הנחה על הכול, ו-20% הנחה על הסט המלא.",
+  "15% off everything, and 20% off the full set. Until 30 November.": "15% הנחה על הכול, ו-20% הנחה על הסט המלא. עד 30 בנובמבר.",
   "Bundles at launch prices until 15 November. After that, prices go up and some bundles leave the shop.": "החבילות במחירי השקה עד 15 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
   "Bundles at sale prices until 30 November. After that, prices go up and some bundles leave the shop.": "החבילות במחירי מבצע עד 30 בנובמבר. אחרי זה המחירים עולים, וחלק מהחבילות יורדות מהחנות.",
   "days": "ימים",

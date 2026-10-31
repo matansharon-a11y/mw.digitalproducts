@@ -7,6 +7,10 @@
    function. Its signing secret is made here (40 random letters and digits), set on the function as
    LS_WEBHOOK_SECRET_TEST or LS_WEBHOOK_SECRET_LIVE and given to Lemon Squeezy: no one ever sees or types it.
    A new one is made whenever the webhook is created, or on request (workflow input new_signing_secret).
+4. Makes sure the store has the sale's discount codes (assets/js/lib/sale.js: the November Sale, 15% off everything and
+   20% off the full set, 1-30 November), each limited to its products and dates. The cart puts the code on every
+   checkout link during the sale, so checkout charges the price the pages show. A code that's already there is
+   left as it is (the API can't change one); to change it, delete it in Lemon Squeezy and run this again.
 Prices are compared, never changed: a product whose Lemon Squeezy price differs from the shop's is reported.
 Nothing is switched on or off (is_active stays as it is) and nothing is deleted.
 """
@@ -94,6 +98,44 @@ def slug_for(name):
             frozenset({"guides", "panel"}): "field-guides-panel"}.get(parts)
 
 
+def sale():
+    """The sale as the site has it (assets/js/lib/sale.js): one source for the dates, the percentages and the codes."""
+    js = open(os.path.join(os.path.dirname(__file__), "..", "assets", "js", "lib", "sale.js"), encoding="utf-8").read()
+    get = lambda pat: re.search(pat, js).group(1)
+    special = {m.group(1): (int(m.group(2)), m.group(3)) for m in re.finditer(r'"([a-z0-9-]+)": \{ pct: (\d+), code: "([A-Z0-9]+)" \}', js)}
+    return get(r'start: "([^"]+)"'), get(r'end: "([^"]+)"'), int(get(r'pct: (\d+), code:')), get(r'pct: \d+, code: "([A-Z0-9]+)"'), special
+
+
+def sale_codes(store, variant_of, test):
+    """One discount code per sale rate, limited to its products and to the sale's dates (POST /v1/discounts)."""
+    start, end, pct, code, special = sale()
+    paid = {slug: v for slug, v in variant_of.items() if slug != "mwp-field-guides-sample"}
+    groups = [(code, pct, sorted(v for slug, v in paid.items() if slug not in special))]
+    groups += [(c, p, sorted(v for slug, v in paid.items() if slug == s)) for s, (p, c) in special.items()]
+    have = {d["attributes"]["code"]: d for d in ls_all(f"/discounts?filter[store_id]={store['id']}")}
+    say(f"\nSale codes ({start[:10]} to {end[:10]}):")
+    for c, p, variants in groups:
+        if not variants:
+            say(f"- {c} ({p}%): no matching products in Lemon Squeezy yet, not made.")
+            continue
+        old = have.get(c)
+        if old and bool(old["attributes"].get("test_mode")) == test:
+            a = old["attributes"]
+            same = a.get("amount") == p and a.get("amount_type") == "percent" and (a.get("expires_at") or "")[:10] == end[:10]
+            say(f"- {c} ({p}%): already there{'' if same else ' · **differs from the site (percent or dates): delete it in Lemon Squeezy and run this again**'}.")
+            continue
+        if not APPLY:
+            say(f"- {c} ({p}%): would be made for {len(variants)} products.")
+            continue
+        ls("/discounts", "POST", {"data": {"type": "discounts", "attributes": {
+            "name": f"November Sale {p}%", "code": c, "amount": p, "amount_type": "percent",
+            "is_limited_to_products": True, "is_limited_redemptions": False,
+            "starts_at": start, "expires_at": end, "test_mode": test},
+            "relationships": {"store": {"data": {"type": "stores", "id": str(store["id"])}},
+                              "variants": {"data": [{"type": "variants", "id": v} for v in variants]}}}})
+        say(f"- {c} ({p}%): made, for {len(variants)} product{'' if len(variants) == 1 else 's'}.")
+
+
 def main():
     missing = [n for n, v in (("LEMONSQUEEZY_API_KEY", KEY), ("SUPABASE_URL", DB), ("SUPABASE_SERVICE_KEY", SERVICE)) if not v]
     if missing:
@@ -121,7 +163,7 @@ def main():
     products = ls_all(f"/products?filter[store_id]={store['id']}&page[size]=100")
     say("| Lemon Squeezy product | Shop product | Variant | LS price | Shop price | Result |")
     say("| --- | --- | --- | --- | --- | --- |")
-    found = set()
+    found, variant_of = set(), {}
     for p in products:
         a = p["attributes"]
         slug = slug_for(a["name"])
@@ -151,9 +193,12 @@ def main():
             # store (they're not links and unlock nothing on their own); the live run replaces them
             db(f"products?slug=eq.{urllib.parse.quote(slug)}", "PATCH", {"checkout_variant_id": str(v["id"])})
         found.add(slug)
+        variant_of[slug] = str(v["id"])
         say(f"| {a['name']} | {slug} | {v['id']} | ${ls_price / 100:.2f} | ${shop_price / 100:.2f} | {note} |")
     for slug in sorted(set(shop) - found):
         say(f"| (none) | {slug} | | | ${shop[slug]['price_cents'] / 100:.2f} | **not in Lemon Squeezy yet** |")
+
+    sale_codes(store, variant_of, test)
 
     # the order webhook
     say("")
