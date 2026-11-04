@@ -85,7 +85,7 @@ STORY = f"""<section class="st-ch" id="shop" aria-label="The collection">
 <div class="st-sticky">
 <div class="st-grid">
 <div class="st-media" aria-hidden="true">
-{"".join(f'<img class="st-mimg" data-i="{i}" src="{IMG}{c["img"]}" alt="" loading="lazy" style="object-position: {c["pos"]}">' for i, c in enumerate(CHAPTERS))}
+{"".join(f'<div class="st-mwrap{" st-first" if i == 0 else ""}"><img class="st-mimg" data-i="{i}" src="{IMG}{c["img"]}" alt="" loading="lazy" style="object-position: {c["pos"]}"></div>' for i, c in enumerate(CHAPTERS))}
 {home_devices.HTML}
 <div class="st-vf st-vf-sm"><span></span><span></span><span></span><span></span></div>
 <div class="st-count"><span class="st-cur">01</span><span class="st-of">/ 0{len(CHAPTERS)}</span></div>
@@ -157,8 +157,11 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-media{position:relative;height:100%;overflow:hidden;background:#141210}
 .st-media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(10,9,8,0) 55%,rgba(10,9,8,.55) 85%,#0A0908 100%),linear-gradient(0deg,rgba(10,9,8,.55) 0%,rgba(10,9,8,0) 30%)}
 [dir=rtl] .st-media::after{background:linear-gradient(270deg,rgba(10,9,8,0) 55%,rgba(10,9,8,.55) 85%,#0A0908 100%),linear-gradient(0deg,rgba(10,9,8,.55) 0%,rgba(10,9,8,0) 30%)}
-.st-mimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(100% 0 0 0);will-change:clip-path,transform}
-.st-mimg:first-of-type{clip-path:inset(0 0 0 0)}
+/* the next photo wipes up: its frame slides up while the photo inside slides down by the same amount, so the photo
+   stays put and only its visible part grows (the same look as a clip, but the graphics card does it: no repaint) */
+.st-mwrap{position:absolute;inset:0;overflow:hidden;transform:translate3d(0,100%,0);will-change:transform}
+.st-mwrap.st-first{transform:none}
+.st-mimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
 
 .st-media .st-vf{inset:104px 40px 40px 40px;z-index:2}
 .st-count{position:absolute;left:64px;bottom:60px;z-index:2;display:flex;align-items:baseline;gap:10px;color:#FEFBF1;direction:ltr}
@@ -254,7 +257,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 }
 @media (prefers-reduced-motion:reduce){
   .st-hero-img,.st-l > span,.st-in{animation:none}
-  .st-mimg,.st-art,.st-prog span::after{transition:none}
+  .st-mwrap,.st-mimg,.st-art,.st-prog span::after{transition:none}
 }
 """
 
@@ -263,12 +266,15 @@ JS = """<script>
 // eased toward the scroll position every frame so it glides rather than jumps.
 (function () {
   var track = document.querySelector(".st-track"); if (!track) return;
-  var imgs = track.querySelectorAll(".st-mimg"), arts = track.querySelectorAll(".st-art"), prog = track.querySelectorAll(".st-prog span");
+  var imgs = track.querySelectorAll(".st-mimg"), wraps = track.querySelectorAll(".st-mwrap"), arts = track.querySelectorAll(".st-art"), prog = track.querySelectorAll(".st-prog span");
   var cur = track.querySelector(".st-cur"), n = arts.length;
   var ghosts = track.querySelectorAll(".st-ghost"), ambs = track.querySelectorAll(".st-amb"), devs = track.querySelectorAll(".st-media .st-dev"), mdevs = track.querySelectorAll(".st-mstage .st-dev");
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var target = 0, shown = 0, running = false, lastIdx = -1;
   var ss = function (a, b, x) { var t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  // write a style only when it changes (every write makes the browser redo its work)
+  var put = function (el, k, v) { var c = el.__s || (el.__s = {}); if (c[k] !== v) { c[k] = v; el.style[k] = v; } };
+  var putVar = function (el, k, v) { var c = el.__s || (el.__s = {}); if (c[k] !== v) { c[k] = v; el.style.setProperty(k, v); } };
   function measure() {
     if (window.innerWidth <= 900) return null;
     var r = track.getBoundingClientRect(), total = r.height - window.innerHeight;
@@ -289,20 +295,22 @@ JS = """<script>
     for (var i = 0; i < n; i++) {
       var d = v - i;                                   // <0: upcoming, 0: on screen, >0: already passed
       // photos: each one wipes up over the one before as the scroll reaches it
-      var reveal = i === 0 ? 1 : ss(-0.78, -0.22, d);
-      imgs[i].style.clipPath = "inset(" + ((1 - reveal) * 100).toFixed(2) + "% 0 0 0)";
-      imgs[i].style.transform = "scale(" + (1 + 0.08 * (1 - reveal) + 0.03 * ss(0, 1, d)).toFixed(4) + ")";
+      var reveal = i === 0 ? 1 : ss(-0.78, -0.22, d), hid = ((1 - reveal) * 100).toFixed(2);
+      if (wraps[i]) put(wraps[i], "transform", "translate3d(0," + hid + "%,0)");
+      put(imgs[i], "transform", "translate3d(0,-" + hid + "%,0) scale(" + (1 + 0.08 * (1 - reveal) + 0.03 * ss(0, 1, d)).toFixed(4) + ")");
       // text: fade and drift; out upward, in from below
       var dOp = (i === 0 && d < 0) || (i === n - 1 && d > 0) ? 0 : d;   // first and last chapter stay fully on at the ends
       var op = 1 - ss(0.18, 0.5, Math.abs(dOp));
-      arts[i].style.opacity = op.toFixed(3);
-      arts[i].style.transform = "translateY(" + (-d * 40).toFixed(1) + "px)";
-      if (ghosts[i]) { ghosts[i].style.opacity = op.toFixed(3); ghosts[i].style.transform = "translateY(calc(-50% + " + (-d * 120).toFixed(1) + "px))"; }
-      if (ambs[i]) ambs[i].style.opacity = (op * 0.26).toFixed(3);
+      var far = Math.abs(d) > 1.6;   // chapters well off screen: settle once, then leave them alone
+      put(arts[i], "opacity", op.toFixed(3));
+      put(arts[i], "transform", "translateY(" + (far ? (d > 0 ? -64 : 64) : -d * 40).toFixed(1) + "px)");
+      if (ghosts[i]) { put(ghosts[i], "opacity", op.toFixed(3)); put(ghosts[i], "transform", "translateY(calc(-50% + " + (far ? (d > 0 ? -192 : 192) : -d * 120).toFixed(1) + "px))"); }
+      if (ambs[i]) put(ambs[i], "opacity", (op * 0.26).toFixed(3));
       if (devs[i]) {
-        devs[i].style.opacity = op.toFixed(3);
-        devs[i].style.transform = "translateY(" + (-d * 60).toFixed(1) + "px) scale(" + (0.94 + 0.06 * op).toFixed(4) + ")";
-        scene(devs[i], d, op);
+        put(devs[i], "opacity", op.toFixed(3));
+        put(devs[i], "transform", "translateY(" + (far ? (d > 0 ? -96 : 96) : -d * 60).toFixed(1) + "px) scale(" + (0.94 + 0.06 * op).toFixed(4) + ")");
+        if (!far || !devs[i].__settled) scene(devs[i], d, op);
+        devs[i].__settled = far;
       }
     }
     var k = Math.min(n - 1, Math.max(0, Math.round(v)));
@@ -316,25 +324,32 @@ JS = """<script>
   // One product scene at chapter offset d (<0 upcoming, 0 on screen): mouse, clicks, compare wipe, books fanning out.
   function scene(dv, d, op) {
         var w = ss(-0.4, 0.34, d);                      // this chapter's own timeline, 0 → 1, tied to the scroll
-        var mouse = dv.querySelector(".st-mouse"), app = dv.querySelector(".st-app");
-        var rings = dv.querySelectorAll(".st-ring");
+        var Q = dv.__q || (dv.__q = { mouse: dv.querySelector(".st-mouse"), app: dv.querySelector(".st-app"), rings: dv.querySelectorAll(".st-ring"),
+          wp: dv.querySelector(".st-wipe"), wl: dv.querySelector(".st-wline"), bars: dv.querySelectorAll(".lr-track i"), nl: dv.querySelector(".st-newlayer"),
+          canvas: dv.querySelector(".st-canvas"), folder: dv.querySelector(".lr-folder.on") });
+        var mouse = Q.mouse, app = Q.app, rings = Q.rings;
         // Presets: click the preset, then drag the compare line. Panel: click Subject, then Pop, then drag.
         var start = rings.length ? 0.42 : 0.26;
         var wipe = Math.min(1, Math.max(0, (w - start) / (1 - start)));
-        var wp = dv.querySelector(".st-wipe"), wl = dv.querySelector(".st-wline");
-        if (wp) wp.style.clipPath = "inset(0 " + ((1 - wipe) * 100).toFixed(2) + "% 0 0)";
-        if (wl) { wl.style.left = (wipe * 100).toFixed(2) + "%"; wl.style.opacity = (wipe > 0.01 && wipe < 0.99) ? "1" : "0"; }
-        dv.querySelectorAll(".lr-track i").forEach(function (b, j) { var to = [56, 46, 62, 58, 30, 70, 54, 56, 62, 56, 53, 58, 55][j] || 55; b.style.setProperty("--at", (50 + (to - 50) * wipe).toFixed(1) + "%"); });
-        var nl = dv.querySelector(".st-newlayer"); if (nl) nl.classList.toggle("on", w > 0.32);
+        var wp = Q.wp, wl = Q.wl;
+        if (wp) put(wp, "clipPath", "inset(0 " + ((1 - wipe) * 100).toFixed(2) + "% 0 0)");
+        if (wl) { put(wl, "left", (wipe * 100).toFixed(2) + "%"); put(wl, "opacity", (wipe > 0.01 && wipe < 0.99) ? "1" : "0"); }
+        Q.bars.forEach(function (b, j) { var to = [56, 46, 62, 58, 30, 70, 54, 56, 62, 56, 53, 58, 55][j] || 55; putVar(b, "--at", (50 + (to - 50) * wipe).toFixed(1) + "%"); });
+        var nl = Q.nl; if (nl) nl.classList.toggle("on", w > 0.32);
         if (rings.length) { rings[0].classList.toggle("on", w > 0.18); rings[1].classList.toggle("on", w > 0.32); }
         if (mouse && app && op > 0.02) {
-          var A = app.getBoundingClientRect();
-          var at = function (el, fx, fy) { var r = el.getBoundingClientRect(); return [(r.left + r.width * fx - A.left) / A.width * 100, (r.top + r.height * fy - A.top) / A.height * 100]; };
-          var canvas = dv.querySelector(".st-canvas");
-          // one continuous path: rest → click target(s) → grab the compare line → drag it across
-          var keys = rings.length
-            ? [[0, [70, 84]], [0.18, at(rings[0], .5, .55)], [0.32, at(rings[1], .3, .55)], [start, at(canvas, 0, .62)], [1, at(canvas, 1, .62)]]
-            : [[0, [60, 86]], [0.18, at(dv.querySelector(".lr-folder.on"), .45, .55)], [start, at(canvas, 0, .62)], [1, at(canvas, 1, .62)]];
+          // the path's points, as % of the app window: measured once (they don't move with the scroll), again after a resize
+          if (!dv.__keys || dv.__kw !== window.innerWidth) {
+            var A = app.getBoundingClientRect();
+            var at = function (el, fx, fy) { var r = el.getBoundingClientRect(); return [(r.left + r.width * fx - A.left) / A.width * 100, (r.top + r.height * fy - A.top) / A.height * 100]; };
+            var canvas = Q.canvas;
+            // one continuous path: rest → click target(s) → grab the compare line → drag it across
+            dv.__keys = rings.length
+              ? [[0, [70, 84]], [0.18, at(rings[0], .5, .55)], [0.32, at(rings[1], .3, .55)], [start, at(canvas, 0, .62)], [1, at(canvas, 1, .62)]]
+              : [[0, [60, 86]], [0.18, at(Q.folder, .45, .55)], [start, at(canvas, 0, .62)], [1, at(canvas, 1, .62)]];
+            dv.__kw = window.innerWidth;
+          }
+          var keys = dv.__keys;
           var pos = keys[keys.length - 1][1];
           for (var q = 1; q < keys.length; q++) if (w <= keys[q][0]) {
             var a0 = keys[q - 1], a1 = keys[q], u = Math.min(1, Math.max(0, (w - a0[0]) / (a1[0] - a0[0] || 1)));
@@ -350,7 +365,7 @@ JS = """<script>
           var near = clicks.some(function (c) { return Math.abs(w - c) < 0.02; });
           mouse.classList.toggle("click", near); mouse.classList.toggle("press", near || (w > start && w < 0.995));
         }
-        dv.style.setProperty("--e", ss(-0.45, 0.2, d).toFixed(3));   // books fan out as the chapter arrives
+        putVar(dv, "--e", ss(-0.45, 0.2, d).toFixed(3));   // books fan out as the chapter arrives
   }
   // Phones: each chapter's scene plays as it scrolls up the screen, done by the time it is a little above the middle.
   function phones() {
@@ -370,7 +385,7 @@ JS = """<script>
   }
   function onScroll() {
     var m = measure();
-    if (m === null) { arts.forEach(function (a) { a.removeAttribute("aria-hidden"); a.style.opacity = ""; a.style.transform = ""; }); imgs.forEach(function (im) { im.style.clipPath = ""; im.style.transform = ""; }); phones(); return; }
+    if (m === null) { arts.forEach(function (a) { a.removeAttribute("aria-hidden"); a.style.opacity = ""; a.style.transform = ""; }); imgs.forEach(function (im) { im.style.transform = ""; im.__s = null; }); wraps.forEach(function (w) { w.style.transform = ""; w.__s = null; }); arts.forEach(function (a) { a.__s = null; }); phones(); return; }
     target = m;
     if (!running) { running = true; requestAnimationFrame(loop); }
   }
