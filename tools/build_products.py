@@ -8,7 +8,7 @@ Every page follows the same story, in the home page's look:
 The wording comes from Matan's sales-page designs (EN and HE); the FAQs live in tools/pages/faqs.json.
 Run: python3 tools/build_products.py
 """
-import glob, json, os, sys
+import glob, json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lrc_preview import window as lrc_window
 from ps_preview import window as ps_window
@@ -34,6 +34,15 @@ def img(prefix, webp=True):
     """/assets/pages/img/<file> from the first characters of its name (the files are named by their hash).
     webp=False: the JPEG/PNG copy, for link previews (some apps don't show WebP)."""
     found = sorted(glob.glob(os.path.join(ROOT, "assets/pages/img", prefix + "*")), key=lambda f: not f.endswith(".webp"))   # the smaller WebP copy first
+    # never a fixed-width copy such as <hash>-1200.webp: the deploy can't offer bigger sizes for it, so wide screens got a
+    # blurry hero (Nov 2026). Prefer the photo that has sizes (sizes.json), so the deploy adds its srcset.
+    found = [f for f in found if not re.search(r"-\d+\.webp$", f)] or found
+    try:
+        have = json.load(open(os.path.join(ROOT, "assets/pages/img/sizes.json")))
+        top = lambda f: max(w for w, _ in have[os.path.basename(f)])   # widest size offered: sharpest on big screens
+        found = sorted([f for f in found if os.path.basename(f) in have], key=lambda f: -top(f)) + [f for f in found if os.path.basename(f) not in have]
+    except (OSError, ValueError):
+        pass
     if not webp:
         found = [f for f in found if not f.endswith(".webp")] or found
     if not found:

@@ -5,8 +5,9 @@ them to the browser, which downloads only the size the screen needs (a phone or 
   python3 tools/image_sizes.py apply _site  in the published copy (the deploy does this): add srcset/sizes to every
                                             <img> and image preload that points at a photo with sizes
 
-The pages keep their original src (a browser without srcset still gets the photo). Lazy images get sizes="auto, 100vw"
-(the browser measures the image's real width; older browsers fall back to the screen width); the others 100vw.
+The pages keep their original src (a browser without srcset still gets the photo). Each image gets its measured sizes
+(layout.json), else 100vw. Never sizes="auto" (the <img> tags have no width/height, so it stretched photos), and never
+a 1px size (clean_sizes).
 Sizes: 480, 960 and 1600 wide (never wider than the original); a JPG or PNG also gets a full-width WebP.
 """
 import os, re, sys
@@ -80,6 +81,13 @@ LINK = re.compile(r'<link\b[^>]*rel="preload"[^>]*as="image"[^>]*>', re.I)
 SRC = re.compile(r'(\s(?:src|href)=")([^"]*?assets/pages/img/)([^"/?#]+)(")')
 
 
+def clean_sizes(sizes):
+    """A measured `sizes` never says 1px: the photo was hidden while measuring (scripts off), not small, so the
+    browser picked the 480 px copy and the photo looked blurry (Nov 2026). Use the widest measured share instead."""
+    vws = [int(x) for x in re.findall(r"(\d+)vw", sizes)]
+    return sizes.replace(" 1px", f" {max(vws) if vws else 100}vw")
+
+
 def srcset_for(prefix, name, tab):
     return ", ".join(f"{prefix}{x} {w}w" for w, x in tab[name])
 
@@ -112,10 +120,11 @@ def apply(site):
                 s = SRC.search(tag)
                 if not s or not s.group(1).strip().startswith("src") or "srcset=" in tag or s.group(3) not in tab:
                     return tag
-                lazy = re.search(r'loading="lazy"', tag)
-                sizes = sizes or "100vw"
+                # no sizes="auto": without width/height on the <img> the browser lays it out at 300x150 first, so
+                # photos showed stretched or squashed (Nov 2026)
+                sizes = clean_sizes(sizes or "100vw")
                 by_src.setdefault(s.group(3), sizes)
-                add = f' srcset="{srcset_for(s.group(2), s.group(3), tab)}" sizes="{"auto, " + sizes if lazy else sizes}"'
+                add = f' srcset="{srcset_for(s.group(2), s.group(3), tab)}" sizes="{sizes}"'
                 n += 1
                 return tag[:-1].rstrip("/").rstrip() + add + (" />" if tag.endswith("/>") else ">")
 

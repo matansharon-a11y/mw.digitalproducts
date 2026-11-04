@@ -40,7 +40,8 @@ for (const page of pages.sort()) {
   // one `sizes` per photo: its width as a share of the screen at each breakpoint (vw), so it also holds between them
   out[page] = widths[0].map((_, k) => {
     const [a, b, c] = SCREENS.map(([sw], j) => widths[j][k] ? Math.min(100, Math.ceil(widths[j][k] / sw * 100)) : 0);
-    const vw = (x) => (x ? `${x}vw` : "1px");   // hidden at that size: the smallest file will do
+    // hidden while measuring (scripts are off) isn't small: use the widest share seen, never 1px (that showed blurry photos)
+    const vw = (x) => `${x || Math.max(a, b, c) || 100}vw`;
     return `(max-width: 600px) ${vw(a)}, (max-width: 1100px) ${vw(b)}, ${vw(c)}`;
   });
   console.log(page, out[page].length, "photos");
