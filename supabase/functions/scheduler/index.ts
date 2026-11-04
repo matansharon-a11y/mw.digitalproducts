@@ -21,6 +21,9 @@
 //                        Shop Ambassador Applications (see applications.ts)
 //   applications_callback → Make returns that board: Approved → the person becomes an ambassador and gets the
 //                        welcome email; Declined → the decline email (both sent by Make)
+//   update_emails {notice_id} → a product got a new version and the admin clicked "Email the owners": Make's
+//                        update-emails scenario gets a one-time code, comes back with update_list for the list,
+//                        and sends one email per owner (see updates.ts)
 //   reconcile          → hourly: every order paid in Lemon Squeezy in the last 3 days must be in the shop, and every
 //                        order refunded there must be refunded here. Anything else is raised once in monday (Shop
 //                        Orders, status "Not delivered"): the safety net under the webhook, which Lemon Squeezy
@@ -29,6 +32,7 @@
 import { admin, notifyMake, plain, requestPersonalCopies } from "../_shared/http.ts";
 import { mondayPhone, parsePhone } from "../_shared/phone.ts";
 import { applications, applicationsCallback } from "./applications.ts";
+import { updateEmails, updateList } from "./updates.ts";
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
 const SELF = `${Deno.env.get("SUPABASE_URL")}/functions/v1/scheduler`;
@@ -54,6 +58,10 @@ Deno.serve(async (req) => {
   if (job === "approvals_callback") {
     return reply(await approvalsCallback(db, body));
   }
+  if (job === "update_list") {   // Make's update-emails scenario, with a one-time code (updates.ts)
+    try { return reply(await updateList(db, body.nonce)); }
+    catch (err) { console.error(job, err); return reply({ error: "job failed" }, 500); }
+  }
   if (job === "applications_callback") {
     try { return reply(await applicationsCallback(db, body)); }
     catch (err) { console.error(job, err); return reply({ error: "job failed" }, 500); }
@@ -78,6 +86,7 @@ Deno.serve(async (req) => {
       case "tester": return reply(await tester(db, String(body.tester_id ?? ""), String(body.action ?? "")));
       case "applications": return reply(await applications(db, SELF));
       case "customer_added": return reply(await customerAdded(db, String(body.customer_id ?? "")));
+      case "update_emails": return reply(await updateEmails(db, String(body.notice_id ?? "")));
       case "customer_deleted": return reply(await customerDeleted(String(body.email ?? "")));
       default: return reply({ error: `unknown job ${job}` }, 400);
     }

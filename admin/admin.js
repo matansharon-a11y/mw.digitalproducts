@@ -434,6 +434,7 @@ function renderMedia() {
   $("#file-info").textContent = file
     ? `Current file: ${file.path.split("/").pop()} · ${bytes(file.size_bytes)} · version ${file.version} · uploaded ${shortDate(file.uploaded_at)}`
     : "No file uploaded yet. The product can't go live without one.";
+  renderUpdateNotice();
   const extras = editing.product_extra_files || [];
   $("#extra-files").innerHTML = extras.map((x) => `
     <div class="row row--between"><p class="meta"><strong>${esc(x.label)}</strong> (${esc(x.file_key)}) · ${esc(x.path.split("/").pop())} · ${bytes(x.size_bytes)} · version ${esc(x.version)} · uploaded ${shortDate(x.uploaded_at)}</p>
@@ -444,6 +445,42 @@ function renderMedia() {
     <div class="row row--between"><p class="meta"><strong>${esc(APP[t.app] || t.app)}</strong> · ${esc(t.title)}${t.title_he ? ` · <span dir="rtl">${esc(t.title_he)}</span>` : ""} · <a class="link" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.url)}</a> · order ${t.sort_order}</p>
     <button class="btn btn--sm btn--ghost" type="button" data-del-tutorial="${t.id}">Remove</button></div>`).join("") || `<p class="meta">No tutorials yet.</p>`;
 }
+
+// Update emails (migration 20261104000002): a new version of the file → offer to email everyone who owns the product.
+// Nothing is sent until "Email the owners" is clicked.
+async function renderUpdateNotice() {
+  const box = $("#update-notice");
+  box.hidden = true;
+  const id = editing?.id;
+  const { data, error } = await supabase.rpc("update_notice_for", { p_product: id });
+  if (error || !data?.length || editing?.id !== id) return;
+  const n = data[0];
+  const who = n.owners === 1 ? "1 person owns" : `${n.owners} people own`;
+  if (n.status === "new" || n.status === "failed") {
+    box.innerHTML = `<p><strong>Version ${esc(n.version)} is up.</strong> ${who} this product. Email them that the new version is in My downloads?${n.status === "failed" ? " (The last try didn't go out.)" : ""}</p>
+      <div class="row"><button class="btn btn--sm" type="button" data-notice-send="${n.id}"${n.owners ? "" : " disabled"}>Email the owners</button>
+      <button class="btn btn--sm btn--ghost" type="button" data-notice-skip="${n.id}">No email</button></div>`;
+  } else if (n.status === "sending") {
+    const stuck = Date.now() - Date.parse(n.created_at) > 15 * 60 * 1000;
+    box.innerHTML = `<p>Sending the update email for version ${esc(n.version)}…</p>${stuck ? `<div class="row"><button class="btn btn--sm btn--ghost" type="button" data-notice-send="${n.id}">Try again</button></div>` : ""}`;
+  } else {
+    box.innerHTML = `<p class="meta">Update email for version ${esc(n.version)} sent to ${n.recipients ?? 0} ${n.recipients === 1 ? "person" : "people"} on ${shortDate(n.sent_at)}.</p>`;
+  }
+  box.hidden = false;
+}
+
+$("#update-notice").addEventListener("click", async (e) => {
+  const send = e.target.closest("[data-notice-send]");
+  const skip = e.target.closest("[data-notice-skip]");
+  if (!send && !skip) return;
+  const id = (send || skip).dataset.noticeSend || (send || skip).dataset.noticeSkip;
+  if (send && !confirm("Send the update email to everyone who owns this product?")) return;
+  const { error } = await supabase.rpc("decide_update_notice", { p_notice: id, p_send: !!send });
+  if (error) return toast(error.message, { type: "error" });
+  toast(send ? "Sending the update email. It takes a minute or two." : "Closed. No email sent.");
+  await renderUpdateNotice();
+  if (send) setTimeout(renderUpdateNotice, 60000);
+});
 
 // Cover and hover images
 $$(".media-slot input[type=file]").forEach((input) => input.addEventListener("change", async () => {

@@ -118,3 +118,7 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .status--amb-ended_breach { color: #F2A0A0; }
 
 .tst-add{margin:4px 0 10px;flex-wrap:wrap;gap:8px}.tst-add .input{min-width:220px}
+
+/* update email offer under the product file (admin.js renderUpdateNotice) */
+.update-notice{margin-top:12px;padding:14px 16px;border:1px solid rgba(244,175,86,.45);border-radius:12px;background:rgba(244,175,86,.08)}
+.update-notice p{margin:0 0 10px}.update-notice p:last-child{margin:0}
