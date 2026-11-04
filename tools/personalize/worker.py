@@ -51,7 +51,7 @@ def upload(path, src, content_type="application/zip", bucket="presets"):
                        headers={"content-type": content_type, "x-upsert": "true", "cache-control": "no-store"})
         if r.ok:
             return
-        print(f"  upload failed ({r.status_code}), retrying", flush=True)
+        print(f"  upload failed ({r.status_code}: {r.text[:200]}), size {os.path.getsize(src) // 1048576} MB, retrying", flush=True)
         time.sleep(5 * (attempt + 1))
     r.raise_for_status()
 
