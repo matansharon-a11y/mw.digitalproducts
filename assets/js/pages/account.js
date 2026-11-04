@@ -151,6 +151,14 @@ function forgetOwned(items) {
 
 // ---------------------------------------------------------------- Order history (account menu → Order history)
 const STATUS = { paid: ["Paid", "שולם"], refunded: ["Refunded", "הוחזר"], partially_refunded: ["Partly refunded", "הוחזר חלקית"] };
+// Lemon Squeezy's receipt for the order (opens in a new tab); only an https link on lemonsqueezy.com.
+function receiptLink(u, he) {
+  try {
+    const url = new URL(u || "");
+    if (url.protocol !== "https:" || !(url.hostname === "lemonsqueezy.com" || url.hostname.endsWith(".lemonsqueezy.com"))) return "";
+    return `<a class="order-rc" href="${esc(url.href)}" target="_blank" rel="noopener">${he ? "קבלה" : "Receipt"}<span class="sr-only">${he ? " (נפתח בכרטיסייה חדשה)" : " (opens in a new tab)"}</span></a>`;
+  } catch { return ""; }
+}
 async function showOrders() {
   const box = document.getElementById("orders");
   if (!box) return;
@@ -163,7 +171,7 @@ async function showOrders() {
     const [en, hb] = STATUS[o.status] || [o.status, o.status];
     return `<div class="order-row"><div><p class="order-items" data-no-i18n>${esc(o.items || "")}</p>
       <p class="meta">${shortDate(o.created_at)} · ${he ? "הזמנה" : "Order"} #${esc(o.order_number || "")}</p></div>
-      <div class="order-sum"><b data-no-i18n>${fmt(o.total_cents, o.currency)}</b><span class="order-st order-st--${esc(o.status)}">${he ? hb : en}</span></div></div>`;
+      <div class="order-sum"><b data-no-i18n>${fmt(o.total_cents, o.currency)}</b><span class="order-st order-st--${esc(o.status)}">${he ? hb : en}</span>${receiptLink(o.receipt_url, he)}</div></div>`;
   }).join("");
   box.hidden = false;
   if (location.hash === "#orders") box.scrollIntoView();

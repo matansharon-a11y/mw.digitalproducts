@@ -135,6 +135,7 @@ async function handlePaid(
     status: "paid",
     test_mode: testMode,
     source: custom.source?.slice(0, 64) ?? null,
+    receipt_url: receiptUrl(a.urls?.receipt),   // shown in My downloads → Order history
   }, { onConflict: "checkout_order_id" }).select("id").single();
   if (oErr) throw oErr;
 
@@ -237,4 +238,12 @@ async function handleRefund(
     order_number: order.order_number, email: customer?.email, test_mode: testMode,
     refunded_amount: (a.refunded_amount ?? (full ? a.total : 0)) / 100, currency: a.currency,
   });
+}
+
+// Lemon Squeezy's receipt link, kept only when it's an https link on lemonsqueezy.com (the database checks the same).
+function receiptUrl(u?: string | null): string | null {
+  try {
+    const url = new URL(u ?? "");
+    return url.protocol === "https:" && (url.hostname === "lemonsqueezy.com" || url.hostname.endsWith(".lemonsqueezy.com")) ? url.href : null;
+  } catch { return null; }
 }

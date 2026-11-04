@@ -326,6 +326,10 @@ ACCOUNT_CSS = """
 .order-sum{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none}
 .order-st{font-size:12px;font-weight:700;letter-spacing:.04em;color:#9CB1C2}
 .order-st--paid{color:#8FD18F}
+.order-rc{font-size:13px;font-weight:600;color:#F4AF56;text-decoration:underline;text-underline-offset:3px}
+.order-rc:hover{color:#FEFBF1}
+.order-rc .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.order-rc:focus-visible{outline:2px solid #F4AF56;outline-offset:2px;border-radius:2px}
 #orders{scroll-margin-top:96px}
 </style>
 <style id="acct">
