@@ -165,6 +165,22 @@ jobs:
           echo "Account emails per hour: $(jq -r '.rate_limit_email_sent' /tmp/auth.json), own email server: ${smtp:-none}"
           [ -n "$smtp" ] || echo "::warning title=Account emails::No custom SMTP server: Supabase's built-in sender allows only a few account emails an hour. Set one under Supabase > Authentication > Emails > SMTP Settings before launch."
 
+      - name: Storage upload size
+        # Product zips and everyone's personal copies are uploaded to Storage. Supabase also has one size limit for every
+        # upload in the project; MWP Presets v1.1 is 148 MB and its personal copies were refused (4 Nov 2026). Keep that
+        # limit at the presets bucket's own 500 MB. Reported, never fatal: a plan that allows less answers with an error.
+        if: steps.ready.outputs.ok == 'true'
+        run: |
+          api="https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/config/storage"
+          before=$(curl -sS -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "$api" | jq -r '.fileSizeLimit // "unknown"')
+          echo "Storage upload limit before: $before bytes"
+          if [ "$before" != "524288000" ]; then
+            code=$(curl -sS -o /tmp/storage.json -w "%{http_code}" -X PATCH "$api" \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" -d '{"fileSizeLimit":524288000}')
+            if [ "$code" = "200" ]; then echo "Storage upload limit now: 500 MB"
+            else echo "::warning title=Storage upload size::Supabase answered $code: $(head -c 300 /tmp/storage.json)"; fi
+          fi
+
       - name: Deploy server functions
         # JWT settings per function come from supabase/config.toml
         if: steps.ready.outputs.ok == 'true'
