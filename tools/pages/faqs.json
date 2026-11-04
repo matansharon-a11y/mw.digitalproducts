@@ -14,6 +14,10 @@
         "a": "Lightroom Classic 13 or newer, on Mac or Windows. It doesn't work in Lightroom (the cloud app), Lightroom Mobile or Photoshop. For Photoshop there's the MWP Photoshop Plugin Panel."
       },
       {
+        "q": "Does it work on Mac, Windows, iPad or my phone?",
+        "a": "MWP Presets work on Mac and Windows in Lightroom Classic, Lightroom and Camera Raw, and on iPhone, iPad and Android in Lightroom Mobile (the download includes mobile files). The Lightroom Classic plugin needs a Mac or Windows computer with Lightroom Classic 13 or newer; it doesn't run on iPad or phones."
+      },
+      {
         "q": "What's in the download?",
         "a": "MWP Presets: 50 desktop presets (.xmp) for Lightroom Classic, Lightroom and Camera Raw, 50 mobile files (.dng) for Lightroom Mobile, 33 LUTs (.cube), video tutorials and an install guide. The Lightroom Classic plugin: the plugin for Lightroom Classic 13 or newer, with built-in help and a video tutorial."
       },
@@ -54,6 +58,10 @@
       {
         "q": "באיזה לייטרום התוסף עובד?",
         "a": "לייטרום קלאסיק 13 ומעלה, ב-Mac או ב-Windows. הוא לא עובד בלייטרום (גרסת הענן), בלייטרום מובייל או בפוטושופ. לפוטושופ יש את התוסף לפוטושופ של MWP."
+      },
+      {
+        "q": "זה עובד ב-Mac, ב-Windows, באייפד או בטלפון?",
+        "a": "הפריסטים של MWP עובדים ב-Mac וב-Windows בלייטרום קלאסיק, בלייטרום ובקאמרה רו, וב-iPhone, ב-iPad ובאנדרואיד בלייטרום מובייל (ההורדה כוללת קבצים למובייל). התוסף ללייטרום קלאסיק דורש מחשב Mac או Windows עם לייטרום קלאסיק 13 ומעלה, ולא עובד באייפד או בטלפון."
       },
       {
         "q": "מה יש בהורדה?",
@@ -100,6 +108,10 @@
         "a": "Photoshop 2023 (version 24.2) or newer, on Mac or Windows, from a Creative Cloud subscription. It does not run in Lightroom, on iPad or on phones. Working in Lightroom Classic? There's the Lightroom Classic plugin, with MWP Presets included."
       },
       {
+        "q": "Does it work on Mac, Windows, iPad or my phone?",
+        "a": "Mac and Windows computers, in Photoshop 2023 (24.2) or newer. It doesn't run on iPad or phones: Photoshop on iPad doesn't support plugins."
+      },
+      {
         "q": "Can it ruin my photo?",
         "a": "No. Every button adds its own layer and your original layer is locked. One Ctrl+Z (Cmd+Z on Mac) undoes a whole step, Reset MWP removes everything the plugin added, and exports are always saved as new files."
       },
@@ -138,6 +150,10 @@
         "a": "פוטושופ 2023 (גרסה 24.2) ומעלה, ב-Mac או ב-Windows, עם מנוי קריאייטיב קלאוד. הוא לא עובד בלייטרום, ב-iPad או בטלפון. עובדים בלייטרום קלאסיק? יש את התוסף ללייטרום קלאסיק, והפריסטים של MWP כלולים בו."
       },
       {
+        "q": "זה עובד ב-Mac, ב-Windows, באייפד או בטלפון?",
+        "a": "במחשבי Mac ו-Windows, בפוטושופ 2023 (‏24.2) ומעלה. לא עובד באייפד או בטלפון: פוטושופ לאייפד לא תומך בתוספים."
+      },
+      {
         "q": "זה יכול להרוס לי את התמונה?",
         "a": "לא. כל כפתור מוסיף שכבה משלו ושכבת המקור נעולה. ביטול אחד (‏Ctrl+Z, וב-Mac ‏Cmd+Z) מבטל פעולה שלמה, כפתור האיפוס מסיר את כל מה שהתוסף הוסיף, והייצוא תמיד נשמר כקובץ חדש."
       },
@@ -174,6 +190,10 @@
         "a": "Everyone, from beginners to experienced photographers. The lessons start from the basics, and every lesson ends with \"Break the rule\" for those who want to go further. Start with any guide and any page."
       },
       {
+        "q": "Can I read them on my iPad or phone?",
+        "a": "Yes. The guides are PDFs, so they open on any device: Mac, Windows, iPad, iPhone and Android, in any PDF reader."
+      },
+      {
         "q": "Do I need a particular camera or gear?",
         "a": "No. The guides teach you to see and plan: composition, colour, light and planning. They don't depend on any camera or lens."
       },
@@ -202,6 +222,10 @@
       {
         "q": "למי המדריכים מתאימים?",
         "a": "לכולם, ממתחילים ועד מתקדמים. השיעורים מתחילים מהיסודות, וכל שיעור נגמר ב״שוברים את הכלל״ למי שכבר מצלם ורוצה להתקדם. אפשר להתחיל מכל מדריך ומכל עמוד."
+      },
+      {
+        "q": "אפשר לקרוא אותם באייפד או בטלפון?",
+        "a": "כן. המדריכים הם קובצי PDF, אז הם נפתחים בכל מכשיר: Mac, Windows, iPad, iPhone ואנדרואיד, בכל קורא PDF."
       },
       {
         "q": "צריך מצלמה או ציוד מסוים?",
