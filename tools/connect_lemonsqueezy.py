@@ -161,6 +161,10 @@ def main():
 
     shop = {p["slug"]: p for p in db("products?select=slug,name,name_emphasis,price_cents,checkout_url,checkout_variant_id,is_active")}
     products = ls_all(f"/products?filter[store_id]={store['id']}&page[size]=100")
+    # what the key sees (no names or emails: the run log is public): helps tell a test key from a live one
+    vmodes = sorted({str(v["attributes"].get("test_mode")) for v in ls_all(f"/variants?page[size]=100")})
+    newest = max((p["attributes"].get("created_at") or "" for p in products), default="")[:10]
+    say(f"Key check: {len(products)} products, newest made {newest or '-'}, variants test_mode = {', '.join(vmodes) or '-'}.\n")
     say("| Lemon Squeezy product | Shop product | Variant | LS price | Shop price | Result |")
     say("| --- | --- | --- | --- | --- | --- |")
     found, variant_of = set(), {}
