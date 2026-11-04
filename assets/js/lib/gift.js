@@ -7,7 +7,6 @@
 // never on My downloads, checkout pages, the ambassador / tester pages, the reader or the admin. #free-guide (the
 // footer link) opens it any time.
 // It's switched on in nav.js (GIFT_ON, false until Matan approves its words); ?gift=preview shows it anyway.
-import { giftSignup } from "./api.js";
 
 const ON = Boolean(window.MWP_GIFT && window.MWP_GIFT.on);
 const PREVIEW = new URLSearchParams(location.search).get("gift") === "preview";
@@ -98,6 +97,7 @@ function show() {
     btn.disabled = true;
     msg.className = "gift__msg"; msg.textContent = T("Sending…", "שולחים…");
     try {
+      const { giftSignup } = await import("./api.js");   // the sign-in library loads only when someone signs up
       await giftSignup({ name: d.name.trim(), email: d.email, phone: d.phone.trim(), consent: form.consent.checked, lang: he() ? "he" : "en" });
       store.set(DONE, "1");
       card.querySelector(".gift__body").innerHTML = `

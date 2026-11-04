@@ -183,7 +183,7 @@ def head_he(t, nodes, en_url, he_url):
         if not isinstance(n, El):
             continue
         if n.tag == "html":
-            n.set("lang", "he"); n.set("dir", "rtl")
+            n.set("lang", "he"); n.set("dir", "rtl"); n.set("data-he-static", "")   # already Hebrew: i18n.js skips its full pass
         elif n.tag == "link" and n.get("rel") == "canonical":
             n.set("href", he_url)
         elif n.tag == "meta" and n.get("property") == "og:url":

@@ -412,7 +412,7 @@ html[lang=he] .ver-for{letter-spacing:.04em}
 .psw-layers > *{background-size:100% 100%;transition:opacity .45s}
 .psw-mask{background:rgba(230,40,40,.55);opacity:0;transition:opacity .2s;pointer-events:none}
 .psw-mask.on{opacity:1}
-.psw-sim{position:absolute;left:28px;bottom:12px;color:#8a8a8a;font:400 11.5px "Google Sans",sans-serif}
+.psw-sim{position:absolute;left:28px;bottom:12px;color:#a3a3a3;font:400 11.5px "Google Sans",sans-serif}
 .psw-tag{position:absolute;top:14px;left:14px;padding:4px 10px;border-radius:64px;background:rgba(0,0,0,.6);color:#fff;font:600 11.5px "Google Sans",sans-serif;letter-spacing:.06em;opacity:0;transition:opacity .3s}
 .psw.before .psw-tag{opacity:1}
 .psw .pw{width:372px;height:auto;flex:none;border:0;border-left:1px solid #3d3d3d;border-radius:0;box-shadow:none;font-size:13px}
@@ -627,7 +627,7 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 .mk-base::before{content:"";position:absolute;left:42%;right:42%;top:0;height:5px;border-radius:0 0 6px 6px;background:#1f1e1d}
 .mk-lr{position:absolute;inset:0;display:grid;grid-template-columns:21% 1fr 17%}
 .mk-lr aside{background:#262626;padding:7% 6%}
-.mk-lr aside p{margin:0 0 6px;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a}
+.mk-lr aside p{margin:0 0 6px;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:#a3a3a3}
 .mk-lr ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
 .mk-lr li{padding:3px 5px;border-radius:3px;white-space:nowrap}
 .mk-lr li.on{background:#4a4a4a;color:#fff;animation:mkOn 8s var(--ease) infinite}

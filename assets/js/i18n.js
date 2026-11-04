@@ -1331,7 +1331,9 @@ export function initI18n() {
   document.title = hebrew(document.title).trim();
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.content = hebrew(desc.content).trim();
-  walk(document.body);
+  // the Hebrew home and shop are written in Hebrew at build time (tools/build_he.py marks them): no need to walk the
+  // whole page again (half a second on a phone); what scripts add later is still translated below
+  if (!document.documentElement.hasAttribute("data-he-static")) walk(document.body);
   document.documentElement.classList.remove("he-wait");   // Hebrew is in: show the page (see LANG_GUARD)
   new MutationObserver((records) => {
     for (const r of records) {
