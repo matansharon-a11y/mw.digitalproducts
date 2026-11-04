@@ -4,32 +4,33 @@ All wording comes from the existing home copy (drafts for Matan); facts are the 
 
 IMG = "assets/pages/img/"
 import home_devices
+from brand import devices
 CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4AF56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>'
 ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 
 CHAPTERS = [
-    dict(step="Shoot", step_he="צילום", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", href="field-guides/",
+    dict(step="Shoot", step_he="צילום", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", dev="mac win tablet phone", href="field-guides/",
          img="5275cc7bcd4fb7560d8f7163592e3122.jpg", pos="56% 55%", alt="Mountains at dusk, photographed by Matan Wild",
          title="Know what to aim for, before you press the shutter",
          body=["137 one-page lessons on composition, colour, light and planning, for beginners and experienced photographers alike. Each one is a real photo from the field, with a drawing that shows why it works.",
                "Every guide ends with drills, a checklist and a cheat sheet for your next shoot."],
          points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
-    dict(step="Sort", step_he="מיון", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", href="presets/#plugin",
+    dict(step="Sort", step_he="מיון", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", dev="mac win", href="presets/#plugin",
          img="86b95f1970bb30f72735d73708d9c095.jpg", pos="80% 45%", alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",
          title="From sorting to sharing",
          body=["Find the sharpest frame in every burst, build each trip into a collection per day, and keyword species from a list of 51,471. Then edit and export, all inside Lightroom Classic.",
                "Nothing is ever deleted, and every change stays in Lightroom, ready to adjust."],
-         points=["Seven tabs, from sorting to sharing", "Lightroom Classic 13 or newer · Mac and Windows", "Comes with MWP Presets, in one purchase"],
+         points=["Seven tabs, from sorting to sharing", "Lightroom Classic 13 or newer", "Comes with MWP Presets, in one purchase"],
          cta="See the plugin", box="86b95f1970bb30f72735d73708d9c095.jpg", gk="LIGHTROOM CLASSIC PLUGIN", sub="7 tabs · one window"),
-    dict(step="Edit", step_he="מראה מוגמר", tag="Lightroom presets", name="Presets", slug="mwp-presets", href="presets/",
+    dict(step="Edit", step_he="מראה מוגמר", tag="Lightroom presets", name="Presets", slug="mwp-presets", dev="mac win tablet phone", href="presets/",
          img="8cb56471dbe5940badc7a93cad5c8bf1.jpg", pos="50% 12%", alt="MWP Presets, Lightroom presets by Matan Wild",
          title="A natural starting point for every photo",
          body=["50 Lightroom presets built from my own edits. 12 are adaptive: they find the subject, the sky and the background, and treat each one on its own.",
                "You set the strength. On desktop, on your phone and, with 33 LUTs, on video."],
          points=["50 Lightroom presets, 12 adaptive", "50 mobile files", "33 LUTs for Photoshop and video"],
          cta="See MWP Presets", box="8cb56471dbe5940badc7a93cad5c8bf1.jpg", gk="LIGHTROOM PRESETS", sub="50 presets · 33 LUTs"),
-    dict(step="Photoshop", step_he="פוטושופ", tag="Photoshop plugin", name="Photoshop Plugin Panel", slug="mwp-panel", href="panel/",
+    dict(step="Photoshop", step_he="פוטושופ", tag="Photoshop plugin", name="Photoshop Plugin Panel", slug="mwp-panel", dev="mac win", href="panel/",
          img="866c1bdb5cf29c21c1a04f6fc87b03e9.jpg", pos="62% 38%", alt="A tiger, photographed by Matan Wild",
          title="Photoshop, made easy.",
          body=["Pick what to edit: the subject, the sky or the background. Pick an effect, set the strength, and the plugin builds the masks and layers for you.",
@@ -70,6 +71,7 @@ def _chapter_text(i, c):
 <p class="st-line">{c["title"]}</p>
 <div class="st-body">{"".join(f"<p>{t}</p>" for t in c["body"])}{f'<p class="st-close-line">{c["close"]}</p>' if c.get("close") else ""}</div>
 <ul class="st-pts">{lis}</ul>
+<p class="st-works">{devices(c["dev"])}</p>
 <div class="st-acts"><a class="btn" href="{c["href"]}">{c["cta"]} {ARROW}</a></div>
 <div class="st-mscene"><img class="st-mbg" src="{IMG}{c["img"]}" alt="{c["alt"]}" loading="lazy" style="object-position: {c["pos"]}"><div class="st-mstage" aria-hidden="true" data-no-i18n>{SCENES[i]()}</div></div>
 </article>"""
@@ -198,6 +200,7 @@ html.st-wait .st-l > span,html.st-wait .st-in,html.st-wait .st-hero-img{animatio
 .st-pts{list-style:none;margin:28px 0 0;padding:24px 0 0;border-top:1px solid rgba(254,251,241,.1);display:grid;gap:12px}
 .st-pts li{display:flex;gap:12px;align-items:flex-start;font-size:16px;color:#CDD7DD}
 .st-pts svg{flex:none;margin-top:4px}
+.st-works{margin:18px 0 0;color:#CDD7DD}   /* where it works: icons only (Jeinna, 4 Nov 2026) */
 .st-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 .st-acts .btn svg{margin-inline-start:6px}
 [dir=rtl] .st-acts .btn svg{transform:scaleX(-1)}
