@@ -142,6 +142,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - **After adding a photo:** `python3 tools/image_sizes.py make`. **After a layout change or a new page with photos:** serve the repo on 8765 and run `node tools/measure_image_sizes.mjs`. Commit the new files, sizes.json and layout.json.
 - Home page on computers: the pinned Shoot · Edit · Finish story slides each photo's frame (`.st-mwrap`, done by the graphics card) instead of a clip-path repaint, measures the mouse path once, caches lookups and writes only changed styles. The hero opens fast (text about 0.6 s, the photo settles in 2.4 s).
 - The free-guide pop-up (`gift.js`) loads the sign-in library only when someone signs up, so it isn't on every page. The Hebrew home and shop carry `data-he-static` (build_he.py): i18n.js doesn't re-translate a page that is already Hebrew. The logo file is 4 KB. The Lightroom page no longer preloads a photo it shows far down.
+- The Google font stylesheet loads without blocking the first paint (`FONT_LINK` in brand.py: preload + onload, with a `<noscript>` copy). Product pages: whatever is on screen when product-page.js runs stays shown; only content further down fades in (`[data-r]`).
 - GitHub Pages lets browsers keep files for 10 minutes only (Lighthouse "efficient cache policy"); that needs a CDN in front (for example Cloudflare) to change.
 
 ## Fresh scripts

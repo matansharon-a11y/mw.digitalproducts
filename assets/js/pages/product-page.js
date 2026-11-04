@@ -12,6 +12,9 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ---------------------------------------------------------------- reveal on scroll
 if ("IntersectionObserver" in window && !reduce) {
+  // what is already on screen stays shown (it was painted before this script ran): only what's further down fades in
+  const vh = window.innerHeight;
+  document.querySelectorAll("[data-r]").forEach((el) => { if (el.getBoundingClientRect().top < vh) el.classList.add("in"); });
   root.classList.add("js");
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }

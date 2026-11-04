@@ -56,7 +56,10 @@ html .nav .links + .navr{margin-inline-start:0}
 # One typeface per language across the whole site: Google Sans for English, Heebo for Hebrew.
 # The rule is broad on purpose (the sales-page designs set fonts inline), so it uses !important.
 FONT_LINK = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700&family=Heebo:wght@300..900&display=swap">')
+             # the font stylesheet doesn't hold up the first paint: text shows at once in the system font and switches when the
+             # fonts arrive (display=swap); without scripts the <noscript> copy loads it the usual way
+             '<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700&family=Heebo:wght@300..900&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">'
+             '<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700&family=Heebo:wght@300..900&display=swap"></noscript>')
 FONT_CSS = """<style id="mwp-fonts">
 html body,html body *:not(svg):not(svg *){font-family:"Google Sans","Heebo",system-ui,-apple-system,"Segoe UI",sans-serif!important}
 html[lang=he] body,html[lang=he] body *:not(svg):not(svg *),html body [lang=he],html body [lang=he] *{font-family:"Heebo","Google Sans",system-ui,sans-serif!important}
