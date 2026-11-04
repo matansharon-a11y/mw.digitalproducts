@@ -12,11 +12,12 @@ Time: about 30 minutes, plus one real purchase.
 - Test orders don't need deleting: they stay as the record of the checks, marked "Test order" in admin → Orders, and every total (Overview, Customers, weekly report) leaves them out.
 - [ ] Test-mode checks passed: an admin test order unlocks the product; a test order from any other email unlocks nothing; a test refund removes access (Lemon Squeezy's refunds were failing in test mode on 24 Oct; asked support).
 - [ ] Accountant has answered the tax questions; decision made on shekel prices on the Hebrew site.
-- [ ] Prices confirmed by Matan (the 7 products: $59.99 Presets, $59.99 Photoshop Plugin Panel, $75.99 Field Guides, $99.99 Presets + Photoshop Plugin Panel, $109.99 Presets + Field Guides, $109.99 Field Guides + Photoshop Plugin Panel, $149.99 Full Set).
+- [ ] Prices confirmed by Matan (the 12 Lemon Squeezy products, as on the site on 4 Nov 2026): Lightroom Plugin + Presets $69.99, Photoshop Plugin Panel $69.99, Presets $19.99, Field Guides $79.99, each single Field Guide $29.99, Lightroom Plugin + Photoshop Plugin Panel $119.99, Lightroom Plugin + Field Guides $129.99, Field Guides + Photoshop Plugin Panel $129.99, Full Set $169.99. The November Sale codes (15%, full set 20%) come off these at checkout.
+- [ ] Lemon Squeezy names match the site (customers see them at checkout and on the receipt): "MWP Presets + Field Guides" → "MWP Lightroom Plugin + Field Guides", "MWP Presets + Photoshop Plugin Panel" → "MWP Lightroom Plugin + Photoshop Plugin Panel". Connect Lemon Squeezy still matches the new names.
 
 ## On the day
 1. **You** — Lemon Squeezy, bottom left must say **MWP Shop**. Switch **test mode off**.
-2. **Claude** — Products (live): check all 7 are there (copied to live on 24 Oct) with the right price, tax category, "Display on storefront" off, confirmation button → `shop.mw.photography/thank-you/`, receipt button → `shop.mw.photography/account/`.
+2. **Claude** — Products (live): check all 12 are there (copied to live on 24 Oct) with the right price, tax category, "Display on storefront" off, confirmation button → `shop.mw.photography/thank-you/`, receipt button → `shop.mw.photography/account/`.
    - **Also copy to live (added 25 Oct 2026, test mode only so far):** the four single guides "MWP Field Guide: Planning / Composition / Light / Colour" ($29.99 each; ⋯ → Copy to Live Mode). Connect Lemon Squeezy matched them in test mode (run #12).
 3. **You** — Settings → API → **+** → "MWP Shop live" → create. Copy the key (shown once) straight into GitHub → mw.digitalproducts → Settings → Secrets and variables → Actions → `LEMONSQUEEZY_API_KEY` → Update. Never paste it anywhere else. Tell Claude "live key is in".
 4. **Claude** — run Actions → **Deploy** once (any push to main does it): the missed-orders check gets the live key.

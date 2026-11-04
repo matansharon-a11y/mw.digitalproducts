@@ -30,7 +30,9 @@ export function money(cents, currency = "USD") {
 }
 
 export function shortDate(iso) {
-  return new Intl.DateTimeFormat(CONFIG.LOCALE, { day: "numeric", month: "short", year: "numeric" }).format(new Date(iso));
+  // Hebrew pages show Hebrew dates (everything on the Hebrew site is Hebrew)
+  const loc = typeof document !== "undefined" && document.documentElement.lang === "he" ? "he-IL" : CONFIG.LOCALE;
+  return new Intl.DateTimeFormat(loc, { day: "numeric", month: "short", year: "numeric" }).format(new Date(iso));
 }
 
 export function bytes(n) {
