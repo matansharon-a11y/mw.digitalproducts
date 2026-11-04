@@ -13,7 +13,7 @@
 // ============================================================================
 import { admin, clientIp, cors, fail, json, sha256Hex } from "../_shared/http.ts";
 
-const BUYER_MAX_DEVICES = Number(Deno.env.get("PANEL_MAX_DEVICES") ?? "3");
+const BUYER_MAX_DEVICES = 2;   // 2 devices for every product and every buyer (Matan, 4 Nov 2026; was 3 for buyers)
 const AMBASSADOR_MAX_DEVICES = Number(Deno.env.get("AMBASSADOR_MAX_DEVICES") ?? "2"); // the Ambassador terms: up to 2 devices
 const RECHECK_DAYS = 7;        // the plugin checks in again after this many days
 const OFFLINE_GRACE_DAYS = 14; // and keeps working offline this long after the last check

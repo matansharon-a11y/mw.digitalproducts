@@ -14,7 +14,7 @@ from lrc_preview import window as lrc_window
 from ps_preview import window as ps_window
 import presets_layout
 from reviews_section import section as reviews_section
-from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, launch_block, SINGLE_GUIDES_LIVE
+from brand import CART, USER, FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, launch_block, SINGLE_GUIDES_LIVE, devices
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://shop.mw.photography"
@@ -109,19 +109,19 @@ P["presets"] = dict(
         proof_lead="Each example shows the RAW file beside the same file with one preset, plus white balance and exposure.",
         pairs=["Light and Scene · Blue Hour", "Light and Scene · Macro Ground"],
         m=dict(choose=[dict(type="Preset pack", name="Lightroom Presets", line="50 presets built from my own edits, 12 that adapt to every photo. With 33 LUTs.",
-                            meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", cta="Add to cart", more="Learn more",
+                            meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", dev="mac win tablet phone", cta="Add to cart", more="Learn more",
                             alt="A sand dune in golden light, in a Lightroom-like window"),
                        dict(type="Plugin", name="Lightroom Classic Plugin", line="Sort, keyword, edit and export a whole shoot, in one window inside Lightroom Classic.",
-                            meta="Lightroom Classic 13+ · Mac and Windows", cta="Add to cart", more="Learn more",
+                            meta="Lightroom Classic 13+", dev="mac win", cta="Add to cart", more="Learn more",
                             alt="The Lightroom Classic plugin's window over a photo of a photographer in the field")],
                top=dict(kick="Lightroom Classic plugin + presets", h1=["Pro editing", "in Lightroom."]),
                # the two ways to buy (Jeinna, 25 Oct 2026): the plugin with the presets included, or the presets alone
                offers=dict(plugin=dict(badge="Presets included", type="Plugin + presets", name="Lightroom Plugin + Presets",
                                        has=["The Lightroom Classic plugin: sort, keyword, edit and export", "MWP Presets included: 50 presets and 33 LUTs", "Free updates for both"],
-                                       meta="Plugin: Lightroom Classic 13+ · Mac and Windows", cta="Add to cart"),
+                                       meta="Plugin: Lightroom Classic 13+", dev="mac win", cta="Add to cart"),
                            presets=dict(type="Presets only", name="Lightroom Presets",
                                         has=["50 presets, 12 that adapt to each photo", "50 mobile files and 33 LUTs", "Free updates"],
-                                        meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", cta="Add to cart")),
+                                        meta="Lightroom · Lightroom Classic · Mobile · Camera Raw", dev="mac win tablet phone", cta="Add to cart")),
                pre=dict(line="A finished look on every photo, in one click.",
                         three=[("50", "presets in five collections"), ("12", "adapt to each photo"), ("33", "LUTs for Photoshop and video")],
                         sets_cap="Five collections"),
@@ -182,18 +182,18 @@ P["presets"] = dict(
         proof_lead="בכל דוגמה רואים את קובץ ה-RAW לצד אותו קובץ עם פריסט אחד, איזון לבן וחשיפה.",
         pairs=["אור וסצנה · שעה כחולה", "אור וסצנה · קרקע במאקרו"],
         m=dict(choose=[dict(type="חבילת פריסטים", name="פריסטים ללייטרום", line="50 פריסטים שבניתי מהעריכות שלי, ו־12 מהם מתאימים את עצמם לכל תמונה. כולל 33 קובצי LUT.",
-                            meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", cta="הוספה לעגלה", more="לפרטים",
+                            meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", dev="mac win tablet phone", cta="הוספה לעגלה", more="לפרטים",
                             alt="דיונת חול באור זהוב, בחלון שנראה כמו לייטרום"),
                        dict(type="תוסף", name="התוסף ללייטרום קלאסיק", line="ממיינים, מתייגים, עורכים ומייצאים צילום שלם, בלי לצאת מלייטרום קלאסיק.",
-                            meta="לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה", more="לפרטים",
+                            meta="לייטרום קלאסיק 13 ומעלה", dev="mac win", cta="הוספה לעגלה", more="לפרטים",
                             alt="החלון של התוסף ללייטרום קלאסיק מעל צילום של צלם בשטח")],
                top=dict(kick="תוסף ללייטרום קלאסיק + פריסטים", h1=["עריכה מקצועית", "בלייטרום."]),
                offers=dict(plugin=dict(badge="הפריסטים כלולים", type="תוסף + פריסטים", name="התוסף ללייטרום + פריסטים",
                                        has=["התוסף ללייטרום קלאסיק: מיון, תיוג, עריכה וייצוא", "הפריסטים של MWP כלולים: 50 פריסטים ו־33 קובצי LUT", "עדכונים חינם לשניהם"],
-                                       meta="התוסף: לייטרום קלאסיק 13 ומעלה · Mac / Windows", cta="הוספה לעגלה"),
+                                       meta="התוסף: לייטרום קלאסיק 13 ומעלה", dev="mac win", cta="הוספה לעגלה"),
                            presets=dict(type="פריסטים בלבד", name="פריסטים ללייטרום",
                                         has=["50 פריסטים, 12 מהם מתאימים את עצמם לכל תמונה", "50 קבצים לנייד ו־33 קובצי LUT", "עדכונים חינם"],
-                                        meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", cta="הוספה לעגלה")),
+                                        meta="לייטרום · לייטרום קלאסיק · מובייל · קאמרה ראו", dev="mac win tablet phone", cta="הוספה לעגלה")),
                pre=dict(line="מראה מוגמר לכל תמונה, בלחיצה אחת.",
                         three=[("50", "פריסטים בחמישה אוספים"), ("12", "מתאימים את עצמם לכל תמונה"), ("33", "קובצי LUT לפוטושופ ולווידאו")],
                         sets_cap="חמישה אוספים"),
@@ -536,7 +536,12 @@ def page(folder, lang):
     parts = []
 
     # hero
-    facts = "".join(f"<li>{esc(f)}</li>" for f in c["facts"])
+    def fact(f):   # "… · Mac and Windows" shows as icons (Jeinna, 4 Nov 2026: icons, not words)
+        for tail in (" · Mac and Windows", " · Mac / Windows"):
+            if f.endswith(tail):
+                return f"{esc(f[:-len(tail)])} {devices('mac win', lang)}"
+        return esc(f)
+    facts = "".join(f"<li>{fact(f)}</li>" for f in c["facts"])
     parts.append(f'''<section class="hero" id="top">
 <img src="{img(p["hero_img"])}" alt="{esc(c["hero_alt"])}" fetchpriority="high" style="object-position:{p["hero_pos"]}">
 <div class="vf" aria-hidden="true"><span></span><span></span><span></span><span></span></div>

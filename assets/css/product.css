@@ -799,6 +799,7 @@ html[lang=he] .pc-eyebrow{letter-spacing:.04em}
 .lr-name{margin:10px 0 0;font-size:clamp(28px,2.6vw,38px);font-weight:400;letter-spacing:-.025em;line-height:1.08}
 .lr-line{margin:10px 0 0;min-height:calc(1.55em * 2);color:var(--ink2);font-size:16.5px;line-height:1.55}
 .lr-meta{margin:8px 0 0;color:var(--mute);font-size:13.5px}
+.lr-meta .dev{display:flex;margin-top:8px}   /* where it works: icons on their own line */
 .lr-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 20px;margin-top:auto;padding-top:24px}
 .lr-buy{display:flex;align-items:center;gap:16px}
 .lr-pr{font-size:28px;letter-spacing:-.02em}

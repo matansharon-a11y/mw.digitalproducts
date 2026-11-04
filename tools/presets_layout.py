@@ -14,6 +14,9 @@ Styles: .lr-* (and .mk-* for the two mockups) in assets/css/product.css.
 """
 
 
+from brand import devices
+
+
 def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, price=None, plug=None):
     k = c["m"]
     g = plug
@@ -42,7 +45,7 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
         badge = f'<span class="lr-badge">{esc(o["badge"])}</span>' if o.get("badge") else ""
         return (f'<article class="lr-offer{" hi" if hi else ""}">{badge}'
                 f'<p class="lr-type">{esc(o["type"])}</p><h2 class="lr-offer-h">{esc(o["name"])}</h2><ul class="lr-has">{li}</ul>'
-                f'<p class="lr-meta">{esc(o["meta"])}</p>'
+                f'<p class="lr-meta">{esc(o["meta"])} {devices(o["dev"], lang)}</p>'
                 f'<div class="lr-buy"><span class="lr-pr">{price(slug, lang)}</span>'
                 f'<a class="{"btn" if hi else "ghost"}" href="#offers" data-add-to-cart="{slug}">{esc(o["cta"])}</a></div></article>')
 
@@ -53,7 +56,7 @@ def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, pric
     for n, (key, cd) in enumerate((("plugin", k["choose"][1]), ("presets", k["choose"][0]))):
         cards += (f'<article class="lr-card in" style="--i:{n + 2}"><a class="lr-media" href="#{key}" tabindex="-1" aria-hidden="true">{mock[key]}</a>'
                   f'<div class="lr-body"><p class="lr-type">{esc(cd["type"])}</p><h2 class="lr-name">{esc(cd["name"])}</h2>'
-                  f'<p class="lr-line">{esc(cd["line"])}</p><p class="lr-meta">{esc(cd["meta"])}</p>'
+                  f'<p class="lr-line">{esc(cd["line"])}</p><p class="lr-meta">{esc(cd["meta"])} {devices(cd["dev"], lang)}</p>'
                   f'<div class="lr-foot"><a class="lr-more" href="#{key}">{esc(cd["more"])}</a></div></div></article>')
     T = k["top"]
     O = k["offers"]

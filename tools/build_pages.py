@@ -3,7 +3,7 @@ import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reviews_section import section as reviews_section
 import bundle_cards
-from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC, devices
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
@@ -237,7 +237,7 @@ PRODUCTS = [
 COMPARE = [
     ("What it is", ["A plugin: a window of tools inside Lightroom Classic", "A plugin: a window of tools inside Photoshop", "Presets and LUTs: a finished look in one click", "PDF guides: lessons for the shoot itself"]),
     ("Works in", ["Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Any PDF reader: computer, tablet or phone"]),
-    ("Works on", ["Mac and Windows computers (not iPad or phones)", "Mac and Windows computers (not iPad or phones)", "Mac and Windows, plus iPhone, iPad and Android in Lightroom Mobile", "Any device: computer, tablet or phone"]),
+    ("Works on", [devices("mac win"), devices("mac win"), devices("mac win tablet phone"), devices("mac win tablet phone")]),   # icons only (Jeinna, 4 Nov 2026)
     ("What you get", ["The plugin, with MWP Presets included; built-in help, video tutorials", "The plugin, a 21-page User Manual, an Installation Guide", "50 presets, 50 mobile files, 33 LUTs", "4 guides, 137 lessons, in English or Hebrew"]),
     ("How you buy it", ["On its own, with MWP Presets included, or in a bundle", "On its own, or in a bundle", "On its own, or included with the plugin and in bundles", "All four, one guide at a time, or in a bundle" if SINGLE_GUIDES_LIVE else "On its own, or in a bundle"]),
 ]
@@ -754,7 +754,7 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
       <nav aria-label="Contents"><a href="#licence">Licence</a><a href="#refunds">Refunds</a><a href="#terms">Terms of sale</a><a href="#privacy">Privacy</a></nav>
       <div class="prose">
       <h2 id="licence">Licence</h2>
-      <p>When you buy a product you get a personal, non-transferable licence to use it in your own work and in work you do for clients.</p>
+      <p>When you buy a product you get a personal, non-transferable licence to use it in your own work and in work you do for clients, on up to 2 of your own devices (computers, tablets or phones).</p>
       <ul>
         <li>Allowed: personal work, client work, social media, prints and publications you create.</li>
         <li>Not allowed: sharing, reselling, giving away or repackaging the files, alone or bundled with other products.</li>
@@ -772,7 +772,7 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
       <p>We collect only what we need to sell and deliver your products: your name, email, country and what you bought. In My details you can also add a phone number; it's optional. Payment details are handled by the checkout provider and never reach us.</p>
       <p>If you ask for our free Field Guides sample, we also keep your phone number and the language you signed up in. The sample comes with joining our mailing list: you tick the box to get tips and offers by email and WhatsApp (through Mailchimp), and you can unsubscribe anytime.</p>
       <p><strong>Your personal copy.</strong> Presets and field guides are made for you: your name, email and licence number (for example MWP-1A2B3C4D) are added at the foot of each PDF page and in the file's details, as a note inside preset and LUT files, and in a LICENSED-TO.txt file in the pack. It doesn't change how the files work; it lets a shared copy be traced back to its licence.</p>
-      <p><strong>Downloads and computers.</strong> Each pack can be downloaded up to 5 times a day. MWP Photoshop Plugin Panel works on up to 3 computers; for each one we keep a computer ID, its name and system (for example "Dana-MacBook (Mac)") and when it was last used. You can see and remove computers in My downloads. For downloads and activations we keep a scrambled form of your IP address, never the address itself.</p>
+      <p><strong>Downloads and computers.</strong> Each pack can be downloaded up to 5 times a day. MWP Photoshop Plugin Panel works on up to 2 computers; for each one we keep a computer ID, its name and system (for example "Dana-MacBook (Mac)") and when it was last used. You can see and remove computers in My downloads. For downloads and activations we keep a scrambled form of your IP address, never the address itself.</p>
       <p><strong>Support.</strong> When you contact support we keep your name, email and message so we can answer you.</p>
       <p>We use your email to deliver your files, answer support requests and, if you agreed, send occasional news and new releases. You can unsubscribe from any email. The site uses no advertising or analytics trackers; your browser only remembers your language, your cart and your sign-in.</p>
       <p>Our service providers: Supabase (database, sign-in and file storage), Lemon Squeezy (checkout), Resend (account emails), Mailchimp (newsletters), Make.com and monday.com (order and support handling). To see, correct or delete your data, write to support.</p>

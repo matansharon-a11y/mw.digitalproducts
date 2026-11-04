@@ -6,7 +6,7 @@ The licence makes MWP Panel work only for the person who bought it, on their own
 1. The first time Panel opens, it asks for the email they bought with.
 2. They get a 6-digit code by email and type it into Panel.
 3. Panel shows "Licensed to <name>" and unlocks. Nothing else to do.
-4. They can use it on up to 3 computers at a time. When they change computers, they remove the old one in My downloads on the shop.
+4. They can use it on up to 2 computers at a time. When they change computers, they remove the old one in My downloads on the shop.
 5. Panel checks in quietly once a week, and keeps working offline for up to 14 days.
 6. After a refund, or if they remove the computer, Panel locks on the next check.
 

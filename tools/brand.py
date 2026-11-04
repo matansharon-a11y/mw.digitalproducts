@@ -273,12 +273,34 @@ html .site-menu a:focus-visible,html .sm-x:focus-visible,html .nav .nav-menu:foc
 html.menu-open{overflow:hidden}
 @media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
 @media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path,html .site-menu,html .sm-scrim{transition:none!important}}
+.dev{display:inline-flex;align-items:center;gap:12px;vertical-align:middle;color:inherit}.dev-i{display:inline-flex;line-height:0}.dev-i svg{width:20px;height:20px}   /* where a product works: icons only (devices()) */
 """
 
 
 # Header icons (cart and account), shared by the sales-page tools
 USER = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>'
 CART = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>'
+
+# Where a product works, as icons only (Jeinna, 4 Nov 2026: "just icons, not words"): Mac, Windows, tablet, phone.
+# Each icon carries its name for screen readers and as a hover tooltip (i18n.js translates title / aria-label).
+_DEV = {
+    "mac": ("Mac", 'fill="currentColor"', '<path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/>'),
+    "win": ("Windows", 'fill="currentColor"', '<path d="M3 5.6l7.4-1v7H3zM11.4 4.4L21 3v8.6h-9.6zM3 12.4h7.4v7L3 18.4zM11.4 12.4H21V21l-9.6-1.4z"/>'),
+    "tablet": ("Tablet", 'fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"', '<rect x="4.5" y="2.5" width="15" height="19" rx="2.2"/><path d="M11 18.3h2"/>'),
+    "phone": ("Phone", 'fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"', '<rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.3h2"/>'),
+}
+_DEV_HE = {"Mac": "Mac", "Windows": "Windows", "Tablet": "טאבלט", "Phone": "טלפון"}
+
+
+def devices(kinds, lang="en"):
+    """Icons for where a product works: devices("mac win tablet phone")."""
+    out = []
+    for k in kinds.split():
+        name, attrs, body = _DEV[k]
+        name = _DEV_HE[name] if lang == "he" else name
+        out.append(f'<span class="dev-i" role="img" aria-label="{name}" title="{name}"><svg viewBox="0 0 24 24" {attrs} aria-hidden="true">{body}</svg></span>')
+    return f'<span class="dev">{"".join(out)}</span>'
+
 
 # Photos with a smaller WebP copy next to the JPEG (same name, .webp): the home and sales pages use the WebP.
 WEBP = ["1a2e3ed3f44db1f671babb09a599b29f", "8cb56471dbe5940badc7a93cad5c8bf1", "5275cc7bcd4fb7560d8f7163592e3122",

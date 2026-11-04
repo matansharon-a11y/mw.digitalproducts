@@ -2,7 +2,7 @@
 //
 // The buyer signs in once with the email they bought with: we email them a 6-digit code, they type
 // it in, and the shop checks that this email owns MWP Panel (or a bundle with it). Each computer is
-// registered to their licence (up to 3 at a time; they can free one in My downloads). After that
+// registered to their licence (up to 2 at a time; they can free one in My downloads). After that
 // the plugin checks in quietly once a week and keeps working offline for up to 14 days.
 //
 // Use:
