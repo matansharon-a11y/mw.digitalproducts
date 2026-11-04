@@ -754,7 +754,7 @@ def page(folder, lang):
 {ICONS}
 <script type="application/ld+json">{structured(folder, lang, url)}</script>
 <script type="application/json" id="mwp-product">{json.dumps({"slug": slug, "name": c["name"], "description": c["desc"], "image": SITE + img(p["hero_img"]), "url": url}, ensure_ascii=False).replace("</", "<" + chr(92) + "/")}</script>
-<link rel="preload" as="image" href="{img(p["hero_img"])}" fetchpriority="high">
+{"" if p.get("own_page") else f'<link rel="preload" as="image" href="{img(p["hero_img"])}" fetchpriority="high">'}
 <link rel="stylesheet" href="/assets/css/product.css?v={CSS_V}">
 <link rel="stylesheet" href="/assets/css/reviews.css?v={RV_V}">
 <style id="site-nav">{NAV_CSS}{SITE_CSS}</style>

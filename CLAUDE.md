@@ -137,6 +137,10 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 ## Clean addresses
 - Every page also lives at a clean address: /account/, /shop/, /product/?p=…, /support/, /legal/, /thank-you/, /read/, /testers/, and /presets/he/ (etc.) for the Hebrew sales pages. `build_pages.py` and `unify_pages.py` write these copies (with `<base href>` so relative links still work); the old .html addresses keep working. Link to the clean addresses in new code. The deploy workflow copies these folders.
 
+## Lighter photos (4 Nov 2026)
+- Every photo in `assets/pages/img` also comes in WebP sizes 480 / 960 / 1600 (`name-<width>.webp`, listed in `assets/pages/img/sizes.json`). On deploy, `tools/image_sizes.py apply _site` adds `srcset` + `sizes` to every `<img>` and image preload pointing at such a photo (lazy ones `sizes="auto, 100vw"`), so each screen downloads only the size it needs; the pages keep the original `src`. **After adding a photo, run `python3 tools/image_sizes.py make` and commit the new files and sizes.json.**
+- Home page speed on computers (4 Nov 2026, Matan found it slow): the pinned Shoot · Edit · Finish story slides each photo's frame (`.st-mwrap`, done by the graphics card) instead of a clip-path repaint, measures the mouse path once, caches lookups and writes only changed styles. The hero opens fast: text in about 0.6 s, the photo settles in 2.4 s (was a 24 s zoom). The Lightroom page no longer preloads a photo it shows far down.
+
 ## Fresh scripts
 - On every deploy, `tools/stamp_scripts.py` stamps each page's scripts with a version (`?v=`) and adds an import map so every imported script (api.js, cart.js, i18n.js …) is versioned too. This stops browsers mixing an old cached script with new code, which blanks pages. It runs on the published copy only; nothing to do by hand.
 
