@@ -431,14 +431,15 @@ function renderMedia() {
       <button class="btn btn--sm btn--ghost" type="button" data-del-media="${m.id}">Remove</button>
     </div>`).join("") || `<p class="meta">No gallery images.</p>`;
   const file = editing.product_files;
-  $("#file-info").textContent = file
-    ? `Current file: ${file.path.split("/").pop()} · ${bytes(file.size_bytes)} · version ${file.version} · uploaded ${shortDate(file.uploaded_at)}`
+  $("#file-info").innerHTML = file
+    ? `Current file: ${esc(file.path.split("/").pop())} · ${bytes(file.size_bytes)} · version ${esc(file.version)} · uploaded ${shortDate(file.uploaded_at)}
+       <button class="btn btn--sm btn--ghost" type="button" data-dl-file="${esc(file.path)}">Download</button>`
     : "No file uploaded yet. The product can't go live without one.";
   renderUpdateNotice();
   const extras = editing.product_extra_files || [];
   $("#extra-files").innerHTML = extras.map((x) => `
     <div class="row row--between"><p class="meta"><strong>${esc(x.label)}</strong> (${esc(x.file_key)}) · ${esc(x.path.split("/").pop())} · ${bytes(x.size_bytes)} · version ${esc(x.version)} · uploaded ${shortDate(x.uploaded_at)}</p>
-    <button class="btn btn--sm btn--ghost" type="button" data-del-extra="${esc(x.file_key)}">Remove</button></div>`).join("") || `<p class="meta">No extra downloads.</p>`;
+    <span class="row"><button class="btn btn--sm btn--ghost" type="button" data-dl-file="${esc(x.path)}">Download</button><button class="btn btn--sm btn--ghost" type="button" data-del-extra="${esc(x.file_key)}">Remove</button></span></div>`).join("") || `<p class="meta">No extra downloads.</p>`;
   const APP = { lightroom: "Lightroom", "lightroom-classic": "Lightroom Classic", photoshop: "Photoshop", other: "Other" };
   const tuts = [...(editing.product_tutorials || [])].sort((a, b) => a.sort_order - b.sort_order);
   $("#tutorials").innerHTML = tuts.map((t) => `
@@ -480,6 +481,17 @@ $("#update-notice").addEventListener("click", async (e) => {
   toast(send ? "Sending the update email. It takes a minute or two." : "Closed. No email sent.");
   await renderUpdateNotice();
   if (send) setTimeout(renderUpdateNotice, 60000);
+});
+
+// Download the product's original file (admin only: storage policy "presets: admin read"). A 5-minute private link,
+// the master copy as uploaded, without a buyer's name stamped in (Jeinna, 5 Nov 2026).
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-dl-file]");
+  if (!b) return;
+  const path = b.dataset.dlFile;
+  const { data, error } = await supabase.storage.from("presets").createSignedUrl(path, 300, { download: path.split("/").pop() });
+  if (error || !data?.signedUrl) return toast(error?.message || "Couldn't prepare the download.", { type: "error" });
+  location.href = data.signedUrl;
 });
 
 // Cover and hover images
