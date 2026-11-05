@@ -1,6 +1,6 @@
 // Update emails (Jeinna, 4 Nov 2026): a product's file got a new version and the admin clicked "Email the owners"
 // (decide_update_notice in migration 20261104000002). One email per owner, in their language (Hebrew when anything they
-// have with us is in Hebrew), sent by Make's Gmail. The texts are drafts for Matan's approval.
+// have with us is in Hebrew), sent by Make's Gmail, signed Matan (Jeinna, 5 Nov 2026). The texts are drafts for Matan's approval.
 
 // deno-lint-ignore no-explicit-any
 type Db = any;
@@ -36,7 +36,7 @@ export function updateEmail(lang: "en" | "he", name: string, slug: string, fallb
 <p>יצאה גרסה חדשה של ${esc(he)}: גרסה ${v}.</p>
 <p>כמו כל העדכונים, היא בחינם. נכנסים ל<a href="${ACCOUNT}?lang=he">הורדות שלי</a> עם המייל הזה ומורידים אותה משם.</p>
 <p>שאלות? אנחנו כאן: <a href="${SUPPORT}?lang=he">עזרה ותמיכה</a>.</p>
-<p>אמיליה | MW Photo Tours</p>`),
+<p>מתן | MW Photo Tours</p>`),
     };
   }
   const cap = en.charAt(0).toUpperCase() + en.slice(1);
@@ -46,7 +46,7 @@ export function updateEmail(lang: "en" | "he", name: string, slug: string, fallb
 <p>${esc(cap)} has a new version: ${v}.</p>
 <p>Like every update, it's free. Sign in to <a href="${ACCOUNT}">My downloads</a> with this email and download it there.</p>
 <p>Questions? We're here: <a href="${SUPPORT}">Help and support</a>.</p>
-<p>Emilya | MW Photo Tours</p>`),
+<p>Matan | MW Photo Tours</p>`),
   };
 }
 
