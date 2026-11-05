@@ -267,7 +267,7 @@ async function loadProducts() {
         <p class="meta">${esc(CATEGORIES[p.category]?.one || "Product")} · ${esc(p.slug)} · ${money(p.price_cents, p.currency)} · ${p.product_files ? `zip v${esc(p.product_files.version)}` : "no zip yet"}${p.is_featured ? " · featured" : ""}</p>
       </div>
       <span class="status status--${p.is_active ? "live" : "draft"}">${p.is_active ? "Live" : "Draft"}</span>
-      <button class="btn btn--sm btn--ghost" type="button" data-edit="${p.id}">Edit</button>
+      <span class="row" style="gap:8px;flex-wrap:nowrap">${p.product_files?.path ? `<button class="btn btn--sm btn--ghost" type="button" data-dl-file="${esc(p.product_files.path)}" title="Download the original zip">Download zip</button>` : ""}<button class="btn btn--sm btn--ghost" type="button" data-edit="${p.id}">Edit</button></span>
     </div>`).join("")}</div>`
     : `<div class="empty">No products yet. Create the first one.</div>`;
 }
@@ -433,7 +433,7 @@ function renderMedia() {
   const file = editing.product_files;
   $("#file-info").innerHTML = file
     ? `Current file: ${esc(file.path.split("/").pop())} · ${bytes(file.size_bytes)} · version ${esc(file.version)} · uploaded ${shortDate(file.uploaded_at)}
-       <button class="btn btn--sm btn--ghost" type="button" data-dl-file="${esc(file.path)}">Download</button>`
+       <button class="btn btn--sm btn--ghost" type="button" data-dl-file="${esc(file.path)}">Download zip</button>`
     : "No file uploaded yet. The product can't go live without one.";
   renderUpdateNotice();
   const extras = editing.product_extra_files || [];
