@@ -160,7 +160,7 @@ page("index.html",
     <div class="container">
       <div class="trust">
         <div class="trust__item">{ICON['download']}<p><b>Instant download</b><span>Your files are ready the moment you pay.</span></p></div>
-        <div class="trust__item">{ICON['lock']}<p><b>Secure checkout</b><span>Card payment through Lemon Squeezy. We never see your card.</span></p></div>
+        <div class="trust__item">{ICON['lock']}<p><b>Secure checkout</b><span>Card or PayPal, on Lemon Squeezy's encrypted checkout.</span></p></div>
         <div class="trust__item">{ICON['refresh']}<p><b>Free updates</b><span>New versions land in your downloads at no cost.</span></p></div>
         <div class="trust__item">{ICON['chat']}<p><b>Real support</b><span>A person replies within one business day.</span></p></div>
       </div>
@@ -731,12 +731,12 @@ page("support.html", "Help with downloads, installing and refunds · MWP",
         <span class="safe-ic">{ICON['shield']}</span>
         <p class="kick">Secure checkout</p>
         <h2 id="safe-h" class="safe-h">Your payment is safe.</h2>
-        <p class="lead">We never take payments on our own site. Every purchase goes through Lemon Squeezy, our official online reseller.</p>
+        <p class="lead">Every purchase is paid on the secure checkout of Lemon Squeezy, our official payment partner.</p>
         {PAY_BADGES}
       </div>
       <ul class="safe-grid">
         <li>{ICON['shield']}<h3>Paid through Lemon Squeezy</h3><p>Lemon Squeezy is the merchant of record for every order: it takes the payment, emails your receipt and handles the tax. It has been part of Stripe since 2024.</p></li>
-        <li>{ICON['card']}<h3>Your card never reaches us</h3><p>You type your card details on Lemon Squeezy's checkout page, not on our site. Its checkout is built to PCI DSS, the security standard for card payments.</p></li>
+        <li>{ICON['card']}<h3>Your card details stay protected</h3><p>You enter your card details only on Lemon Squeezy's secure checkout page. It's built to PCI DSS, the security standard for card payments.</p></li>
         <li>{ICON['lock']}<h3>An encrypted connection</h3><p>The checkout opens over a secure https connection, with the padlock in your browser's address bar.</p></li>
         <li>{ICON['eye']}<h3>Fraud screening</h3><p>Lemon Squeezy checks payments for fraud as they happen.</p></li>
         <li>{ICON['receipt']}<h3>A receipt for every order</h3><p>Your receipt comes by email, and every order in your Order history has a Receipt link.</p></li>

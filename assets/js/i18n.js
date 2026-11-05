@@ -17,11 +17,11 @@ function setLang(lang) {
 const HE = {
   // Secure checkout on the Help page (Jeinna, 5 Nov 2026)
   "Your payment is safe.": "התשלום שלכם בטוח.",
-  "We never take payments on our own site. Every purchase goes through Lemon Squeezy, our official online reseller.": "אנחנו אף פעם לא גובים תשלום באתר שלנו. כל רכישה עוברת דרך למון סקוויזי, המשווק המקוון הרשמי שלנו.",
+  "Every purchase is paid on the secure checkout of Lemon Squeezy, our official payment partner.": "כל רכישה משולמת בעמוד התשלום המאובטח של למון סקוויזי, שותף התשלומים הרשמי שלנו.",
   "Paid through Lemon Squeezy": "התשלום דרך למון סקוויזי",
   "Lemon Squeezy is the merchant of record for every order: it takes the payment, emails your receipt and handles the tax. It has been part of Stripe since 2024.": "למון סקוויזי הוא המוכר הרשמי של כל הזמנה: הוא גובה את התשלום, שולח לכם קבלה במייל ומטפל במס. מאז 2024 הוא חלק מסטרייפ.",
-  "Your card never reaches us": "פרטי הכרטיס לא מגיעים אלינו",
-  "You type your card details on Lemon Squeezy's checkout page, not on our site. Its checkout is built to PCI DSS, the security standard for card payments.": "את פרטי הכרטיס מקלידים בעמוד התשלום של למון סקוויזי, לא באתר שלנו. עמוד התשלום שלו בנוי לפי PCI DSS, תקן האבטחה של תשלומים בכרטיסי אשראי.",
+  "Your card details stay protected": "פרטי הכרטיס שלכם מוגנים",
+  "You enter your card details only on Lemon Squeezy's secure checkout page. It's built to PCI DSS, the security standard for card payments.": "את פרטי הכרטיס מזינים רק בעמוד התשלום המאובטח של למון סקוויזי. הוא בנוי לפי PCI DSS, תקן האבטחה של תשלומים בכרטיסי אשראי.",
   "An encrypted connection": "חיבור מוצפן",
   "The checkout opens over a secure https connection, with the padlock in your browser's address bar.": "עמוד התשלום נפתח בחיבור https מאובטח, עם סמל המנעול בשורת הכתובת של הדפדפן.",
   "Fraud screening": "בדיקה נגד הונאות",
@@ -257,7 +257,7 @@ const HE = {
   "Instant download": "הורדה מיידית",
   "Your files are ready the moment you pay.": "הקבצים מוכנים ברגע שמשלמים.",
   "Secure checkout": "תשלום מאובטח",
-  "Card payment through Lemon Squeezy. We never see your card.": "התשלום בכרטיס אשראי דרך Lemon Squeezy. פרטי הכרטיס לא מגיעים אלינו.",
+  "Card or PayPal, on Lemon Squeezy's encrypted checkout.": "כרטיס אשראי או פייפאל, בעמוד התשלום המוצפן של למון סקוויזי.",
   "Free updates": "עדכונים חינם",
   "New versions land in your downloads at no cost.": "כל גרסה חדשה מחכה לכם בהורדות, בלי תשלום נוסף.",
   "Real support": "תמיכה אנושית",

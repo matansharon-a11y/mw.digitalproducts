@@ -169,8 +169,8 @@ const PAY_BADGES = '<span class="paybadges ui-en" role="img" aria-label="Visa, M
 const LOCK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const SAFE = () => `<div class="cart-safe" data-no-i18n>
     <p class="cs-h">${LOCK}<span>${T("Secure checkout", "תשלום מאובטח")}</span></p>
-    <p class="cs-t">${T("You pay on the encrypted checkout of Lemon Squeezy, our official reseller. Your card details go to them, never to us.",
-      "התשלום מתבצע בעמוד התשלום המוצפן של למון סקוויזי, המשווק הרשמי שלנו. פרטי הכרטיס עוברים אליהם, ולא מגיעים אלינו.")}</p>
+    <p class="cs-t">${T("You'll pay on the encrypted checkout of Lemon Squeezy, our official payment partner, so your card details are protected.",
+      "התשלום מתבצע בעמוד התשלום המוצפן של למון סקוויזי, שותף התשלומים הרשמי שלנו, כך שפרטי הכרטיס שלכם מוגנים.")}</p>
     ${PAY_BADGES}
     <a class="cs-more" href="/support/#secure-checkout">${T("How your payment is protected", "איך התשלום שלכם מוגן")}</a>
   </div>`;
