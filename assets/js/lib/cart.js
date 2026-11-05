@@ -54,6 +54,11 @@ const CSS = `
 .cart-go{display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:30px;border:0;background:linear-gradient(90deg,#E4AA7C,#F4AF56);color:#0A0908;font-weight:800;font-size:16px;;text-decoration:none;cursor:pointer}
 .cart-go[aria-disabled=true]{opacity:.45;pointer-events:none}
 .cart-note{margin:0;font-size:13px;color:#9CB1C2;text-align:center}
+.cart-safe{margin-top:4px;padding:14px 16px;border-radius:14px;background:rgba(254,251,241,.04);border:1px solid rgba(254,251,241,.1);display:grid;gap:8px;justify-items:start}
+.cart-safe .cs-h{margin:0;display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:#FEFBF1}.cart-safe .cs-h svg{color:#F4AF56}
+.cart-safe .cs-t{margin:0;font-size:13px;line-height:1.55;color:#CDD7DD}
+.cart-safe .paybadges{display:inline-flex;flex-wrap:wrap;gap:6px}.cart-safe .paybadges svg{width:36px;height:24px;display:block;border-radius:4px}
+.cart-safe .cs-more{font-size:13px;font-weight:600;color:#F4AF56;text-underline-offset:3px}
 .cart-notice{margin:12px 0 4px;padding:12px 14px;border-radius:12px;background:rgba(244,175,86,.1);border:1px solid rgba(244,175,86,.3);color:#FEFBF1;font-size:14px;line-height:1.5}
 .cart-gate{display:flex;flex-direction:column;align-items:center;gap:14px;padding:36px 4px;text-align:center}
 .cart-gate .gate-ic{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;color:#F4AF56;background:rgba(244,175,86,.1);box-shadow:inset 0 0 0 1px rgba(244,175,86,.35)}
@@ -152,6 +157,24 @@ function priceOf(i) {
   return `${was(i.price_ils_cents, "ILS")}${money(ilsOf(i), "ILS")}<span class="usd">בקופה: ${money(usdOf(i), i.currency)}</span>`;
 }
 
+// Secure checkout, right before paying (Jeinna, 5 Nov 2026; draft copy for Matan). The badges are the methods Lemon
+// Squeezy's checkout shows (PAY_BADGES in tools/brand.py); the link opens the full explanation on the Help page.
+const PAY_BADGES = '<span class="paybadges ui-en" role="img" aria-label="Visa, Mastercard, American Express, Discover, PayPal">'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="900" font-style="italic" fill="#1A1F71">VISA</text></svg>'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><circle cx="16" cy="13" r="7" fill="#EB001B"/><circle cx="24" cy="13" r="7" fill="#F79E1B"/><path d="M20 7.3a7 7 0 0 1 0 11.4 7 7 0 0 1 0-11.4z" fill="#FF5F00"/></svg>'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#2E77BC"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="900" fill="#fff">AMEX</text></svg>'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="17" y="16.3" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.6" font-weight="800" fill="#231F20">DISC</text><circle cx="27.2" cy="13.9" r="3.1" fill="#F58220"/><text x="34" y="16.3" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.6" font-weight="800" fill="#231F20">VER</text></svg>'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="900" font-style="italic"><tspan fill="#003087">Pay</tspan><tspan fill="#009CDE">Pal</tspan></text></svg>'
+  + '</span>';
+const LOCK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+const SAFE = () => `<div class="cart-safe" data-no-i18n>
+    <p class="cs-h">${LOCK}<span>${T("Secure checkout", "תשלום מאובטח")}</span></p>
+    <p class="cs-t">${T("You pay on the encrypted checkout of Lemon Squeezy, our official reseller. Your card details go to them, never to us.",
+      "התשלום מתבצע בעמוד התשלום המוצפן של למון סקוויזי, המשווק הרשמי שלנו. פרטי הכרטיס עוברים אליהם, ולא מגיעים אלינו.")}</p>
+    ${PAY_BADGES}
+    <a class="cs-more" href="/support/#secure-checkout">${T("How your payment is protected", "איך התשלום שלכם מוגן")}</a>
+  </div>`;
+
 let notice = "";   // a one-time line at the top of the cart (why something wasn't added)
 function render() {
   const body = document.querySelector(".cart-body"), foot = document.querySelector(".cart-foot");
@@ -189,7 +212,7 @@ function render() {
   const usdTotal = list.reduce((s, i) => s + (usdOf(i) || 0), 0);
   const charge = ils && list.every((i) => i.price_cents != null)
     ? `<p class="cart-note cart-usd">המחירים מוצגים בשקלים. התשלום בקופה הוא בדולרים: ${money(usdTotal, list[0].currency)} בסך הכול.</p>` : "";
-  foot.innerHTML = `${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}`;
+  foot.innerHTML = `${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}${ready.length ? SAFE() : ""}`;
 }
 
 // ---------------------------------------------------------------- add to cart from the home and sales pages

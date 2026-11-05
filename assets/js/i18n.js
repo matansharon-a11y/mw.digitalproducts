@@ -15,6 +15,27 @@ function setLang(lang) {
 }
 
 const HE = {
+  // Secure checkout on the Help page (Jeinna, 5 Nov 2026)
+  "Your payment is safe.": "התשלום שלכם בטוח.",
+  "We never take payments on our own site. Every purchase goes through Lemon Squeezy, our official online reseller.": "אנחנו אף פעם לא גובים תשלום באתר שלנו. כל רכישה עוברת דרך למון סקוויזי, המשווק המקוון הרשמי שלנו.",
+  "Paid through Lemon Squeezy": "התשלום דרך למון סקוויזי",
+  "Lemon Squeezy is the merchant of record for every order: it takes the payment, emails your receipt and handles the tax. It has been part of Stripe since 2024.": "למון סקוויזי הוא המוכר הרשמי של כל הזמנה: הוא גובה את התשלום, שולח לכם קבלה במייל ומטפל במס. מאז 2024 הוא חלק מסטרייפ.",
+  "Your card never reaches us": "פרטי הכרטיס לא מגיעים אלינו",
+  "You type your card details on Lemon Squeezy's checkout page, not on our site. Its checkout is built to PCI DSS, the security standard for card payments.": "את פרטי הכרטיס מקלידים בעמוד התשלום של למון סקוויזי, לא באתר שלנו. עמוד התשלום שלו בנוי לפי PCI DSS, תקן האבטחה של תשלומים בכרטיסי אשראי.",
+  "An encrypted connection": "חיבור מוצפן",
+  "The checkout opens over a secure https connection, with the padlock in your browser's address bar.": "עמוד התשלום נפתח בחיבור https מאובטח, עם סמל המנעול בשורת הכתובת של הדפדפן.",
+  "Fraud screening": "בדיקה נגד הונאות",
+  "Lemon Squeezy checks payments for fraud as they happen.": "למון סקוויזי בודק כל תשלום נגד הונאות, בזמן אמת.",
+  "A receipt for every order": "קבלה על כל הזמנה",
+  "Your receipt comes by email, and every order in your Order history has a Receipt link.": "הקבלה מגיעה במייל, ולכל הזמנה בהיסטוריית ההזמנות יש קישור לקבלה.",
+  "If a product doesn't work for you, write to us within 14 days. We'll help you get it working, and if we can't, we'll refund you.": "אם מוצר לא עובד לכם, כתבו לנו תוך 14 יום. נעזור לכם להפעיל אותו, ואם לא נצליח, תקבלו החזר כספי.",
+  "How checkout works": "איך מתבצע התשלום",
+  "Add what you want to your cart.": "מוסיפים לעגלה את מה שרוצים.",
+  "Sign in, or create your free account, so your files stay in one place.": "מתחברים, או פותחים חשבון בחינם, כדי שכל הקבצים יישמרו במקום אחד.",
+  "Pay on Lemon Squeezy's secure page, by card or PayPal.": "משלמים בעמוד המאובטח של למון סקוויזי, בכרטיס אשראי או בפייפאל.",
+  "Download straight away in My downloads.": "מורידים מיד ב\"הורדות שלי\".",
+  "About Lemon Squeezy": "על למון סקוויזי",
+  "Questions before you buy? WhatsApp us": "שאלות לפני הקנייה? כתבו לנו בוואטסאפ",
   // header, banner, footer
   "Skip to content": "דילוג לתוכן",
   "Instant download after payment": "הורדה מיידית אחרי התשלום",

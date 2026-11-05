@@ -3,12 +3,16 @@ import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reviews_section import section as reviews_section
 import bundle_cards
-from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC, devices
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC, devices, PAY_BADGES
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
 ICON = {
  "download": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+ "shield": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>',
+ "card": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>',
+ "eye": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ "receipt": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6"/></svg>',
  "lock": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
  "refresh": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg>',
  "chat": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 18l-1 3 4-2h8a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v6a4 4 0 0 0 1 3z"/></svg>',
@@ -285,7 +289,7 @@ page("shop.html", "Compare Lightroom Presets, Plugins &amp; Guides · MWP Shop",
     <div class="container">
       <p class="sp-swipe">Swipe the table to see all four.</p>
       {_compare()}
-      <ul class="sp-trust"><li>Instant download</li><li>Secure checkout</li><li>Free updates</li><li>Help or a refund within 14 days</li></ul>
+      <ul class="sp-trust"><li>Instant download</li><li><a href="/support/#secure-checkout">Secure checkout</a></li><li>Free updates</li><li>Help or a refund within 14 days</li></ul>
     </div>
   </section>
   {reviews_section(filters=True, cls=dict(sec="section", wrap="container", head="", h2="display sp-h2"))}
@@ -716,6 +720,36 @@ page("support.html", "Help with downloads, installing and refunds · MWP",
         <button class="btn" type="submit">Send message</button>
         <p class="form-status" role="status"></p>
       </form>
+    </div>
+  </section>
+  <!-- Secure checkout (Jeinna, 5 Nov 2026; draft copy for Matan). Facts only from Lemon Squeezy's own pages and the live
+       checkout (5 Nov 2026): merchant of record, PCI DSS built into its checkout, fraud screening, part of Stripe since 2024,
+       "Payments are secure and encrypted", Visa / Mastercard / Amex / Discover / PayPal. The cart links here. -->
+  <section class="section safe" id="secure-checkout" aria-labelledby="safe-h">
+    <div class="container">
+      <div class="safe-head">
+        <span class="safe-ic">{ICON['shield']}</span>
+        <p class="kick">Secure checkout</p>
+        <h2 id="safe-h" class="safe-h">Your payment is safe.</h2>
+        <p class="lead">We never take payments on our own site. Every purchase goes through Lemon Squeezy, our official online reseller.</p>
+        {PAY_BADGES}
+      </div>
+      <ul class="safe-grid">
+        <li>{ICON['shield']}<h3>Paid through Lemon Squeezy</h3><p>Lemon Squeezy is the merchant of record for every order: it takes the payment, emails your receipt and handles the tax. It has been part of Stripe since 2024.</p></li>
+        <li>{ICON['card']}<h3>Your card never reaches us</h3><p>You type your card details on Lemon Squeezy's checkout page, not on our site. Its checkout is built to PCI DSS, the security standard for card payments.</p></li>
+        <li>{ICON['lock']}<h3>An encrypted connection</h3><p>The checkout opens over a secure https connection, with the padlock in your browser's address bar.</p></li>
+        <li>{ICON['eye']}<h3>Fraud screening</h3><p>Lemon Squeezy checks payments for fraud as they happen.</p></li>
+        <li>{ICON['receipt']}<h3>A receipt for every order</h3><p>Your receipt comes by email, and every order in your Order history has a Receipt link.</p></li>
+        <li>{ICON['refresh']}<h3>Help or a refund within 14 days</h3><p>If a product doesn't work for you, write to us within 14 days. We'll help you get it working, and if we can't, we'll refund you.</p></li>
+      </ul>
+      <h3 class="safe-sub">How checkout works</h3>
+      <ol class="safe-steps">
+        <li><b>1</b><span>Add what you want to your cart.</span></li>
+        <li><b>2</b><span>Sign in, or create your free account, so your files stay in one place.</span></li>
+        <li><b>3</b><span>Pay on Lemon Squeezy's secure page, by card or PayPal.</span></li>
+        <li><b>4</b><span>Download straight away in My downloads.</span></li>
+      </ol>
+      <p class="safe-more"><a class="link" href="https://www.lemonsqueezy.com/reporting/merchant-of-record" target="_blank" rel="noopener">About Lemon Squeezy</a><span aria-hidden="true">·</span><a class="link" href="/legal/#terms">Terms of sale</a><span aria-hidden="true">·</span><a class="link" href="https://wa.me/972537432878" target="_blank" rel="noopener">Questions before you buy? WhatsApp us</a></p>
     </div>
   </section>""", "support.js")
 

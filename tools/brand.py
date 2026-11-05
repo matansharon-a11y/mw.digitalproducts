@@ -273,6 +273,7 @@ html .site-menu a:focus-visible,html .sm-x:focus-visible,html .nav .nav-menu:foc
 html.menu-open{overflow:hidden}
 @media (max-width:600px){html .site-foot .wrap{flex-direction:column;align-items:flex-start}}
 @media (prefers-reduced-motion:reduce){html .nav .links,html .nav .nav-menu svg path,html .site-menu,html .sm-scrim{transition:none!important}}
+.paybadges{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}.paybadges svg{width:40px;height:26px;display:block;border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
 .dev{display:inline-flex;align-items:center;gap:12px;vertical-align:middle;color:inherit}.dev-i{display:inline-flex;line-height:0}.dev-i svg{width:20px;height:20px}   /* where a product works: icons only (devices()) */
 """
 
@@ -300,6 +301,17 @@ def devices(kinds, lang="en"):
         name = _DEV_HE[name] if lang == "he" else name
         out.append(f'<span class="dev-i" role="img" aria-label="{name}" title="{name}"><svg viewBox="0 0 24 24" {attrs} aria-hidden="true">{body}</svg></span>')
     return f'<span class="dev">{"".join(out)}</span>'
+
+
+# Payment badges (Jeinna, 5 Nov 2026: trust at checkout): the methods Lemon Squeezy's checkout shows for the shop
+# (seen on the live checkout, 5 Nov 2026: Visa, Mastercard, American Express, Discover, PayPal). Same copy in cart.js.
+PAY_BADGES = ('<span class="paybadges ui-en" role="img" aria-label="Visa, Mastercard, American Express, Discover, PayPal">'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="900" font-style="italic" fill="#1A1F71">VISA</text></svg>'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><circle cx="16" cy="13" r="7" fill="#EB001B"/><circle cx="24" cy="13" r="7" fill="#F79E1B"/><path d="M20 7.3a7 7 0 0 1 0 11.4 7 7 0 0 1 0-11.4z" fill="#FF5F00"/></svg>'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#2E77BC"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="900" fill="#fff">AMEX</text></svg>'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="17" y="16.3" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.6" font-weight="800" fill="#231F20">DISC</text><circle cx="27.2" cy="13.9" r="3.1" fill="#F58220"/><text x="34" y="16.3" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.6" font-weight="800" fill="#231F20">VER</text></svg>'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="900" font-style="italic"><tspan fill="#003087">Pay</tspan><tspan fill="#009CDE">Pal</tspan></text></svg>'
+    '</span>')
 
 
 # Photos with a smaller WebP copy next to the JPEG (same name, .webp): the home and sales pages use the WebP.
