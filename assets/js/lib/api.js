@@ -168,10 +168,24 @@ export async function signOut() {
 }
 
 // ---------------------------------------------------------------- customer library
+// Only the signed-in person's own products. The database also lets the admin read everyone's (for the admin page), so
+// without this the admin's My downloads listed every customer's purchases and Download said "This pack isn't in your
+// library" (Jeinna, 5 Nov 2026). Their own = the customer record linked to their login or on their confirmed email,
+// the same rule get-download uses.
 export async function myLibrary() {
-  const { data, error } = await requireClient()
+  const db = requireClient();
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) return [];
+  const email = String(user.email || "").toLowerCase();
+  const { data: mine, error: cErr } = await db.from("customers").select("id")
+    .or(`auth_user_id.eq.${user.id},email.eq."${email.replace(/["\\]/g, "")}"`);
+  if (cErr) throw new ApiError(cErr.message);
+  const ids = (mine || []).map((c) => c.id);
+  if (!ids.length) return [];
+  const { data, error } = await db
     .from("entitlements")
     .select("id, granted_at, revoked_at, view_only, guide_lang, products(slug, name, name_emphasis, category, cover_path, version, item_count)")
+    .in("customer_id", ids)
     .is("revoked_at", null)
     .order("granted_at", { ascending: false });
   if (error) throw new ApiError(error.message);
