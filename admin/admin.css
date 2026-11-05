@@ -26,7 +26,8 @@ body.admin { display: block; }
 .pill { min-width: 20px; padding: 0 6px; border-radius: var(--r-pill); background: var(--c-accent); color: var(--c-accent-ink); font-size: 11px; text-align: center; }
 
 .admin-main { padding: var(--s-6) clamp(var(--s-4), 3vw, var(--s-7)) var(--s-9); display: grid; gap: var(--s-5); align-content: start; }
-.admin-main > section { display: grid; gap: var(--s-5); }
+.admin-main > section { display: grid; gap: var(--s-5); align-content: start; }
+.tiles { align-items: start; }   /* tiles keep their own height (they stretched very tall, 5 Nov 2026) */
 .admin-main > section[hidden] { display: none; }
 .admin-head { display: flex; flex-wrap: wrap; gap: var(--s-4); justify-content: space-between; align-items: center; }
 .admin-h2 { font-size: var(--fs-sm); font-weight: var(--fw-medium); letter-spacing: 0.02em; }

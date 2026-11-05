@@ -183,7 +183,8 @@ async function loadOverview() {
   const tiles = [
     ["Revenue", revenue, `last ${s.period_days} days, paid orders`],
     ["Paid orders", s.orders_paid, `${s.orders_refunded} refunded`],
-    ["New customers", s.new_customers, ""],
+    ["Buyers", s.buyers ?? "–", "people who paid"],
+    ["New accounts", s.new_customers, "sign-ups, not sales"],
     ["Sampler sign-ups", s.new_subscribers, ""],
     ["Downloads", s.downloads, ""],
     ["Open tickets", s.open_tickets, "all time"],
@@ -196,6 +197,20 @@ async function loadOverview() {
         ${s.top_products.map((t) => `<tr><td>${esc(t.name)}</td><td class="num">${t.units}</td><td class="num">${money(t.cents, t.currency)}</td></tr>`).join("")}
       </tbody></table>`
     : `<p class="meta" style="margin-top:var(--s-3)">No sales in this period yet.</p>`;
+  loadNewAccounts();
+}
+
+// New accounts without a paid order in the period (admin_new_accounts, migration 20261105000002)
+async function loadNewAccounts() {
+  const box = $("#new-accounts");
+  const { data, error } = await supabase.rpc("admin_new_accounts", { p_days: periodDays });
+  if (error) { box.innerHTML = `<p class="meta">${esc(error.message)}</p>`; return; }
+  $("#new-accounts-count").textContent = `${data.length} in the last ${periodDays} days`;
+  box.innerHTML = data.length
+    ? `<div style="overflow-x:auto"><table class="table"><thead><tr><th>Joined</th><th>Name</th><th>Email</th><th>Came from</th><th>Emails OK</th><th>Phone</th></tr></thead><tbody>
+        ${data.map((a) => `<tr><td>${shortDate(a.created_at)}</td><td>${esc(a.name || "–")}</td><td>${esc(a.email)}</td><td>${esc(a.came_from)}</td><td>${a.marketing_opt_in ? "Yes" : "No"}</td><td>${esc(a.phone || "–")}</td></tr>`).join("")}
+      </tbody></table></div>`
+    : `<p class="meta" style="margin-top:var(--s-3)">Everyone who joined in this period has bought.</p>`;
 }
 
 /** Single-series bar chart: bars rounded at the top only, 2px gaps, hover tooltip, recessive grid. */

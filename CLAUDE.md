@@ -167,6 +167,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - Work on a branch and merge to `main` only when it's ready to go live.
 
 ## Admin
+- **Overview (5 Nov 2026):** tiles Revenue, Paid orders, **Buyers** (people who paid in the period), **New accounts** (every new customer record: accounts, free-guide sign-ups, ambassadors, testers; not sales; it was called "New customers"), Sampler sign-ups, Downloads, Open tickets; then **New accounts that haven't bought yet** (`admin_new_accounts()`: joined, name, email, came from, emails OK, phone; the admin left out). Migration `20261105000002`.
 - One admin only: jlouise@matanwildphotography.com (Matan, 13 Oct 2026; migration `20261013000031`). The admin page signs in with email and password only, no sign-in links. Two-step sign-in (launch audit, 24 Oct 2026): admin → Two-step sign-in sets up an authenticator app (Supabase TOTP); after that the admin asks for the 6-digit code at every sign-in, and `is_admin()` only answers yes for a session that passed it (migration `20261024000003`). An admin without an authenticator isn't locked out. To change who's admin, edit `admin_allowlist` and `admins` in a new migration.
 
 ## Secrets
