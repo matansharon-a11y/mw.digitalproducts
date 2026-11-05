@@ -351,7 +351,7 @@ pf.addEventListener("submit", async (e) => {
   if (row.is_active && (!row.checkout_url || !row.checkout_variant_id)) {
     return setStatus(status, "A live product needs a checkout link and variant ID.", "error");
   }
-  if (row.is_active && !editing?.product_files) {
+  if (row.is_active && row.category !== "bundle" && !editing?.product_files) {   // a bundle has no file: its products do
     return setStatus(status, "Upload the .zip before making the product live.", "error");
   }
   const btn = $("button[type=submit]", pf);

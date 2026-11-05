@@ -166,10 +166,11 @@ async function approvalsCallback(db: Db, body: Record<string, any>) {
   if (goLive.length) {
     // Same rule as the admin page: no checkout link or no download file = cannot go live yet.
     const { data: ready, error: rErr } = await db.from("products")
-      .select("slug, product_files(path)").in("slug", goLive).eq("is_active", false)
+      .select("slug, category, product_files(path)").in("slug", goLive).eq("is_active", false)
       .not("checkout_url", "is", null).not("checkout_variant_id", "is", null);
     if (rErr) throw rErr;
-    const slugs = (ready ?? []).filter((r: any) => r.product_files).map((r: any) => r.slug);
+    // a bundle has no file of its own (its products do), so it can go live without one (5 Nov 2026)
+    const slugs = (ready ?? []).filter((r: any) => r.product_files || r.category === "bundle").map((r: any) => r.slug);
     if (slugs.length) {
       const { error } = await db.from("products").update({ is_active: true }).in("slug", slugs);
       if (error) throw error;
