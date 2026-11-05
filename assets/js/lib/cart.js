@@ -345,6 +345,9 @@ async function goToCheckout(link) {
   const slug = link.dataset.slug || items().find((i) => i.checkout_url && new URL(i.checkout_url, location.href).pathname === url.pathname)?.slug;
   const sale = saleFor(slug);
   if (sale) url.searchParams.set("checkout[discount_code]", sale.code);
+  // Lemon Squeezy's Pay button in the shop's gold (Jeinna, 5 Nov 2026): a deeper gold, so its white text stays
+  // readable (5:1 contrast; the site's bright gold #F4AF56 would be 1.9:1)
+  url.searchParams.set("button_color", "#9A6418");
   try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
   else location.href = url.toString();
