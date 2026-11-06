@@ -1,0 +1,55 @@
+# ============================================================================
+# Product checks (Jeinna, 6 Nov 2026): opens the real product files and checks them against what Adobe's updates
+# change, with no manual testing (tools/compat). Nothing is uploaded or kept: files are read in the runner and
+# deleted with it. The logs are public (public repository), so they show structure and results only, never code.
+# ============================================================================
+name: Product checks
+
+on:
+  workflow_dispatch:
+    inputs:
+      inspect:
+        description: "Only list what's inside each product file (structure, no code)"
+        type: boolean
+        default: false
+  repository_dispatch:
+    types: [product-checks]
+  schedule:
+    - cron: "13 6 * * *"   # daily, after the Adobe check (05:41 UTC)
+
+permissions:
+  contents: read
+
+concurrency:
+  group: product-checks
+  cancel-in-progress: false
+
+env:
+  SUPABASE_PROJECT_REF: tkkpxsyioetzexgbmbqy
+
+jobs:
+  check:
+    name: Check the products
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359  # v3.0.1
+        with:
+          version: 2.120.0
+      - name: Get the storage key
+        run: |
+          KEY=$(supabase projects api-keys --project-ref "$SUPABASE_PROJECT_REF" -o json | jq -r '.[] | select(.name=="service_role") | .api_key')
+          [ -n "$KEY" ] || { echo "::error::Couldn't read the service key"; exit 1; }
+          echo "::add-mask::$KEY"
+          echo "SUPABASE_SERVICE_KEY=$KEY" >> "$GITHUB_ENV"
+          echo "SUPABASE_URL=https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_ENV"
+      - name: Tools
+        run: |
+          sudo apt-get install -y -qq lua5.1 >/dev/null
+          pip install -q requests
+      - name: Inspect
+        if: ${{ inputs.inspect }}
+        run: python3 tools/compat/inspect.py
