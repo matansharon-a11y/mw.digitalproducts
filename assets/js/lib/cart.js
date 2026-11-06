@@ -1,5 +1,5 @@
 import { saleFor, salePrice } from "./sale.js";
-import { isIsraeli } from "./vat.js";
+import { isIsraeli, isIsraeliPhone } from "./vat.js";
 // Header icons (account menu + cart) and the cart drawer. Works on every shop page; its imports are the sale (sale.js) and Israeli VAT (vat.js).
 // Icons show no text; the label appears only on hover, keyboard focus, or when tapped/clicked.
 const KEY = "mwp_cart";
@@ -330,7 +330,7 @@ function showGate() {
   foot.hidden = true;
 }
 async function goToCheckout(link) {
-  const { user } = await accountUser();
+  const { api, user } = await accountUser();
   if (!user) { showGate(); return; }
   // Checkout uses the account's email, and carries the account's id: the purchase lands in this account even if
   // they type another email at checkout (checkout-webhook). The visit's utm_source goes along for the reports.
@@ -352,6 +352,10 @@ async function goToCheckout(link) {
   url.searchParams.set("button_color", "#9A6418");
   try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
   // Israeli visitors: the price includes 18% VAT (vat.js); the order keeps it (orders.vat_rate) for the Morning invoice
+  try {   // an Israeli phone in My details counts too (remembered on this device, so the pages show the VAT note)
+    const prof = await api.myProfile();
+    if (isIsraeliPhone((Array.isArray(prof) ? prof[0] : prof)?.phone)) localStorage.setItem("mwp_il", "1");
+  } catch { /* no profile: the webhook still checks the phone */ }
   if (isIsraeli()) url.searchParams.set("checkout[custom][vat]", "il");
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
   else location.href = url.toString();

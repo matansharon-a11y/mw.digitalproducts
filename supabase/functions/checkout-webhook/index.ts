@@ -120,7 +120,7 @@ async function handlePaid(
   // the customer's own name (My details) is kept; the checkout name only fills an empty one
   const { data: customer, error: cErr } = await db.from("customers")
     .upsert({ email }, { onConflict: "email" })
-    .select("id, email, name, created_at").single();
+    .select("id, email, name, created_at, phone, country").single();
   if (cErr) throw cErr;
   if (!customer.name && a.user_name) await db.from("customers").update({ name: a.user_name }).eq("id", customer.id);
 
@@ -135,8 +135,9 @@ async function handlePaid(
     status: "paid",
     test_mode: testMode,
     source: custom.source?.slice(0, 64) ?? null,
-    // Israeli VAT: the cart marks an Israeli visitor's checkout (custom vat = "il"); their price includes 18% VAT
-    vat_rate: custom.vat === "il" ? 0.18 : 0,
+    // Israeli VAT (their price includes 18%): the cart marks an Israeli visitor's checkout (custom vat = "il"), or the
+    // account's phone is Israeli (+972 / 0…), or its country is Israel (My details)
+    vat_rate: custom.vat === "il" || isIsraeliPhone(customer.phone) || String(customer.country ?? "").toUpperCase() === "IL" ? 0.18 : 0,
     receipt_url: receiptUrl(a.urls?.receipt),   // shown in My downloads → Order history
   }, { onConflict: "checkout_order_id" }).select("id").single();
   if (oErr) throw oErr;
@@ -248,4 +249,10 @@ function receiptUrl(u?: string | null): string | null {
     const url = new URL(u ?? "");
     return url.protocol === "https:" && (url.hostname === "lemonsqueezy.com" || url.hostname.endsWith(".lemonsqueezy.com")) ? url.href : null;
   } catch { return null; }
+}
+
+// An Israeli phone number: +972 / 00972 / 972…, or a local number starting with 0 (05x-xxxxxxx, 0x-xxxxxxx)
+export function isIsraeliPhone(phone: unknown): boolean {
+  const d = String(phone ?? "").replace(/[\s().-]/g, "");
+  return /^(\+|00)?972\d{8,9}$/.test(d) || /^0\d{8,9}$/.test(d);
 }
