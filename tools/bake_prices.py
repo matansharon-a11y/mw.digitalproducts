@@ -117,6 +117,34 @@ def has_was_near(s, pos, slug):
         block = s[m.start():i]
     return bool(re.search(rf'<span[^>]*\bdata-was\b[^>]*\bdata-price="{re.escape(slug)}"|<span[^>]*\bdata-price="{re.escape(slug)}"[^>]*\bdata-was\b', block))
 SAVE = re.compile(r'<span([^>]*\bdata-save="([a-z0-9-]+)"[^>]*)>[^<]*</span>')
+PRODUCT = re.compile(r'<script type="application/json" id="mwp-product">(.*?)</script>', re.S)
+
+
+def product_ld(s, he):
+    """schema.org Product for search engines, written into the page itself (6 Nov 2026), the same data productData()
+    in prices.js builds in the browser (it finds this tag by its id and keeps it current): the price a visitor sees,
+    shekels on the Hebrew pages, the sale price while the sale is on. No price: no tag."""
+    m = PRODUCT.search(s)
+    if not m or 'id="mwp-product-ld"' in s:
+        return s
+    p = json.loads(m.group(1).replace("<\\/", "</"))
+    r = rows.get(p.get("slug"))
+    if not r:
+        return s
+    base, cur = (r.get("price_ils_cents"), "ILS") if he else (r.get("price_cents"), r.get("currency") or "USD")
+    cents = sale_price(base, p["slug"], cur)
+    if not cents:
+        return s
+    offer = {"@type": "Offer", "price": f"{cents / 100:.2f}", "priceCurrency": cur,
+             "availability": "https://schema.org/InStock", "url": p["url"]}
+    if sale_pct(p["slug"]):
+        offer["priceValidUntil"] = SALE_END.date().isoformat()
+    ld = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": p["description"],
+          "image": p["image"], "brand": {"@type": "Brand", "name": "MWP"}, "url": p["url"], "offers": offer}
+    tag = '<script type="application/ld+json" id="mwp-product-ld">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + "</script>"
+    return s[:m.end()] + "\n" + tag + s[m.end():]
+
+
 done = 0
 for f in root.rglob("*.html"):
     s = f.read_text(encoding="utf-8")
@@ -132,6 +160,7 @@ for f in root.rglob("*.html"):
         attrs = re.sub(r"\s+hidden(?=[\s>]|$)", "", m.group(1)) if t else m.group(1)
         return f"<span{attrs}>{t}</span>"
     s = SAVE.sub(fill_save, s)
+    s = product_ld(s, he)
     s = re.sub(r"<html\b([^>]*)>", lambda m: (f"<html{m.group(1).replace('class=\"', 'class=\"prices-on ', 1)}>" if 'class="' in m.group(1)
                                               else f'<html{m.group(1)} class="prices-on">'), s, count=1)
     f.write_text(s, encoding="utf-8")
