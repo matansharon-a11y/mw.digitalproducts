@@ -55,11 +55,19 @@ class Report:
 
 # ---------------------------------------------------------------- Photoshop panel
 UXP_MODULES = {"photoshop", "uxp", "os", "fs", "path", "process", "shell"}   # what UXP provides to require()
-FEATURES = {   # features Adobe's notes may name → how they show in panel code
-    "Dehaze": r"dehaze", "Clarity": r"clarity", "modal dialogs": r"showModal|uxpShowModal|<dialog|\.showModal\(",
-    "context menus": r"contextmenu|context menu|flyout|menuItems", "keyboard focus": r"\.focus\(|tabindex|autofocus",
-    "batchPlay": r"batchPlay", "executeAsModal": r"executeAsModal", "file system": r"localFileSystem|storage\.",
-    "network": r"\bfetch\(|XMLHttpRequest|WebSocket", "WebView": r"webview",
+# Features Adobe's notes may name: (how the notes say it, how it shows in panel code)
+FEATURES = {
+    "Dehaze": (r"dehaze", r"dehaze"),
+    "Clarity": (r"clarity", r"clarity"),
+    "modal dialogs": (r"modal dialog|\bdialogs?\b", r"showModal|uxpShowModal|<dialog|\.showModal\("),
+    "context menus": (r"context menu|flyout", r"contextmenu|flyout|menuItems"),
+    "keyboard focus": (r"keyboard focus|\bfocus\b", r"\.focus\(|tabindex|autofocus"),
+    "batchPlay": (r"batchPlay", r"batchPlay"),
+    "executeAsModal": (r"executeAsModal|modal state", r"executeAsModal"),
+    "file system": (r"file system|localFileSystem", r"localFileSystem|storage\."),
+    "network": (r"network|fetch|XMLHttpRequest|WebSocket", r"\bfetch\(|XMLHttpRequest|WebSocket"),
+    "WebView": (r"web ?view", r"webview"),
+    "adjustment layers": (r"adjustment layers?", r"adjustmentLayer|AdjustmentLayer|_obj:\s*[\"']adjustmentLayer"),
 }
 
 def check_panel(zf, latest_ps):
@@ -191,7 +199,9 @@ def check_presets(zf, latest_cr):
 def main():
     apps = {a["key"]: a for a in rest("compat_apps", select="*")}
     deps = rest("compat_deps", select="*")
-    alerts = rest("compat_alerts", select="*", status="eq.open")
+    # open alerts, and ones an earlier automatic check settled (they're looked at again with every new check)
+    alerts = [a for a in rest("compat_alerts", select="*", status="in.(open,reviewed)")
+              if a["status"] == "open" or (a.get("note") or "").startswith("Automatic check")]
     files = {p["slug"]: p for p in rest("products", select="slug,category,product_files(path,version)")}
     latest = {k: (a.get("latest_version") or "0") for k, a in apps.items()}
     print("Adobe latest:", latest)
@@ -215,8 +225,8 @@ def main():
         # "Worth a look" alerts: what in the quoted notes does this product actually use?
         for a in [a for a in alerts if a["product_slug"] == slug and a["level"] == "investigate"]:
             quotes = " ".join(a.get("quotes") or [])
-            named = [k for k, rx in FEATURES.items() if re.search(rx, quotes, re.I)]
-            used = [k for k in named if re.search(FEATURES[k], code, re.I)]
+            named = [k for k, (said, _) in FEATURES.items() if re.search(said, quotes, re.I)]
+            used = [k for k in named if re.search(FEATURES[k][1], code, re.I)]
             fix = bool(re.search(r"\b(lacked|were not|was not|did not|didn't|failed|incorrect(ly)?|crash(ed)?|no longer (?:crash|fail)|fixed)\b", quotes, re.I))
             if not named:
                 note = "Automatic check: the quoted notes name no feature this check can look for."
