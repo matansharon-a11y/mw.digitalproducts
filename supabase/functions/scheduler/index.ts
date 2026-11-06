@@ -26,6 +26,9 @@
 //                        and sends one email per owner (see updates.ts)
 //   compat {manual?}   → daily: reads Adobe's release pages, records new versions, raises product compatibility
 //                        alerts and emails the admin once about new ones (compat.ts, adobe.ts)
+//   morning {order_id?} → every 5 minutes: Morning (Green Invoice) documents for paid orders, an invoice-receipt and a
+//                        work order, as previews or issued (morning.ts; Make's "MWP Shop · Morning documents" sends them,
+//                        coming back with morning_list and morning_result)
 //   reconcile          → hourly: every order paid in Lemon Squeezy in the last 3 days must be in the shop, and every
 //                        order refunded there must be refunded here. Anything else is raised once in monday (Shop
 //                        Orders, status "Not delivered"): the safety net under the webhook, which Lemon Squeezy
@@ -36,8 +39,10 @@ import { mondayPhone, parsePhone } from "../_shared/phone.ts";
 import { applications, applicationsCallback } from "./applications.ts";
 import { emailHook, updateEmails, updateList } from "./updates.ts";
 import { compat } from "./compat.ts";
+import { morning, morningList, morningResult } from "./morning.ts";
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
+const UUID_RE = /^[0-9a-f-]{36}$/i;
 const SELF = `${Deno.env.get("SUPABASE_URL")}/functions/v1/scheduler`;
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -65,6 +70,10 @@ Deno.serve(async (req) => {
     try { return reply(await updateList(db, body.nonce)); }
     catch (err) { console.error(job, err); return reply({ error: "job failed" }, 500); }
   }
+  if (job === "morning_list" || job === "morning_result") {   // Make's Morning scenario, with a one-time code (morning.ts)
+    try { return reply(job === "morning_list" ? await morningList(db, body.nonce) : await morningResult(db, body)); }
+    catch (err) { console.error(job, err); return reply({ error: "job failed" }, 500); }
+  }
   if (job === "applications_callback") {
     try { return reply(await applicationsCallback(db, body)); }
     catch (err) { console.error(job, err); return reply({ error: "job failed" }, 500); }
@@ -90,6 +99,7 @@ Deno.serve(async (req) => {
       case "applications": return reply(await applications(db, SELF));
       case "customer_added": return reply(await customerAdded(db, String(body.customer_id ?? "")));
       case "compat": return reply(await compat(db, body.manual === true, (purpose) => emailHook(db, purpose)));
+      case "morning": return reply(await morning(db, UUID_RE.test(String(body.order_id ?? "")) ? String(body.order_id) : ""));
       case "update_emails": return reply(await updateEmails(db, String(body.notice_id ?? "")));
       case "customer_deleted": return reply(await customerDeleted(String(body.email ?? "")));
       default: return reply({ error: `unknown job ${job}` }, 400);

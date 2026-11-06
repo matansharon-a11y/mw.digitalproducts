@@ -226,3 +226,13 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .inv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .inv-acts { justify-content: flex-end; flex-wrap: wrap; gap: var(--s-2); }
 @media (max-width: 560px) { .inv-grid { grid-template-columns: 1fr; } }
+
+/* Morning documents (6 Nov 2026) */
+.mdocs { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding-top: 6px; border-top: 1px solid var(--c-line); margin-top: 2px; font-size: var(--fs-sm, .9rem); }
+.mdocs__label { font-weight: 600; margin-inline-end: 4px; }
+.mdocs a, .linkish { color: var(--c-accent, #d9a441); text-decoration: underline; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.mfail { color: #ff8a7a; }
+.mfail__why { flex-basis: 100%; }
+.mmode { border: 0; padding: 0; margin: 0; }
+.mmode label { display: block; padding: 6px 0; }
+.mmode .meta { display: block; margin-inline-start: 24px; }

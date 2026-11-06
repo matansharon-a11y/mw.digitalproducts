@@ -148,7 +148,7 @@ $("#mfa-enroll").addEventListener("submit", async (e) => {
 $("#admin-signout").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
 
 // ---------------------------------------------------------------- navigation
-const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
+const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, morning: loadMorning, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
 
 // ---------------------------------------------------------------- navigation (6 Nov 2026)
 // Six sections in the sidebar; a section with more than one view shows tabs above it. Every view has its own address
@@ -156,7 +156,7 @@ const loaders = { overview: loadOverview, products: loadProducts, compat: loadCo
 // tab you were on.
 const GROUPS = {
   overview: { label: "Overview", tabs: [["overview", "Overview"]] },
-  sales: { label: "Sales", tabs: [["orders", "Orders"], ["finance", "Finances"]] },
+  sales: { label: "Sales", tabs: [["orders", "Orders"], ["finance", "Finances"], ["morning", "Morning invoices"]] },
   products: { label: "Products", tabs: [["products", "Catalogue"], ["compat", "Compatibility"]] },
   people: { label: "People", tabs: [["customers", "Customers"], ["ambassadors", "Ambassadors"], ["testers", "Testers"]] },
   support: { label: "Support", tabs: [["support", "Tickets"]] },
@@ -1134,10 +1134,63 @@ const orderCols = [
       <button class="btn btn--sm btn--ghost" type="button" data-doc="invoice" title="Lemon Squeezy's invoice PDF (needs the billing address)">Invoice PDF</button>
       <button class="btn btn--sm" type="button" data-doc="email" title="Email the receipt to ${esc(r.email)}">Email receipt</button>
       ${sent ? `<span class="meta docs__sent">Emailed ${shortDate(sent.emailed_at)}</span>` : ""}
+      ${morningCell(r)}
     </div>`;
   } },
 ];
 let orderDocs = [];
+// ---- Morning (Green Invoice) documents: an invoice-receipt and a work order per sale (scheduler morning.ts, 6 Nov 2026)
+let morningDocs = [], morningMode = null;
+const MKIND = { invoice_receipt: "Invoice-receipt", work_order: "Work order" };
+function morningLink(d) {
+  const label = `${MKIND[d.kind]}${d.number ? ` ${esc(d.number)}` : ""}`;
+  if (d.status === "issued") return d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${label}</a>` : `<span>${label}</span>`;
+  if (d.status === "preview") return `<button class="linkish" type="button" data-mpreview="${d.id}" title="Morning's demo PDF: nothing was issued">${MKIND[d.kind]} preview</button>`;
+  if (d.status === "failed") return `<span class="mfail" title="${esc(d.error || "")}">${MKIND[d.kind]}: failed</span>`;
+  return `<span class="meta">${MKIND[d.kind]}: sending…</span>`;
+}
+function morningCell(r) {
+  if (r.test_mode || morningMode === "off" || morningMode === null) return "";
+  const docs = morningDocs.filter((d) => d.order_id === r.id).sort((a, b) => (a.kind < b.kind ? -1 : 1));
+  const issued = docs.filter((d) => d.status === "issued");
+  const both = issued.length === 2;
+  const failed = docs.find((d) => d.status === "failed");
+  const btns = r.status !== "paid" ? "" : `${!both && !docs.some((d) => d.status === "preview" || d.status === "sending") ? `<button class="btn btn--sm btn--ghost" type="button" data-morning="preview">Preview in Morning</button>` : ""}${!both ? `<button class="btn btn--sm" type="button" data-morning="create">${issued.length ? "Issue the work order" : "Issue in Morning"}</button>` : ""}`;
+  const refund = r.status !== "paid" && issued.some((d) => d.kind === "invoice_receipt") ? `<span class="mfail">Refunded: cancel it in Morning with a credit note.</span>` : "";
+  return `<div class="mdocs"><span class="mdocs__label">Morning</span>${docs.map(morningLink).join(" · ") || `<span class="meta">nothing yet</span>`}${btns}${refund}${failed ? `<span class="meta mfail__why">${esc(failed.error || "")}</span>` : ""}</div>`;
+}
+async function loadMorningDocs(ids) {
+  const [{ data: st }, { data }] = await Promise.all([
+    supabase.from("morning_settings").select("mode").eq("id", 1).maybeSingle(),
+    ids.length ? supabase.from("morning_documents").select("id, order_id, kind, status, number, url, error").in("order_id", ids.slice(0, 300)) : Promise.resolve({ data: [] }),
+  ]);
+  morningMode = st?.mode ?? null;
+  morningDocs = data || [];
+}
+// the demo PDF Morning made (kept until the document is issued)
+async function openMorningPreview(id) {
+  const { data, error } = await supabase.from("morning_documents").select("preview_pdf").eq("id", id).maybeSingle();
+  if (error || !data?.preview_pdf) return toast("The preview isn't available.", { type: "error" });
+  const bytes = Uint8Array.from(atob(data.preview_pdf), (c) => c.charCodeAt(0));
+  openDoc(URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })));
+}
+document.addEventListener("click", async (e) => {
+  const pv = e.target.closest("[data-mpreview]");
+  if (pv) return openMorningPreview(pv.dataset.mpreview);
+  const b = e.target.closest("[data-morning]");
+  if (!b) return;
+  const id = b.closest("[data-order]").dataset.order;
+  const order = orderRows.find((o) => o.id === id) || morningRows.find((o) => o.order_id === id);
+  const create = b.dataset.morning === "create";
+  if (create && !confirm(`Issue the Morning documents for order ${order?.order_number || ""}?\n\nThey are real tax documents: once issued they can only be cancelled with a credit note.`)) return;
+  setBusy(b, true, create ? "Issuing…" : "Asking…");
+  const { data, error } = await supabase.rpc("morning_request", { p_order: id, p_action: b.dataset.morning });
+  setBusy(b, false);
+  if (error) return toast(error.message, { type: "error", timeout: 8000 });
+  toast(data);
+  // the answer comes back in a minute: look again a few times
+  for (const wait of [20000, 40000, 70000]) setTimeout(() => (location.hash === "#morning" ? loadMorning() : loadOrderDocs()), wait);
+});
 // admin-docs: the admin's own session token goes along; the function checks is_admin() with it
 async function adminDocs(body) {
   const { data } = await supabase.auth.getSession();
@@ -1176,7 +1229,10 @@ $("#orders-table").addEventListener("click", async (e) => {
 async function loadOrderDocs() {
   const ids = orderRows.map((o) => o.id);
   if (!ids.length) return;
-  const { data } = await supabase.from("order_documents").select("order_id, kind, emailed_at, created_at").in("order_id", ids.slice(0, 300));
+  const [{ data }] = await Promise.all([
+    supabase.from("order_documents").select("order_id, kind, emailed_at, created_at").in("order_id", ids.slice(0, 300)),
+    loadMorningDocs(ids),
+  ]);
   orderDocs = data || [];
   $("#orders-table").innerHTML = tableHTML(orderCols, orderRows);
 }
@@ -1397,3 +1453,38 @@ async function refreshTicketBadge() {
 }
 
 boot();
+
+
+// ---- Sales → Morning invoices: the switch and every document sent to Morning
+let morningRows = [];
+const MSTATUS = { waiting: "Waiting", sending: "Sending…", preview: "Preview (not issued)", issued: "Issued", failed: "Failed" };
+async function loadMorning() {
+  const [{ data: st, error }, { data: rows }] = await Promise.all([
+    supabase.from("morning_settings").select("*").eq("id", 1).maybeSingle(),
+    supabase.from("morning_documents").select("id, order_id, kind, status, number, url, error, action, created_at, sent_at, issued_at, orders(order_number, status, total_cents, currency, customers(email, name))").order("created_at", { ascending: false }).limit(100),
+  ]);
+  if (error || !st) { $("#morning-docs").innerHTML = `<p class="meta">Couldn't load the Morning settings.</p>`; return; }
+  morningMode = st.mode;
+  const f = $("#morning-form");
+  f.elements.mode.value = st.mode;
+  f.elements.email_customer.checked = st.email_customer;
+  $("#morning-updated").textContent = st.updated_by ? `Last changed ${shortDate(st.updated_at)} by ${st.updated_by}.` : "";
+  morningRows = rows || [];
+  $("#morning-docs").innerHTML = morningRows.length ? `<table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Document</th><th>Status</th><th>Date</th></tr></thead><tbody>${morningRows.map((d) => `<tr data-order="${d.order_id}">
+    <td>${esc(d.orders?.order_number || "")}<div class="meta">${money(d.orders?.total_cents || 0, d.orders?.currency || "USD")}</div></td>
+    <td>${esc(d.orders?.customers?.name || "")}<div class="meta">${esc(d.orders?.customers?.email || "")}</div></td>
+    <td>${morningLink(d)}</td>
+    <td>${esc(MSTATUS[d.status] || d.status)}${d.status === "failed" ? `<div class="meta mfail__why">${esc(d.error || "")}</div>` : ""}</td>
+    <td>${shortDate(d.issued_at || d.sent_at || d.created_at)}</td></tr>`).join("")}</tbody></table>` : `<p class="meta">No documents yet. The next sale gets ${st.mode === "issue" ? "its documents" : "a preview"} within 5 minutes.</p>`;
+}
+$("#morning-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.currentTarget, mode = f.elements.mode.value, btn = e.submitter;
+  if (mode === "issue" && morningMode !== "issue" && !confirm("Issue a real invoice-receipt and work order in Morning for every new sale?\n\nOnly switch this on once Matan has confirmed it (with the accountant: VAT and the document type), because Lemon Squeezy, as merchant of record, also gives the buyer its own receipt.")) return;
+  setBusy(btn, true, "Saving…");
+  const { error } = await supabase.rpc("morning_set_settings", { p_mode: mode, p_email_customer: f.elements.email_customer.checked });
+  setBusy(btn, false);
+  if (error) return setStatus($(".form-status", f), error.message, "error");
+  setStatus($(".form-status", f), "Saved.", "ok");
+  loadMorning();
+});

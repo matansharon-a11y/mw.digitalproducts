@@ -11,7 +11,7 @@ const esc = (s: string) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&a
 const first = (name: string) => esc(String(name ?? "").trim().split(/\s+/)[0] || "");
 const UUID = /^[0-9a-f-]{36}$/i;
 
-async function isHebrew(db: Db, customerId: string, email: string): Promise<boolean> {
+export async function isHebrew(db: Db, customerId: string, email: string): Promise<boolean> {
   const [{ data: e }, { data: b }, { data: s }] = await Promise.all([
     db.from("entitlements").select("guide_lang").eq("customer_id", customerId).eq("guide_lang", "he").limit(1),
     db.from("beta_members").select("terms_lang").eq("customer_id", customerId).eq("terms_lang", "he").limit(1),
