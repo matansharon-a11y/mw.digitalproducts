@@ -45,15 +45,12 @@
   <aside class="admin-side">
     <p class="brand">MWP <small>Admin</small></p>
     <nav class="admin-nav" aria-label="Admin sections">
-      <button type="button" data-tab="overview" aria-current="page">Overview</button>
-      <button type="button" data-tab="products">Products</button>
-      <button type="button" data-tab="orders">Orders</button>
-      <button type="button" data-tab="finance">Finances</button>
-      <button type="button" data-tab="customers">Customers</button>
-      <button type="button" data-tab="ambassadors">Ambassadors</button>
-      <button type="button" data-tab="testers">Testers</button>
-      <button type="button" data-tab="support">Support <span class="pill" id="open-tickets" hidden></span></button>
-      <button type="button" data-tab="security">Two-step sign-in</button>
+      <button type="button" data-group="overview"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13h6V4H4zM14 20h6v-9h-6zM14 4v4h6V4zM4 20h6v-4H4z"/></svg><span>Overview</span></button>
+      <button type="button" data-group="sales"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>Sales</span></button>
+      <button type="button" data-group="products"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/></svg><span>Products</span><span class="pill pill--warn" id="compat-badge" hidden></span></button>
+      <button type="button" data-group="people"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.4 3.2-5.2 6-5.2s5.2 1.8 6 5.2M16 4.8a3.2 3.2 0 0 1 0 6.4M17.5 14.9c1.9.6 3 2.4 3.5 5.1"/></svg><span>People</span></button>
+      <button type="button" data-group="support"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg><span>Support</span><span class="pill" id="open-tickets" hidden></span></button>
+      <button type="button" data-group="settings"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Settings</span></button>
     </nav>
     <div class="admin-side__foot">
       <p class="meta admin-who" id="admin-email"></p>
@@ -65,6 +62,8 @@
   </aside>
 
   <main class="admin-main" id="main">
+    <!-- the tabs inside the current section (admin.js GROUPS) -->
+    <div class="subnav" id="subnav" role="tablist" hidden></div>
     <!-- Overview -->
     <section data-panel="overview">
       <header class="admin-head">
@@ -75,6 +74,7 @@
           <button class="btn btn--sm btn--ghost" data-days="90" type="button">90 days</button>
         </div>
       </header>
+      <div class="attention" id="attention" hidden></div>
       <div class="tiles" id="tiles"></div>
       <div class="panel admin-chart">
         <div class="row row--between"><h2 class="admin-h2">Paid orders per day</h2><span class="meta" id="chart-total"></span></div>
@@ -118,6 +118,36 @@
         <button class="btn btn--sm btn--accent" id="new-product" type="button">New product</button>
       </header>
       <div id="product-list"></div>
+    </section>
+
+    <!-- Compatibility with Adobe's apps (6 Nov 2026; compat.ts, migration 20261106000002) -->
+    <section data-panel="compat" hidden>
+      <header class="admin-head">
+        <div class="stack-xs">
+          <h1 class="h3">Compatibility</h1>
+          <p class="meta" id="compat-checked">Not checked yet.</p>
+        </div>
+        <button class="btn btn--sm btn--ghost" id="compat-check" type="button">Check Adobe now</button>
+      </header>
+      <p class="meta compat-help">Every day the shop reads Adobe's release notes for Photoshop, Lightroom Classic, Lightroom and Camera Raw. It flags a product when a new <b>major</b> version comes out, or when the notes mention what the product is built on (the plugin interface, the Lightroom plug-in SDK, a new process version for presets). A flag is a possible risk to test, not a confirmed problem. You get an email once per finding.</p>
+      <div class="compat-summary" id="compat-summary"></div>
+      <div class="compat-products" id="compat-products"></div>
+      <div class="panel">
+        <div class="row row--between"><h2 class="admin-h2">Alerts</h2>
+          <div class="row" role="group" aria-label="Show alerts">
+            <button class="btn btn--sm" data-compat-filter="active" type="button">To do</button>
+            <button class="btn btn--sm btn--ghost" data-compat-filter="all" type="button">All</button>
+          </div></div>
+        <div id="compat-alerts" class="stack"></div>
+      </div>
+      <div class="panel">
+        <h2 class="admin-h2">Adobe apps</h2>
+        <div class="table-wrap"><table class="table" id="compat-apps"></table></div>
+      </div>
+      <div class="panel">
+        <h2 class="admin-h2">History</h2>
+        <div class="table-wrap"><table class="table" id="compat-history"></table></div>
+      </div>
     </section>
 
     <!-- Product editor -->

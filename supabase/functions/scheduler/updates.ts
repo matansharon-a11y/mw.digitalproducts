@@ -2,6 +2,8 @@
 // (decide_update_notice in migration 20261104000002). One email per owner, in their language (Hebrew when anything they
 // have with us is in Hebrew), sent by Make's Gmail, signed Matan (Jeinna, 5 Nov 2026). The texts are drafts for Matan's approval.
 
+import { compatEmails } from "./compat.ts";
+
 // deno-lint-ignore no-explicit-any
 type Db = any;
 
@@ -56,21 +58,25 @@ export function updateEmail(lang: "en" | "he", name: string, slug: string, fallb
 // address alone can't send anything to anyone.
 const UPDATE_HOOK = Deno.env.get("MAKE_UPDATES_WEBHOOK_URL") || "https://hook.eu1.make.com/xwf14t67ho423q9sb05pipde9bgv87v6";
 
-export async function updateEmails(db: Db, noticeId: string) {
-  const { data: n, error } = await db.from("update_notices").select("id, status").eq("id", noticeId).maybeSingle();
-  if (error) throw error;
-  if (!n || n.status !== "sending") return { skipped: "not waiting to send" };
+/** Hands Make's email scenario a one-time code for `purpose` ("update:<notice>" or "compat:<run>"). */
+export async function emailHook(db: Db, purpose: string): Promise<boolean> {
   const nonce = crypto.randomUUID().replaceAll("-", "") + crypto.randomUUID().replaceAll("-", "");
-  const { error: iErr } = await db.from("sync_nonces").insert({ nonce, purpose: `update:${noticeId}` });
+  const { error: iErr } = await db.from("sync_nonces").insert({ nonce, purpose });
   if (iErr) throw iErr;
-  let ok = false;
   try {
     const res = await fetch(UPDATE_HOOK, {
       method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({ nonce }), signal: AbortSignal.timeout(8000),
     });
-    ok = res.ok;
-  } catch (err) { console.error("update hook", err); }
+    return res.ok;
+  } catch (err) { console.error("email hook", err); return false; }
+}
+
+export async function updateEmails(db: Db, noticeId: string) {
+  const { data: n, error } = await db.from("update_notices").select("id, status").eq("id", noticeId).maybeSingle();
+  if (error) throw error;
+  if (!n || n.status !== "sending") return { skipped: "not waiting to send" };
+  const ok = await emailHook(db, `update:${noticeId}`);
   if (!ok) await db.from("update_notices").update({ status: "failed" }).eq("id", noticeId);
   return { ok };
 }
@@ -82,11 +88,13 @@ export async function updateList(db: Db, nonceIn: unknown) {
   if (nonce.length < 32) return { error: "unauthorized", emails: [] };
   const { data: used, error: nErr } = await db.from("sync_nonces")
     .update({ used_at: new Date().toISOString() })
-    .eq("nonce", nonce).like("purpose", "update:%").is("used_at", null)
+    .eq("nonce", nonce).or('purpose.like."update:*",purpose.like."compat:*"').is("used_at", null)
     .gte("created_at", new Date(Date.now() - 15 * 60 * 1000).toISOString())
     .select("purpose");
   if (nErr) throw nErr;
   if (!used?.length) return { error: "unauthorized", emails: [] };
+  // the compatibility monitor's alert email to the admin (compat.ts) uses the same scenario
+  if (used[0].purpose.startsWith("compat:")) return { emails: await compatEmails(db) };
   const noticeId = used[0].purpose.slice("update:".length);
 
   const { data: n, error } = await db.from("update_notices")

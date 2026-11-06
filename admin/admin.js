@@ -42,8 +42,9 @@ async function enter(user) {
   gate.hidden = true;
   app.hidden = false;
   $("#admin-email").textContent = user.email;
-  show("overview");
+  show(location.hash.slice(1) || "overview", { history: false });
   refreshTicketBadge();
+  refreshCompatBadge();
 }
 
 $("#gate-form").addEventListener("submit", async (e) => {
@@ -147,22 +148,64 @@ $("#mfa-enroll").addEventListener("submit", async (e) => {
 $("#admin-signout").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
 
 // ---------------------------------------------------------------- navigation
-const loaders = { overview: loadOverview, products: loadProducts, orders: loadOrders, finance: loadFinance, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
+const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
 
-function show(tab) {
+// ---------------------------------------------------------------- navigation (6 Nov 2026)
+// Six sections in the sidebar; a section with more than one view shows tabs above it. Every view has its own address
+// (#orders, #compat …), so reload, Back and a link in an email open the right place, and each section remembers the
+// tab you were on.
+const GROUPS = {
+  overview: { label: "Overview", tabs: [["overview", "Overview"]] },
+  sales: { label: "Sales", tabs: [["orders", "Orders"], ["finance", "Finances"]] },
+  products: { label: "Products", tabs: [["products", "Catalogue"], ["compat", "Compatibility"]] },
+  people: { label: "People", tabs: [["customers", "Customers"], ["ambassadors", "Ambassadors"], ["testers", "Testers"]] },
+  support: { label: "Support", tabs: [["support", "Tickets"]] },
+  settings: { label: "Settings", tabs: [["security", "Two-step sign-in"]] },
+};
+const groupOf = (tab) => (tab === "editor" ? "products" : Object.keys(GROUPS).find((g) => GROUPS[g].tabs.some(([t]) => t === tab)));
+const isView = (tab) => tab === "editor" || !!groupOf(tab);
+let lastTab = {};
+try { lastTab = JSON.parse(sessionStorage.getItem("mwp_admin_tabs") || "{}"); } catch { /* private mode */ }
+
+function show(tab, { history = true } = {}) {
+  if (!isView(tab)) tab = "overview";
+  const group = groupOf(tab);
   $$("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== tab; });
-  const navTab = tab === "editor" ? "products" : tab;
-  $$(".admin-nav [data-tab]").forEach((b) => {
-    if (b.dataset.tab === navTab) b.setAttribute("aria-current", "page");
+  $$(".admin-nav [data-group]").forEach((b) => {
+    if (b.dataset.group === group) b.setAttribute("aria-current", "page");
     else b.removeAttribute("aria-current");
   });
+  const tabs = GROUPS[group].tabs, sub = $("#subnav");
+  const current = tab === "editor" ? "products" : tab;
+  sub.hidden = tabs.length < 2;
+  sub.setAttribute("aria-label", `${GROUPS[group].label} views`);
+  sub.innerHTML = tabs.map(([t, label]) => `<button type="button" role="tab" data-tab="${t}" aria-selected="${t === current}" tabindex="${t === current ? 0 : -1}">${esc(label)}${t === "compat" ? `<span class="pill pill--warn" data-compat-count hidden></span>` : ""}</button>`).join("");
+  paintCompatBadge();
+  if (tab !== "editor") {
+    lastTab[group] = tab;
+    try { sessionStorage.setItem("mwp_admin_tabs", JSON.stringify(lastTab)); } catch { /* private mode */ }
+    if (history && location.hash !== `#${tab}`) window.history.pushState(null, "", `#${tab}`);
+  }
   loaders[tab]?.();
   window.scrollTo({ top: 0 });
 }
 document.addEventListener("click", (e) => {
+  const g = e.target.closest(".admin-nav [data-group]");
+  if (g) return show(lastTab[g.dataset.group] || GROUPS[g.dataset.group].tabs[0][0]);
   const t = e.target.closest("[data-tab]");
   if (t) show(t.dataset.tab);
 });
+// arrow keys move between the tabs of a section
+$("#subnav").addEventListener("keydown", (e) => {
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+  const btns = $$("#subnav [role=tab]"), i = btns.indexOf(document.activeElement);
+  if (i < 0) return;
+  e.preventDefault();
+  const n = e.key === "Home" ? 0 : e.key === "End" ? btns.length - 1 : (i + (e.key === "ArrowRight" ? 1 : -1) + btns.length) % btns.length;
+  show(btns[n].dataset.tab);
+  $(`#subnav [data-tab="${btns[n].dataset.tab}"]`)?.focus();
+});
+window.addEventListener("popstate", () => show(location.hash.slice(1) || "overview", { history: false }));
 
 function check(error) { if (error) { toast(error.message, { type: "error", timeout: 7000 }); throw error; } }
 
@@ -192,6 +235,7 @@ async function loadOverview() {
   $("#tiles").innerHTML = tiles.map(([label, value, sub]) => `
     <div class="tile"><span class="tile__label">${esc(label)}</span><span class="tile__value${String(value).length > 9 ? " tile__value--long" : ""}">${esc(value)}</span>${sub ? `<span class="tile__sub">${esc(sub)}</span>` : ""}</div>`).join("");
   drawChart(s.daily);
+  loadAttention();
   $("#top-products").innerHTML = s.top_products.length
     ? `<table class="table"><thead><tr><th>Pack</th><th class="num">Sold</th><th class="num">Revenue</th></tr></thead><tbody>
         ${s.top_products.map((t) => `<tr><td>${esc(t.name)}</td><td class="num">${t.units}</td><td class="num">${money(t.cents, t.currency)}</td></tr>`).join("")}
@@ -700,6 +744,198 @@ function downloadCsv(name, cols, rows) {
 const debounce = (fn, ms = 250) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
 // Orders
+// ---------------------------------------------------------------- Compatibility (6 Nov 2026)
+// Data: compat_overview() (migration 20261106000002). The daily job (scheduler compat.ts) fills it; here the admin reads
+// it and records what they checked. Status per product = the most urgent of its Adobe dependencies:
+//   Update needed  an alert was marked "Needs update"
+//   Worth a look   an open alert from the release notes (e.g. the plugin interface changed)
+//   Needs testing  an open alert for a new major version, or never tested on the current major version
+//   Compatible     tested on the current major version, nothing open
+const CSTATUS = {
+  update: { label: "Update needed", cls: "bad", rank: 4 },
+  investigate: { label: "Worth a look", cls: "look", rank: 3 },
+  test: { label: "Needs testing", cls: "warn", rank: 2 },
+  unverified: { label: "Not tested on the latest version", cls: "warn", rank: 1 },
+  // never "Compatible" without a recorded test: "Tested OK" needs one, otherwise only "No known issues"
+  clear: { label: "No known issues", cls: "none", rank: 0 },
+  ok: { label: "Tested OK", cls: "ok", rank: -1 },
+};
+const ALERT_STATUS = { open: "To do", reviewed: "Reviewed", tested: "Tested OK", needs_update: "Needs update", resolved: "Resolved" };
+const LEVEL_LABEL = { test: "Needs testing", investigate: "Worth a look", confirmed: "Confirmed problem" };
+const ACTIVE = (a) => a.status === "open" || a.status === "reviewed" || a.status === "needs_update";
+let compat = null, compatFilter = "active";
+const vmajor = (v) => Number(String(v || "").split(".")[0]);
+
+function depStatus(d) {
+  const app = compat.apps.find((a) => a.key === d.app);
+  const mine = compat.alerts.filter((a) => a.product_slug === d.product_slug && a.app === d.app);
+  if (mine.some((a) => a.status === "needs_update")) return "update";
+  if (mine.some((a) => ACTIVE(a) && a.level === "investigate")) return "investigate";
+  if (mine.some((a) => ACTIVE(a) && a.level !== "investigate")) return "test";
+  if (d.major_alerts && app?.latest_version && (!d.last_verified_version || vmajor(d.last_verified_version) < vmajor(app.latest_version))) return "unverified";
+  return d.last_verified_version && app?.latest_version && vmajor(d.last_verified_version) === vmajor(app.latest_version) ? "ok" : "clear";
+}
+function productStatuses() {
+  const by = new Map();
+  for (const d of compat?.deps || []) {
+    const st = depStatus(d);
+    const p = by.get(d.product_slug) || { slug: d.product_slug, name: d.product_name, deps: [], status: "ok" };   // the most urgent wins
+    p.deps.push({ ...d, status: st });
+    if (CSTATUS[st].rank > CSTATUS[p.status].rank) p.status = st;
+    by.set(d.product_slug, p);
+  }
+  return [...by.values()];
+}
+
+// badge on Products and the Compatibility tab: products that need a look, a test or an update
+let compatCount = 0;
+function paintCompatBadge() {
+  for (const el of [$("#compat-badge"), ...$$("[data-compat-count]")]) {
+    if (!el) continue;
+    el.hidden = !compatCount;
+    el.textContent = compatCount;
+    el.title = `${compatCount} product${compatCount === 1 ? "" : "s"} to check for Adobe compatibility`;
+  }
+}
+async function refreshCompatBadge() {
+  const { data, error } = await supabase.rpc("compat_overview");
+  if (error) return;   // before the migration, or a network blip: no badge
+  compat = data;
+  compatCount = productStatuses().filter((p) => CSTATUS[p.status].rank > 0).length;
+  paintCompatBadge();
+}
+
+async function loadCompat() {
+  const { data, error } = await supabase.rpc("compat_overview");
+  if (error) { $("#compat-products").innerHTML = `<p class="meta">${esc(error.message)}</p>`; return; }
+  compat = data;
+  // never checked yet: start the first (silent) check right away
+  if (!compat.last_run) {
+    const { data: msg } = await supabase.rpc("compat_check_now");
+    $("#compat-checked").textContent = msg || "Checking Adobe for the first time…";
+    setTimeout(loadCompat, 45000);
+  }
+  renderCompat();
+}
+
+function renderCompat() {
+  const run = compat.last_run;
+  if (run) {
+    const failed = compat.apps.filter((a) => a.last_error);
+    $("#compat-checked").innerHTML = `Last checked ${esc(new Date(run.started_at).toLocaleString(CONFIG.LOCALE, { dateStyle: "medium", timeStyle: "short" }))}${failed.length ? ` · <span class="c-bad">couldn't read ${esc(failed.map((a) => a.name).join(", "))}</span>` : " · all four Adobe pages read"}`;
+  }
+  const prods = productStatuses();
+  compatCount = prods.filter((p) => CSTATUS[p.status].rank > 0).length;
+  paintCompatBadge();
+
+  const counts = Object.fromEntries(Object.keys(CSTATUS).map((k) => [k, prods.filter((p) => p.status === k).length]));
+  $("#compat-summary").innerHTML = Object.entries(CSTATUS).filter(([k]) => counts[k]).map(([k, c]) =>
+    `<span class="cbadge cbadge--${c.cls}"><b>${counts[k]}</b> ${esc(c.label)}</span>`).join("")
+    + `<span class="cbadge cbadge--none">Field Guides: no Adobe dependency (PDFs)</span>`;
+
+  const appOf = (k) => compat.apps.find((a) => a.key === k) || { name: k };
+  $("#compat-products").innerHTML = prods.map((p) => `
+    <article class="cprod">
+      <header class="cprod__head"><h2 class="cprod__name">${esc(p.name)}</h2><span class="cbadge cbadge--${CSTATUS[p.status].cls}">${esc(CSTATUS[p.status].label)}</span></header>
+      ${p.deps.map((d) => {
+        const app = appOf(d.app), latest = app.latest_version;
+        return `<div class="cdep">
+          <div class="cdep__main">
+            <p class="cdep__app"><b>${esc(app.name)}</b>${d.min_version ? ` <span class="meta">needs ${esc(d.min_version)}+</span>` : ""}</p>
+            <p class="meta">${esc(d.what)}</p>
+          </div>
+          <dl class="cdep__facts">
+            <div><dt>Latest Adobe</dt><dd>${latest ? `${esc(latest)}${app.latest_label ? ` <span class="meta">${esc(app.latest_label)}</span>` : ""}` : "–"}</dd></div>
+            <div><dt>Tested on</dt><dd>${d.last_verified_version ? `${esc(d.last_verified_version)} <span class="meta">${shortDate(d.verified_at)}</span>` : `<span class="meta">Not recorded</span>`}</dd></div>
+            <div><dt>Status</dt><dd><span class="cdot cdot--${CSTATUS[d.status].cls}"></span>${esc(CSTATUS[d.status].label)}</dd></div>
+          </dl>
+          ${latest && d.last_verified_version !== latest ? `<div class="cdep__acts">
+            <button class="btn btn--sm btn--ghost" type="button" data-verify="${esc(d.product_slug)}|${esc(d.app)}|${esc(latest)}">Tested OK on ${esc(latest)}</button>
+            <button class="linkish" type="button" data-verify-other="${esc(d.product_slug)}|${esc(d.app)}">Another version…</button>
+          </div>` : ""}
+        </div>`;
+      }).join("")}
+    </article>`).join("") || `<p class="meta">No products are linked to Adobe apps.</p>`;
+
+  const list = compat.alerts.filter((a) => compatFilter === "all" || ACTIVE(a));
+  $$("[data-compat-filter]").forEach((b) => b.classList.toggle("btn--ghost", b.dataset.compatFilter !== compatFilter));
+  $("#compat-alerts").innerHTML = list.length ? list.map((a) => `
+    <article class="calert calert--${a.level}">
+      <header class="calert__head">
+        <p><span class="cbadge cbadge--${a.level === "investigate" ? "look" : a.level === "confirmed" ? "bad" : "warn"}">${esc(LEVEL_LABEL[a.level] || a.level)}</span>
+          <b>${esc(appOf(a.app).name)} ${esc(a.version)}</b> · ${esc(a.product_name)}</p>
+        <span class="meta">${shortDate(a.created_at)}${a.emailed_at ? " · emailed" : a.baseline ? " · found at setup" : ""}</span>
+      </header>
+      <p>${esc(a.reason)}</p>
+      ${(a.quotes || []).length ? `<blockquote class="calert__quotes">${a.quotes.map((q) => `<p>“${esc(q)}”</p>`).join("")}<cite>Adobe's release notes</cite></blockquote>` : ""}
+      <p><b>What to do:</b> ${esc(a.action)}</p>
+      <form class="calert__form" data-alert="${a.id}">
+        <label class="visually-hidden" for="st-${a.id}">Status</label>
+        <select class="select input--sm" id="st-${a.id}" name="status">${Object.entries(ALERT_STATUS).map(([k, l]) => `<option value="${k}"${k === a.status ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>
+        <label class="visually-hidden" for="nt-${a.id}">Note</label>
+        <input class="input input--sm" id="nt-${a.id}" name="note" placeholder="Note (what you checked)" value="${esc(a.note || "")}" maxlength="500">
+        <button class="btn btn--sm" type="submit">Save</button>
+      </form>
+    </article>`).join("")
+    : `<p class="meta">${compatFilter === "all" ? "No alerts yet." : "Nothing to do. New findings appear here and come by email."}</p>`;
+
+  $("#compat-apps").innerHTML = `<thead><tr><th>App</th><th>Latest version</th><th>Released</th><th>First seen</th><th>Last checked</th><th>Source</th></tr></thead><tbody>${compat.apps.map((a) => `
+    <tr><td>${esc(a.name)}</td><td>${esc(a.latest_version || "–")}</td><td>${esc(a.latest_label || "–")}</td><td>${a.latest_seen_at ? shortDate(a.latest_seen_at) : "–"}</td><td>${a.checked_at ? shortDate(a.checked_at) : "–"}</td>
+    <td>${a.last_error ? `<span class="c-bad" title="${esc(a.last_error)}">Can't read (${a.error_count}×)</span>` : a.checked_at ? `<span class="c-ok">OK</span>` : "–"}</td></tr>`).join("")}</tbody>`;
+  $("#compat-history").innerHTML = compat.versions.length
+    ? `<thead><tr><th>Seen</th><th>App</th><th>Version</th><th>Notes that matched</th></tr></thead><tbody>${compat.versions.map((v) => `
+      <tr><td>${shortDate(v.detected_at)}</td><td>${esc(appOf(v.app).name)}</td><td>${esc(v.version)}${v.is_major ? ` <span class="cbadge cbadge--warn">major</span>` : ""}${v.baseline ? ` <span class="meta">first check</span>` : ""}</td>
+      <td>${(v.topics || []).length ? esc([...new Set(v.topics.map((t) => t.label + (t.strong ? "" : " (minor)")))].join(", ")) : `<span class="meta">nothing relevant</span>`}</td></tr>`).join("")}</tbody>`
+    : `<tbody><tr><td class="meta">Nothing recorded yet.</td></tr></tbody>`;
+}
+
+$("#compat-check").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  setBusy(btn, true, "Checking…");
+  const { data, error } = await supabase.rpc("compat_check_now");
+  setBusy(btn, false);
+  if (error) return toast(error.message, { type: "error" });
+  toast(data);
+  setTimeout(loadCompat, 40000);
+});
+$("[data-panel=compat]").addEventListener("click", async (e) => {
+  const f = e.target.closest("[data-compat-filter]");
+  if (f) { compatFilter = f.dataset.compatFilter; return renderCompat(); }
+  const v = e.target.closest("[data-verify], [data-verify-other]");
+  if (!v) return;
+  const [slug, appKey, ver] = (v.dataset.verify || v.dataset.verifyOther).split("|");
+  const version = ver || prompt("Which version did you test on? (for example 27.11)", compat.apps.find((a) => a.key === appKey)?.latest_version || "");
+  if (!version) return;
+  const { error } = await supabase.rpc("compat_mark_verified", { p_product: slug, p_app: appKey, p_version: version.trim() });
+  if (error) return toast(error.message, { type: "error" });
+  toast(`Recorded: tested on ${version.trim()}.`);
+  loadCompat();
+});
+$("[data-panel=compat]").addEventListener("submit", async (e) => {
+  const form = e.target.closest("[data-alert]");
+  if (!form) return;
+  e.preventDefault();
+  const { error } = await supabase.rpc("compat_set_alert", { p_alert: form.dataset.alert, p_status: form.elements.status.value, p_note: form.elements.note.value });
+  if (error) return toast(error.message, { type: "error" });
+  toast("Saved.");
+  loadCompat();
+});
+
+// "Needs attention" on the overview: only what asks for action, each with a way to it
+async function loadAttention() {
+  const box = $("#attention");
+  await refreshCompatBadge();
+  const items = [];
+  const prods = compat ? productStatuses().filter((p) => CSTATUS[p.status].rank > 0) : [];
+  for (const p of prods) items.push({ cls: CSTATUS[p.status].cls, text: `${p.name}: ${CSTATUS[p.status].label.toLowerCase()} (Adobe)`, tab: "compat" });
+  const failed = (compat?.apps || []).filter((a) => a.last_error);
+  if (failed.length) items.push({ cls: "bad", text: `The Adobe check can't read ${failed.map((a) => a.name).join(", ")}`, tab: "compat" });
+  const tickets = Number($("#open-tickets")?.textContent || 0);
+  if (tickets) items.push({ cls: "warn", text: `${tickets} open support ticket${tickets === 1 ? "" : "s"}`, tab: "support" });
+  box.hidden = !items.length;
+  box.innerHTML = `<h2 class="admin-h2">Needs attention</h2><ul>${items.map((i) => `<li><span class="cdot cdot--${i.cls}"></span><span>${esc(i.text)}</span><button class="linkish" type="button" data-tab="${i.tab}">Open</button></li>`).join("")}</ul>`;
+}
+
 // ---------------------------------------------------------------- Finances (Jeinna, 6 Nov 2026)
 // Gross = what customers paid (tax included). Tax = the sales tax / VAT in it, which Lemon Squeezy (the merchant of
 // record) pays to the governments. Lemon Squeezy's fee isn't in its API, so it is ESTIMATED from its published rates
