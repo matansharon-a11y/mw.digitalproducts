@@ -1130,7 +1130,7 @@ const orderCols = [
     const docs = orderDocs.filter((d) => d.order_id === r.id);
     const sent = docs.filter((d) => d.emailed_at).sort((a, b) => b.emailed_at.localeCompare(a.emailed_at))[0];
     void sent;
-    return `<div class="docs" data-order="${r.id}">${morningChip(r)}<button class="btn btn--sm btn--ghost" type="button" data-docs-open>Documents</button></div>`;
+    return `<div class="docs" data-order="${r.id}"><button class="btn btn--sm btn--ghost" type="button" data-docs-open>Documents</button></div>`;
   } },
 ];
 let orderDocs = [];
@@ -1143,19 +1143,6 @@ function morningLink(d) {
   if (d.status === "preview") return `<button class="linkish" type="button" data-mpreview="${d.id}" title="Morning's demo PDF: nothing was issued">${MKIND[d.kind]} preview</button>`;
   if (d.status === "failed") return `<span class="mfail" title="${esc(d.error || "")}">${MKIND[d.kind]}: failed</span>`;
   return `<span class="meta">${MKIND[d.kind]}: sending…</span>`;
-}
-// the short status in the Orders table
-function morningChip(r) {
-  if (r.test_mode) return `<span class="dchip dchip--muted">Test: no documents</span>`;
-  if (morningMode === "off" || morningMode === null) return "";
-  const docs = morningDocs.filter((d) => d.order_id === r.id);
-  const inv = docs.find((d) => d.kind === "invoice_receipt");
-  if (r.status !== "paid" && inv?.status === "issued") return `<span class="dchip dchip--bad" title="Cancel it in Morning with a credit note">Refunded: needs credit note</span>`;
-  if (docs.some((d) => d.status === "failed")) return `<span class="dchip dchip--bad">Morning: failed</span>`;
-  if (docs.some((d) => d.status === "sending")) return `<span class="dchip dchip--muted">Morning: sending…</span>`;
-  if (docs.length && docs.every((d) => d.status === "issued")) return `<span class="dchip dchip--ok">Morning: issued${inv?.number ? ` ${esc(inv.number)}` : ""}</span>`;
-  if (docs.some((d) => d.status === "preview")) return `<span class="dchip dchip--warn">Morning: preview</span>`;
-  return r.status === "paid" ? `<span class="dchip dchip--muted">Morning: not sent</span>` : "";
 }
 // the order's documents panel
 let docsOrder = null;

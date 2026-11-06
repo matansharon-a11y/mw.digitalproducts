@@ -219,7 +219,7 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .cchecks__none { margin: 0 0 var(--s-2); }
 
 /* receipts and invoices on each order (6 Nov 2026) */
-.docs { display: flex; gap: 10px; align-items: center; justify-content: space-between; min-width: 250px; }
+.docs { display: flex; align-items: center; }
 .docs__sent { font-size: var(--fs-xs); }
 .inv-dialog { max-height: 92vh; overflow: auto; width: min(560px, 94vw); border: 1px solid var(--c-line-strong); border-radius: var(--r-lg, 20px); background: var(--c-canvas); color: var(--c-paper); padding: var(--s-5); }
 .inv-dialog::backdrop { background: rgba(0, 0, 0, .6); }
