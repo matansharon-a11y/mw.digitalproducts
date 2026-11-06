@@ -8,12 +8,12 @@ import { APPS, cmpVersion, findTopics, latest, major } from "./adobe.ts";
 type Db = any;
 
 const ADMIN_URL = "https://shop.mw.photography/admin/#compat";
-// A plain, honest client name (no browser disguise, no personal details)
-const UA = "MWP-Shop-CompatMonitor/1.0 (+https://shop.mw.photography)";
+// The runtime's own default client name (Deno/…): honest, no browser disguise. A custom name ("MWP-Shop-CompatMonitor
+// …") was refused by Adobe's site with 403 on 6 Nov 2026, while the default is served normally.
 const ERRORS_BEFORE_EMAIL = 3;   // a page that can't be read 3 days in a row is worth one email
 
 async function getPage(url: string): Promise<string> {
-  const res = await fetch(url, { headers: { "user-agent": UA, accept: "text/html" }, signal: AbortSignal.timeout(25000) });
+  const res = await fetch(url, { headers: { accept: "text/html" }, signal: AbortSignal.timeout(25000) });
   if (!res.ok) throw new Error(`${url} answered ${res.status}`);
   return await res.text();
 }

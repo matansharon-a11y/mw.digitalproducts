@@ -811,9 +811,10 @@ async function loadCompat() {
   compat = data;
   // never checked yet: start the first (silent) check right away
   if (!compat.last_run) {
-    const { data: msg } = await supabase.rpc("compat_check_now");
-    $("#compat-checked").textContent = msg || "Checking Adobe for the first time…";
-    setTimeout(loadCompat, 45000);
+    const since = Date.now();
+    await supabase.rpc("compat_check_now");
+    $("#compat-checked").textContent = "Checking Adobe for the first time…";
+    waitForRun(since, null);
   }
   renderCompat();
 }
@@ -881,7 +882,7 @@ function renderCompat() {
 
   $("#compat-apps").innerHTML = `<thead><tr><th>App</th><th>Latest version</th><th>Released</th><th>First seen</th><th>Last checked</th><th>Source</th></tr></thead><tbody>${compat.apps.map((a) => `
     <tr><td>${esc(a.name)}</td><td>${esc(a.latest_version || "–")}</td><td>${esc(a.latest_label || "–")}</td><td>${a.latest_seen_at ? shortDate(a.latest_seen_at) : "–"}</td><td>${a.checked_at ? shortDate(a.checked_at) : "–"}</td>
-    <td>${a.last_error ? `<span class="c-bad" title="${esc(a.last_error)}">Can't read (${a.error_count}×)</span>` : a.checked_at ? `<span class="c-ok">OK</span>` : "–"}</td></tr>`).join("")}</tbody>`;
+    <td>${a.last_error ? `<span class="c-bad">Can't read (${a.error_count}×)</span><br><span class="meta">${esc(a.last_error)}</span>` : a.checked_at ? `<span class="c-ok">OK</span>` : "–"}</td></tr>`).join("")}</tbody>`;
   $("#compat-history").innerHTML = compat.versions.length
     ? `<thead><tr><th>Seen</th><th>App</th><th>Version</th><th>Notes that matched</th></tr></thead><tbody>${compat.versions.map((v) => `
       <tr><td>${shortDate(v.detected_at)}</td><td>${esc(appOf(v.app).name)}</td><td>${esc(v.version)}${v.is_major ? ` <span class="cbadge cbadge--warn">major</span>` : ""}${v.baseline ? ` <span class="meta">first check</span>` : ""}</td>
@@ -889,14 +890,62 @@ function renderCompat() {
     : `<tbody><tr><td class="meta">Nothing recorded yet.</td></tr></tbody>`;
 }
 
+// "Check Adobe now": wait for the run to finish, then say what it found (6 Nov 2026: before, nothing came back).
+// The job writes a compat_runs row when it starts (ok = null) and fills ok + summary when it ends.
+const APP_NAMES = { photoshop: "Photoshop", lightroom_classic: "Lightroom Classic", camera_raw: "Camera Raw", lightroom: "Lightroom" };
+function runReport(run) {
+  const s = run.summary || {};
+  const apps = Object.keys(APP_NAMES).filter((k) => s[k]);
+  const read = apps.filter((k) => !s[k].error), failed = apps.filter((k) => s[k].error);
+  const fresh = read.filter((k) => s[k].new && !s[k].baseline);
+  const lines = [];
+  lines.push(read.length ? `Read ${read.length} of ${apps.length} Adobe pages: ${read.map((k) => `${APP_NAMES[k]} ${s[k].version}`).join(" · ")}.` : "Couldn't read any Adobe page.");
+  if (read.some((k) => s[k].baseline)) lines.push("First check: today's versions are saved as the starting point (no email).");
+  else lines.push(fresh.length ? `New since the last check: ${fresh.map((k) => `${APP_NAMES[k]} ${s[k].version}${s[k].major ? " (major)" : ""}`).join(", ")}.` : "No new Adobe versions since the last check.");
+  lines.push(s.alerts_created ? `${s.alerts_created} new alert${s.alerts_created === 1 ? "" : "s"} below${s.email_requested ? ", and an email is on its way" : ""}.` : "No new alerts.");
+  if (failed.length) lines.push(`Couldn't read: ${failed.map((k) => `${APP_NAMES[k]} (${s[k].error})`).join("; ")}.`);
+  return { ok: !failed.length, lines };
+}
+function showRunResult(run) {
+  const box = $("#compat-result");
+  const r = runReport(run);
+  box.className = `compat-result compat-result--${r.ok ? "ok" : "bad"}`;
+  box.innerHTML = `<p><b>${r.ok ? "Check finished" : "Check finished with problems"}</b> · ${esc(new Date(run.started_at).toLocaleTimeString(CONFIG.LOCALE, { timeStyle: "short" }))}</p><ul>${r.lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`;
+  box.hidden = false;
+}
+async function waitForRun(since, btn) {
+  const box = $("#compat-result");
+  box.className = "compat-result"; box.hidden = false;
+  box.innerHTML = `<p><b>Checking Adobe…</b> Reading the four release pages. This takes up to a minute.</p>`;
+  const t0 = Date.now();
+  while (Date.now() - t0 < 120000) {
+    await new Promise((r) => setTimeout(r, 4000));
+    const { data } = await supabase.rpc("compat_overview");
+    const run = data?.last_run;
+    if (run && Date.parse(run.started_at) >= since - 60000 && run.ok !== null && run.ok !== undefined) {
+      compat = data; renderCompat(); showRunResult(run);
+      if (btn) setBusy(btn, false);
+      return;
+    }
+  }
+  box.className = "compat-result compat-result--bad";
+  box.innerHTML = `<p><b>No answer yet.</b> The check may still be running: reload this page in a minute.</p>`;
+  if (btn) setBusy(btn, false);
+}
+
 $("#compat-check").addEventListener("click", async (e) => {
   const btn = e.currentTarget;
   setBusy(btn, true, "Checking…");
+  const since = Date.now();
   const { data, error } = await supabase.rpc("compat_check_now");
-  setBusy(btn, false);
-  if (error) return toast(error.message, { type: "error" });
-  toast(data);
-  setTimeout(loadCompat, 40000);
+  if (error) { setBusy(btn, false); return toast(error.message, { type: "error" }); }
+  if (/last 5 minutes/.test(data || "")) {   // checked moments ago: show that result
+    setBusy(btn, false);
+    toast(data);
+    if (compat?.last_run) showRunResult(compat.last_run);
+    return;
+  }
+  waitForRun(since, btn);
 });
 $("[data-panel=compat]").addEventListener("click", async (e) => {
   const f = e.target.closest("[data-compat-filter]");

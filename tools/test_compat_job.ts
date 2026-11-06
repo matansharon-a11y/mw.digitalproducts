@@ -1,4 +1,4 @@
-// End-to-end test of the compatibility monitor job (supabase/functions/scheduler/compat.ts) with saved Adobe pages and
+// End-to-end test (and, with LIVE=1 and --allow-net, one real run) of the compatibility monitor job (supabase/functions/scheduler/compat.ts) with saved Adobe pages and
 // an in-memory stand-in for the database. Run: deno run --allow-read tools/test_compat_job.ts <folder of saved pages>
 // The folder needs the four pages adobe.ts reads, saved under any name (matched by their release headings).
 import { compat, compatEmails } from "../supabase/functions/scheduler/compat.ts";
@@ -69,12 +69,22 @@ for (const [, a] of Object.entries(APPS)) for (const u of a.urls) {
   pageFor[u] = saved.find((h) => h.includes(`(version ${want[k as keyof typeof want]})`) && (k !== "photoshop-on-desktop-release-notes" || h.includes("lacked keyboard focus")))!;
 }
 let bump = false, broken = false;
+const realFetch = globalThis.fetch;
 globalThis.fetch = ((url: string) => {
   if (broken && url.includes("camera-raw")) return Promise.resolve(new Response("gone", { status: 503 }));
   let h = pageFor[url];
   if (bump && url.includes("photoshop")) h = h.replace(/September 2026 \(version 27\.11\)/, "October 2026 (version 28.0)");
   return Promise.resolve(new Response(h ?? "", { status: h ? 200 : 404 }));
 }) as typeof fetch;
+
+// LIVE=1: one real run against Adobe's live pages (the request the server sends), then stop
+if (Deno.env.get("LIVE")) {
+  globalThis.fetch = realFetch;
+  const r = await compat(db, true, () => Promise.resolve(true));
+  console.log(JSON.stringify(r.summary, null, 1));
+  console.log("alerts:", table("compat_alerts").map((a) => `${a.app} ${a.version} ${a.product_slug} ${a.level}`));
+  Deno.exit(r.ok ? 0 : 1);
+}
 
 let fail = 0;
 const ok = (c: boolean, m: string) => { console.log(c ? "ok  " : "FAIL", m); if (!c) fail++; };
