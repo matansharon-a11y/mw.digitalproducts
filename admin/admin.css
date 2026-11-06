@@ -219,7 +219,7 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .cchecks__none { margin: 0 0 var(--s-2); }
 
 /* receipts and invoices on each order (6 Nov 2026) */
-.docs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-width: 290px; }
+.docs { display: flex; gap: 10px; align-items: center; justify-content: space-between; min-width: 250px; }
 .docs__sent { font-size: var(--fs-xs); }
 .inv-dialog { max-height: 92vh; overflow: auto; width: min(560px, 94vw); border: 1px solid var(--c-line-strong); border-radius: var(--r-lg, 20px); background: var(--c-canvas); color: var(--c-paper); padding: var(--s-5); }
 .inv-dialog::backdrop { background: rgba(0, 0, 0, .6); }
@@ -236,3 +236,20 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .mmode { border: 0; padding: 0; margin: 0; }
 .mmode label { display: block; padding: 6px 0; }
 .mmode .meta { display: block; margin-inline-start: 24px; }
+
+/* Orders → Documents: one status chip + one button; the panel holds the actions (6 Nov 2026) */
+.table td.wrap { white-space: normal; min-width: 160px; max-width: 240px; }
+.dchip { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: var(--fs-xs); white-space: nowrap; border: 1px solid var(--c-line-strong); color: var(--c-paper-2); }
+.dchip--ok { color: #8fd18f; border-color: rgba(143, 209, 143, .4); }
+.dchip--warn { color: #e8b866; border-color: rgba(232, 184, 102, .45); }
+.dchip--bad { color: #ff8a7a; border-color: rgba(255, 138, 122, .45); }
+.dchip--muted { opacity: .8; }
+.docs-dialog { width: min(600px, 94vw); }
+.docs-head { justify-content: space-between; align-items: flex-start; gap: var(--s-3); }
+.dsec { border-top: 1px solid var(--c-line); padding-top: var(--s-4); display: grid; gap: var(--s-3); }
+.dsec h3 .meta { font-weight: normal; margin-inline-start: 6px; }
+.dlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.drow { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--c-line); border-radius: 12px; }
+.drow__why { grid-column: 1 / -1; margin: 0; }
+.dacts { gap: var(--s-2); flex-wrap: wrap; }
+@media (max-width: 520px) { .drow { grid-template-columns: 1fr auto; } .drow__act { grid-column: 1 / -1; } }

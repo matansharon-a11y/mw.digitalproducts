@@ -397,6 +397,15 @@
 </div>
 
 <!-- Invoice for an order (Sales → Orders → Invoice PDF): Lemon Squeezy needs the billing address -->
+<!-- An order's documents (Sales → Orders → Documents): Morning's tax documents and Lemon Squeezy's receipt -->
+<dialog class="inv-dialog docs-dialog" id="docs-dialog" aria-labelledby="docs-title">
+  <div class="stack">
+    <div class="row docs-head"><div class="stack-xs"><h2 class="h3" id="docs-title">Documents</h2><p class="meta" id="docs-for"></p></div>
+      <button class="btn btn--sm btn--ghost" type="button" id="docs-close" aria-label="Close">Close</button></div>
+    <div class="stack" id="docs-body"></div>
+  </div>
+</dialog>
+
 <dialog class="inv-dialog" id="inv-dialog" aria-labelledby="inv-title">
   <form class="form stack" id="inv-form" novalidate>
     <div class="stack-xs"><h2 class="h3" id="inv-title">Invoice</h2><p class="meta" id="inv-for"></p></div>

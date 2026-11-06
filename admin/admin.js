@@ -725,7 +725,7 @@ $("#editor-media").addEventListener("click", async (e) => {
 // ---------------------------------------------------------------- tables + CSV
 function tableHTML(cols, rows) {
   return `<thead><tr>${cols.map((c) => `<th class="${c.num ? "num" : ""}">${esc(c.label)}</th>`).join("")}</tr></thead>
-    <tbody>${rows.length ? rows.map((r) => `<tr>${cols.map((c) => `<td class="${c.num ? "num" : ""}">${c.html ? c.html(r) : esc(c.value(r))}</td>`).join("")}</tr>`).join("")
+    <tbody>${rows.length ? rows.map((r) => `<tr>${cols.map((c) => `<td class="${c.num ? "num" : ""}${c.wrap ? " wrap" : ""}">${c.html ? c.html(r) : esc(c.value(r))}</td>`).join("")}</tr>`).join("")
       : `<tr><td colspan="${cols.length}" class="meta">Nothing here yet.</td></tr>`}</tbody>`;
 }
 
@@ -1119,7 +1119,7 @@ const orderCols = [
   { label: "Date", value: (r) => shortDate(r.created_at) },
   { label: "Order", value: (r) => r.order_number || r.checkout_order_id },
   { label: "Customer", value: (r) => r.email },
-  { label: "Packs", value: (r) => r.products },
+  { label: "Packs", wrap: true, value: (r) => r.products },
   { label: "Total", num: true, value: (r) => money(r.total_cents, r.currency) },
   { label: "Source", value: (r) => r.source || "" },
   { label: "Status", value: (r) => r.status, html: (r) => `<span class="status status--${esc(r.status)}">${esc(r.status.replace("_", " "))}</span>` },
@@ -1129,13 +1129,8 @@ const orderCols = [
   { label: "Documents", value: () => "", html: (r) => {
     const docs = orderDocs.filter((d) => d.order_id === r.id);
     const sent = docs.filter((d) => d.emailed_at).sort((a, b) => b.emailed_at.localeCompare(a.emailed_at))[0];
-    return `<div class="docs" data-order="${r.id}">
-      <button class="btn btn--sm btn--ghost" type="button" data-doc="receipt" title="Lemon Squeezy's receipt page for this order (print or save it as PDF from there)">Receipt</button>
-      <button class="btn btn--sm btn--ghost" type="button" data-doc="invoice" title="Lemon Squeezy's invoice PDF (needs the billing address)">Invoice PDF</button>
-      <button class="btn btn--sm" type="button" data-doc="email" title="Email the receipt to ${esc(r.email)}">Email receipt</button>
-      ${sent ? `<span class="meta docs__sent">Emailed ${shortDate(sent.emailed_at)}</span>` : ""}
-      ${morningCell(r)}
-    </div>`;
+    void sent;
+    return `<div class="docs" data-order="${r.id}">${morningChip(r)}<button class="btn btn--sm btn--ghost" type="button" data-docs-open>Documents</button></div>`;
   } },
 ];
 let orderDocs = [];
@@ -1149,16 +1144,72 @@ function morningLink(d) {
   if (d.status === "failed") return `<span class="mfail" title="${esc(d.error || "")}">${MKIND[d.kind]}: failed</span>`;
   return `<span class="meta">${MKIND[d.kind]}: sending…</span>`;
 }
-function morningCell(r) {
-  if (r.test_mode || morningMode === "off" || morningMode === null) return "";
-  const docs = morningDocs.filter((d) => d.order_id === r.id).sort((a, b) => (a.kind < b.kind ? -1 : 1));
-  const issued = docs.filter((d) => d.status === "issued");
-  const both = issued.length === 2;
-  const failed = docs.find((d) => d.status === "failed");
-  const btns = r.status !== "paid" ? "" : `${!both && !docs.some((d) => d.status === "preview" || d.status === "sending") ? `<button class="btn btn--sm btn--ghost" type="button" data-morning="preview">Preview in Morning</button>` : ""}${!both ? `<button class="btn btn--sm" type="button" data-morning="create">${issued.length ? "Issue the work order" : "Issue in Morning"}</button>` : ""}`;
-  const refund = r.status !== "paid" && issued.some((d) => d.kind === "invoice_receipt") ? `<span class="mfail">Refunded: cancel it in Morning with a credit note.</span>` : "";
-  return `<div class="mdocs"><span class="mdocs__label">Morning</span>${docs.map(morningLink).join(" · ") || `<span class="meta">nothing yet</span>`}${btns}${refund}${failed ? `<span class="meta mfail__why">${esc(failed.error || "")}</span>` : ""}</div>`;
+// the short status in the Orders table
+function morningChip(r) {
+  if (r.test_mode) return `<span class="dchip dchip--muted">Test: no documents</span>`;
+  if (morningMode === "off" || morningMode === null) return "";
+  const docs = morningDocs.filter((d) => d.order_id === r.id);
+  const inv = docs.find((d) => d.kind === "invoice_receipt");
+  if (r.status !== "paid" && inv?.status === "issued") return `<span class="dchip dchip--bad" title="Cancel it in Morning with a credit note">Refunded: needs credit note</span>`;
+  if (docs.some((d) => d.status === "failed")) return `<span class="dchip dchip--bad">Morning: failed</span>`;
+  if (docs.some((d) => d.status === "sending")) return `<span class="dchip dchip--muted">Morning: sending…</span>`;
+  if (docs.length && docs.every((d) => d.status === "issued")) return `<span class="dchip dchip--ok">Morning: issued${inv?.number ? ` ${esc(inv.number)}` : ""}</span>`;
+  if (docs.some((d) => d.status === "preview")) return `<span class="dchip dchip--warn">Morning: preview</span>`;
+  return r.status === "paid" ? `<span class="dchip dchip--muted">Morning: not sent</span>` : "";
 }
+// the order's documents panel
+let docsOrder = null;
+function renderDocsPanel() {
+  const r = docsOrder;
+  if (!r) return;
+  const docs = orderDocs.filter((d) => d.order_id === r.id);
+  const sent = docs.filter((d) => d.emailed_at).sort((a, b) => b.emailed_at.localeCompare(a.emailed_at))[0];
+  $("#docs-for").textContent = `Order ${r.order_number || r.checkout_order_id} · ${r.email} · ${money(r.total_cents, r.currency)}`;
+  $("#docs-body").dataset.order = r.id;
+  const mdocs = morningDocs.filter((d) => d.order_id === r.id);
+  const row = (kind) => {
+    const d = mdocs.find((x) => x.kind === kind);
+    const state = !d ? `<span class="meta">Not sent</span>`
+      : d.status === "issued" ? `<span class="dchip dchip--ok">Issued${d.number ? ` ${esc(d.number)}` : ""}</span>`
+      : d.status === "preview" ? `<span class="dchip dchip--warn">Preview</span>`
+      : d.status === "failed" ? `<span class="dchip dchip--bad">Failed</span>`
+      : `<span class="dchip dchip--muted">Sending…</span>`;
+    const open = d?.status === "issued" && d.url ? `<a class="btn btn--sm btn--ghost" href="${esc(d.url)}" target="_blank" rel="noopener">Open PDF</a>`
+      : d?.status === "preview" ? `<button class="btn btn--sm btn--ghost" type="button" data-mpreview="${d.id}">View preview</button>` : "";
+    return `<li class="drow"><span class="drow__name">${MKIND[kind]}</span>${state}<span class="drow__act">${open}</span>${d?.status === "failed" ? `<p class="meta drow__why">${esc(d.error || "")}</p>` : ""}</li>`;
+  };
+  let morning = "";
+  if (r.test_mode) morning = `<p class="meta">Test orders never get Morning documents.</p>`;
+  else if (morningMode === "off") morning = `<p class="meta">Morning documents are switched off (Sales → Morning invoices).</p>`;
+  else {
+    const issued = mdocs.filter((d) => d.status === "issued");
+    const both = issued.length === 2;
+    const busy = mdocs.some((d) => d.status === "sending");
+    const acts = r.status !== "paid" || both || busy ? "" : `<div class="row dacts">
+      ${!mdocs.some((d) => d.status === "preview") ? `<button class="btn btn--sm btn--ghost" type="button" data-morning="preview">Make a preview</button>` : ""}
+      <button class="btn btn--sm" type="button" data-morning="create">${issued.length ? "Issue the work order" : "Issue in Morning"}</button></div>`;
+    const refund = r.status !== "paid" && issued.some((d) => d.kind === "invoice_receipt") ? `<p class="mfail">Refunded: cancel the invoice-receipt in Morning with a credit note.</p>` : "";
+    morning = `<ul class="dlist">${row("invoice_receipt")}${row("work_order")}</ul>${refund}${acts}`;
+  }
+  $("#docs-body").innerHTML = `
+    <section class="dsec"><h3 class="h4">Morning <span class="meta">tax documents</span></h3>${morning}</section>
+    <section class="dsec"><h3 class="h4">Lemon Squeezy <span class="meta">payment receipt</span></h3>
+      <div class="row dacts">
+        <button class="btn btn--sm btn--ghost" type="button" data-doc="receipt" title="Lemon Squeezy's receipt page (print or save it as PDF from there)">Open receipt</button>
+        <button class="btn btn--sm btn--ghost" type="button" data-doc="invoice" title="Lemon Squeezy's invoice PDF (needs the billing address)">Invoice PDF</button>
+        <button class="btn btn--sm btn--ghost" type="button" data-doc="email" title="Email the receipt to ${esc(r.email)}">Email receipt</button>
+      </div>
+      ${sent ? `<p class="meta">Receipt emailed ${shortDate(sent.emailed_at)}.</p>` : ""}
+    </section>`;
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-docs-open]");
+  if (!b) return;
+  docsOrder = orderRows.find((o) => o.id === b.closest("[data-order]").dataset.order);
+  renderDocsPanel();
+  $("#docs-dialog").showModal();
+});
+$("#docs-close").addEventListener("click", () => $("#docs-dialog").close());
 async function loadMorningDocs(ids) {
   const [{ data: st }, { data }] = await Promise.all([
     supabase.from("morning_settings").select("mode").eq("id", 1).maybeSingle(),
@@ -1211,12 +1262,12 @@ function openDoc(url) {
   if (w) w.opener = null;
   else toast("Your browser blocked the new tab. Allow pop-ups for this page and try again.", { type: "error", timeout: 8000 });
 }
-$("#orders-table").addEventListener("click", async (e) => {
+$("#docs-dialog").addEventListener("click", async (e) => {
   const b = e.target.closest("[data-doc]");
   if (!b) return;
   const id = b.closest("[data-order]").dataset.order;
   const order = orderRows.find((o) => o.id === id);
-  if (b.dataset.doc === "invoice") return openInvoiceDialog(order);
+  if (b.dataset.doc === "invoice") { $("#docs-dialog").close(); return openInvoiceDialog(order); }
   if (b.dataset.doc === "email" && !confirm(`Email the receipt for order ${order.order_number || ""} to ${order.email}?`)) return;
   setBusy(b, true, b.dataset.doc === "email" ? "Sending…" : "Opening…");
   try {
@@ -1235,6 +1286,7 @@ async function loadOrderDocs() {
   ]);
   orderDocs = data || [];
   $("#orders-table").innerHTML = tableHTML(orderCols, orderRows);
+  if ($("#docs-dialog").open) { docsOrder = orderRows.find((o) => o.id === docsOrder?.id) || docsOrder; renderDocsPanel(); }
 }
 
 // Invoice: Lemon Squeezy needs the billing address (the shop doesn't collect addresses)
