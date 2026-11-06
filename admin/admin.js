@@ -147,7 +147,7 @@ $("#mfa-enroll").addEventListener("submit", async (e) => {
 $("#admin-signout").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
 
 // ---------------------------------------------------------------- navigation
-const loaders = { overview: loadOverview, products: loadProducts, orders: loadOrders, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
+const loaders = { overview: loadOverview, products: loadProducts, orders: loadOrders, finance: loadFinance, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
 
 function show(tab) {
   $$("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== tab; });
@@ -700,6 +700,113 @@ function downloadCsv(name, cols, rows) {
 const debounce = (fn, ms = 250) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
 // Orders
+// ---------------------------------------------------------------- Finances (Jeinna, 6 Nov 2026)
+// Gross = what customers paid (tax included). Tax = the sales tax / VAT in it, which Lemon Squeezy (the merchant of
+// record) pays to the governments. Lemon Squeezy's fee isn't in its API, so it is ESTIMATED from its published rates
+// (docs.lemonsqueezy.com/help/getting-started/fees, 6 Nov 2026): 5% of the order total + 50¢, +1.5% for buyers outside
+// the US, +1.5% for PayPal (the shop can't tell which orders were PayPal). Net = gross − tax − fee. Refunded orders
+// bring nothing in (whether Lemon Squeezy returns its fee on a refund isn't stated, so it isn't counted).
+const FEES = { pct: 5, fixedCents: 50, intlPct: 1.5, paypalPct: 1.5, source: "https://docs.lemonsqueezy.com/help/getting-started/fees" };
+let finRows = [];
+
+function finPeriods() {
+  const out = [], now = new Date();
+  for (let i = 0; i < 12; i++) {
+    const a = new Date(now.getFullYear(), now.getMonth() - i, 1), b = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
+    out.push({ key: `m${i}`, label: i === 0 ? `This month (${a.toLocaleDateString("en-GB", { month: "long", year: "numeric" })})` : a.toLocaleDateString("en-GB", { month: "long", year: "numeric" }), from: a, to: b });
+  }
+  out.push({ key: "y", label: "Last 12 months", from: new Date(now.getFullYear(), now.getMonth() - 11, 1), to: new Date(now.getFullYear(), now.getMonth() + 1, 1), months: true });
+  out.push({ key: "all", label: "All time", from: new Date(2020, 0, 1), to: new Date(now.getFullYear(), now.getMonth() + 1, 1), months: true });
+  return out;
+}
+
+function finCalc(r) {
+  const intl = $("#fin-intl").checked;
+  const counts = r.status !== "refunded";
+  const gross = counts ? r.total_cents : 0;
+  const tax = counts ? r.tax_cents : 0;
+  const fee = counts ? Math.round(FEES.fixedCents + r.total_cents * (FEES.pct + (intl ? FEES.intlPct : 0)) / 100) : 0;
+  return { gross, tax, fee, net: gross - tax - fee };
+}
+
+async function loadFinance() {
+  const sel = $("#fin-period");
+  if (!sel.options.length) {
+    sel.innerHTML = finPeriods().map((p) => `<option value="${p.key}">${esc(p.label)}</option>`).join("");
+    sel.addEventListener("change", loadFinance);
+    $("#fin-intl").addEventListener("change", renderFinance);
+    $("#fin-csv").addEventListener("click", () => downloadCsv("finances", finCols, finRows));
+  }
+  const p = finPeriods().find((x) => x.key === sel.value) || finPeriods()[0];
+  const { data, error } = await supabase.rpc("admin_finance", { p_from: p.from.toISOString(), p_to: p.to.toISOString() });
+  check(error);
+  finRows = data;
+  renderFinance();
+}
+
+function renderFinance() {
+  const p = finPeriods().find((x) => x.key === $("#fin-period").value) || finPeriods()[0];
+  const rows = finRows;
+  const cur = rows[0]?.currency || "USD";
+  const sum = (k) => rows.reduce((n, r) => n + finCalc(r)[k], 0);
+  const paid = rows.filter((r) => r.status !== "refunded");
+  const refunded = rows.filter((r) => r.status === "refunded");
+  const tiles = [
+    ["Gross sales", money(sum("gross"), cur), `${paid.length} order${paid.length === 1 ? "" : "s"}, what customers paid`],
+    ["Tax", money(sum("tax"), cur), "collected and paid by Lemon Squeezy"],
+    ["Lemon Squeezy fees", money(sum("fee"), cur), "estimated"],
+    ["Net to you", money(sum("net"), cur), "estimated, before payout fees"],
+    ["Refunded", refunded.length ? `${refunded.length}` : "0", refunded.length ? `${money(refunded.reduce((n, r) => n + r.total_cents, 0), cur)} returned` : "orders"],
+  ];
+  $("#fin-tiles").innerHTML = tiles.map(([l, v, sub]) => `<div class="tile"><span class="tile__label">${esc(l)}</span><span class="tile__value${String(v).length > 9 ? " tile__value--long" : ""}">${esc(v)}</span><span class="tile__sub">${esc(sub)}</span></div>`).join("");
+
+  // by month, for the longer periods
+  $("#fin-months-panel").hidden = !p.months;
+  if (p.months) {
+    const by = new Map();
+    for (const r of rows) {
+      const k = r.created_at.slice(0, 7);
+      const m = by.get(k) || { orders: 0, gross: 0, tax: 0, fee: 0, net: 0 };
+      const c = finCalc(r);
+      if (r.status !== "refunded") m.orders++;
+      for (const x of ["gross", "tax", "fee", "net"]) m[x] += c[x];
+      by.set(k, m);
+    }
+    const keys = [...by.keys()].sort().reverse();
+    $("#fin-months").innerHTML = keys.length
+      ? `<thead><tr><th>Month</th><th class="num">Orders</th><th class="num">Gross</th><th class="num">Tax</th><th class="num">Fees (est.)</th><th class="num">Net (est.)</th></tr></thead><tbody>${keys.map((k) => {
+          const m = by.get(k);
+          return `<tr><td>${esc(new Date(k + "-01T00:00:00").toLocaleDateString("en-GB", { month: "long", year: "numeric" }))}</td><td class="num">${m.orders}</td><td class="num">${money(m.gross, cur)}</td><td class="num">${money(m.tax, cur)}</td><td class="num">${money(m.fee, cur)}</td><td class="num"><b>${money(m.net, cur)}</b></td></tr>`;
+        }).join("")}</tbody>`
+      : `<tbody><tr><td class="meta">No orders in this period.</td></tr></tbody>`;
+  }
+
+  const STATUS = { paid: "Paid", refunded: "Refunded", partially_refunded: "Partly refunded" };
+  $("#fin-orders").innerHTML = rows.length
+    ? `<thead><tr><th>Date</th><th>Order</th><th>Customer</th><th>Products</th><th>Status</th><th class="num">Paid</th><th class="num">Tax</th><th class="num">Fee (est.)</th><th class="num">Net (est.)</th></tr></thead><tbody>${rows.map((r) => {
+        const c = finCalc(r);
+        return `<tr><td>${shortDate(r.created_at)}</td><td>${esc(r.order_number || "")}</td><td>${esc(r.email)}</td><td>${esc(r.products || "")}</td><td>${esc(STATUS[r.status] || r.status)}</td><td class="num">${money(r.total_cents, r.currency)}${r.status === "refunded" ? " (refunded)" : ""}</td><td class="num">${money(c.tax, r.currency)}</td><td class="num">${money(c.fee, r.currency)}</td><td class="num"><b>${money(c.net, r.currency)}</b></td></tr>`;
+      }).join("")}</tbody>`
+    : `<tbody><tr><td class="meta">No orders in this period.</td></tr></tbody>`;
+
+  const intl = $("#fin-intl").checked;
+  $("#fin-note").innerHTML = `Lemon Squeezy's fee is estimated from <a class="link" href="${FEES.source}" target="_blank" rel="noopener">its published rates</a>: ${FEES.pct}% of the order total + 50¢${intl ? `, plus ${FEES.intlPct}% for buyers outside the US` : ""} (untick "Buyers outside the US" for US buyers). PayPal orders cost another ${FEES.paypalPct}%, which isn't included. Lemon Squeezy's payout fee (when the money moves to your bank) isn't included either. The exact figures are in Lemon Squeezy → Payouts.${rows.some((r) => r.status === "partially_refunded") ? " Partly refunded orders are counted in full: check the refunded part in Lemon Squeezy." : ""} Test orders are left out.`;
+}
+
+const finCols = [
+  { label: "Date", value: (r) => r.created_at.slice(0, 10) },
+  { label: "Order", value: (r) => r.order_number || "" },
+  { label: "Customer", value: (r) => r.email },
+  { label: "Products", value: (r) => r.products || "" },
+  { label: "Status", value: (r) => r.status },
+  { label: "Currency", value: (r) => r.currency },
+  { label: "Paid", value: (r) => (r.total_cents / 100).toFixed(2) },
+  { label: "Tax", value: (r) => (finCalc(r).tax / 100).toFixed(2) },
+  { label: "Lemon Squeezy fee (estimated)", value: (r) => (finCalc(r).fee / 100).toFixed(2) },
+  { label: "Net (estimated)", value: (r) => (finCalc(r).net / 100).toFixed(2) },
+  { label: "Discount code", value: (r) => r.discount_code || "" },
+];
+
 const orderCols = [
   { label: "Date", value: (r) => shortDate(r.created_at) },
   { label: "Order", value: (r) => r.order_number || r.checkout_order_id },
