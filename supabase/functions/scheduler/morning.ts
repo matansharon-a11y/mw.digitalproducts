@@ -47,7 +47,7 @@ const plainText = (s: unknown, max = 200) => String(s ?? "").replace(/[\u0000-\u
 type Settings = { mode: "off" | "preview" | "issue"; email_customer: boolean; payment_type: number; vat_israel: number; vat_abroad: number; start_from: string };
 type Order = {
   id: string; order_number: string | null; checkout_order_id: string; created_at: string; total_cents: number; currency: string;
-  status: string; test_mode: boolean; customer_id: string;
+  status: string; test_mode: boolean; customer_id: string; vat_rate?: number | string | null;
   customers: { email: string; name: string | null; country: string | null } | null;
   order_items: { products: { slug: string; name: string; name_emphasis: string | null } | null }[];
 };
@@ -78,7 +78,8 @@ export function buildDoc(kind: "invoice_receipt" | "work_order", o: Order, s: Se
     income: [{
       description: he ? `${name} (הורדה דיגיטלית)` : `${name} (digital download)`,
       quantity: 1, price: amount, currency,
-      vatType: country === "IL" ? s.vat_israel : s.vat_abroad,
+      // the rate the buyer was charged (orders.vat_rate, from checkout-il); older orders: the buyer's country
+      vatType: (o.vat_rate != null ? Number(o.vat_rate) > 0 : country === "IL") ? s.vat_israel : s.vat_abroad,
     }],
   };
   if (kind === "invoice_receipt") {
@@ -92,7 +93,7 @@ export function buildDoc(kind: "invoice_receipt" | "work_order", o: Order, s: Se
   return doc;
 }
 
-const ORDER_COLS = "id, order_number, checkout_order_id, created_at, total_cents, currency, status, test_mode, customer_id, customers(email, name, country), order_items(products(slug, name, name_emphasis))";
+const ORDER_COLS = "id, order_number, checkout_order_id, created_at, total_cents, currency, status, test_mode, customer_id, vat_rate, customers(email, name, country), order_items(products(slug, name, name_emphasis))";
 
 export async function morning(db: Db, onlyOrder = "") {
   const { data: s } = await db.from("morning_settings").select("*").eq("id", 1).maybeSingle();

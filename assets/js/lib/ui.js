@@ -3,6 +3,7 @@
 // before/after slider, product cards, checkout loader.
 // ============================================================================
 import { initCart } from "./cart.js";
+import { forVisitor } from "./vat.js";
 import { CONFIG } from "../config.js";
 import { esc, mediaUrl, money } from "./api.js";
 import { CATEGORIES, ICONS, categoryOf, countLabel } from "./catalog.js";
@@ -141,6 +142,7 @@ export function productArtHTML(p) {
 }
 
 export function priceHTML(p) {
+  p = forVisitor(p);   // Israeli visitors: with 18% VAT (vat.js)
   return p.compare_at_cents
     ? `<s>${money(p.compare_at_cents, p.currency)}</s>${money(p.price_cents, p.currency)}`
     : money(p.price_cents, p.currency);

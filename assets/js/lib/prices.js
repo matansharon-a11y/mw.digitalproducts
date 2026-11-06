@@ -5,11 +5,14 @@
 // dollars, so every Hebrew section with prices says so (ilsNotes), and the cart shows the dollar amount.
 import { CONFIG } from "../config.js";
 import { saleFor, salePrice } from "./sale.js";
+import { forVisitor, isIsraeli } from "./vat.js";
 
 let rows = null;
 
 const SHOW_ILS = true;
-const ILS_NOTE = "המחירים מוצגים בשקלים. התשלום בקופה הוא בדולרים, והסכום בדולרים מופיע בעגלה לפני התשלום.";
+// Israeli visitors see the price with 18% VAT (vat.js; Matan, 6 Nov 2026), and every section with prices says so
+const ILS_NOTE = "המחירים כוללים מע״מ (18%) ומוצגים בשקלים. התשלום בקופה הוא בדולרים, והסכום בדולרים מופיע בעגלה לפני התשלום.";
+const VAT_NOTE = "Prices include 18% Israeli VAT.";
 const he = () => SHOW_ILS && document.documentElement.lang === "he";
 const fmt = (cents, cur) => {
   const n = (cents || 0) / 100;
@@ -21,7 +24,7 @@ const fmt = (cents, cur) => {
 
 function textFor(el) {
   const slug = el.dataset.price;
-  const r = rows && rows[slug];
+  const r = forVisitor(rows && rows[slug]);
   const was = el.hasAttribute("data-was");
   const [c, cur] = he()
     ? [r ? (was ? r.compare_at_ils_cents : r.price_ils_cents) : null, "ILS"]
@@ -37,7 +40,7 @@ function textFor(el) {
 
 // <span data-save="slug">: "Save $20.00" when the bundle has a "before" price, else nothing.
 function saveFor(el) {
-  const r = rows && rows[el.dataset.save];
+  const r = forVisitor(rows && rows[el.dataset.save]);
   if (!r) return "";
   const [now, was, cur] = he() ? [r.price_ils_cents, r.compare_at_ils_cents, "ILS"] : [r.price_cents, r.compare_at_cents, r.currency || "USD"];
   const sale = salePrice(now, el.dataset.save, cur);   // during the sale, the saving includes it
@@ -48,9 +51,9 @@ function saveFor(el) {
 // One line at the end of every Hebrew section that shows prices: checkout charges dollars. Taken away again
 // when the page switches to English in place.
 function ilsNotes() {
-  const on = he();
-  document.querySelectorAll(".ils-note").forEach((n) => { if (!on) n.remove(); });
-  if (!on) return;
+  const text = he() ? ILS_NOTE : isIsraeli() ? VAT_NOTE : "";
+  document.querySelectorAll(".ils-note").forEach((n) => { if (n.textContent !== text) n.remove(); });
+  if (!text) return;
   document.querySelectorAll("[data-price]:not([data-was])").forEach((el) => {
     const sec = el.closest("section");
     if (!sec || el.closest(".cart-panel, .acct-menu") || sec.querySelector(":scope .ils-note")) return;
@@ -58,7 +61,7 @@ function ilsNotes() {
     p.className = "ils-note";
     p.setAttribute("data-no-i18n", "");
     p.style.cssText = "margin:20px auto 0;max-width:640px;font-size:13px;line-height:1.5;color:#9CB1C2;text-align:center";
-    p.textContent = ILS_NOTE;
+    p.textContent = text;
     (sec.querySelector(":scope > .container, :scope > .wrap") || sec).append(p);
   });
 }
@@ -84,7 +87,7 @@ function productData() {
   const src = document.getElementById("mwp-product");
   if (!src || !rows) return;
   const p = JSON.parse(src.textContent);
-  const r = rows[p.slug];
+  const r = forVisitor(rows[p.slug]);
   const [base, cur] = r ? (he() ? [r.price_ils_cents, "ILS"] : [r.price_cents, r.currency || "USD"]) : [0, ""];
   const cents = salePrice(base, p.slug, cur);
   if (!cents) return;

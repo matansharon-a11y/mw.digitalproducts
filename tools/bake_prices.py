@@ -145,6 +145,21 @@ def product_ld(s, he):
     return s[:m.end()] + "\n" + tag + s[m.end():]
 
 
+# Israeli VAT (assets/js/lib/vat.js; Matan, 6 Nov 2026): the Hebrew pages are for visitors in Israel, who see the price
+# with 18% VAT (dollars to the cent, shekels to the whole shekel, rounded half up like Math.round). The English pages
+# keep the admin price; prices.js adds the VAT in the browser for visitors whose device is set to Israel's time zone.
+import math
+IL_VAT = 0.18
+def with_vat(cents, cur):
+    if cents is None:
+        return None
+    v = cents * (1 + IL_VAT)
+    return int(math.floor(v / 100 + 0.5)) * 100 if cur == "ILS" else int(math.floor(v + 0.5))
+ROWS = rows
+ROWS_IL = {k: {**r, "price_cents": with_vat(r.get("price_cents"), "USD"), "compare_at_cents": with_vat(r.get("compare_at_cents"), "USD"),
+               "price_ils_cents": with_vat(r.get("price_ils_cents"), "ILS"), "compare_at_ils_cents": with_vat(r.get("compare_at_ils_cents"), "ILS")}
+           for k, r in ROWS.items()}
+
 done = 0
 for f in root.rglob("*.html"):
     s = f.read_text(encoding="utf-8")
@@ -152,6 +167,7 @@ for f in root.rglob("*.html"):
         continue
     hebrew = bool(re.search(r'<html[^>]*\blang="he"', s))
     he = SHOW_ILS and hebrew
+    rows = ROWS_IL if hebrew else ROWS
     src = s
     s = PRICE.sub(lambda m: f'<span{m.group(1)}>{price(m.group(2), "data-was" in m.group(1), he, has_was_near(src, m.start(), m.group(2)))}</span>', s)
 
