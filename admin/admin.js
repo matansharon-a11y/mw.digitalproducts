@@ -1009,8 +1009,8 @@ async function loadAttention() {
 }
 
 // ---------------------------------------------------------------- Finances (Jeinna, 6 Nov 2026)
-// Gross = what customers paid (tax included). Tax = the sales tax / VAT in it, which Lemon Squeezy (the merchant of
-// record) pays to the governments. Lemon Squeezy's fee isn't in its API, so it is ESTIMATED from its published rates
+// Gross = what customers paid (tax included). Tax = the VAT in it: the 18% Israeli VAT inside an Israeli buyer's price
+// (orders.vat_rate; Matan reports it), plus any tax Lemon Squeezy (the merchant of record) collects itself. Lemon Squeezy's fee isn't in its API, so it is ESTIMATED from its published rates
 // (docs.lemonsqueezy.com/help/getting-started/fees, 6 Nov 2026): 5% of the order total + 50¢, +1.5% for buyers outside
 // the US, +1.5% for PayPal (the shop can't tell which orders were PayPal). Net = gross − tax − fee. Refunded orders
 // bring nothing in (whether Lemon Squeezy returns its fee on a refund isn't stated, so it isn't counted).
@@ -1032,9 +1032,13 @@ function finCalc(r) {
   const intl = $("#fin-intl").checked;
   const counts = r.status !== "refunded";
   const gross = counts ? r.total_cents : 0;
-  const tax = counts ? r.tax_cents : 0;
+  // the tax in the total: the Israeli VAT included in an Israeli buyer's price (orders.vat_rate, 18%) plus any tax
+  // Lemon Squeezy collects itself (none so far)
+  const rate = Number(r.vat_rate) || 0;
+  const vat = counts && rate > 0 ? Math.round(r.total_cents - r.total_cents / (1 + rate)) : 0;
+  const tax = counts ? (r.tax_cents || 0) + vat : 0;
   const fee = counts ? Math.round(FEES.fixedCents + r.total_cents * (FEES.pct + (intl ? FEES.intlPct : 0)) / 100) : 0;
-  return { gross, tax, fee, net: gross - tax - fee };
+  return { gross, tax, vat, fee, net: gross - tax - fee };
 }
 
 async function loadFinance() {
@@ -1061,7 +1065,7 @@ function renderFinance() {
   const refunded = rows.filter((r) => r.status === "refunded");
   const tiles = [
     ["Gross sales", money(sum("gross"), cur), `${paid.length} order${paid.length === 1 ? "" : "s"}, what customers paid`],
-    ["Tax", money(sum("tax"), cur), "collected and paid by Lemon Squeezy"],
+    ["Tax", money(sum("tax"), cur), "Israeli VAT (18%) in Israeli buyers' prices, plus any tax Lemon Squeezy collects"],
     ["Lemon Squeezy fees", money(sum("fee"), cur), "estimated"],
     ["Net to you", money(sum("net"), cur), "estimated, before payout fees"],
     ["Refunded", refunded.length ? `${refunded.length}` : "0", refunded.length ? `${money(refunded.reduce((n, r) => n + r.total_cents, 0), cur)} returned` : "orders"],
@@ -1093,7 +1097,7 @@ function renderFinance() {
   $("#fin-orders").innerHTML = rows.length
     ? `<thead><tr><th>Date</th><th>Order</th><th>Customer</th><th>Products</th><th>Status</th><th class="num">Paid</th><th class="num">Tax</th><th class="num">Fee (est.)</th><th class="num">Net (est.)</th></tr></thead><tbody>${rows.map((r) => {
         const c = finCalc(r);
-        return `<tr><td>${shortDate(r.created_at)}</td><td>${esc(r.order_number || "")}</td><td>${esc(r.email)}</td><td>${esc(r.products || "")}</td><td>${esc(STATUS[r.status] || r.status)}</td><td class="num">${money(r.total_cents, r.currency)}${r.status === "refunded" ? " (refunded)" : ""}</td><td class="num">${money(c.tax, r.currency)}</td><td class="num">${money(c.fee, r.currency)}</td><td class="num"><b>${money(c.net, r.currency)}</b></td></tr>`;
+        return `<tr><td>${shortDate(r.created_at)}</td><td>${esc(r.order_number || "")}</td><td>${esc(r.email)}</td><td>${esc(r.products || "")}</td><td>${esc(STATUS[r.status] || r.status)}</td><td class="num">${money(r.total_cents, r.currency)}${r.status === "refunded" ? " (refunded)" : ""}</td><td class="num">${money(c.tax, r.currency)}${c.vat ? `<div class="meta">18% VAT</div>` : ""}</td><td class="num">${money(c.fee, r.currency)}</td><td class="num"><b>${money(c.net, r.currency)}</b></td></tr>`;
       }).join("")}</tbody>`
     : `<tbody><tr><td class="meta">No orders in this period.</td></tr></tbody>`;
 
