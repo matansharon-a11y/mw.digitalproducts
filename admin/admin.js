@@ -1125,7 +1125,97 @@ const orderCols = [
   { label: "Status", value: (r) => r.status, html: (r) => `<span class="status status--${esc(r.status)}">${esc(r.status.replace("_", " "))}</span>` },
   // Lemon Squeezy test-mode checkouts: kept for the record, left out of every total
   { label: "Test", value: (r) => (r.test_mode ? "test" : ""), html: (r) => (r.test_mode ? `<span class="status status--test">Test order</span>` : "") },
+  // Receipt and invoice (Lemon Squeezy's documents for the order: admin-docs function, 6 Nov 2026)
+  { label: "Documents", value: () => "", html: (r) => {
+    const docs = orderDocs.filter((d) => d.order_id === r.id);
+    const sent = docs.filter((d) => d.emailed_at).sort((a, b) => b.emailed_at.localeCompare(a.emailed_at))[0];
+    return `<div class="docs" data-order="${r.id}">
+      <button class="btn btn--sm btn--ghost" type="button" data-doc="receipt" title="Lemon Squeezy's receipt page for this order (print or save it as PDF from there)">Receipt</button>
+      <button class="btn btn--sm btn--ghost" type="button" data-doc="invoice" title="Lemon Squeezy's invoice PDF (needs the billing address)">Invoice PDF</button>
+      <button class="btn btn--sm" type="button" data-doc="email" title="Email the receipt to ${esc(r.email)}">Email receipt</button>
+      ${sent ? `<span class="meta docs__sent">Emailed ${shortDate(sent.emailed_at)}</span>` : ""}
+    </div>`;
+  } },
 ];
+let orderDocs = [];
+// admin-docs: the admin's own session token goes along; the function checks is_admin() with it
+async function adminDocs(body) {
+  const { data } = await supabase.auth.getSession();
+  if (!data.session) throw new Error("Please sign in again.");
+  const res = await fetch(`${CONFIG.SUPABASE_URL}/functions/v1/admin-docs`, {
+    method: "POST",
+    headers: { "content-type": "application/json", apikey: CONFIG.SUPABASE_ANON_KEY, authorization: `Bearer ${data.session.access_token}` },
+    body: JSON.stringify(body),
+  });
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(out.error || `Request failed (${res.status})`);
+  return out;
+}
+// open a document in a new tab (the browser's PDF viewer for an invoice: save or print from there)
+function openDoc(url) {
+  // (with "noopener" window.open always returns null, which looked like a blocked pop-up and sent the admin page away)
+  const w = window.open(url, "_blank");
+  if (w) w.opener = null;
+  else toast("Your browser blocked the new tab. Allow pop-ups for this page and try again.", { type: "error", timeout: 8000 });
+}
+$("#orders-table").addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-doc]");
+  if (!b) return;
+  const id = b.closest("[data-order]").dataset.order;
+  const order = orderRows.find((o) => o.id === id);
+  if (b.dataset.doc === "invoice") return openInvoiceDialog(order);
+  if (b.dataset.doc === "email" && !confirm(`Email the receipt for order ${order.order_number || ""} to ${order.email}?`)) return;
+  setBusy(b, true, b.dataset.doc === "email" ? "Sending…" : "Opening…");
+  try {
+    if (b.dataset.doc === "receipt") openDoc((await adminDocs({ action: "receipt", order_id: id })).url);
+    else { const r = await adminDocs({ action: "email", order_id: id }); toast(`Receipt emailed to ${r.to}.`); }
+    loadOrderDocs();
+  } catch (err) { toast(err.message, { type: "error", timeout: 8000 }); }
+  setBusy(b, false);
+});
+async function loadOrderDocs() {
+  const ids = orderRows.map((o) => o.id);
+  if (!ids.length) return;
+  const { data } = await supabase.from("order_documents").select("order_id, kind, emailed_at, created_at").in("order_id", ids.slice(0, 300));
+  orderDocs = data || [];
+  $("#orders-table").innerHTML = tableHTML(orderCols, orderRows);
+}
+
+// Invoice: Lemon Squeezy needs the billing address (the shop doesn't collect addresses)
+let invOrder = null;
+function openInvoiceDialog(order) {
+  invOrder = order;
+  const f = $("#inv-form");
+  f.reset();
+  f.elements.name.value = order.name || "";
+  f.elements.country.value = (order.country || "").toUpperCase().slice(0, 2);
+  $("#inv-for").textContent = `Order ${order.order_number || ""} · ${order.email}`;
+  setStatus($(".form-status", f), "");
+  $("#inv-dialog").showModal();
+  f.elements.name.focus();
+}
+$("#inv-cancel").addEventListener("click", () => $("#inv-dialog").close());
+$("#inv-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.currentTarget, send = e.submitter?.dataset.send === "1";
+  const billing = Object.fromEntries(["name", "address", "city", "state", "zip_code", "country", "notes"].map((k) => [k, f.elements[k].value.trim()]));
+  billing.country = billing.country.toUpperCase();
+  const btn = e.submitter;
+  setBusy(btn, true, send ? "Sending…" : "Creating…");
+  try {
+    const inv = await adminDocs({ action: "invoice", order_id: invOrder.id, billing });
+    if (send) {
+      const r = await adminDocs({ action: "email", order_id: invOrder.id, document_id: inv.document_id });
+      toast(`Invoice and receipt emailed to ${r.to}.`);
+    } else {
+      openDoc(inv.url);
+      toast("Invoice created.");
+    }
+    $("#inv-dialog").close();
+    loadOrderDocs();
+  } catch (err) { setStatus($(".form-status", f), err.message, "error"); }
+  setBusy(btn, false);
+});
 let orderRows = [];
 async function loadOrders() {
   const term = $("#orders-search").value.trim();
@@ -1135,9 +1225,10 @@ async function loadOrders() {
   check(error);
   orderRows = data;
   $("#orders-table").innerHTML = tableHTML(orderCols, data);
+  loadOrderDocs();
 }
 $("#orders-search").addEventListener("input", debounce(loadOrders));
-$("#orders-csv").addEventListener("click", () => downloadCsv("orders", orderCols, orderRows));
+$("#orders-csv").addEventListener("click", () => downloadCsv("orders", orderCols.filter((c) => c.label !== "Documents"), orderRows));
 
 // Customers
 const customerCols = [

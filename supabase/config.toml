@@ -30,3 +30,6 @@ verify_jwt = false   # Field Guides online: verifies the reader's session token 
 
 [functions.tester]
 verify_jwt = false   # testers page: sign-in links only for approved emails (rate-limited per IP); "me" checks the session itself
+
+[functions.admin-docs]
+verify_jwt = false   # admin only: checks the caller's own session with is_admin() (two-step sign-in included)

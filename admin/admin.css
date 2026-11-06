@@ -217,3 +217,12 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .cchk > span:first-child { width: 14px; flex: none; text-align: center; }
 .cchk--pass > span:first-child { color: #7ad3a4; } .cchk--warn > span:first-child { color: var(--c-accent); } .cchk--fail > span:first-child { color: var(--c-danger); }
 .cchecks__none { margin: 0 0 var(--s-2); }
+
+/* receipts and invoices on each order (6 Nov 2026) */
+.docs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-width: 290px; }
+.docs__sent { font-size: var(--fs-xs); }
+.inv-dialog { max-height: 92vh; overflow: auto; width: min(560px, 94vw); border: 1px solid var(--c-line-strong); border-radius: var(--r-lg, 20px); background: var(--c-canvas); color: var(--c-paper); padding: var(--s-5); }
+.inv-dialog::backdrop { background: rgba(0, 0, 0, .6); }
+.inv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.inv-acts { justify-content: flex-end; flex-wrap: wrap; gap: var(--s-2); }
+@media (max-width: 560px) { .inv-grid { grid-template-columns: 1fr; } }

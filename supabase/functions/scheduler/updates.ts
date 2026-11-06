@@ -3,6 +3,7 @@
 // have with us is in Hebrew), sent by Make's Gmail, signed Matan (Jeinna, 5 Nov 2026). The texts are drafts for Matan's approval.
 
 import { compatEmails } from "./compat.ts";
+import { documentEmails } from "./docs.ts";
 
 // deno-lint-ignore no-explicit-any
 type Db = any;
@@ -88,13 +89,15 @@ export async function updateList(db: Db, nonceIn: unknown) {
   if (nonce.length < 32) return { error: "unauthorized", emails: [] };
   const { data: used, error: nErr } = await db.from("sync_nonces")
     .update({ used_at: new Date().toISOString() })
-    .eq("nonce", nonce).or('purpose.like."update:*",purpose.like."compat:*"').is("used_at", null)
+    .eq("nonce", nonce).or('purpose.like."update:*",purpose.like."compat:*",purpose.like."doc:*"').is("used_at", null)
     .gte("created_at", new Date(Date.now() - 15 * 60 * 1000).toISOString())
     .select("purpose");
   if (nErr) throw nErr;
   if (!used?.length) return { error: "unauthorized", emails: [] };
   // the compatibility monitor's alert email to the admin (compat.ts) uses the same scenario
   if (used[0].purpose.startsWith("compat:")) return { emails: await compatEmails(db) };
+  // a receipt (and invoice) the admin sent to the customer from the admin (admin-docs, docs.ts)
+  if (used[0].purpose.startsWith("doc:")) return { emails: await documentEmails(db, used[0].purpose.slice(4).split(":")) };
   const noticeId = used[0].purpose.slice("update:".length);
 
   const { data: n, error } = await db.from("update_notices")

@@ -365,6 +365,29 @@
   </main>
 </div>
 
+<!-- Invoice for an order (Sales → Orders → Invoice PDF): Lemon Squeezy needs the billing address -->
+<dialog class="inv-dialog" id="inv-dialog" aria-labelledby="inv-title">
+  <form class="form stack" id="inv-form" novalidate>
+    <div class="stack-xs"><h2 class="h3" id="inv-title">Invoice</h2><p class="meta" id="inv-for"></p></div>
+    <p class="meta">Lemon Squeezy, our merchant of record, issues the invoice. It needs the customer's billing details.</p>
+    <div class="field"><label for="inv-name">Name on the invoice</label><input class="input" id="inv-name" name="name" maxlength="120" required></div>
+    <div class="field"><label for="inv-address">Street address</label><input class="input" id="inv-address" name="address" maxlength="200" required></div>
+    <div class="grid inv-grid">
+      <div class="field"><label for="inv-city">City</label><input class="input" id="inv-city" name="city" maxlength="120" required></div>
+      <div class="field"><label for="inv-zip">Postcode</label><input class="input" id="inv-zip" name="zip_code" maxlength="20" required></div>
+      <div class="field"><label for="inv-country">Country code</label><input class="input" id="inv-country" name="country" maxlength="2" placeholder="IL" required autocapitalize="characters"></div>
+      <div class="field"><label for="inv-state">State <span class="meta">(US and Canada)</span></label><input class="input" id="inv-state" name="state" maxlength="60"></div>
+    </div>
+    <div class="field"><label for="inv-notes">Note on the invoice <span class="meta">(optional, e.g. a VAT or company number)</span></label><input class="input" id="inv-notes" name="notes" maxlength="300"></div>
+    <div class="row inv-acts">
+      <button class="btn btn--ghost" type="button" id="inv-cancel">Cancel</button>
+      <button class="btn btn--ghost" type="submit" data-send="0">Create PDF</button>
+      <button class="btn" type="submit" data-send="1">Create and email to customer</button>
+    </div>
+    <p class="form-status" role="status"></p>
+  </form>
+</dialog>
+
 <div class="chart-tip" id="chart-tip" role="tooltip" hidden></div>
 <script type="module" src="admin.js"></script>
 </body>
