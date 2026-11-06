@@ -135,7 +135,7 @@ async function handlePaid(
     status: "paid",
     test_mode: testMode,
     source: custom.source?.slice(0, 64) ?? null,
-    // Israeli VAT: the checkout-il function marks a checkout at the VAT-included price (custom vat = "il")
+    // Israeli VAT: the cart marks an Israeli visitor's checkout (custom vat = "il"); their price includes 18% VAT
     vat_rate: custom.vat === "il" ? 0.18 : 0,
     receipt_url: receiptUrl(a.urls?.receipt),   // shown in My downloads → Order history
   }, { onConflict: "checkout_order_id" }).select("id").single();

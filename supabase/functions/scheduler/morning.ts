@@ -78,7 +78,7 @@ export function buildDoc(kind: "invoice_receipt" | "work_order", o: Order, s: Se
     income: [{
       description: he ? `${name} (הורדה דיגיטלית)` : `${name} (digital download)`,
       quantity: 1, price: amount, currency,
-      // the rate the buyer was charged (orders.vat_rate, from checkout-il); older orders: the buyer's country
+      // Israeli VAT inside the price (orders.vat_rate, marked by the cart); older orders: the buyer's country
       vatType: (o.vat_rate != null ? Number(o.vat_rate) > 0 : country === "IL") ? s.vat_israel : s.vat_abroad,
     }],
   };

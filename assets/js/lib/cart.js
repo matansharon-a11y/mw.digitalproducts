@@ -1,5 +1,5 @@
 import { saleFor, salePrice } from "./sale.js";
-import { forVisitor, isIsraeli } from "./vat.js";
+import { isIsraeli } from "./vat.js";
 // Header icons (account menu + cart) and the cart drawer. Works on every shop page; its imports are the sale (sale.js) and Israeli VAT (vat.js).
 // Icons show no text; the label appears only on hover, keyboard focus, or when tapped/clicked.
 const KEY = "mwp_cart";
@@ -180,7 +180,7 @@ let notice = "";   // a one-time line at the top of the cart (why something wasn
 function render() {
   const body = document.querySelector(".cart-body"), foot = document.querySelector(".cart-foot");
   if (!body) return;
-  const list = items().map(forVisitor);   // Israeli visitors: prices with 18% VAT (vat.js)
+  const list = items();
   const top = notice ? `<p class="cart-notice" role="status">${esc(notice)}</p>` : "";
   if (document.documentElement.classList.contains("cart-open")) notice = "";   // shown once, when the cart is open
   if (!list.length) {
@@ -330,7 +330,7 @@ function showGate() {
   foot.hidden = true;
 }
 async function goToCheckout(link) {
-  const { api, user } = await accountUser();
+  const { user } = await accountUser();
   if (!user) { showGate(); return; }
   // Checkout uses the account's email, and carries the account's id: the purchase lands in this account even if
   // they type another email at checkout (checkout-webhook). The visit's utm_source goes along for the reports.
@@ -351,28 +351,8 @@ async function goToCheckout(link) {
   // readable (5:1 contrast; the site's bright gold #F4AF56 would be 1.9:1)
   url.searchParams.set("button_color", "#9A6418");
   try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
-  // Israeli visitors pay the price they saw, with 18% VAT (vat.js): the server opens a Lemon Squeezy checkout at
-  // that price (checkout-il function), with the same email, account, source and sale code
-  if (isIsraeli() && slug) {
-    link.setAttribute("aria-busy", "true");
-    try {
-      const { CONFIG } = await import("../config.js");
-      const { data: s } = await api.supabase.auth.getSession();
-      const res = await fetch(`${CONFIG.SUPABASE_URL}/functions/v1/checkout-il`, {
-        method: "POST",
-        headers: { "content-type": "application/json", apikey: CONFIG.SUPABASE_ANON_KEY, authorization: `Bearer ${s.session?.access_token || ""}` },
-        body: JSON.stringify({ slug, source: utm ? utm.slice(0, 64) : null, discount_code: sale?.code || null }),
-      });
-      const out = await res.json().catch(() => ({}));
-      if (!res.ok || !out.url) throw new Error(out.error || "checkout");
-      url.href = new URL(out.url).href;
-    } catch {
-      link.removeAttribute("aria-busy");
-      alert(T("Checkout couldn't open. Please try again in a moment.", "לא הצלחנו לפתוח את התשלום. נסו שוב בעוד רגע."));
-      return;
-    }
-    link.removeAttribute("aria-busy");
-  }
+  // Israeli visitors: the price includes 18% VAT (vat.js); the order keeps it (orders.vat_rate) for the Morning invoice
+  if (isIsraeli()) url.searchParams.set("checkout[custom][vat]", "il");
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
   else location.href = url.toString();
 }

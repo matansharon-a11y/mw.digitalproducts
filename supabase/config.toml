@@ -33,6 +33,3 @@ verify_jwt = false   # testers page: sign-in links only for approved emails (rat
 
 [functions.admin-docs]
 verify_jwt = false   # admin only: checks the caller's own session with is_admin() (two-step sign-in included)
-
-[functions.checkout-il]
-verify_jwt = false   # Israeli checkout at the VAT price: verifies the buyer's session token itself (auth.getUser)
