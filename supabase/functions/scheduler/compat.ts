@@ -108,9 +108,29 @@ export async function compat(db: Db, manual: boolean, hook: (purpose: string) =>
   let emailed = false;
   if ((unsent ?? 0) > 0 || (broken ?? 0) > 0) emailed = await hook(`compat:${run.id}`);
 
+  // Something new from Adobe (or "Check Adobe now"): run the automatic product checks right away (GitHub workflow
+  // "Product checks"; it also runs daily on its own). Needs the PERSONALIZE_TOKEN secret; without it, the daily run.
+  const anyNew = Object.values(summary).some((s) => (s as { new?: boolean }).new);
+  let checksRequested = false;
+  if (anyNew || manual) checksRequested = await requestProductChecks();
+
   const ok = !Object.values(summary).some((s) => (s as { error?: string }).error);
-  await db.from("compat_runs").update({ ok, summary: { ...summary, alerts_created: created, email_requested: emailed } }).eq("id", run.id);
+  await db.from("compat_runs").update({ ok, summary: { ...summary, alerts_created: created, email_requested: emailed, product_checks_requested: checksRequested } }).eq("id", run.id);
   return { ok, summary, alerts_created: created, email_requested: emailed };
+}
+
+async function requestProductChecks(): Promise<boolean> {
+  const token = Deno.env.get("PERSONALIZE_TOKEN"), repo = Deno.env.get("PERSONALIZE_REPO");
+  if (!token || !repo) return false;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
+      method: "POST",
+      headers: { authorization: `Bearer ${token}`, accept: "application/vnd.github+json", "content-type": "application/json" },
+      body: JSON.stringify({ event_type: "product-checks" }),
+      signal: AbortSignal.timeout(6000),
+    });
+    return r.ok;
+  } catch (err) { console.error("product checks dispatch failed", err); return false; }
 }
 
 // ---------------------------------------------------------------- the email (asked for by Make with the one-time code)

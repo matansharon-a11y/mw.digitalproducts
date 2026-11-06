@@ -52,4 +52,7 @@ jobs:
           pip install -q requests
       - name: Inspect
         if: ${{ inputs.inspect }}
-        run: python3 tools/compat/inspect.py
+        run: python3 tools/compat/list_files.py
+      - name: Check the products
+        if: ${{ !inputs.inspect }}
+        run: python3 tools/compat/check.py

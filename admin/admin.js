@@ -755,16 +755,34 @@ const CSTATUS = {
   update: { label: "Update needed", cls: "bad", rank: 4 },
   investigate: { label: "Worth a look", cls: "look", rank: 3 },
   test: { label: "Needs testing", cls: "warn", rank: 2 },
-  unverified: { label: "Not tested on the latest version", cls: "warn", rank: 1 },
+  autofail: { label: "Automatic checks failed", cls: "bad", rank: 4 },
+  unverified: { label: "Not checked on the latest version yet", cls: "warn", rank: 1 },
+  auto: { label: "Passed automatic checks", cls: "ok", rank: -1 },
   // never "Compatible" without a recorded test: "Tested OK" needs one, otherwise only "No known issues"
   clear: { label: "No known issues", cls: "none", rank: 0 },
   ok: { label: "Tested OK", cls: "ok", rank: -1 },
 };
 const ALERT_STATUS = { open: "To do", reviewed: "Reviewed", tested: "Tested OK", needs_update: "Needs update", resolved: "Resolved" };
 const LEVEL_LABEL = { test: "Needs testing", investigate: "Worth a look", confirmed: "Confirmed problem" };
-const ACTIVE = (a) => a.status === "open" || a.status === "reviewed" || a.status === "needs_update";
+// "Reviewed" (by you or by the automatic product checks) is settled: only open ones and "Needs update" count
+const ACTIVE = (a) => a.status === "open" || a.status === "needs_update";
 let compat = null, compatFilter = "active";
 const vmajor = (v) => Number(String(v || "").split(".")[0]);
+
+// The latest automatic check of a product (tools/compat/check.py): a one-line result, the list behind it
+function checksHTML(slug) {
+  const c = (compat.checks || []).find((x) => x.product_slug === slug);
+  if (!c) return `<p class="meta cchecks__none">Automatic checks: the first run is on its way (daily, and right after every Adobe update).</p>`;
+  const items = c.checks || [];
+  const failed = items.filter((i) => !i.ok), warns = items.filter((i) => i.level === "warn");
+  const head = c.ok ? `Automatic checks passed: ${items.length - warns.length} of ${items.length}${warns.length ? `, ${warns.length} note${warns.length === 1 ? "" : "s"}` : ""}` : `${failed.length} automatic check${failed.length === 1 ? "" : "s"} failed`;
+  const against = Object.entries(c.against || {}).map(([k, v]) => `${(compat.apps.find((a) => a.key === k) || { name: k }).name} ${v}`).join(", ");
+  return `<details class="cchecks${c.ok ? "" : " cchecks--bad"}"${c.ok ? "" : " open"}>
+    <summary><span class="cdot cdot--${c.ok ? "ok" : "bad"}"></span>${esc(head)} <span class="meta">· v${esc(c.file_version || "?")} · ${shortDate(c.ran_at)}</span></summary>
+    <p class="meta">Checked against ${esc(against)}. The product file itself is opened and checked; Photoshop and Lightroom can't run on a server, so this checks everything an Adobe update can break in the files, not the app's screen.</p>
+    <ul>${items.map((i) => `<li class="cchk cchk--${i.level}"><span>${i.level === "pass" ? "✓" : i.level === "warn" ? "!" : "✗"}</span><b>${esc(i.name)}</b>${i.detail ? ` <span class="meta">${esc(i.detail)}</span>` : ""}</li>`).join("")}</ul>
+  </details>`;
+}
 
 function depStatus(d) {
   const app = compat.apps.find((a) => a.key === d.app);
@@ -772,8 +790,12 @@ function depStatus(d) {
   if (mine.some((a) => a.status === "needs_update")) return "update";
   if (mine.some((a) => ACTIVE(a) && a.level === "investigate")) return "investigate";
   if (mine.some((a) => ACTIVE(a) && a.level !== "investigate")) return "test";
-  if (d.major_alerts && app?.latest_version && (!d.last_verified_version || vmajor(d.last_verified_version) < vmajor(app.latest_version))) return "unverified";
-  return d.last_verified_version && app?.latest_version && vmajor(d.last_verified_version) === vmajor(app.latest_version) ? "ok" : "clear";
+  if (d.last_verified_version && app?.latest_version && vmajor(d.last_verified_version) === vmajor(app.latest_version)) return "ok";
+  // the automatic product checks (Product checks workflow) against this app's latest version
+  if (d.auto_ok === false) return "autofail";
+  if (d.auto_ok === true && app?.latest_version && d.auto_checked_version === app.latest_version) return "auto";
+  if (d.major_alerts && app?.latest_version) return "unverified";
+  return "clear";
 }
 function productStatuses() {
   const by = new Map();
@@ -838,6 +860,7 @@ function renderCompat() {
   $("#compat-products").innerHTML = prods.map((p) => `
     <article class="cprod">
       <header class="cprod__head"><h2 class="cprod__name">${esc(p.name)}</h2><span class="cbadge cbadge--${CSTATUS[p.status].cls}">${esc(CSTATUS[p.status].label)}</span></header>
+      ${checksHTML(p.slug)}
       ${p.deps.map((d) => {
         const app = appOf(d.app), latest = app.latest_version;
         return `<div class="cdep">
@@ -847,12 +870,11 @@ function renderCompat() {
           </div>
           <dl class="cdep__facts">
             <div><dt>Latest Adobe</dt><dd>${latest ? `${esc(latest)}${app.latest_label ? ` <span class="meta">${esc(app.latest_label)}</span>` : ""}` : "–"}</dd></div>
-            <div><dt>Tested on</dt><dd>${d.last_verified_version ? `${esc(d.last_verified_version)} <span class="meta">${shortDate(d.verified_at)}</span>` : `<span class="meta">Not recorded</span>`}</dd></div>
+            <div><dt>Checked</dt><dd>${d.auto_checked_version ? `${d.auto_ok ? "Passed" : "Failed"} on ${esc(d.auto_checked_version)} <span class="meta">${shortDate(d.auto_checked_at)}</span>` : d.major_alerts ? `<span class="meta">Waiting for the first run</span>` : `<span class="meta">Covered by the product's checks</span>`}${d.last_verified_version ? `<br><span class="meta">Tested by hand on ${esc(d.last_verified_version)}</span>` : ""}</dd></div>
             <div><dt>Status</dt><dd><span class="cdot cdot--${CSTATUS[d.status].cls}"></span>${esc(CSTATUS[d.status].label)}</dd></div>
           </dl>
           ${latest && d.last_verified_version !== latest ? `<div class="cdep__acts">
-            <button class="btn btn--sm btn--ghost" type="button" data-verify="${esc(d.product_slug)}|${esc(d.app)}|${esc(latest)}">Tested OK on ${esc(latest)}</button>
-            <button class="linkish" type="button" data-verify-other="${esc(d.product_slug)}|${esc(d.app)}">Another version…</button>
+            <button class="linkish" type="button" data-verify="${esc(d.product_slug)}|${esc(d.app)}|${esc(latest)}" title="Optional: only if you tried it yourself">I tested it on ${esc(latest)}</button>
           </div>` : ""}
         </div>`;
       }).join("")}
@@ -903,6 +925,7 @@ function runReport(run) {
   if (read.some((k) => s[k].baseline)) lines.push("First check: today's versions are saved as the starting point (no email).");
   else lines.push(fresh.length ? `New since the last check: ${fresh.map((k) => `${APP_NAMES[k]} ${s[k].version}${s[k].major ? " (major)" : ""}`).join(", ")}.` : "No new Adobe versions since the last check.");
   lines.push(s.alerts_created ? `${s.alerts_created} new alert${s.alerts_created === 1 ? "" : "s"} below${s.email_requested ? ", and an email is on its way" : ""}.` : "No new alerts.");
+  if (s.product_checks_requested) lines.push("The automatic product checks have started; their results appear on each product in about 2 minutes.");
   if (failed.length) lines.push(`Couldn't read: ${failed.map((k) => `${APP_NAMES[k]} (${s[k].error})`).join("; ")}.`);
   return { ok: !failed.length, lines };
 }

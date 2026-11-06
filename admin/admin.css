@@ -203,3 +203,17 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .compat-result ul { margin: var(--s-2) 0 0; padding-inline-start: 1.2em; display: grid; gap: 4px; font-size: var(--fs-sm); color: var(--c-paper-2); }
 .compat-result--ok { border-color: rgba(122, 211, 164, .5); }
 .compat-result--bad { border-color: rgba(240, 138, 122, .6); }
+
+/* automatic product checks on each product card */
+.cchecks { margin: 0 0 var(--s-2); padding: var(--s-2) var(--s-3); border-radius: var(--r-sm); background: var(--c-surface-2); font-size: var(--fs-sm); }
+.cchecks--bad { background: rgba(240, 138, 122, .1); }
+.cchecks summary { cursor: pointer; list-style: none; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.cchecks summary::-webkit-details-marker { display: none; }
+.cchecks summary::after { content: "Details"; margin-inline-start: auto; color: var(--c-accent); font-size: var(--fs-xs); text-decoration: underline; text-underline-offset: 3px; }
+.cchecks[open] summary::after { content: "Hide"; }
+.cchecks > p { margin: var(--s-2) 0; }
+.cchecks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.cchk { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.cchk > span:first-child { width: 14px; flex: none; text-align: center; }
+.cchk--pass > span:first-child { color: #7ad3a4; } .cchk--warn > span:first-child { color: var(--c-accent); } .cchk--fail > span:first-child { color: var(--c-danger); }
+.cchecks__none { margin: 0 0 var(--s-2); }
