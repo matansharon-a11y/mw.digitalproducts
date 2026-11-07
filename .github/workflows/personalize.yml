@@ -64,7 +64,7 @@ jobs:
       - name: Install the stamping tools
         run: |
           sudo apt-get install -y -qq fonts-dejavu-core >/dev/null
-          pip install -q pypdf reportlab python-bidi requests pymupdf
+          pip install -q "pypdf>=6,<8" reportlab python-bidi requests pymupdf   # pypdf major versions can change the API (7.0, 7 Nov 2026)
 
       - name: Make the copies
         env:

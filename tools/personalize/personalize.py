@@ -52,12 +52,13 @@ def stamp_pdf(data, line, lid):
             c.drawCentredString(w / 2, max(8, h * 0.012), text)
             c.save()
             overlays[key] = PdfReader(io.BytesIO(buf.getvalue())).pages[0]
-        page.merge_page(overlays[key])
-        writer.add_page(page)
+        # the page joins the writer first, then gets the stamp: pypdf 7 (7 Nov 2026) refuses to change a page that
+        # isn't in a writer ("replace_contents() for pages not assigned to a writer")
+        writer.add_page(page).merge_page(overlays[key])
     meta = dict(reader.metadata or {})
     meta.update({"/Subject": line, "/Keywords": f"MWP licence {lid}"})
     writer.add_metadata({k: str(v) for k, v in meta.items()})
-    writer.compress_identical_objects(remove_identicals=True, remove_orphans=True)
+    writer.compress_identical_objects()   # defaults: remove duplicates and orphans (the keyword was renamed in pypdf 7)
     out = io.BytesIO()
     writer.write(out)
     return out.getvalue()
