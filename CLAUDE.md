@@ -160,6 +160,9 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 - The Google font stylesheet loads without blocking the first paint (`FONT_LINK` in brand.py: preload + onload, with a `<noscript>` copy). Product pages: whatever is on screen when product-page.js runs stays shown; only content further down fades in (`[data-r]`).
 - GitHub Pages lets browsers keep files for 10 minutes only (Lighthouse "efficient cache policy"); that needs a CDN in front (for example Cloudflare) to change.
 
+## Touch screens: no flicker (Jeinna, 7 Nov 2026)
+- iPhone Safari flickered and left blank patches while scrolling (the GPU runs out of memory). On touch screens only (`@media (hover:none) and (pointer:coarse)`, `TOUCH_CSS` injected by nav.js on every page): no backdrop-filter anywhere (the scrolled top bar and product bar get a solid background), no drop shadows on the bundle cards' device drawings (`.bx .dv`), no lasting `will-change` on the home page's intro words and story. The accessibility button has its own layer (`translateZ(0)`) so it always paints whole. Don't add backdrop-filter, big filters or permanent will-change for phones.
+
 ## Fresh scripts
 - On every deploy, `tools/stamp_scripts.py` stamps each page's scripts with a version (`?v=`) and adds an import map so every imported script (api.js, cart.js, i18n.js …) is versioned too. This stops browsers mixing an old cached script with new code, which blanks pages. It runs on the published copy only; nothing to do by hand.
 

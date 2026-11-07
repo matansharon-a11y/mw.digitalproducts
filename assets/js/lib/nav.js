@@ -146,6 +146,19 @@
 .ck-card .ck-row .ck-btn{flex:1 1 auto}
 @media (max-width:700px){.ck-card{right:16px;left:16px;width:auto;bottom:76px}}
 @media print{.ck-card{display:none!important}}`;
+  // Touch screens (iPhone Safari above all): flicker and blank patches while scrolling came from the GPU running out of
+  // memory (Jeinna, 7 Nov 2026): frosted-glass blur recomputed on every scrolled frame, drop shadows on the bundle
+  // cards' device drawings, and "will-change" left on after the intro animations (one layer per word). Computers keep
+  // the full look.
+  const TOUCH_CSS = `@media (hover:none) and (pointer:coarse){
+html *,html *::before,html *::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.nav-scrolled .nav{background:rgba(10,9,8,.95)!important}
+.pbar{background:rgba(16,14,12,.97)!important}
+.bx .dv{filter:none!important}
+.st-l>span,.st-in,.st-art,.st-mwrap,.st-mimg,[data-r]{will-change:auto!important}
+}`;
+  (() => { const t = document.createElement("style"); t.id = "mwp-touch"; t.textContent = TOUCH_CSS; document.head.append(t); })();
+
   function footer() {
     document.querySelectorAll(".site-foot [data-year]").forEach((el) => { el.textContent = new Date().getFullYear(); });
     const st = document.createElement("style");

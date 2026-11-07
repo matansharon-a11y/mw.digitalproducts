@@ -113,8 +113,8 @@
   const css = `
 #mwp-a11y{all:initial}
 #mwp-a11y *{box-sizing:border-box}
-.a11y-fab{position:fixed;z-index:2147483000;right:20px;bottom:20px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:50%;border:2px solid rgba(254,251,241,.9);background:${GOLDGRAD};color:#1A1208;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.25);transition:transform .2s,box-shadow .2s}
-.a11y-fab:hover{transform:scale(1.06);box-shadow:0 10px 30px rgba(244,175,86,.35),0 0 0 1px rgba(0,0,0,.25)}
+.a11y-fab{position:fixed;z-index:2147483000;right:20px;bottom:20px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:50%;border:2px solid rgba(254,251,241,.9);background:${GOLDGRAD};color:#1A1208;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.25);transition:transform .2s,box-shadow .2s;-webkit-transform:translateZ(0);transform:translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden;isolation:isolate}
+.a11y-fab:hover{transform:translateZ(0) scale(1.06);box-shadow:0 10px 30px rgba(244,175,86,.35),0 0 0 1px rgba(0,0,0,.25)}
 .a11y-fab:focus-visible{outline:3px solid #FEFBF1;outline-offset:3px}
 @media (max-width:700px){.a11y-fab{width:48px;height:48px;right:16px;bottom:16px}.a11y-fab svg{width:26px;height:26px}}
 html.menu-open .a11y-fab,html.cart-open .a11y-fab{display:none}
