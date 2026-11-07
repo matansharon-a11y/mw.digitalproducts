@@ -296,6 +296,8 @@ const HE = {
   "Used on your receipts and when we help you with an order.": "משמשים לקבלות וכשאנחנו עוזרים לכם עם הזמנה.",
   "Your purchases are tied to this email. To change it,": "הרכישות שלכם קשורות למייל הזה. כדי לשנות אותו,",
   "Full name": "שם מלא",
+  "First name": "שם פרטי",
+  "Last name": "שם משפחה",
   "Phone (optional)": "טלפון (לא חובה)",
   "Country": "מדינה",
   "Address": "כתובת",

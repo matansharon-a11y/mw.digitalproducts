@@ -718,3 +718,7 @@ html[lang=he] .launch-kick{letter-spacing:normal;font-size:14px}
 .safe-steps li { display: flex; gap: 12px; align-items: flex-start; padding: 16px 18px; border-radius: 16px; border: 1px solid rgba(254, 251, 241, .08); color: #CDD7DD; font-size: 15px; line-height: 1.5; }
 .safe-steps b { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(90deg, #E4AA7C, #F4AF56); color: #0A0908; font-size: 14px; }
 .safe-more { margin: 32px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; color: #9CB1C2; font-size: 14px; }
+
+/* first and last name side by side (Create account, the cart's name step; 7 Nov 2026) */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-row > .field { min-width: 0; }

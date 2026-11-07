@@ -32,6 +32,11 @@ Deno.serve(async (req) => {
   const name = guide ? text(body.name, 120) : "";
   const phone = guide ? text(body.phone, 40).replace(/[^\d+()\- ]/g, "") : "";
   const lang = body.lang === "he" ? "he" : "en";
+  // the visitor's country (Jeinna, 7 Nov 2026): the network's own country header when there is one, else the one the
+  // page worked out from the device's time zone (geo.js)
+  const hdr = (req.headers.get("cf-ipcountry") ?? "").toUpperCase();
+  const sent = String(body.country ?? "").toUpperCase();
+  const country = /^[A-Z]{2}$/.test(hdr) && hdr !== "XX" && hdr !== "T1" ? hdr : /^[A-Z]{2}$/.test(sent) ? sent : null;
   // The free guide comes with joining the mailing list (Matan, 25 Oct 2026): no consent, no guide.
   const consent = guide ? body.consent === true : true;
   if (guide && !consent) return fail(req, "Tick the box to get the free guide.");
@@ -60,7 +65,7 @@ Deno.serve(async (req) => {
   await db.from("form_attempts").insert({ form: "subscribe", ip_hash: ipHash, email_hash: emailHash });
 
   const { error } = await db.from("subscribers")
-    .upsert(guide ? { email, source, consent, name, phone, lang } : { email, source, consent: true },
+    .upsert(guide ? { email, source, consent, name, phone, lang, ...(country ? { country } : {}) } : { email, source, consent: true, ...(country ? { country } : {}) },
             { onConflict: "email", ignoreDuplicates: false });
   if (error) {
     console.error(error);

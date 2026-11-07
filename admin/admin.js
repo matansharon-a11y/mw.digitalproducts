@@ -25,16 +25,40 @@ async function boot() {
     $("#gate-form").hidden = true;
     return;
   }
-  const { data } = await supabase.auth.getSession();
-  if (data.session) await enter(data.session.user);
+  // A reload keeps you signed in (Jeinna, 7 Nov 2026): while the saved session is checked the page says so (the sign-in
+  // form only shows when there's really no session), and a passing hiccup never signs you out.
+  gate.classList.add("is-checking");
+  try {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) await enter(data.session.user);
+  } catch (err) {
+    console.error(err);
+    $("#gate-msg").textContent = "Couldn't reach the server. Please reload the page.";
+  } finally {
+    gate.classList.remove("is-checking");
+  }
+}
+
+// is_admin(), asked again once with a renewed session if the first answer is an error (not a "no")
+async function checkAdmin() {
+  let r = await supabase.rpc("is_admin");
+  if (r.error) {
+    await supabase.auth.refreshSession().catch(() => {});
+    r = await supabase.rpc("is_admin");
+  }
+  return r;
 }
 
 async function enter(user) {
   // Two-step sign-in: once the account has an authenticator, the password alone doesn't open the admin.
   const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if (aal?.nextLevel === "aal2" && aal.currentLevel !== "aal2") return askCode(user);
-  const { data: isAdmin, error } = await supabase.rpc("is_admin");
-  if (error || !isAdmin) {
+  const { data: isAdmin, error } = await checkAdmin();
+  if (error) {   // the server didn't answer: keep the session, just say so
+    $("#gate-msg").textContent = "Couldn't check your admin access right now. Please reload the page in a moment.";
+    return;
+  }
+  if (!isAdmin) {
     $("#gate-msg").textContent = `${user.email} isn't an admin. Ask the owner to add you, then sign in again.`;
     await supabase.auth.signOut();
     return;
@@ -64,8 +88,12 @@ $("#gate-form").addEventListener("submit", async (e) => {
   form.elements.password.value = "";
 });
 
+let entering = false;   // boot() and the SIGNED_IN event can both arrive on a reload: open the admin once
 supabase?.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_IN" && session && app.hidden) enter(session.user);
+  if (event === "SIGNED_IN" && session && app.hidden && !gate.classList.contains("is-checking") && !entering) {
+    entering = true;
+    enter(session.user).finally(() => { entering = false; });
+  }
 });
 
 // ---------------------------------------------------------------- two-step sign-in
@@ -148,7 +176,7 @@ $("#mfa-enroll").addEventListener("submit", async (e) => {
 $("#admin-signout").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
 
 // ---------------------------------------------------------------- navigation
-const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, morning: loadMorning, customers: loadCustomers, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
+const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, morning: loadMorning, customers: loadCustomers, signups: loadSignups, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
 
 // ---------------------------------------------------------------- navigation (6 Nov 2026)
 // Six sections in the sidebar; a section with more than one view shows tabs above it. Every view has its own address
@@ -158,13 +186,26 @@ const GROUPS = {
   overview: { label: "Overview", tabs: [["overview", "Overview"]] },
   sales: { label: "Sales", tabs: [["orders", "Orders"], ["finance", "Finances"], ["morning", "Morning invoices"]] },
   products: { label: "Products", tabs: [["products", "Catalogue"], ["compat", "Compatibility"]] },
-  people: { label: "People", tabs: [["customers", "Customers"], ["ambassadors", "Ambassadors"], ["testers", "Testers"]] },
+  people: { label: "People", tabs: [["customers", "Customers"], ["signups", "Sign-ups"], ["ambassadors", "Ambassadors"], ["testers", "Testers"]] },
   support: { label: "Support", tabs: [["support", "Tickets"]] },
   settings: { label: "Settings", tabs: [["security", "Two-step sign-in"]] },
 };
 const groupOf = (tab) => (tab === "editor" ? "products" : Object.keys(GROUPS).find((g) => GROUPS[g].tabs.some(([t]) => t === tab)));
 const isView = (tab) => tab === "editor" || !!groupOf(tab);
 let lastTab = {};
+// a country code as "🇮🇱 Israel" (the browser's own country names), and a date with the time (7 Nov 2026)
+let regionNames = null;
+try { regionNames = new Intl.DisplayNames(["en"], { type: "region" }); } catch { /* old browser: codes only */ }
+const flagOf = (cc) => String.fromCodePoint(...[...cc].map((ch) => 0x1f1e6 + ch.charCodeAt(0) - 65));
+function countryName(cc) {
+  const raw = String(cc || "").trim();
+  cc = raw.toUpperCase();
+  if (!/^[A-Z]{2}$/.test(cc)) return raw;   // typed by the customer in My details ("Israel"): shown as typed
+  let name = cc;
+  try { name = regionNames?.of(cc) || cc; } catch { /* unknown code */ }
+  return `${flagOf(cc)} ${name}`;
+}
+const dateTime = (iso) => (iso ? new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "");
 try { lastTab = JSON.parse(sessionStorage.getItem("mwp_admin_tabs") || "{}"); } catch { /* private mode */ }
 
 function show(tab, { history = true } = {}) {
@@ -1029,7 +1070,8 @@ function finPeriods() {
 }
 
 function finCalc(r) {
-  const intl = $("#fin-intl").checked;
+  // the +1.5% applies to buyers outside the US: each order by its own billing country (unknown: counted as outside)
+  const intl = !/^(US|USA|UNITED STATES( OF AMERICA)?)$/.test(String(r.country || "").trim().toUpperCase());
   const counts = r.status !== "refunded";
   const gross = counts ? r.total_cents : 0;
   // the tax in the total: the Israeli VAT included in an Israeli buyer's price (orders.vat_rate, 18%) plus any tax
@@ -1046,7 +1088,6 @@ async function loadFinance() {
   if (!sel.options.length) {
     sel.innerHTML = finPeriods().map((p) => `<option value="${p.key}">${esc(p.label)}</option>`).join("");
     sel.addEventListener("change", loadFinance);
-    $("#fin-intl").addEventListener("change", renderFinance);
     $("#fin-csv").addEventListener("click", () => downloadCsv("finances", finCols, finRows));
   }
   const p = finPeriods().find((x) => x.key === sel.value) || finPeriods()[0];
@@ -1095,20 +1136,20 @@ function renderFinance() {
 
   const STATUS = { paid: "Paid", refunded: "Refunded", partially_refunded: "Partly refunded" };
   $("#fin-orders").innerHTML = rows.length
-    ? `<thead><tr><th>Date</th><th>Order</th><th>Customer</th><th>Products</th><th>Status</th><th class="num">Paid</th><th class="num">Tax</th><th class="num">Fee (est.)</th><th class="num">Net (est.)</th></tr></thead><tbody>${rows.map((r) => {
+    ? `<thead><tr><th>Date</th><th>Order</th><th>Customer</th><th>Country</th><th>Products</th><th>Status</th><th class="num">Paid</th><th class="num">Tax</th><th class="num">Fee (est.)</th><th class="num">Net (est.)</th></tr></thead><tbody>${rows.map((r) => {
         const c = finCalc(r);
-        return `<tr><td>${shortDate(r.created_at)}</td><td>${esc(r.order_number || "")}</td><td>${esc(r.email)}</td><td>${esc(r.products || "")}</td><td>${esc(STATUS[r.status] || r.status)}</td><td class="num">${money(r.total_cents, r.currency)}${r.status === "refunded" ? " (refunded)" : ""}</td><td class="num">${money(c.tax, r.currency)}${c.vat ? `<div class="meta">18% VAT</div>` : ""}</td><td class="num">${money(c.fee, r.currency)}</td><td class="num"><b>${money(c.net, r.currency)}</b></td></tr>`;
+        return `<tr><td>${esc(dateTime(r.created_at))}</td><td>${esc(r.order_number || "")}</td><td>${esc(r.email)}</td><td>${esc(countryName(r.country))}</td><td>${esc(r.products || "")}</td><td>${esc(STATUS[r.status] || r.status)}</td><td class="num">${money(r.total_cents, r.currency)}${r.status === "refunded" ? " (refunded)" : ""}</td><td class="num">${money(c.tax, r.currency)}${c.vat ? `<div class="meta">18% VAT</div>` : ""}</td><td class="num">${money(c.fee, r.currency)}</td><td class="num"><b>${money(c.net, r.currency)}</b></td></tr>`;
       }).join("")}</tbody>`
     : `<tbody><tr><td class="meta">No orders in this period.</td></tr></tbody>`;
 
-  const intl = $("#fin-intl").checked;
-  $("#fin-note").innerHTML = `Lemon Squeezy's fee is estimated from <a class="link" href="${FEES.source}" target="_blank" rel="noopener">its published rates</a>: ${FEES.pct}% of the order total + 50¢${intl ? `, plus ${FEES.intlPct}% for buyers outside the US` : ""} (untick "Buyers outside the US" for US buyers). PayPal orders cost another ${FEES.paypalPct}%, which isn't included. Lemon Squeezy's payout fee (when the money moves to your bank) isn't included either. The exact figures are in Lemon Squeezy → Payouts.${rows.some((r) => r.status === "partially_refunded") ? " Partly refunded orders are counted in full: check the refunded part in Lemon Squeezy." : ""} Test orders are left out.`;
+  $("#fin-note").innerHTML = `Lemon Squeezy's fee is estimated from <a class="link" href="${FEES.source}" target="_blank" rel="noopener">its published rates</a>: ${FEES.pct}% of the order total + 50¢, plus ${FEES.intlPct}% when the buyer is outside the US (each order by its buyer's billing country; an order without a country yet is counted as outside the US). PayPal orders cost another ${FEES.paypalPct}%, which isn't included. Lemon Squeezy's payout fee (when the money moves to your bank) isn't included either. The exact figures are in Lemon Squeezy → Payouts.${rows.some((r) => r.status === "partially_refunded") ? " Partly refunded orders are counted in full: check the refunded part in Lemon Squeezy." : ""} Test orders are left out.`;
 }
 
 const finCols = [
-  { label: "Date", value: (r) => r.created_at.slice(0, 10) },
+  { label: "Date", value: (r) => dateTime(r.created_at) },
   { label: "Order", value: (r) => r.order_number || "" },
   { label: "Customer", value: (r) => r.email },
+  { label: "Country", value: (r) => countryName(r.country) },
   { label: "Products", value: (r) => r.products || "" },
   { label: "Status", value: (r) => r.status },
   { label: "Currency", value: (r) => r.currency },
@@ -1120,9 +1161,10 @@ const finCols = [
 ];
 
 const orderCols = [
-  { label: "Date", value: (r) => shortDate(r.created_at) },
+  { label: "Date", value: (r) => dateTime(r.created_at) },
   { label: "Order", value: (r) => r.order_number || r.checkout_order_id },
   { label: "Customer", value: (r) => r.email },
+  { label: "Country", value: (r) => countryName(r.country) },
   { label: "Packs", wrap: true, value: (r) => r.products },
   { label: "Total", num: true, value: (r) => money(r.total_cents, r.currency) },
   { label: "Source", value: (r) => r.source || "" },
@@ -1331,9 +1373,10 @@ $("#orders-csv").addEventListener("click", () => downloadCsv("orders", orderCols
 
 // Customers
 const customerCols = [
+  { label: "Joined", value: (r) => dateTime(r.created_at) },
   { label: "Email", value: (r) => r.email },
   { label: "Name", value: (r) => r.name || "" },
-  { label: "Country", value: (r) => r.country || "" },
+  { label: "Country", value: (r) => countryName(r.country) },
   { label: "Paid orders", num: true, value: (r) => r.paid_orders },
   { label: "Lifetime value", num: true, value: (r) => money(r.lifetime_cents, "USD") },
   { label: "Last order", value: (r) => (r.last_order_at ? shortDate(r.last_order_at) : "") },
@@ -1342,7 +1385,8 @@ const customerCols = [
 let customerRows = [];
 async function loadCustomers() {
   const term = $("#customers-search").value.trim().replace(/[%,()]/g, "");
-  let q = supabase.from("admin_customers").select("*").order("lifetime_cents", { ascending: false }).limit(1000);
+  // the free-guide pop-up's sign-ups who haven't bought are under People → Sign-ups (Jeinna, 7 Nov 2026)
+  let q = supabase.from("admin_customers").select("*").eq("signup_only", false).order("lifetime_cents", { ascending: false }).limit(1000);
   if (term) q = q.or(`email.ilike.%${term}%,name.ilike.%${term}%`);
   const { data, error } = await q;
   check(error);
@@ -1351,6 +1395,32 @@ async function loadCustomers() {
 }
 $("#customers-search").addEventListener("input", debounce(loadCustomers));
 $("#customers-csv").addEventListener("click", () => downloadCsv("customers", customerCols, customerRows));
+
+// ---------------------------------------------------------------- sign-ups (the free-guide pop-up), 7 Nov 2026
+const signupCols = [
+  { label: "Signed up", value: (r) => dateTime(r.created_at) },
+  { label: "Name", value: (r) => r.name || "" },
+  { label: "Email", value: (r) => r.email },
+  { label: "Phone", value: (r) => r.phone || "" },
+  { label: "Country", value: (r) => countryName(r.country) },
+  { label: "Language", value: (r) => (r.lang === "he" ? "Hebrew" : "English") },
+  { label: "Emails OK", value: (r) => (r.consent ? "Yes" : "No") },
+  { label: "Email confirmed", value: (r) => (r.confirmed_at ? dateTime(r.confirmed_at) : "Not yet") },
+  { label: "Bought", value: (r) => (r.paid_orders > 0 ? `Yes (${r.paid_orders})` : "No") },
+];
+let signupRows = [];
+async function loadSignups() {
+  const term = $("#signups-search").value.trim().replace(/[%,()]/g, "");
+  let q = supabase.from("admin_signups").select("*").order("created_at", { ascending: false }).limit(2000);
+  if (term) q = q.or(`email.ilike.%${term}%,name.ilike.%${term}%,phone.ilike.%${term}%`);
+  const { data, error } = await q;
+  check(error);
+  signupRows = data || [];
+  $("#signups-count").textContent = `${signupRows.length} sign-up${signupRows.length === 1 ? "" : "s"}`;
+  $("#signups-table").innerHTML = tableHTML(signupCols, signupRows);
+}
+$("#signups-search").addEventListener("input", debounce(loadSignups));
+$("#signups-csv").addEventListener("click", () => downloadCsv("sign-ups", signupCols, signupRows));
 
 // ---------------------------------------------------------------- ambassadors
 const AMB_STATUS = { active: "Active", ended: "Ended", ended_breach: "Ended, breach" };
@@ -1513,12 +1583,20 @@ async function loadMorning() {
   f.elements.email_customer.checked = st.email_customer;
   $("#morning-updated").textContent = st.updated_by ? `Last changed ${shortDate(st.updated_at)} by ${st.updated_by}.` : "";
   morningRows = rows || [];
-  $("#morning-docs").innerHTML = morningRows.length ? `<table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Document</th><th>Status</th><th>Date</th></tr></thead><tbody>${morningRows.map((d) => `<tr data-order="${d.order_id}">
-    <td>${esc(d.orders?.order_number || "")}<div class="meta">${money(d.orders?.total_cents || 0, d.orders?.currency || "USD")}</div></td>
-    <td>${esc(d.orders?.customers?.name || "")}<div class="meta">${esc(d.orders?.customers?.email || "")}</div></td>
-    <td>${morningLink(d)}</td>
-    <td>${esc(MSTATUS[d.status] || d.status)}${d.status === "failed" ? `<div class="meta mfail__why">${esc(d.error || "")}</div>` : ""}</td>
-    <td>${shortDate(d.issued_at || d.sent_at || d.created_at)}</td></tr>`).join("")}</tbody></table>` : `<p class="meta">No documents yet. The next sale gets ${st.mode === "issue" ? "its documents" : "a preview"} within 5 minutes.</p>`;
+  // one row per order, with its invoice-receipt and work order side by side (Jeinna, 7 Nov 2026)
+  const byOrder = new Map();
+  for (const d of morningRows) {
+    if (!byOrder.has(d.order_id)) byOrder.set(d.order_id, { order: d.orders, docs: {} });
+    byOrder.get(d.order_id).docs[d.kind] = d;
+  }
+  const cell = (d) => (d ? `${morningLink(d)}<div class="meta">${esc(MSTATUS[d.status] || d.status)}</div>${d.status === "failed" ? `<div class="meta mfail__why">${esc(d.error || "")}</div>` : ""}` : `<span class="meta">Not yet</span>`);
+  const latest = (g) => Object.values(g.docs).map((d) => d.issued_at || d.sent_at || d.created_at).sort().pop();
+  $("#morning-docs").innerHTML = byOrder.size ? `<table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Invoice-receipt</th><th>Work order</th><th>Date</th></tr></thead><tbody>${[...byOrder].map(([id, g]) => `<tr data-order="${id}">
+    <td>${esc(g.order?.order_number || "")}<div class="meta">${money(g.order?.total_cents || 0, g.order?.currency || "USD")}</div></td>
+    <td>${esc(g.order?.customers?.name || "")}<div class="meta">${esc(g.order?.customers?.email || "")}</div></td>
+    <td>${cell(g.docs.invoice_receipt)}</td>
+    <td>${cell(g.docs.work_order)}</td>
+    <td>${esc(dateTime(latest(g)))}</td></tr>`).join("")}</tbody></table>` : `<p class="meta">No documents yet. The next sale gets ${st.mode === "issue" ? "its documents" : "a preview"} within 5 minutes.</p>`;
 }
 $("#morning-form").addEventListener("submit", async (e) => {
   e.preventDefault();

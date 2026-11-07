@@ -51,6 +51,7 @@ const CSS = `
 .cart-row button,.cart-row a.pay{border:0;background:none;color:#9CB1C2;font-weight:600;font-size:13px;;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
 .cart-row a.pay{color:#F4AF56}
 .cart-foot{padding:18px 22px 24px;border-top:1px solid rgba(156,177,194,.15);display:grid;gap:12px}
+.cart-foot[hidden]{display:none}
 .cart-total{display:flex;justify-content:space-between;font-weight:800;font-size:17px}
 .cart-go{display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:30px;border:0;background:linear-gradient(90deg,#E4AA7C,#F4AF56);color:#0A0908;font-weight:800;font-size:16px;;text-decoration:none;cursor:pointer}
 .cart-go[aria-disabled=true]{opacity:.45;pointer-events:none}
@@ -68,6 +69,11 @@ const CSS = `
 .cart-gate .cart-go{width:100%;margin-top:8px}
 .cart-gate .gate-alt{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;border-radius:30px;border:1px solid rgba(254,251,241,.32);color:#FEFBF1;font-weight:700;text-decoration:none}
 .cart-gate .gate-alt:hover{border-color:rgba(254,251,241,.6)}
+.cart-name{align-items:stretch;text-align:start}.cart-name .gate-ic,.cart-name h3,.cart-name>p{align-self:center;text-align:center}
+.cart-name .cn-f{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#CDD7DD}.cart-name .cn-err{min-height:1em;color:#FFB4A8;font-size:14px;text-align:center}
+.cart-name .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cart-name input{width:100%;box-sizing:border-box;min-height:46px;padding:10px 14px;border-radius:12px;border:1px solid rgba(254,251,241,.18);background:rgba(254,251,241,.05);color:#FEFBF1;font:inherit;font-size:16px}
+.cart-name input:focus{outline:2px solid #F4AF56;outline-offset:1px;border-color:transparent}
 .cart-gate .gate-back{border:0;background:none;color:#9CB1C2;font:inherit;font-size:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 
 .acct-menu{position:fixed;z-index:95;width:260px;padding:8px;border-radius:18px;background:rgba(20,18,16,.92);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(254,251,241,.1);box-shadow:0 30px 70px -20px rgba(0,0,0,.8);color:#FEFBF1;opacity:0;transform:translateY(-6px) scale(.98);transform-origin:top right;pointer-events:none;transition:opacity .18s,transform .18s;font-family:"Google Sans",Heebo,system-ui,sans-serif}
@@ -177,9 +183,11 @@ const SAFE = () => `<div class="cart-safe" data-no-i18n>
   </div>`;
 
 let notice = "";   // a one-time line at the top of the cart (why something wasn't added)
+let held = false;   // the account step or the name step is showing: the cart's own redraws wait until "Back to cart"
 function render() {
   const body = document.querySelector(".cart-body"), foot = document.querySelector(".cart-foot");
   if (!body) return;
+  if (held) { foot.hidden = true; return; }
   const list = items();
   const top = notice ? `<p class="cart-notice" role="status">${esc(notice)}</p>` : "";
   if (document.documentElement.classList.contains("cart-open")) notice = "";   // shown once, when the cart is open
@@ -326,12 +334,61 @@ function showGate() {
   const body = document.querySelector(".cart-body"), foot = document.querySelector(".cart-foot");
   if (!body) return;
   if (!document.documentElement.classList.contains("cart-open")) openCart();
+  held = true;
   body.innerHTML = gateHTML();
   foot.hidden = true;
 }
+// Every purchase needs the buyer's first and last name (Jeinna, 7 Nov 2026): an account without both is asked once,
+// here in the cart, and the name is saved to My details. The email is the account's own.
+const fullName = (n) => String(n || "").trim().split(/\s+/).filter(Boolean).length >= 2;
+function nameStep(link, prof) {
+  const body = document.querySelector(".cart-body"), foot = document.querySelector(".cart-foot");
+  if (!body) return;
+  const [first, ...rest] = String(prof?.name || "").trim().split(/\s+/);
+  held = true;
+  body.innerHTML = `<form class="cart-gate cart-name" novalidate>
+    <span class="gate-ic">${SVG.user}</span>
+    <h3>${T("Your name for the order", "השם שלכם להזמנה")}</h3>
+    <p>${T("Your first and last name go on your receipt and on your personal copies.", "השם הפרטי ושם המשפחה מופיעים בקבלה ובעותקים האישיים שלכם.")}</p>
+    <div class="field-row">
+      <label class="cn-f"><span>${T("First name", "שם פרטי")}</span><input class="input" name="first" autocomplete="given-name" maxlength="60" required value="${esc(first || "")}"></label>
+      <label class="cn-f"><span>${T("Last name", "שם משפחה")}</span><input class="input" name="last" autocomplete="family-name" maxlength="60" required value="${esc(rest.join(" "))}"></label>
+    </div>
+    <p class="cn-err" role="status"></p>
+    <button class="cart-go" type="submit">${T("Continue to checkout", "המשך לתשלום")}</button>
+    <button type="button" class="gate-back" data-gate-back>${T("Back to cart", "חזרה לעגלה")}</button>
+  </form>`;
+  foot.hidden = true;
+  const form = body.querySelector("form");
+  form.elements[first ? "last" : "first"].focus();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = form.elements.first.value.trim(), l = form.elements.last.value.trim();
+    if (!f || !l) { form.querySelector(".cn-err").textContent = T("Please fill in your first and last name.", "נא למלא שם פרטי ושם משפחה."); return; }
+    const btn = form.querySelector("[type=submit]"); btn.disabled = true;
+    try {
+      const { api } = await accountUser();
+      await api.saveMyProfile({ ...(prof || {}), name: `${f} ${l}` });
+    } catch (err) {
+      btn.disabled = false;
+      form.querySelector(".cn-err").textContent = T("Couldn't save your name. Please try again.", "לא הצלחנו לשמור את השם. נסו שוב.");
+      return;
+    }
+    goToCheckout(link);
+  });
+}
+
 async function goToCheckout(link) {
   const { api, user } = await accountUser();
   if (!user) { showGate(); return; }
+  let prof = null;
+  try { prof = await api.myProfile(); } catch { /* the check below asks for it */ }
+  held = false;
+  if (!fullName(prof?.name)) {
+    if (!document.documentElement.classList.contains("cart-open")) openCart();
+    nameStep(link, prof);
+    return;
+  }
   // Checkout uses the account's email, and carries the account's id: the purchase lands in this account even if
   // they type another email at checkout (checkout-webhook). The visit's utm_source goes along for the reports.
   const url = new URL(link.href, location.href);
@@ -353,8 +410,7 @@ async function goToCheckout(link) {
   try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
   // Israeli visitors: the price includes 18% VAT (vat.js); the order keeps it (orders.vat_rate) for the Morning invoice
   try {   // an Israeli phone in My details counts too (remembered on this device, so the pages show the VAT note)
-    const prof = await api.myProfile();
-    if (isIsraeliPhone((Array.isArray(prof) ? prof[0] : prof)?.phone)) localStorage.setItem("mwp_il", "1");
+    if (isIsraeliPhone(prof?.phone)) localStorage.setItem("mwp_il", "1");
   } catch { /* no profile: the webhook still checks the phone */ }
   if (isIsraeli()) url.searchParams.set("checkout[custom][vat]", "il");
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
@@ -379,6 +435,7 @@ export function openCart() {
   document.querySelector(".cart-x")?.focus();
 }
 function closeCart() {
+  held = false;   // the next opening shows the cart again
   document.documentElement.classList.remove("cart-open");
   document.querySelector(".cart-panel")?.setAttribute("inert", "");
   if (lastFocus && lastFocus.focus) lastFocus.focus();
@@ -517,7 +574,7 @@ export function initCart() {
       goToCheckout(co);
       return;
     }
-    if (e.target.closest("[data-gate-back]")) { render(); return; }
+    if (e.target.closest("[data-gate-back]")) { held = false; render(); return; }
     // Buy buttons on the home and sales pages: add to cart (they used to jump to the sales pages).
     const buy = e.target.closest("a[href*='#buy'], .plan a, [data-add-to-cart]");
     if (buy && !buy.closest(".cart-panel, .acct-menu")) {

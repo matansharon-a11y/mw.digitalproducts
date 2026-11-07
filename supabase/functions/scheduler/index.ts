@@ -40,6 +40,7 @@ import { applications, applicationsCallback } from "./applications.ts";
 import { emailHook, updateEmails, updateList } from "./updates.ts";
 import { compat } from "./compat.ts";
 import { morning, morningList, morningResult } from "./morning.ts";
+import { lsCustomerCountry } from "../_shared/lscountry.ts";
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
 const UUID_RE = /^[0-9a-f-]{36}$/i;
@@ -220,9 +221,32 @@ function totals(orders: OrderRow[]) {
 }
 
 // ---------------------------------------------------------------- reconcile (missed orders)
+// Billing countries for orders that don't have one yet (orders from before 7 Nov 2026, or a webhook that couldn't read
+// it): up to 25 an hour, two Lemon Squeezy calls each. Test orders can't be read with the live key: left out.
+async function fillCountries(db: Db, key: string) {
+  const { data: rows } = await db.from("orders").select("id, checkout_order_id, customer_id")
+    .is("country", null).eq("test_mode", false).order("created_at", { ascending: false }).limit(25);
+  let filled = 0;
+  for (const o of rows ?? []) {
+    try {
+      const res = await fetch(`https://api.lemonsqueezy.com/v1/orders/${encodeURIComponent(o.checkout_order_id)}`, {
+        headers: { Accept: "application/vnd.api+json", Authorization: `Bearer ${key}` }, signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) continue;
+      const country = await lsCustomerCountry((await res.json())?.data?.attributes?.customer_id);
+      if (!country) continue;
+      await db.from("orders").update({ country }).eq("id", o.id);
+      await db.from("customers").update({ country }).eq("id", o.customer_id).is("country", null);   // only an empty one
+      filled++;
+    } catch (err) { console.error("country", o.checkout_order_id, err); }
+  }
+  return filled;
+}
+
 async function reconcile(db: Db) {
   const key = Deno.env.get("LEMONSQUEEZY_API_KEY") ?? "";
   if (!key) return { skipped: "LEMONSQUEEZY_API_KEY not set" };
+  const countries = await fillCountries(db, key).catch((err) => { console.error("countries", err); return 0; });
   const store = Deno.env.get("LEMONSQUEEZY_STORE_ID") || "502637";   // MWP Shop
   const since = Date.now() - 3 * 86400_000;
   const settled = Date.now() - 20 * 60_000;   // younger orders may still be on their way through the webhook
@@ -247,7 +271,7 @@ async function reconcile(db: Db) {
     const a = o.attributes, t = Date.parse(a.created_at);
     return t >= since && t <= settled && (!a.test_mode || allowTest || adminEmails.has(String(a.user_email).toLowerCase()));
   });
-  if (!relevant.length) return { checked: 0, problems: [] };
+  if (!relevant.length) return { checked: 0, problems: [], countries };
 
   const { data: ours, error } = await db.from("orders").select("checkout_order_id, status")
     .in("checkout_order_id", relevant.map((o) => String(o.id)));
@@ -277,7 +301,7 @@ async function reconcile(db: Db) {
     await db.from("webhook_events").insert({ event_id: eventId, provider: "reconcile", payload: { order: id, why } });
     problems.push({ order: String(a.order_number), why });
   }
-  return { checked: relevant.length, problems };
+  return { checked: relevant.length, problems, countries };
 }
 
 async function weeklySummary(db: Db) {

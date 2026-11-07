@@ -121,12 +121,18 @@ export async function signInWithPassword(email, password) {
   return data;
 }
 
+// The visitor's country from their device's time zone (geo.js, loaded only when someone signs up)
+async function visitorCountry() {
+  try { return (await import("./geo.js")).visitorCountry(); } catch { return ""; }
+}
+
 /** Creates the account. Returns "signed-in", "confirm" (check your inbox) or "exists" (email already has an account). */
 export async function signUpWithPassword(email, password, { name = "", redirectPath = "/account/" } = {}) {
+  const country = await visitorCountry();   // shown in the admin (customers.signup_country)
   const { data, error } = await requireClient().auth.signUp({
     email: email.trim().toLowerCase(), password,
     // lang: the confirmation email comes in the language of the page they signed up on (supabase/templates)
-    options: { emailRedirectTo: back(redirectPath), data: { ...(name ? { name } : {}), lang: document.documentElement.lang === "he" ? "he" : "en" } },
+    options: { emailRedirectTo: back(redirectPath), data: { ...(name ? { name } : {}), ...(country ? { country } : {}), lang: document.documentElement.lang === "he" ? "he" : "en" } },
   });
   if (error) {
     if (/already registered|already exists/i.test(error.message)) return "exists";
@@ -246,14 +252,14 @@ export const guideView = () => callFunction("guide-view", {}, { auth: true });
 export const testerLink = (email, lang) => callFunction("tester", { action: "link", email, lang });
 export const testerJoin = (form) => callFunction("tester", { action: "join", ...form });
 export const testerMe = () => callFunction("tester", { action: "me" }, { auth: true });
-export const subscribe = (email, source = "free-sampler") => callFunction("subscribe", { email, source });
+export const subscribe = async (email, source = "free-sampler") => callFunction("subscribe", { email, source, country: await visitorCountry() });
 
 // The free Field Guides sample (gift.js): keep the details, then email a sign-in link that opens their account.
 // The link is the kind that works in any browser (#access_token, handled on My downloads), not only in the one that
 // asked for it: people fill the pop-up on a phone and open the email in their mail app.
 export async function giftSignup({ name, email, phone, consent, lang }) {
   email = email.trim().toLowerCase();
-  await callFunction("subscribe", { source: "free-guide", name, email, phone, consent, lang });
+  await callFunction("subscribe", { source: "free-guide", name, email, phone, consent, lang, country: await visitorCountry() });
   const once = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, flowType: "implicit" },
   });

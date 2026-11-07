@@ -8,6 +8,7 @@
 // Idempotent: each event is recorded in webhook_events after it succeeds, and a
 // repeat delivery of the same event returns 200 without doing anything twice.
 // ============================================================================
+import { lsCustomerCountry } from "../_shared/lscountry.ts";
 import { requestPersonalCopies, admin, hmacHex, notifyMake, plain, safeEqual } from "../_shared/http.ts";
 
 // The signing secrets are made by "Connect Lemon Squeezy" (tools/connect_lemonsqueezy.py), one for the test-mode
@@ -21,7 +22,7 @@ type LsOrder = {
   data: {
     id: string;
     attributes: {
-      order_number: number; identifier: string; status: string;
+      order_number: number; identifier: string; status: string; customer_id?: number;
       user_email: string; user_name: string; currency: string;
       subtotal: number; tax: number; total: number;
       test_mode?: boolean; discount_total?: number; refunded?: boolean; refunded_at?: string | null; refunded_amount?: number;
@@ -123,6 +124,9 @@ async function handlePaid(
     .select("id, email, name, created_at, phone, country").single();
   if (cErr) throw cErr;
   if (!customer.name && a.user_name) await db.from("customers").update({ name: a.user_name }).eq("id", customer.id);
+  // the billing country the buyer gave at checkout (Lemon Squeezy's customer record); fills an empty profile country
+  const country = await lsCustomerCountry(a.customer_id);
+  if (country && !customer.country) await db.from("customers").update({ country }).eq("id", customer.id);
 
   const { data: order, error: oErr } = await db.from("orders").upsert({
     checkout_order_id: orderId,
@@ -136,8 +140,9 @@ async function handlePaid(
     test_mode: testMode,
     source: custom.source?.slice(0, 64) ?? null,
     // Israeli VAT (their price includes 18%): the cart marks an Israeli visitor's checkout (custom vat = "il"), or the
-    // account's phone is Israeli (+972 / 0…), or its country is Israel (My details)
-    vat_rate: custom.vat === "il" || isIsraeliPhone(customer.phone) || String(customer.country ?? "").toUpperCase() === "IL" ? 0.18 : 0,
+    // account's phone is Israeli (+972 / 0…), or the billing country or My details country is Israel
+    vat_rate: custom.vat === "il" || isIsraeliPhone(customer.phone) || country === "IL" || String(customer.country ?? "").toUpperCase() === "IL" ? 0.18 : 0,
+    ...(country ? { country } : {}),
     receipt_url: receiptUrl(a.urls?.receipt),   // shown in My downloads → Order history
   }, { onConflict: "checkout_order_id" }).select("id").single();
   if (oErr) throw oErr;

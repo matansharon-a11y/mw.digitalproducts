@@ -327,7 +327,6 @@
         <h1 class="h3">Finances</h1>
         <div class="row">
           <select class="select input--sm" id="fin-period" aria-label="Period"></select>
-          <label class="row" style="gap:6px;font-size:14px"><input type="checkbox" id="fin-intl" checked> Buyers outside the US</label>
           <button class="btn btn--sm btn--ghost" id="fin-csv" type="button">Export CSV</button>
         </div>
       </header>
@@ -341,6 +340,17 @@
         <div class="table-wrap"><table class="table" id="fin-orders"></table></div>
       </div>
       <p class="meta" id="fin-note"></p>
+    </section>
+
+    <section data-panel="signups" hidden>
+      <header class="admin-head">
+        <div class="stack-xs"><h1 class="h3">Sign-ups</h1><p class="meta">People who signed up for the free guide in the pop-up. Once they buy, they're also under Customers. <span id="signups-count"></span></p></div>
+        <div class="row">
+          <input class="input input--sm" type="search" id="signups-search" placeholder="Search name, email or phone">
+          <button class="btn btn--sm btn--ghost" id="signups-csv" type="button">Export CSV</button>
+        </div>
+      </header>
+      <div class="table-wrap"><table class="table" id="signups-table"></table></div>
     </section>
 
     <section data-panel="customers" hidden>

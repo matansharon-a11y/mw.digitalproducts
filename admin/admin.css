@@ -27,7 +27,7 @@ body.admin { display: block; }
 
 .admin-main { padding: var(--s-6) clamp(var(--s-4), 3vw, var(--s-7)) var(--s-9); display: grid; gap: var(--s-5); align-content: start; }
 .admin-main > section { display: grid; gap: var(--s-5); align-content: start; }
-.tiles { align-items: start; }   /* tiles keep their own height (they stretched very tall, 5 Nov 2026) */
+
 .admin-main > section[hidden] { display: none; }
 .admin-head { display: flex; flex-wrap: wrap; gap: var(--s-4); justify-content: space-between; align-items: center; }
 .admin-h2 { font-size: var(--fs-sm); font-weight: var(--fw-medium); letter-spacing: 0.02em; }
@@ -253,3 +253,11 @@ input[type="file"]::file-selector-button:hover { border-color: var(--c-paper); }
 .drow__why { grid-column: 1 / -1; margin: 0; }
 .dacts { gap: var(--s-2); flex-wrap: wrap; }
 @media (max-width: 520px) { .drow { grid-template-columns: 1fr auto; } .drow__act { grid-column: 1 / -1; } }
+
+/* opening the admin: while the saved session is checked, a quiet line instead of the sign-in form (7 Nov 2026) */
+.admin-gate.is-checking form, .admin-gate.is-checking h1, .admin-gate.is-checking #gate-msg { display: none; }
+.admin-gate.is-checking .panel::after { content: "Opening the admin…"; color: var(--c-paper-2, #bbb); }
+
+/* stat tiles: every tile the same width and height in a row, whatever its text (Jeinna, 7 Nov 2026) */
+.admin-main .tiles { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); grid-auto-rows: 1fr; align-items: stretch; }
+.admin-main .tiles > .tile { height: 100%; box-sizing: border-box; align-content: start; }

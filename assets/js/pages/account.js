@@ -449,10 +449,21 @@ document.getElementById("signin-form").addEventListener("submit", (e) => {
 document.getElementById("signup-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const f = e.currentTarget;
+  // first and last name are required (Jeinna, 7 Nov 2026)
+  for (const k of ["first", "last"]) {
+    const el = f.elements[k];
+    if (!el.value.trim()) {
+      el.setAttribute("aria-invalid", "true"); el.focus();
+      setStatus(f.querySelector(".form-status"), k === "first" ? T("Please enter your first name.", "נא למלא שם פרטי.") : T("Please enter your last name.", "נא למלא שם משפחה."), "error");
+      return;
+    }
+    el.removeAttribute("aria-invalid");
+  }
   if (!check(f, { pw: true })) return;
   run(f, async () => {
     const email = f.elements.email.value.trim().toLowerCase();
-    const r = await signUpWithPassword(email, f.elements.password.value, { name: f.elements.name.value.trim(), redirectPath: backPath() });
+    const name = `${f.elements.first.value.trim()} ${f.elements.last.value.trim()}`;
+    const r = await signUpWithPassword(email, f.elements.password.value, { name, redirectPath: backPath() });
     if (r === "confirm") sent(T("Confirm your email", "אשרו את המייל"), T(`We've sent a link to ${email}. Open it to finish creating your account.`, `שלחנו קישור אל ${email}. פתחו אותו כדי לסיים את יצירת החשבון.`));
     else if (r === "exists") {
       show("signin");
@@ -509,8 +520,10 @@ if (next && /checkout|cart=1/.test(next)) document.getElementById("auth-why").hi
 // must use the email they applied with (their tools are tied to it).
 if (params.get("from") === "ambassador") {
   const nm = (params.get("name") || "").trim().slice(0, 80);
-  const su = document.getElementById("su-name");
-  if (nm && su && !su.value) su.value = nm;
+  const [first, ...rest] = nm.split(/\s+/);
+  const f1 = document.getElementById("su-first"), f2 = document.getElementById("su-last");
+  if (first && f1 && !f1.value) f1.value = first;
+  if (rest.length && f2 && !f2.value) f2.value = rest.join(" ");
   for (const view of signedOut.querySelectorAll('[data-view="signup"], [data-view="signin"]')) {
     const note = document.createElement("p");
     note.className = "auth-note auth-amb";
