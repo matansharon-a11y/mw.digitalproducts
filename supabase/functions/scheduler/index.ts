@@ -39,7 +39,7 @@ import { mondayPhone, parsePhone } from "../_shared/phone.ts";
 import { applications, applicationsCallback } from "./applications.ts";
 import { emailHook, updateEmails, updateList } from "./updates.ts";
 import { compat } from "./compat.ts";
-import { morning, morningList, morningResult } from "./morning.ts";
+import { morning, morningList, morningResult, morningSend } from "./morning.ts";
 import { lsCustomerCountry } from "../_shared/lscountry.ts";
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
@@ -100,6 +100,7 @@ Deno.serve(async (req) => {
       case "applications": return reply(await applications(db, SELF));
       case "customer_added": return reply(await customerAdded(db, String(body.customer_id ?? "")));
       case "compat": return reply(await compat(db, body.manual === true, (purpose) => emailHook(db, purpose)));
+      case "morning_send": return reply(await morningSend(db, String(body.id ?? "")));
       case "morning": return reply(await morning(db, UUID_RE.test(String(body.order_id ?? "")) ? String(body.order_id) : ""));
       case "update_emails": return reply(await updateEmails(db, String(body.notice_id ?? "")));
       case "customer_deleted": return reply(await customerDeleted(String(body.email ?? "")));

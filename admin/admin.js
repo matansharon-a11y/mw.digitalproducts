@@ -1233,7 +1233,9 @@ function renderDocsPanel() {
   };
   let morning = "";
   if (r.test_mode) morning = `<p class="meta">Test orders never get Morning documents.</p>`;
-  else if (morningMode === "off") morning = `<p class="meta">Morning documents are switched off (Sales → Morning invoices).</p>`;
+  else if (morningMode === "off") morning = mdocs.length
+    ? `<ul class="dlist">${row("invoice_receipt")}${row("work_order")}</ul><p class="meta">Issued to the buyer before 8 Nov 2026: cancel it with a credit note in Sales → Morning invoices. Sales are now invoiced to Lemon Squeezy once per payout.</p>`
+    : `<p class="meta">Invoiced in Morning to Lemon Squeezy with its payout (Sales → Morning invoices).</p>`;
   else {
     const issued = mdocs.filter((d) => d.status === "issued");
     const both = issued.length === 2;
@@ -1588,44 +1590,139 @@ async function refreshTicketBadge() {
 boot();
 
 
-// ---- Sales → Morning invoices: the switch and every document sent to Morning
+// ---- Sales → Morning invoices (8 Nov 2026): one invoice-receipt to Lemon Squeezy per payout, and the earlier
+// per-buyer documents with their credit notes
 let morningRows = [];
 const MSTATUS = { waiting: "Waiting", sending: "Sending…", preview: "Preview (not issued)", issued: "Issued", failed: "Failed" };
+const usd = (c) => money(c || 0, "USD");
+
+// The payout CSV from Lemon Squeezy: Date, Sale ("Order #9948604", "Refund - Order #…"), …, Net Total (USD)
+function parseCsv(text) {
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (q) { if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === ",") { row.push(cell); cell = ""; }
+    else if (ch === "\n" || ch === "\r") { if (ch === "\r" && text[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+    else cell += ch;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter((r) => r.some((c) => c.trim()));
+}
+let payoutLines = null;
+function readPayout(text) {
+  const rows = parseCsv(text.replace(/^﻿/, ""));
+  const head = (rows.shift() || []).map((h) => h.trim().toLowerCase());
+  const col = (name) => head.indexOf(name.toLowerCase());
+  const [iDate, iSale, iNet] = [col("Date"), col("Sale"), col("Net Total (USD)")];
+  if (iSale < 0 || iNet < 0) throw new Error("This isn't a Lemon Squeezy payout CSV: it needs the columns Sale and Net Total (USD).");
+  const lines = rows.filter((r) => (r[iSale] || "").trim() && !/^totals?$/i.test((r[iSale] || "").trim())).map((r) => ({
+    date: iDate >= 0 ? (r[iDate] || "").trim() : "",
+    sale: (r[iSale] || "").trim().slice(0, 200),
+    order_id: ((r[iSale] || "").match(/Order\s+#(\d+)/i) || [])[1] || "",
+    net_cents: Math.round(parseFloat(String(r[iNet] || "0").replace(/[^0-9.-]/g, "")) * 100) || 0,
+  }));
+  if (!lines.length) throw new Error("The file has no payout lines.");
+  return lines;
+}
+$("#payout-file").addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  payoutLines = null;
+  $("#payout-read").textContent = "";
+  if (!file) return;
+  try {
+    payoutLines = readPayout(await file.text());
+    const total = payoutLines.reduce((t, l) => t + l.net_cents, 0);
+    // the payout's date: the last line's (as Lemon Squeezy lists it), in your own time zone
+    const last = new Date(payoutLines[payoutLines.length - 1].date.replace(" ", "T"));
+    if (!isNaN(last)) $("#payout-date").value = `${last.getFullYear()}-${String(last.getMonth() + 1).padStart(2, "0")}-${String(last.getDate()).padStart(2, "0")}`;
+    $("#payout-read").textContent = `${payoutLines.length} lines, ${usd(total)} paid out in all. Check the payout date, then make the preview.`;
+  } catch (err) { $("#payout-read").textContent = err.message; }
+});
+$("#payout-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.currentTarget, btn = e.submitter, st = $(".form-status", f);
+  if (!payoutLines) return setStatus(st, "Choose the payout's CSV first.", "error");
+  if (!f.elements.date.value) return setStatus(st, "Fill in the payout date.", "error");
+  setBusy(btn, true, "Sending…");
+  const { error } = await supabase.rpc("morning_payout_upload", { p_date: f.elements.date.value, p_rows: payoutLines });
+  setBusy(btn, false);
+  if (error) return setStatus(st, error.message, "error");
+  setStatus(st, "Morning is making the preview. It appears below in a minute.", "ok");
+  f.reset(); payoutLines = null; $("#payout-read").textContent = "";
+  for (const wait of [15000, 35000, 70000]) setTimeout(loadMorning, wait);
+  loadMorning();
+});
+
+function previewOrPdf(d) {
+  if (!d) return "";
+  if (d.status === "issued") return d.url ? `<a class="btn btn--sm btn--ghost" href="${esc(d.url)}" target="_blank" rel="noopener">Open PDF${d.number ? ` ${esc(d.number)}` : ""}</a>` : `<span>${esc(d.number || "")}</span>`;
+  if (d.status === "preview") return `<button class="btn btn--sm btn--ghost" type="button" data-mpreview="${d.id}">View preview</button>`;
+  return "";
+}
+function sendBtns(d) {
+  if (!d || d.status === "issued" || d.status === "sending" || d.status === "waiting") return "";
+  const issue = d.status === "preview" ? `<button class="btn btn--sm" type="button" data-msend="${d.id}" data-act="create">${d.kind === "credit_note" ? "Issue the credit note" : "Issue in Morning"}</button>` : "";
+  return `${issue}<button class="btn btn--sm btn--ghost" type="button" data-msend="${d.id}" data-act="preview">${d.status === "failed" ? "Try again" : "Preview again"}</button>`;
+}
 async function loadMorning() {
-  const [{ data: st, error }, { data: rows }] = await Promise.all([
-    supabase.from("morning_settings").select("*").eq("id", 1).maybeSingle(),
-    supabase.from("morning_documents").select("id, order_id, kind, status, number, url, error, action, created_at, sent_at, issued_at, emailed_at, emailed_to, orders(order_number, status, total_cents, currency, customers(email, name))").order("created_at", { ascending: false }).limit(100),
-  ]);
-  if (error || !st) { $("#morning-docs").innerHTML = `<p class="meta">Couldn't load the Morning settings.</p>`; return; }
-  morningMode = st.mode;
-  const f = $("#morning-form");
-  f.elements.mode.value = st.mode;
-  f.elements.email_customer.checked = st.email_customer;
-  $("#morning-updated").textContent = st.updated_by ? `Last changed ${shortDate(st.updated_at)} by ${st.updated_by}.` : "";
+  const { data: rows, error } = await supabase.from("morning_documents")
+    .select("id, order_id, kind, status, number, url, error, action, created_at, sent_at, issued_at, emailed_at, emailed_to, payout_date, summary, linked_id, orders(order_number, status, total_cents, currency, customers(email, name))")
+    .order("created_at", { ascending: false }).limit(300);
+  if (error) { $("#payout-docs").innerHTML = `<p class="meta">Couldn't load the Morning documents.</p>`; return; }
   morningRows = rows || [];
-  // one row per order, with its invoice-receipt and work order side by side (Jeinna, 7 Nov 2026)
+  // payout invoices
+  const payouts = morningRows.filter((d) => d.kind === "payout").sort((a, b) => (b.payout_date || "").localeCompare(a.payout_date || ""));
+  $("#payout-docs").innerHTML = payouts.length ? `<table class="table"><thead><tr><th>Payout</th><th class="num">Buyers in Israel<br><span class="meta">VAT included</span></th><th class="num">VAT 18%</th><th class="num">Buyers abroad<br><span class="meta">0%</span></th><th class="num">Total</th><th>Document</th></tr></thead><tbody>${payouts.map((d) => {
+    const m = d.summary || {};
+    const note = (m.unmatched || []).length ? `<div class="meta">${m.unmatched.length} line${m.unmatched.length === 1 ? "" : "s"} not in the shop (checked with Lemon Squeezy)</div>` : "";
+    return `<tr><td>${esc(d.payout_date ? new Date(d.payout_date + "T12:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "")}<div class="meta">${m.lines ?? ""} lines</div></td>
+      <td class="num">${m.total_cents != null ? usd(m.il_cents) : ""}</td><td class="num">${m.total_cents != null ? usd(m.vat_cents) : ""}</td>
+      <td class="num">${m.total_cents != null ? usd(m.abroad_cents) : ""}</td><td class="num"><b>${m.total_cents != null ? usd(m.total_cents) : ""}</b></td>
+      <td><div class="mcell"><span class="dchip dchip--${d.status === "issued" ? "ok" : d.status === "failed" ? "bad" : d.status === "preview" ? "warn" : "muted"}">${esc(MSTATUS[d.status] || d.status)}</span>${previewOrPdf(d)}${sendBtns(d)}</div>${d.status === "failed" ? `<div class="meta mfail__why">${esc(d.error || "")}</div>` : ""}${note}</td></tr>`;
+  }).join("")}</tbody></table>` : `<p class="meta">No payout invoices yet. Upload your first payout's CSV above.</p>`;
+  // earlier per-buyer documents, with their credit notes
   const byOrder = new Map();
-  for (const d of morningRows) {
+  for (const d of morningRows.filter((x) => x.order_id)) {
     if (!byOrder.has(d.order_id)) byOrder.set(d.order_id, { order: d.orders, docs: {} });
     byOrder.get(d.order_id).docs[d.kind] = d;
   }
-  const cell = (d) => (d ? `${morningLink(d)}<div class="meta">${esc(MSTATUS[d.status] || d.status)}</div>${emailBuyerBtn(d)}${d.status === "failed" ? `<div class="meta mfail__why">${esc(d.error || "")}</div>` : ""}` : `<span class="meta">Not yet</span>`);
-  const latest = (g) => Object.values(g.docs).map((d) => d.issued_at || d.sent_at || d.created_at).sort().pop();
-  $("#morning-docs").innerHTML = byOrder.size ? `<table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Invoice-receipt</th><th>Work order</th><th>Date</th></tr></thead><tbody>${[...byOrder].map(([id, g]) => `<tr data-order="${id}">
+  const cell = (d) => (d ? `${morningLink(d)}<div class="meta">${esc(MSTATUS[d.status] || d.status)}</div>` : `<span class="meta">None</span>`);
+  const creditCell = (g) => {
+    const inv = g.docs.invoice_receipt, cn = g.docs.credit_note;
+    if (!inv || inv.status !== "issued") return `<span class="meta">Nothing to cancel</span>`;
+    if (!cn) return `<button class="btn btn--sm" type="button" data-mcredit="${inv.order_id}">Cancel with credit note</button>`;
+    return `<div class="mcell"><span class="dchip dchip--${cn.status === "issued" ? "ok" : cn.status === "failed" ? "bad" : "warn"}">${cn.status === "issued" ? "Cancelled" : esc(MSTATUS[cn.status] || cn.status)}</span>${previewOrPdf(cn)}${sendBtns(cn)}</div>${cn.status === "failed" ? `<div class="meta mfail__why">${esc(cn.error || "")}</div>` : ""}`;
+  };
+  $("#morning-docs").innerHTML = byOrder.size ? `<table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Invoice-receipt</th><th>Work order</th><th>Credit note</th></tr></thead><tbody>${[...byOrder].map(([id, g]) => `<tr data-order="${id}">
     <td>${esc(g.order?.order_number || "")}<div class="meta">${money(g.order?.total_cents || 0, g.order?.currency || "USD")}</div></td>
     <td>${esc(g.order?.customers?.name || "")}<div class="meta">${esc(g.order?.customers?.email || "")}</div></td>
     <td>${cell(g.docs.invoice_receipt)}</td>
     <td>${cell(g.docs.work_order)}</td>
-    <td>${esc(dateTime(latest(g)))}</td></tr>`).join("")}</tbody></table>` : `<p class="meta">No documents yet. The next sale gets ${st.mode === "issue" ? "its documents" : "a preview"} within 5 minutes.</p>`;
+    <td>${creditCell(g)}</td></tr>`).join("")}</tbody></table>` : `<p class="meta">None.</p>`;
 }
-$("#morning-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const f = e.currentTarget, mode = f.elements.mode.value, btn = e.submitter;
-  if (mode === "issue" && morningMode !== "issue" && !confirm("Issue a real invoice-receipt and work order in Morning for every new sale?\n\nOnly switch this on once Matan has confirmed it (with the accountant: VAT and the document type), because Lemon Squeezy, as merchant of record, also gives the buyer its own receipt.")) return;
-  setBusy(btn, true, "Saving…");
-  const { error } = await supabase.rpc("morning_set_settings", { p_mode: mode, p_email_customer: f.elements.email_customer.checked });
-  setBusy(btn, false);
-  if (error) return setStatus($(".form-status", f), error.message, "error");
-  setStatus($(".form-status", f), "Saved.", "ok");
+document.addEventListener("click", async (e) => {
+  const c = e.target.closest("[data-mcredit]"), s = e.target.closest("[data-msend]");
+  if (!c && !s) return;
+  let r;
+  if (c) {
+    setBusy(c, true, "Asking…");
+    r = await supabase.rpc("morning_credit_note", { p_order: c.dataset.mcredit });
+    setBusy(c, false);
+    if (!r.error) toast("Morning is making the credit note's preview. It appears here in a minute.");
+  } else {
+    const create = s.dataset.act === "create";
+    const d = morningRows.find((x) => x.id === s.dataset.msend);
+    if (create && !confirm(d?.kind === "credit_note"
+      ? "Issue the credit note in Morning? It cancels the buyer's invoice-receipt for good."
+      : `Issue this payout's invoice-receipt to Lemon Squeezy in Morning (${usd(d?.summary?.total_cents)})? A real tax document: it can only be cancelled with a credit note.`)) return;
+    setBusy(s, true, create ? "Issuing…" : "Asking…");
+    r = await supabase.rpc("morning_send", { p_id: s.dataset.msend, p_action: s.dataset.act });
+    setBusy(s, false);
+    if (!r.error) toast(r.data);
+  }
+  if (r.error) return toast(r.error.message, { type: "error", timeout: 8000 });
+  for (const wait of [15000, 35000, 70000]) setTimeout(loadMorning, wait);
   loadMorning();
 });

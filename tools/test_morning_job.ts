@@ -1,6 +1,6 @@
 // Test of the Morning documents job (supabase/functions/scheduler/morning.ts) with an in-memory stand-in for the database
 // and for Make's webhook. Nothing reaches Morning. Run: MAKE_MORNING_WEBHOOK_URL=https://hook.test deno run --allow-env tools/test_morning_job.ts
-import { morning, morningList, morningResult } from "../supabase/functions/scheduler/morning.ts";
+import { morning, morningList, morningResult, morningSend } from "../supabase/functions/scheduler/morning.ts";
 
 type Row = Record<string, unknown>;
 const T: Record<string, Row[]> = {};
@@ -145,6 +145,23 @@ hookUp = true;
 // ---- 6. off: nothing at all
 T.morning_settings[0].mode = "off";
 ok(((await morning(db)) as Row).skipped === "off", "off: nothing runs");
+
+// ---- 7. a payout invoice to Lemon Squeezy: Israeli buyers 18% included, abroad 0%, unknown lines listed (8 Nov 2026)
+T.orders.push({ id: "p1", checkout_order_id: "9001", vat_rate: 0.18, country: "IL", customers: { country: "IL" } },
+              { id: "p2", checkout_order_id: "9002", vat_rate: 0, country: "US", customers: { country: "US" } });
+const pay = { id: "99999999-9999-9999-9999-999999999999", kind: "payout", status: "waiting", action: "preview", payout_date: "2026-11-01",
+  payout_rows: [{ sale: "Order #9001", order_id: "9001", net_cents: 5761 }, { sale: "Order #9002", order_id: "9002", net_cents: 1504 },
+                { sale: "Refund - Order #9002", order_id: "9002", net_cents: -200 }, { sale: "Order #7777", order_id: "7777", net_cents: 1000 }], attempts: 0 };
+T.morning_documents.push(pay);
+r = await morningSend(db, pay.id) as Row;
+const pd = T.morning_documents.find((d) => d.id === pay.id)!;
+// deno-lint-ignore no-explicit-any
+const pl = pd.payload as any, sm = pd.summary as any;
+ok(r.ok === true && pd.status === "sending" && pd.action === "preview", "payout: sent as a preview");
+ok(pl.type === 320 && pl.client.name === "Lemon Squeezy, LLC" && pl.client.emails.length === 0, "payout: invoice-receipt to Lemon Squeezy, no email");
+ok(pl.income.length === 2 && pl.income[0].vatType === 1 && pl.income[0].price === 57.61 && pl.income[1].vatType === 2 && pl.income[1].price === 23.04, `payout: Israel 57.61 (VAT incl.) and abroad 23.04 at 0% (${JSON.stringify(pl.income.map((i: any) => [i.price, i.vatType]))})`);
+ok(sm.vat_cents === 879 && sm.total_cents === 8065 && sm.unmatched.length === 1, `payout: VAT $8.79, total $80.65, 1 unknown line (${JSON.stringify(sm)})`);
+ok(pl.payment[0].type === 4 && pl.payment[0].price === 80.65 && pl.payment[0].date === "2026-11-01", "payout: one bank transfer for the payout, on its date");
 
 console.log(fails ? `\n${fails} FAILED` : "\nall passed");
 if (fails) Deno.exit(1);

@@ -94,32 +94,27 @@
     <!-- Two-step sign-in -->
     <section data-panel="morning" hidden>
       <header class="admin-head"><h1 class="h3">Morning invoices</h1></header>
-      <div class="panel stack" style="max-width:720px">
-        <p>Every paid sale gets two documents in Morning: a <strong>tax invoice-receipt</strong> and a <strong>work order</strong> that names it. Test orders never do. Each order's documents are also under Sales → Orders.</p>
-        <form class="form stack" id="morning-form" novalidate>
-          <fieldset class="stack-xs mmode">
-            <legend class="h4">For new sales</legend>
-            <label><input type="radio" name="mode" value="preview"> <strong>Previews only</strong> <span class="meta">Morning makes a demo PDF of both documents; nothing is issued. Issue an order yourself with "Issue in Morning".</span></label>
-            <label><input type="radio" name="mode" value="issue"> <strong>Issue automatically</strong> <span class="meta">Real documents in Morning within 5 minutes of each sale.</span></label>
-            <label><input type="radio" name="mode" value="off"> <strong>Off</strong> <span class="meta">Nothing goes to Morning.</span></label>
-          </fieldset>
-          <label class="check"><input type="checkbox" name="email_customer"> Morning emails the invoice-receipt to the customer</label>
-          <div class="row"><button class="btn" type="submit">Save</button><span class="meta" id="morning-updated"></span></div>
+      <div class="panel stack" style="max-width:760px">
+        <p>Lemon Squeezy is the seller: it charges the buyer and sends the buyer its receipt. <strong>Once per Lemon Squeezy payout</strong>, you issue one tax invoice-receipt in Morning to Lemon Squeezy: the money paid out for each sale (after Lemon Squeezy's fee and refunds), with <strong>18% VAT included for buyers in Israel</strong> and <strong>0% for buyers abroad</strong>. This is how Israeli Lemon Squeezy sellers usually do it.</p>
+        <ol class="meta payout-steps">
+          <li>In Lemon Squeezy, open <strong>Settings → Payouts</strong>, open the payout and export its CSV.</li>
+          <li>Upload the file here. The shop sorts every sale into buyers in Israel and buyers abroad, and Morning makes a preview.</li>
+          <li>Check the preview, then click <strong>Issue in Morning</strong>.</li>
+        </ol>
+        <form class="form stack" id="payout-form" novalidate>
+          <div class="field-row">
+            <div class="field"><label for="payout-file">Payout CSV</label><input class="input" id="payout-file" name="file" type="file" accept=".csv,text/csv" required></div>
+            <div class="field"><label for="payout-date">Payout date</label><input class="input" id="payout-date" name="date" type="date" required></div>
+          </div>
+          <p class="meta" id="payout-read"></p>
+          <div class="row"><button class="btn" type="submit">Make a preview</button></div>
           <p class="form-status" role="status"></p>
         </form>
-        <details class="stack-xs">
-          <summary>How the documents are filled in</summary>
-          <ul class="meta">
-            <li>Language: Hebrew for customers who use the shop in Hebrew, otherwise English. The amount and currency the customer paid (US dollars); Morning converts to shekels itself.</li>
-            <li>One line: the product's name (digital download). Buyers in Israel: VAT included in the price. Buyers abroad: VAT exempt (0%).</li>
-            <li>Payment: credit card, dated the day of the order. Remarks: the Lemon Squeezy order number.</li>
-            <li>The customer's name and country; their email only when the box above is ticked. They aren't added to Morning's client list.</li>
-            <li>A refunded order isn't cancelled automatically: cancel its invoice-receipt in Morning with a credit note.</li>
-          </ul>
-          <p class="meta">These choices (VAT, payment type) are to be confirmed by Matan with the accountant before "Issue automatically" is switched on.</p>
-        </details>
       </div>
-      <h2 class="h4">Documents</h2>
+      <h2 class="h4">Payout invoices</h2>
+      <div class="table-wrap" id="payout-docs"></div>
+      <h2 class="h4">Earlier documents to buyers</h2>
+      <p class="meta" style="max-width:760px">Issued per buyer before 8 Nov 2026. Their sales are part of Lemon Squeezy's payouts, so cancel each invoice-receipt with a credit note (preview first), or the income would be counted twice. The work orders are internal and aren't tax documents.</p>
       <div class="table-wrap" id="morning-docs"></div>
     </section>
 

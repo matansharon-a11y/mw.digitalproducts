@@ -13,6 +13,7 @@
 // automatically (Morning may have issued it), the admin checks Morning first.
 
 import { isHebrew } from "./docs.ts";
+import { lsCustomerCountry } from "../_shared/lscountry.ts";
 
 // deno-lint-ignore no-explicit-any
 type Db = any;
@@ -242,7 +243,7 @@ export async function morningResult(db: Db, body: Record<string, unknown>) {
     // the invoice-receipt is out: the work order follows at once (it names the invoice-receipt's number)
     if (row.kind === "invoice_receipt") {
       try { await morning(db, row.order_id); } catch (err) { console.error("morning work order", err); }
-    } else {
+    } else if (row.kind === "work_order") {
       await db.from("morning_issue_requests").delete().eq("order_id", row.order_id);
     }
     return { ok: true };
@@ -260,4 +261,115 @@ function morningError(status: number, data: any) {
   const msg = plainText(data?.errorMessage ?? data?.message ?? "", 300);
   if (!status) return `No answer from Morning${msg ? `: ${msg}` : ""}. Check in Morning before trying again.`;
   return `Morning answered ${status}${data?.errorCode ? ` (code ${data.errorCode})` : ""}${msg ? `: ${msg}` : ""}`;
+}
+
+// ---------------------------------------------------------------- payout invoices and credit notes (8 Nov 2026)
+// The usual way for Israeli Lemon Squeezy sellers: one tax invoice-receipt to Lemon Squeezy per payout, from the payout
+// CSV's "Net Total (USD)" lines (the money paid out per sale: after Lemon Squeezy's fee and refunds), 18% VAT included
+// for sales to buyers in Israel, 0% for buyers abroad. Plus credit notes that cancel the per-buyer invoice-receipts
+// issued before (8 Nov 2026). Asked for by the admin (morning_payout_upload / morning_credit_note / morning_send).
+
+type PayoutRow = { date?: string; sale?: string; order_id?: string; net_cents?: number };
+
+async function payoutDoc(db: Db, d: { payout_date: string; payout_rows: PayoutRow[] }) {
+  const rows = (Array.isArray(d.payout_rows) ? d.payout_rows : []).slice(0, 5000);
+  const ids = [...new Set(rows.map((r) => String(r.order_id ?? "")).filter((x) => /^\d+$/.test(x)))];
+  const { data: ours } = ids.length
+    ? await db.from("orders").select("checkout_order_id, vat_rate, country, customers(country)").in("checkout_order_id", ids)
+    : { data: [] };
+  const byId = new Map((ours ?? []).map((o: { checkout_order_id: string }) => [o.checkout_order_id, o]));
+  const key = Deno.env.get("LEMONSQUEEZY_API_KEY") ?? "";
+  let il = 0, abroad = 0;
+  const unmatched: string[] = [], israeli: string[] = [];
+  for (const r of rows) {
+    const cents = Math.round(Number(r.net_cents) || 0);
+    const id = String(r.order_id ?? "");
+    // deno-lint-ignore no-explicit-any
+    const o: any = byId.get(id);
+    let isIL = false;
+    if (o) {
+      const c = String(o.country ?? o.customers?.country ?? "").toUpperCase();
+      isIL = Number(o.vat_rate) > 0 || c === "IL" || /^(ISRAEL|ישראל)$/.test(c);
+    } else if (/^\d+$/.test(id) && key) {
+      // a sale the shop doesn't have (bought on Lemon Squeezy's own page): the buyer's billing country
+      try {
+        const res = await fetch(`https://api.lemonsqueezy.com/v1/orders/${id}`, {
+          headers: { Accept: "application/vnd.api+json", Authorization: `Bearer ${key}` }, signal: AbortSignal.timeout(8000),
+        });
+        if (res.ok) isIL = (await lsCustomerCountry((await res.json())?.data?.attributes?.customer_id)) === "IL";
+      } catch { /* counted as abroad, and listed */ }
+      unmatched.push(String(r.sale ?? id));
+    } else if (cents) {
+      unmatched.push(String(r.sale ?? "line"));
+    }
+    if (isIL) { il += cents; israeli.push(id); } else abroad += cents;
+  }
+  const total = il + abroad;
+  if (total <= 0) throw new Error("This payout has nothing to invoice (its total is zero or less).");
+  if (il < 0 || abroad < 0) throw new Error("Refunds are larger than the sales in one group: issue this payout from Morning by hand.");
+  const vat = il - Math.round(il / 1.18);
+  const date = d.payout_date;
+  const dateHe = date.split("-").reverse().join(".");
+  const income = [];
+  if (il > 0) income.push({ description: "מכירות דיגיטליות בחנות MWP דרך למון סקוויזי, לקוחות בישראל (כולל מע״מ)", quantity: 1, price: il / 100, currency: "USD", vatType: 1 });
+  if (abroad > 0) income.push({ description: "מכירות דיגיטליות בחנות MWP דרך למון סקוויזי, לקוחות בחו״ל (פטור ממע״מ)", quantity: 1, price: abroad / 100, currency: "USD", vatType: 2 });
+  const payload = {
+    type: 320, lang: "he", currency: "USD", vatType: 0,
+    description: `תשלום מלמון סקוויזי מ-${dateHe}`,
+    client: { name: "Lemon Squeezy, LLC", country: "US", emails: [], add: false },
+    income,
+    payment: [{ type: 4, price: total / 100, currency: "USD", date }],
+    remarks: `התשלום של למון סקוויזי (Merchant of Record) מ-${dateHe}: ${rows.length} שורות. הסכומים הם נטו אחרי עמלות למון סקוויזי והחזרים. לקוחות בישראל: מע״מ 18% כלול. לקוחות בחו״ל: פטור (0%).`,
+  };
+  const summary = { lines: rows.length, il_cents: il, abroad_cents: abroad, vat_cents: vat, total_cents: total, israeli_orders: israeli, unmatched };
+  return { payload, summary };
+}
+
+// deno-lint-ignore no-explicit-any
+async function creditDoc(db: Db, d: any) {
+  const { data: o } = await db.from("morning_documents").select("payload, morning_id, number, status").eq("id", d.linked_id).maybeSingle();
+  if (!o || o.status !== "issued" || !o.morning_id) throw new Error("The invoice-receipt to cancel isn't issued.");
+  const p = o.payload ?? {};
+  const he = p.lang !== "en";
+  return {
+    type: 330, lang: p.lang ?? "he", currency: p.currency ?? "USD", vatType: p.vatType ?? 0,
+    description: he ? `ביטול חשבונית מס קבלה ${o.number}` : `Cancels invoice-receipt ${o.number}`,
+    client: p.client, income: p.income,
+    linkedDocumentIds: [o.morning_id], linkType: "cancel",
+    remarks: he ? `ביטול חשבונית מס קבלה ${o.number}: המכירה דרך למון סקוויזי נכללת בחשבונית לתשלום של למון סקוויזי.`
+                : `Cancels invoice-receipt ${o.number}: the sale through Lemon Squeezy is invoiced with Lemon Squeezy's payout.`,
+  };
+}
+
+export async function morningSend(db: Db, id: string) {
+  if (!HOOK) return { skipped: "MAKE_MORNING_WEBHOOK_URL isn't set" };
+  if (!UUID.test(id)) return { skipped: "bad id" };
+  // a send whose answer never came back (20 minutes): never retried by itself
+  await db.from("morning_documents").update({ status: "failed", attempts: LOST,
+    error: "Morning's answer never came back. Check in Morning whether this document was issued before trying again." })
+    .eq("status", "sending").lt("sent_at", new Date(Date.now() - 20 * 60 * 1000).toISOString());
+  const { data: d } = await db.from("morning_documents").select("*").eq("id", id).maybeSingle();
+  if (!d || !["payout", "credit_note"].includes(d.kind)) return { skipped: "not a payout invoice or credit note" };
+  if (d.status === "issued" || d.status === "sending") return { skipped: d.status };
+  let payload: unknown, summary = d.summary;
+  try {
+    if (d.kind === "payout") ({ payload, summary } = await payoutDoc(db, d));
+    else payload = await creditDoc(db, d);
+  } catch (err) {
+    await db.from("morning_documents").update({ status: "failed", error: (err as Error).message }).eq("id", id);
+    return { ok: false, error: (err as Error).message };
+  }
+  await db.from("morning_documents").update({
+    payload, summary, status: "sending", sent_at: new Date().toISOString(), error: null, attempts: (d.attempts ?? 0) + 1,
+  }).eq("id", id);
+  const nonce = crypto.randomUUID().replaceAll("-", "") + crypto.randomUUID().replaceAll("-", "");
+  const { error: nErr } = await db.from("sync_nonces").insert({ nonce, purpose: `morning:${id}` });
+  if (nErr) throw nErr;
+  let ok = false;
+  try {
+    const res = await fetch(HOOK, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ nonce }), signal: AbortSignal.timeout(8000) });
+    ok = res.ok;
+  } catch (err) { console.error("morning hook", err); }
+  if (!ok) await db.from("morning_documents").update({ status: "failed", error: "Make didn't take the request. Try again." }).eq("id", id);
+  return { ok };
 }
