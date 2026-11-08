@@ -115,6 +115,20 @@ Deno.serve(async (req) => {
       return json(req, { ok: true, to: customer.email });
     }
 
+    // a Morning invoice-receipt, by email to the buyer (8 Nov 2026): only an issued one, with its Morning link
+    if (action === "morning_email") {
+      if (!customer?.email) return fail(req, "This order has no customer email.");
+      const { data: md } = await db.from("morning_documents").select("id, status, url, number")
+        .eq("order_id", orderId).eq("kind", "invoice_receipt").maybeSingle();
+      if (!md || md.status !== "issued") return fail(req, "Issue the invoice-receipt in Morning first.");
+      if (!md.url) return fail(req, "Morning didn't give a link for this document. Send it from Morning itself.");
+      const nonce = crypto.randomUUID().replaceAll("-", "") + crypto.randomUUID().replaceAll("-", "");
+      await db.from("sync_nonces").insert({ nonce, purpose: `mdoc:${md.id}` });
+      const res = await fetch(EMAIL_HOOK, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ nonce }), signal: AbortSignal.timeout(8000) });
+      if (!res.ok) throw new Error("The email service didn't take the request. Please try again.");
+      return json(req, { ok: true, to: customer.email });
+    }
+
     return fail(req, "Unknown action.");
   } catch (err) {
     console.error(action, err);

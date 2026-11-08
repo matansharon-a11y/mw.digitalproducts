@@ -1190,6 +1190,26 @@ function morningLink(d) {
   if (d.status === "failed") return `<span class="mfail" title="${esc(d.error || "")}">${MKIND[d.kind]}: failed</span>`;
   return `<span class="meta">${MKIND[d.kind]}: sending…</span>`;
 }
+// an issued invoice-receipt can be emailed to the buyer (the work order is internal), 8 Nov 2026
+function emailBuyerBtn(d) {
+  if (!d || d.kind !== "invoice_receipt" || d.status !== "issued") return "";
+  return `<button class="btn btn--sm${d.emailed_at ? " btn--ghost" : ""}" type="button" data-memail="${d.order_id}">${d.emailed_at ? "Email again" : "Email to buyer"}</button>${d.emailed_at ? `<div class="meta">Emailed ${esc(dateTime(d.emailed_at))}${d.emailed_to ? ` to ${esc(d.emailed_to)}` : ""}</div>` : ""}`;
+}
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-memail]");
+  if (!b) return;
+  const id = b.dataset.memail;
+  const o = orderRows.find((x) => x.id === id) || morningRows.find((x) => x.order_id === id)?.orders;
+  if (!confirm(`Email the Morning invoice-receipt for order ${o?.order_number || ""} to the buyer${(o?.email || o?.customers?.email) ? ` (${o.email || o.customers.email})` : ""}?`)) return;
+  setBusy(b, true, "Sending…");
+  try {
+    const r = await adminDocs({ action: "morning_email", order_id: id });
+    toast(`Invoice-receipt emailed to ${r.to}.`);
+    setTimeout(() => (location.hash === "#morning" ? loadMorning() : loadOrderDocs()), 2500);
+  } catch (err) { toast(err.message, { type: "error", timeout: 8000 }); }
+  setBusy(b, false);
+});
+
 // the order's documents panel
 let docsOrder = null;
 function renderDocsPanel() {
@@ -1209,7 +1229,7 @@ function renderDocsPanel() {
       : `<span class="dchip dchip--muted">Sending…</span>`;
     const open = d?.status === "issued" && d.url ? `<a class="btn btn--sm btn--ghost" href="${esc(d.url)}" target="_blank" rel="noopener">Open PDF</a>`
       : d?.status === "preview" ? `<button class="btn btn--sm btn--ghost" type="button" data-mpreview="${d.id}">View preview</button>` : "";
-    return `<li class="drow"><span class="drow__name">${MKIND[kind]}</span>${state}<span class="drow__act">${open}</span>${d?.status === "failed" ? `<p class="meta drow__why">${esc(d.error || "")}</p>` : ""}</li>`;
+    return `<li class="drow"><span class="drow__name">${MKIND[kind]}</span>${state}<span class="drow__act">${open}${emailBuyerBtn(d)}</span>${d?.status === "failed" ? `<p class="meta drow__why">${esc(d.error || "")}</p>` : ""}</li>`;
   };
   let morning = "";
   if (r.test_mode) morning = `<p class="meta">Test orders never get Morning documents.</p>`;
@@ -1246,7 +1266,7 @@ $("#docs-close").addEventListener("click", () => $("#docs-dialog").close());
 async function loadMorningDocs(ids) {
   const [{ data: st }, { data }] = await Promise.all([
     supabase.from("morning_settings").select("mode").eq("id", 1).maybeSingle(),
-    ids.length ? supabase.from("morning_documents").select("id, order_id, kind, status, number, url, error").in("order_id", ids.slice(0, 300)) : Promise.resolve({ data: [] }),
+    ids.length ? supabase.from("morning_documents").select("id, order_id, kind, status, number, url, error, emailed_at, emailed_to").in("order_id", ids.slice(0, 300)) : Promise.resolve({ data: [] }),
   ]);
   morningMode = st?.mode ?? null;
   morningDocs = data || [];
@@ -1574,7 +1594,7 @@ const MSTATUS = { waiting: "Waiting", sending: "Sending…", preview: "Preview (
 async function loadMorning() {
   const [{ data: st, error }, { data: rows }] = await Promise.all([
     supabase.from("morning_settings").select("*").eq("id", 1).maybeSingle(),
-    supabase.from("morning_documents").select("id, order_id, kind, status, number, url, error, action, created_at, sent_at, issued_at, orders(order_number, status, total_cents, currency, customers(email, name))").order("created_at", { ascending: false }).limit(100),
+    supabase.from("morning_documents").select("id, order_id, kind, status, number, url, error, action, created_at, sent_at, issued_at, emailed_at, emailed_to, orders(order_number, status, total_cents, currency, customers(email, name))").order("created_at", { ascending: false }).limit(100),
   ]);
   if (error || !st) { $("#morning-docs").innerHTML = `<p class="meta">Couldn't load the Morning settings.</p>`; return; }
   morningMode = st.mode;
@@ -1589,7 +1609,7 @@ async function loadMorning() {
     if (!byOrder.has(d.order_id)) byOrder.set(d.order_id, { order: d.orders, docs: {} });
     byOrder.get(d.order_id).docs[d.kind] = d;
   }
-  const cell = (d) => (d ? `${morningLink(d)}<div class="meta">${esc(MSTATUS[d.status] || d.status)}</div>${d.status === "failed" ? `<div class="meta mfail__why">${esc(d.error || "")}</div>` : ""}` : `<span class="meta">Not yet</span>`);
+  const cell = (d) => (d ? `${morningLink(d)}<div class="meta">${esc(MSTATUS[d.status] || d.status)}</div>${emailBuyerBtn(d)}${d.status === "failed" ? `<div class="meta mfail__why">${esc(d.error || "")}</div>` : ""}` : `<span class="meta">Not yet</span>`);
   const latest = (g) => Object.values(g.docs).map((d) => d.issued_at || d.sent_at || d.created_at).sort().pop();
   $("#morning-docs").innerHTML = byOrder.size ? `<table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Invoice-receipt</th><th>Work order</th><th>Date</th></tr></thead><tbody>${[...byOrder].map(([id, g]) => `<tr data-order="${id}">
     <td>${esc(g.order?.order_number || "")}<div class="meta">${money(g.order?.total_cents || 0, g.order?.currency || "USD")}</div></td>

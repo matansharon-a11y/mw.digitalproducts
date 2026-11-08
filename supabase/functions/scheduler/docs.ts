@@ -66,3 +66,46 @@ export async function documentEmails(db: Db, ids: string[]) {
   await db.from("order_documents").update({ emailed_at: now, emailed_to: email }).in("id", [r.id, ...(inv ? [inv.id] : [])]);
   return [{ email, subject: m.subject, body_html: m.html }];
 }
+
+// A Morning invoice-receipt to the buyer (admin-docs "morning_email", 8 Nov 2026). Text: a draft for Matan's approval.
+export function morningDocEmail(lang: "en" | "he", name: string, orderNo: string, date: string, number: string, url: string) {
+  const hi = first(name);
+  const btn = (href: string, label: string) =>
+    `<a href="${esc(href)}" style="display:inline-block;margin:4px 0;padding:10px 18px;border-radius:20px;background:#9A6418;color:#fff;text-decoration:none">${label}</a>`;
+  if (lang === "he") {
+    return {
+      subject: `חשבונית מס קבלה ${number} להזמנה ${orderNo} מ-MWP`,
+      html: `<div dir="rtl" style="font-family:Heebo,Arial,sans-serif;font-size:15px;line-height:1.6;color:#1a1a1a;text-align:right">
+<p>${hi ? `היי ${hi},` : "היי,"}</p>
+<p>מצורפת חשבונית המס קבלה מספר ${esc(number)} להזמנה שלך מספר ${esc(orderNo)} מ-${esc(date)}.</p>
+<p>${btn(url, "להורדת החשבונית (PDF)")}</p>
+<p>שאלות? אנחנו כאן: <a href="${SUPPORT}">עזרה ותמיכה</a>.</p>
+<p>מתן | MW Photo Tours</p></div>`,
+    };
+  }
+  return {
+    subject: `Your MWP invoice-receipt ${number} (order ${orderNo})`,
+    html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1a1a1a">
+<p>${hi ? `Hi ${hi},` : "Hi,"}</p>
+<p>Here is tax invoice-receipt ${esc(number)} for your order ${esc(orderNo)} from ${esc(date)}.</p>
+<p>${btn(url, "Download your invoice-receipt (PDF)")}</p>
+<p>Questions? We're here: <a href="${SUPPORT}">Help and support</a>.</p>
+<p>Matan | MW Photo Tours</p></div>`,
+  };
+}
+
+export async function morningDocEmails(db: Db, id: string) {
+  if (!UUID.test(id ?? "")) return [];
+  const { data: d } = await db.from("morning_documents").select("id, order_id, kind, status, url, number, payload")
+    .eq("id", id).eq("kind", "invoice_receipt").eq("status", "issued").maybeSingle();
+  if (!d?.url) return [];
+  const { data: o } = await db.from("orders").select("order_number, created_at, customer_id, customers(email, name)").eq("id", d.order_id).maybeSingle();
+  const email = o?.customers?.email;
+  if (!email) return [];
+  // the same language as the document itself
+  const he = d.payload?.lang === "he" || (d.payload?.lang == null && await isHebrew(db, o.customer_id, email));
+  const date = new Date(o.created_at).toLocaleDateString(he ? "he-IL" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
+  const m = morningDocEmail(he ? "he" : "en", o.customers?.name ?? "", String(o.order_number ?? ""), date, String(d.number ?? ""), d.url);
+  await db.from("morning_documents").update({ emailed_at: new Date().toISOString(), emailed_to: email }).eq("id", d.id);
+  return [{ email, subject: m.subject, body_html: m.html }];
+}
