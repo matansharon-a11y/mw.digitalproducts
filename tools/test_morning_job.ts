@@ -163,5 +163,16 @@ ok(pl.income.length === 2 && pl.income[0].vatType === 1 && pl.income[0].price ==
 ok(sm.vat_cents === 879 && sm.total_cents === 8065 && sm.unmatched.length === 1, `payout: VAT $8.79, total $80.65, 1 unknown line (${JSON.stringify(sm)})`);
 ok(pl.payment[0].type === 4 && pl.payment[0].price === 80.65 && pl.payment[0].date === "2026-11-01", "payout: one bank transfer for the payout, on its date");
 
+// ---- 8. a waiting credit note goes out with the next run, even with per-buyer documents off, and cancels the original
+T.morning_settings[0].mode = "off";
+const inv = doc(A, "invoice_receipt");
+T.morning_documents.push({ id: "88888888-8888-8888-8888-888888888888", order_id: A, kind: "credit_note", status: "waiting", action: "create", linked_id: inv.id, attempts: 0 });
+await morning(db);
+const cn = T.morning_documents.find((d) => d.kind === "credit_note")!;
+// deno-lint-ignore no-explicit-any
+const cp = cn.payload as any;
+ok(cn.status === "sending" && cp.type === 330 && cp.linkedDocumentIds[0] === "m-320" && cp.linkType === "cancel" && cp.income.length === 1, "credit note: sent with the next run, linked to the original to cancel it");
+ok(!cp.client.emails?.length, "credit note: no email to the buyer");
+
 console.log(fails ? `\n${fails} FAILED` : "\nall passed");
 if (fails) Deno.exit(1);

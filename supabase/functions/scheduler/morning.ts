@@ -97,6 +97,14 @@ export function buildDoc(kind: "invoice_receipt" | "work_order", o: Order, s: Se
 const ORDER_COLS = "id, order_number, checkout_order_id, created_at, total_cents, currency, status, test_mode, customer_id, vat_rate, customers(email, name, country), order_items(products(slug, name, name_emphasis))";
 
 export async function morning(db: Db, onlyOrder = "") {
+  // payout invoices and credit notes waiting to go (whatever the per-buyer mode): one at a time, every run
+  if (!onlyOrder) {
+    const { data: waiting } = await db.from("morning_documents").select("id").in("kind", ["payout", "credit_note"])
+      .eq("status", "waiting").order("created_at").limit(5);
+    for (const w of waiting ?? []) {
+      try { await morningSend(db, w.id); } catch (err) { console.error("morning send", w.id, err); }
+    }
+  }
   const { data: s } = await db.from("morning_settings").select("*").eq("id", 1).maybeSingle();
   if (!s || s.mode === "off") return { skipped: "off" };
   if (!HOOK) return { skipped: "MAKE_MORNING_WEBHOOK_URL isn't set" };
