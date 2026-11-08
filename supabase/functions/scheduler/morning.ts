@@ -26,7 +26,7 @@ const MAX_AUTO_TRIES = 3;
 const LOST = 99;   // attempts value for a send whose answer never came back: no automatic retry
 
 // Product names on the documents. English: the shop's own names; Hebrew: the Hebrew site's names (MWP in Latin letters).
-const HE_NAMES: Record<string, string> = {
+export const HE_NAMES: Record<string, string> = {
   "mwp-lightroom-plugin": "התוסף ללייטרום קלאסיק של MWP (כולל הפריסטים)",
   "mwp-panel": "פאנל התוסף לפוטושופ של MWP",
   "mwp-presets": "הפריסטים של MWP",
