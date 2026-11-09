@@ -1,6 +1,6 @@
 // The after-purchase email (Jeinna, 8 Nov 2026, with Matan: "that is the email they should receive after purchasing").
-// About an hour after each paid order (personal copies are ready by then), one HTML email to the buyer, in Hebrew or
-// English: thanks, a short block per product bought with its install steps (only facts from the site's FAQs), My
+// A few minutes after each paid order, the shop's own "your files are ready" email (Lemon Squeezy's payment receipt comes
+// separately), in Hebrew or English: thanks, My downloads, 3 getting-started steps, a block per product bought with its install steps (only facts from the site's FAQs), My
 // downloads, and help by email to contact@. Sent by Make's "MWP Shop · Update emails" scenario (one-time code, purpose
 // checkin:<order ids>, then update_list hands the emails over). orders.checkin_sent_at keeps each order to one email.
 
@@ -44,15 +44,31 @@ const BLOCKS: Record<Part, { en: [string, string]; he: [string, string] }> = {
   },
 };
 const T = {
-  en: { subject: (p: string) => `How's it going with ${p}?`, hi: (n: string) => (n ? `Hi ${n},` : "Hi,"),
-        lead: (p: string) => `Thank you for buying ${p}. We wanted to check that everything works for you.`,
-        your: "Your files", btn: "Open My downloads", help_h: "Having trouble? Need help?",
+  en: { subject: (p: string) => `Your files are ready: ${p}`, hi: (n: string) => (n ? `Hi ${n},` : "Hi,"),
+        lead: (p: string) => `Thank you for buying ${p}! Your files are waiting for you in My downloads.`,
+        steps_h: "Getting started",
+        steps: [
+          "Open My downloads and sign in with the email you used at checkout.",
+          "Click Download. Your copy is made just for you, so if it says it's being prepared, give it a few minutes.",
+          "Install it with the steps below. The download has its own install guide too.",
+        ],
+        your: "How to install", btn: "Open My downloads",
+        receipt: "Your payment receipt comes in a separate email from Lemon Squeezy, our payment partner.",
+        help_h: "Having trouble? Need help?",
         help: `Write to us at <a href="mailto:${CONTACT}" style="color:${GOLD}">${CONTACT}</a>. A person replies within one business day.`,
         share: `Made a photo you love with it? We'd love to see it: tag <a href="${INSTAGRAM}" style="color:${GOLD}">@mw_phototours</a>.`,
         sign: "Matan | MW Photo Tours", foot: "You're getting this email because you bought from the MWP Shop." },
-  he: { subject: (p: string) => `איך הולך עם ${p}?`, hi: (n: string) => (n ? `היי ${n},` : "היי,"),
-        lead: (p: string) => `תודה שקניתם את ${p}. רצינו לוודא שהכול עובד אצלכם.`,
-        your: "הקבצים שלכם", btn: "לעמוד ההורדות שלי", help_h: "נתקלתם בבעיה? צריכים עזרה?",
+  he: { subject: (p: string) => `הקבצים שלכם מוכנים: ${p}`, hi: (n: string) => (n ? `היי ${n},` : "היי,"),
+        lead: (p: string) => `תודה שקניתם את ${p}! הקבצים שלכם מחכים לכם בעמוד ההורדות שלי.`,
+        steps_h: "איך מתחילים",
+        steps: [
+          "נכנסים לעמוד ההורדות שלי ומתחברים עם המייל שאיתו קניתם.",
+          "לוחצים על הורדה. העותק שלכם מוכן במיוחד בשבילכם, אז אם כתוב שהוא בהכנה, תנו לזה כמה דקות.",
+          "מתקינים לפי ההסבר כאן למטה. גם בתוך ההורדה יש מדריך התקנה.",
+        ],
+        your: "איך מתקינים", btn: "לעמוד ההורדות שלי",
+        receipt: "את הקבלה על התשלום תקבלו במייל נפרד מלמון סקוויזי, שותפת התשלומים שלנו.",
+        help_h: "נתקלתם בבעיה? צריכים עזרה?",
         help: `כתבו לנו ל-<a href="mailto:${CONTACT}" style="color:${GOLD}" dir="ltr">${CONTACT}</a>. אדם אמיתי עונה תוך יום עסקים.`,
         share: `יצאה לכם תמונה שאתם אוהבים? נשמח לראות: תייגו את <a href="${INSTAGRAM}" style="color:${GOLD}" dir="ltr">@mw_phototours</a>.`,
         sign: "מתן | MW Photo Tours", foot: "קיבלתם את המייל הזה כי קניתם בחנות של MWP." },
@@ -66,6 +82,8 @@ export function checkinEmail(lang: "en" | "he", name: string, product: string, p
   const rows = parts.map((p) => `<tr><td style="padding:14px 18px;border-top:1px solid ${LINE}">
 <p style="margin:0 0 4px;font-weight:700;color:${INK}">${BLOCKS[p][lang][0]}</p>
 <p style="margin:0;color:${MUTED}">${BLOCKS[p][lang][1]}</p></td></tr>`).join("");
+  const steps = t.steps.map((x, i) => `<tr><td width="34" valign="top" style="padding:4px 0"><span style="display:inline-block;width:24px;height:24px;line-height:24px;border-radius:12px;background:${DARK};color:#F4AF56;font-size:13px;font-weight:700;text-align:center">${i + 1}</span></td>
+<td style="padding:4px 0;color:${INK}">${x}</td></tr>`).join("");
   const html = `<!doctype html><html lang="${lang}" dir="${dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#F5F1EA">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F1EA"><tr><td align="center" style="padding:24px 12px">
@@ -74,9 +92,12 @@ export function checkinEmail(lang: "en" | "he", name: string, product: string, p
 <tr><td style="padding:28px 24px 8px">
 <p style="margin:0 0 14px">${t.hi(first)}</p>
 <p style="margin:0 0 20px">${t.lead(`<b>${esc(product)}</b>`)}</p>
+<p style="margin:0 0 20px;text-align:center"><a href="${ACCOUNT}${rtl ? "?lang=he" : ""}" style="display:inline-block;padding:13px 26px;border-radius:24px;background:${GOLD};color:#fff;text-decoration:none;font-weight:700">${t.btn}</a></p>
+<p style="margin:0 0 8px;font-weight:700">${t.steps_h}</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px">${steps}</table>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${LINE};border-radius:12px;overflow:hidden">
 <tr><td style="padding:12px 18px;background:#FBF8F3;font-weight:700;font-size:13px;letter-spacing:.04em;color:${GOLD}">${t.your}</td></tr>${rows}</table>
-<p style="margin:22px 0 6px;text-align:center"><a href="${ACCOUNT}${rtl ? "?lang=he" : ""}" style="display:inline-block;padding:12px 22px;border-radius:24px;background:${GOLD};color:#fff;text-decoration:none;font-weight:700">${t.btn}</a></p>
+<p style="margin:16px 0 6px;font-size:13px;color:${MUTED}">${t.receipt}</p>
 </td></tr>
 <tr><td style="padding:18px 24px 6px">
 <p style="margin:0 0 4px;font-weight:700">${t.help_h}</p>
@@ -91,10 +112,10 @@ export function checkinEmail(lang: "en" | "he", name: string, product: string, p
 
 const SINCE = "2026-11-04T00:00:00Z";   // the first real orders: the three from 4–7 Nov 2026 get it once too
 
-// every 15 minutes: orders paid at least an hour ago that haven't had it → hand Make a one-time code
+// every 5 minutes: orders paid at least 2 minutes ago (the webhook has given access by then) that haven't had it → hand Make a one-time code
 export async function checkins(db: Db, hook: (purpose: string) => Promise<boolean>) {
   const { data } = await db.from("orders").select("id").eq("status", "paid").eq("test_mode", false).is("checkin_sent_at", null)
-    .gte("created_at", SINCE).lte("created_at", new Date(Date.now() - 60 * 60 * 1000).toISOString())
+    .gte("created_at", SINCE).lte("created_at", new Date(Date.now() - 2 * 60 * 1000).toISOString())
     .order("created_at").limit(40);
   const ids = (data ?? []).map((o: { id: string }) => o.id);
   if (!ids.length) return { skipped: "nothing due" };
