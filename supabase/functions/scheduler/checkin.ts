@@ -107,7 +107,7 @@ export function checkinEmail(lang: "en" | "he", name: string, product: string, p
   return { subject: t.subject(product), html };
 }
 
-const SINCE = "2026-11-04T00:00:00Z";   // the first real orders: the three from 4–7 Nov 2026 get it once too
+const SINCE = "2026-11-09T06:50:00Z";   // only orders from 9 Nov 2026 on: existing buyers never get it again (Jeinna)
 
 // every 5 minutes: orders paid at least 2 minutes ago (the webhook has given access by then) that haven't had it → hand Make a one-time code
 export async function checkins(db: Db, hook: (purpose: string) => Promise<boolean>) {
