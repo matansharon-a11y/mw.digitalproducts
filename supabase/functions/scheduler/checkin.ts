@@ -1,5 +1,5 @@
 // The after-purchase email (Jeinna, 8 Nov 2026, with Matan: "that is the email they should receive after purchasing").
-// A few minutes after each paid order, the shop's own "your files are ready" email (Lemon Squeezy's payment receipt comes
+// A few minutes after each paid order, the shop's own "Download and install" email (Lemon Squeezy's payment receipt comes
 // separately), in Hebrew or English: thanks, My downloads, 3 getting-started steps, a block per product bought with its install steps (only facts from the site's FAQs), My
 // downloads, and help by email to contact@. Sent by Make's "MWP Shop · Update emails" scenario (one-time code, purpose
 // checkin:<order ids>, then update_list hands the emails over). orders.checkin_sent_at keeps each order to one email.
@@ -44,8 +44,8 @@ const BLOCKS: Record<Part, { en: [string, string]; he: [string, string] }> = {
   },
 };
 const T = {
-  en: { subject: (p: string) => `Your files are ready: ${p}`, hi: (n: string) => (n ? `Hi ${n},` : "Hi,"),
-        lead: (p: string) => `Thank you for buying ${p}! Your files are waiting for you in My downloads.`,
+  en: { subject: (p: string) => `Download and install: ${p}`, hi: (n: string) => (n ? `Hi ${n},` : "Hi,"),
+        lead: (p: string) => `Thank you for buying ${p}! Your payment receipt from Lemon Squeezy is in a separate email. This one is your guide to downloading and installing: your files are waiting in My downloads.`,
         steps_h: "Getting started",
         steps: [
           "Open My downloads and sign in with the email you used at checkout.",
@@ -53,13 +53,12 @@ const T = {
           "Install it with the steps below. The download has its own install guide too.",
         ],
         your: "How to install", btn: "Open My downloads",
-        receipt: "Your payment receipt comes in a separate email from Lemon Squeezy, our payment partner.",
         help_h: "Having trouble? Need help?",
         help: `Write to us at <a href="mailto:${CONTACT}" style="color:${GOLD}">${CONTACT}</a>. A person replies within one business day.`,
         share: `Made a photo you love with it? We'd love to see it: tag <a href="${INSTAGRAM}" style="color:${GOLD}">@mw_phototours</a>.`,
         sign: "Matan | MW Photo Tours", foot: "You're getting this email because you bought from the MWP Shop." },
-  he: { subject: (p: string) => `הקבצים שלכם מוכנים: ${p}`, hi: (n: string) => (n ? `היי ${n},` : "היי,"),
-        lead: (p: string) => `תודה שקניתם את ${p}! הקבצים שלכם מחכים לכם בעמוד ההורדות שלי.`,
+  he: { subject: (p: string) => `הורדה והתקנה: ${p}`, hi: (n: string) => (n ? `היי ${n},` : "היי,"),
+        lead: (p: string) => `תודה שקניתם את ${p}! את הקבלה על התשלום שלחה לכם למון סקוויזי במייל נפרד. המייל הזה הוא המדריך שלכם להורדה ולהתקנה: הקבצים מחכים לכם בעמוד ההורדות שלי.`,
         steps_h: "איך מתחילים",
         steps: [
           "נכנסים לעמוד ההורדות שלי ומתחברים עם המייל שאיתו קניתם.",
@@ -67,7 +66,6 @@ const T = {
           "מתקינים לפי ההסבר כאן למטה. גם בתוך ההורדה יש מדריך התקנה.",
         ],
         your: "איך מתקינים", btn: "לעמוד ההורדות שלי",
-        receipt: "את הקבלה על התשלום תקבלו במייל נפרד מלמון סקוויזי, שותפת התשלומים שלנו.",
         help_h: "נתקלתם בבעיה? צריכים עזרה?",
         help: `כתבו לנו ל-<a href="mailto:${CONTACT}" style="color:${GOLD}" dir="ltr">${CONTACT}</a>. אדם אמיתי עונה תוך יום עסקים.`,
         share: `יצאה לכם תמונה שאתם אוהבים? נשמח לראות: תייגו את <a href="${INSTAGRAM}" style="color:${GOLD}" dir="ltr">@mw_phototours</a>.`,
@@ -97,7 +95,6 @@ export function checkinEmail(lang: "en" | "he", name: string, product: string, p
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px">${steps}</table>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${LINE};border-radius:12px;overflow:hidden">
 <tr><td style="padding:12px 18px;background:#FBF8F3;font-weight:700;font-size:13px;letter-spacing:.04em;color:${GOLD}">${t.your}</td></tr>${rows}</table>
-<p style="margin:16px 0 6px;font-size:13px;color:${MUTED}">${t.receipt}</p>
 </td></tr>
 <tr><td style="padding:18px 24px 6px">
 <p style="margin:0 0 4px;font-weight:700">${t.help_h}</p>
