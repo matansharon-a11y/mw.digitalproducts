@@ -84,7 +84,7 @@ def save(slug, he, hebrew=False):
     return ("חוסכים " if hebrew else "Save ") + fmt(was - now, cur)
 
 
-SHOW_ILS = True   # the same switch as in assets/js/lib/prices.js and cart.js (Matan, 24 Oct 2026: shekels in Hebrew)
+SHOW_ILS = False   # dollars everywhere, Hebrew pages too (Jeinna, 10 Nov 2026). the same switch as in assets/js/lib/prices.js and cart.js (Matan, 24 Oct 2026: shekels in Hebrew)
 
 PRICE = re.compile(r'<span([^>]*\bdata-price="([a-z0-9-]+)"[^>]*)>(?:[^<]|<s class="sale-was">[^<]*</s>)*</span>')
 BLOCK = re.compile(r'<(section|article|div)\b[^>]*\bclass="[^"]*\bplan\b[^"]*"|<section\b')

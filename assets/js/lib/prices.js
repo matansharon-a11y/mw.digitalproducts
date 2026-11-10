@@ -9,10 +9,11 @@ import { isIsraeli } from "./vat.js";
 
 let rows = null;
 
-const SHOW_ILS = true;
+const SHOW_ILS = false;   // dollars everywhere, Hebrew pages too (Jeinna, 10 Nov 2026: the shekel price didn't match the dollar charge)
 // For Israeli visitors the prices include 18% VAT (vat.js; Matan, 6 Nov 2026), and every section with prices says so
 const ILS_NOTE = "המחירים כוללים מע״מ (18%) ומוצגים בשקלים. התשלום בקופה הוא בדולרים, והסכום בדולרים מופיע בעגלה לפני התשלום.";
 const VAT_NOTE = "Prices include 18% Israeli VAT.";
+const VAT_NOTE_HE = "המחירים בדולרים וכוללים מע״מ (18%).";
 const he = () => SHOW_ILS && document.documentElement.lang === "he";
 const fmt = (cents, cur) => {
   const n = (cents || 0) / 100;
@@ -51,7 +52,7 @@ function saveFor(el) {
 // One line at the end of every Hebrew section that shows prices: checkout charges dollars. Taken away again
 // when the page switches to English in place.
 function ilsNotes() {
-  const text = he() ? ILS_NOTE : isIsraeli() ? VAT_NOTE : "";
+  const text = he() ? ILS_NOTE : document.documentElement.lang === "he" ? VAT_NOTE_HE : isIsraeli() ? VAT_NOTE : "";
   document.querySelectorAll(".ils-note").forEach((n) => { if (n.textContent !== text) n.remove(); });
   if (!text) return;
   document.querySelectorAll("[data-price]:not([data-was])").forEach((el) => {

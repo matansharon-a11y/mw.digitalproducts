@@ -154,7 +154,7 @@ function money(cents, cur) {
 // The Hebrew site shows shekels (the prices set in the admin), but checkout still charges dollars (Matan, 24 Oct
 // 2026). So in Hebrew every row also shows the dollar amount charged, and the total says it plainly. The same
 // switch is in prices.js and tools/bake_prices.py.
-const SHOW_ILS = true;
+const SHOW_ILS = false;   // dollars everywhere, Hebrew pages too (Jeinna, 10 Nov 2026)
 // November Sale (sale.js): rows and totals use the sale price; the original is struck through beside it.
 const usdOf = (i) => salePrice(i.price_cents, i.slug, i.currency);
 const ilsOf = (i) => salePrice(i.price_ils_cents, i.slug, "ILS");
@@ -221,7 +221,7 @@ function render() {
   const usdTotal = list.reduce((s, i) => s + (usdOf(i) || 0), 0);
   const charge = ils && list.every((i) => i.price_cents != null)
     ? `<p class="cart-note cart-usd">המחירים כוללים מע״מ (18%) ומוצגים בשקלים. התשלום בקופה הוא בדולרים: ${money(usdTotal, list[0].currency)} בסך הכול.</p>`
-    : isIsraeli() && known ? `<p class="cart-note cart-usd">Prices include 18% Israeli VAT.</p>` : "";
+    : isIsraeli() && known ? `<p class="cart-note cart-usd">${T("Prices include 18% Israeli VAT.", "המחירים בדולרים וכוללים מע״מ (18%).")}</p>` : "";
   foot.innerHTML = `${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}${ready.length ? SAFE() : ""}`;
 }
 
@@ -413,8 +413,20 @@ async function goToCheckout(link) {
     if (isIsraeliPhone(prof?.phone)) localStorage.setItem("mwp_il", "1");
   } catch { /* no profile: the webhook still checks the phone */ }
   if (isIsraeli()) url.searchParams.set("checkout[custom][vat]", "il");
-  if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(url.toString());
-  else location.href = url.toString();
+  // Always in English (Jeinna, 10 Nov 2026): Lemon Squeezy's checkout has no Hebrew, and on its own it followed the
+  // browser, so a browser set to Hebrew got it in Bulgarian. The shop makes the checkout with English fixed (the
+  // checkout function, Lemon Squeezy's checkout_options.locale), with the same email, account, sale code and VAT
+  // mark. If that fails, the plain link above still works.
+  let go = url.toString();
+  if (slug) {
+    try {
+      const made = await api.createCheckout({ slug, discount_code: sale?.code || "", source: utm || "", vat: isIsraeli() ? "il" : "" });
+      const u = new URL(made?.url || "");
+      if (u.protocol === "https:" && (/(^|\.)lemonsqueezy\.com$/.test(u.hostname) || u.hostname === "checkout.mw.photography")) go = u.toString();
+    } catch { /* the plain link */ }
+  }
+  if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(go);
+  else location.href = go;
 }
 
 function refresh() {

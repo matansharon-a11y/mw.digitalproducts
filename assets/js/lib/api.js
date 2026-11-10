@@ -248,6 +248,8 @@ export const betaAccept = (token, lang) => callFunction("beta", { action: "accep
 export const betaStatus = () => callFunction("beta", { action: "status" });
 // The ambassador's signed-terms PDF: { url } when ready, { preparing } while it's being made (202).
 export const signedTerms = (receipt) => callFunction("beta", { action: "signed_terms", ...(receipt ? { receipt } : {}) }, { auth: !receipt });
+// The buyer's checkout, made by the shop in English (Lemon Squeezy has no Hebrew and showed Hebrew browsers Bulgarian): { url }
+export const createCheckout = (o) => callFunction("checkout", o, { auth: true });
 export const guideView = () => callFunction("guide-view", {}, { auth: true });
 export const testerLink = (email, lang) => callFunction("tester", { action: "link", email, lang });
 export const testerJoin = (form) => callFunction("tester", { action: "join", ...form });
