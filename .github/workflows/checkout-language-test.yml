@@ -10,7 +10,7 @@ jobs:
       - env:
           KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
         run: |
-          H=(-s -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json" -H "Authorization: Bearer $KEY")
+          H=(-s -g -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json" -H "Authorization: Bearer $KEY")
           pid=$(curl "${H[@]}" "https://api.lemonsqueezy.com/v1/products?filter[store_id]=502637&page[size]=100" | jq -r '.data[] | select(.attributes.name | test("Full Set"; "i")) | .id' | head -1)
           vid=$(curl "${H[@]}" "https://api.lemonsqueezy.com/v1/variants?filter[product_id]=$pid" | jq -r '.data[] | select(.attributes.status != "pending") | .id' | head -1)
           echo "product $pid variant $vid"
