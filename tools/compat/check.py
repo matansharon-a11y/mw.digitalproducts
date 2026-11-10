@@ -242,6 +242,25 @@ def main():
                 status = "open"
             patch("compat_alerts", {"status": status, "note": note, "updated_at": now}, id=f"eq.{a['id']}")
             print(f"  alert {a['app']} {a['version']}: {status}: {note}")
+        # "Needs testing" alerts (a new major Adobe version; Jeinna, 6 and 10 Nov 2026: no manual testing): settled when
+        # every check passed against that app's latest version, which is at least the alert's version. The admin then
+        # shows "Passed automatic checks", never "Tested OK" (that still needs a test in the app). A later failed check
+        # opens it again.
+        dep_apps = {d["app"] for d in deps if d["product_slug"] == slug}
+        for a in [a for a in alerts if a["product_slug"] == slug and a["level"] == "test" and a["app"] in dep_apps]:
+            cur = latest.get(a["app"], "0")
+            if rep.ok and vtuple(cur) >= vtuple(a["version"]):
+                note = (f"Automatic check (v{f['version']}): all {len(rep.items)} checks passed against {apps.get(a['app'], {}).get('name', a['app'])} {cur}. "
+                        "Not opened in the app itself: if a customer reports a problem, test it there.")
+                status = "reviewed"
+            elif not rep.ok:
+                note = f"Automatic check (v{f['version']}): some checks failed (see the product's checks). Needs a fix or a test in the app."
+                status = "open"
+            else:
+                continue
+            if a["status"] == status and (a.get("note") or "") == note: continue
+            patch("compat_alerts", {"status": status, "note": note, "updated_at": now}, id=f"eq.{a['id']}")
+            print(f"  alert {a['app']} {a['version']}: {status}: {note}")
     print("\nAll products passed." if not failed else "\nSome checks failed (see above).")
     sys.exit(1 if failed else 0)
 
