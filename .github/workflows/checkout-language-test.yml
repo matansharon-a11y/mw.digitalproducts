@@ -12,7 +12,7 @@ jobs:
         run: |
           H=(-s -g -H "Accept: application/vnd.api+json" -H "Content-Type: application/vnd.api+json" -H "Authorization: Bearer $KEY")
           pid=$(curl "${H[@]}" "https://api.lemonsqueezy.com/v1/products?filter[store_id]=502637&page[size]=100" | jq -r '.data[] | select(.attributes.name | test("Full Set"; "i")) | .id' | head -1)
-          vid=$(curl "${H[@]}" "https://api.lemonsqueezy.com/v1/variants?filter[product_id]=$pid" | jq -r '.data[] | select(.attributes.status != "pending") | .id' | head -1)
+          vid=$(curl "${H[@]}" "https://api.lemonsqueezy.com/v1/variants?filter[product_id]=$pid" | jq -r '.data[0].id // empty')
           echo "product $pid variant $vid"
           body=$(jq -n --arg v "$vid" '{data:{type:"checkouts",attributes:{checkout_options:{locale:"en",button_color:"#9A6418"}},relationships:{store:{data:{type:"stores",id:"502637"}},variant:{data:{type:"variants",id:$v}}}}}')
           curl "${H[@]}" -X POST https://api.lemonsqueezy.com/v1/checkouts -d "$body" | jq -r '"url: \(.data.attributes.url // "none")", "locale: \(.data.attributes.checkout_options.locale // "none")", (.errors // [] | tostring)'
