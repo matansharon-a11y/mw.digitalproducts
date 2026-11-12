@@ -60,6 +60,38 @@ const WHATS_NEW: Record<string, { en: News; he: News }> = {
       ],
     },
   },
+  "mwp-panel@2.3.0": {
+    en: {
+      lead: "Photoshop 2027 arrived this month with new tools, and version 2.3 of the panel puts them one click away.",
+      title: "New in 2.3",
+      items: [
+        "<b>Clarity.</b> A new effect in Edit, built on Photoshop's new Clarity layer. It works inside the area you picked, like every effect. Photoshop 2027.",
+        "<b>Dehaze.</b> A new effect in Edit for haze and dust in the air, built on Photoshop's new Dehaze layer. Photoshop 2027.",
+        "<b>Grain.</b> A new touch in Edit: Photoshop's new Grain layer over the whole photo, editable at any time. Photoshop 2027.",
+        "<b>Compare.</b> A new touch in Edit that opens Photoshop's Quick Compare, before and after side by side. Photoshop 2027.",
+        "<b>Relight (AI).</b> In Style › Light, a button that opens Photoshop's Relight. It is generative AI: it runs online and uses your Adobe generative credits, and many nature competitions do not allow it. Photoshop 2027.",
+      ],
+      after: [
+        "On older Photoshop versions the panel works as before. The new buttons appear only in Photoshop 2027.",
+        "To update: double-click the new .ccx file and let Creative Cloud install it over the old one, then restart Photoshop. Your licence stays as it is.",
+      ],
+    },
+    he: {
+      lead: "פוטושופ 2027 יצא החודש עם כלים חדשים, וגרסה 2.3 של הפאנל שמה אותם במרחק לחיצה אחת.",
+      title: "מה חדש ב-2.3",
+      items: [
+        "<b>Clarity.</b> אפקט חדש ב-Edit, על בסיס שכבת ה-Clarity החדשה של פוטושופ. הוא פועל בתוך האזור שבחרתם, כמו כל אפקט. פוטושופ 2027.",
+        "<b>Dehaze.</b> אפקט חדש ב-Edit לאובך ולאבק באוויר, על בסיס שכבת ה-Dehaze החדשה של פוטושופ. פוטושופ 2027.",
+        "<b>Grain.</b> כלי חדש ב-Edit: שכבת ה-Grain החדשה של פוטושופ על כל התמונה, ואפשר לשנות אותה בכל רגע. פוטושופ 2027.",
+        "<b>Compare.</b> כלי חדש ב-Edit שפותח את Quick Compare של פוטושופ, לפני ואחרי זה לצד זה. פוטושופ 2027.",
+        "<b>Relight (AI).</b> ב-Style › Light, כפתור שפותח את Relight של פוטושופ. זו בינה מלאכותית יוצרת: היא פועלת אונליין ומשתמשת בקרדיטים הגנרטיביים שלכם ב-Adobe, והרבה תחרויות צילום טבע לא מתירות אותה. פוטושופ 2027.",
+      ],
+      after: [
+        "בגרסאות ישנות יותר של פוטושופ הפאנל עובד כמו קודם. הכפתורים החדשים מופיעים רק בפוטושופ 2027.",
+        "כדי לעדכן: לוחצים פעמיים על קובץ ה-ccx החדש ונותנים ל-Creative Cloud להתקין אותו מעל הישן, ואז מפעילים מחדש את פוטושופ. הרישיון נשאר כמו שהוא.",
+      ],
+    },
+  },
 };
 
 function news(lang: "en" | "he", slug: string, version: string) {
