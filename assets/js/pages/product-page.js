@@ -170,6 +170,8 @@ const PW_EFFECT = {
   Glow: { filter: "blur(10px) brightness(1.35)", blend: "screen" },
   Blur: { filter: "blur(5px)" },
   Sharpen: { filter: "contrast(1.25) brightness(1.04)" },
+  Clarity: { filter: "contrast(1.22) saturate(1.06)" },
+  Dehaze: { filter: "contrast(1.16) saturate(1.22) brightness(.95)" },
 };
 
 // an area is a CSS gradient or a mask image (url(…), the photo's own cut-out, stretched over the photo)
