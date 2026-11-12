@@ -80,6 +80,31 @@ jobs:
             echo "ok=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Keys still valid
+        # Jeinna, 12 Nov 2026: a GitHub key expired unnoticed. Every deploy checks the keys the shop's server uses (never
+        # printing them): the GitHub key for personal copies (works, can start jobs here, expiry date) and the Lemon
+        # Squeezy key. A key that fails, or expires within 30 days, shows as a warning on the run.
+        env:
+          PERSONALIZE_TOKEN: ${{ secrets.PERSONALIZE_TOKEN }}
+          LEMONSQUEEZY_API_KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
+        run: |
+          if [ -n "$PERSONALIZE_TOKEN" ]; then
+            code=$(curl -s -D /tmp/h -o /tmp/r -w "%{http_code}" -H "Authorization: Bearer $PERSONALIZE_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY")
+            push=$(jq -r '.permissions.push // false' /tmp/r 2>/dev/null)
+            exp=$(grep -i '^github-authentication-token-expiration:' /tmp/h | cut -d' ' -f2- | tr -d '\r')
+            echo "PERSONALIZE_TOKEN: HTTP $code, can start jobs: $push, expires: ${exp:-never}"
+            if [ "$code" != 200 ] || [ "$push" != true ]; then echo "::warning title=PERSONALIZE_TOKEN::The GitHub key can't start jobs here (HTTP $code). Personal copies fall back to the hourly run."; fi
+            if [ -n "$exp" ]; then
+              days=$(( ( $(date -d "$exp" +%s) - $(date +%s) ) / 86400 ))
+              [ "$days" -lt 30 ] && echo "::warning title=PERSONALIZE_TOKEN expires in $days days::Make a new one and update the PERSONALIZE_TOKEN secret."
+            fi
+          fi
+          if [ -n "$LEMONSQUEEZY_API_KEY" ]; then
+            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Accept: application/vnd.api+json" -H "Authorization: Bearer $LEMONSQUEEZY_API_KEY" https://api.lemonsqueezy.com/v1/users/me)
+            echo "LEMONSQUEEZY_API_KEY: HTTP $code"
+            [ "$code" = 200 ] || echo "::warning title=LEMONSQUEEZY_API_KEY::Lemon Squeezy refused the key (HTTP $code): English checkout, missed-orders check and countries stop working."
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         if: steps.ready.outputs.ok == 'true'
 

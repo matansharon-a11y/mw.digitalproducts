@@ -48,7 +48,9 @@ jobs:
           echo "SUPABASE_URL=https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_ENV"
       - name: Tools
         run: |
-          sudo apt-get install -y -qq lua5.1 >/dev/null
+          # Ubuntu's download site sometimes doesn't answer (11 Nov 2026): refresh the list and try three times
+          for i in 1 2 3; do sudo apt-get update -qq >/dev/null 2>&1; sudo apt-get install -y -qq lua5.1 >/dev/null && break; sleep 15; done
+          command -v lua5.1 >/dev/null
           pip install -q requests
       - name: Inspect
         if: ${{ inputs.inspect }}
