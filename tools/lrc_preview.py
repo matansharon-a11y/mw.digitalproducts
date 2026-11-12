@@ -51,7 +51,8 @@ SEP = '<hr class="lw-sep">'
 LOOKS = [("Classic", [("bw", "B&W"), ("moody", "Moody"), ("matte", "Matte"), ("clean", "Clean"), ("rich", "Rich color")]),
          ("Time of day", [("golden", "Golden"), ("bluehour", "Blue hour"), ("night", "Day to night"), ("dusk", "Dusk")]),
          ("Place", [("savanna", "Savanna"), ("forest", "Forest")]),
-         ("Season", [("fall", "Fall foliage"), ("winter", "Winter cool"), ("spring", "Spring fresh")])]
+         ("Season", [("fall", "Fall foliage"), ("winter", "Winter cool"), ("spring", "Spring fresh")]),
+         ("Glow", [("softglow", "Soft glow"), ("mist", "Morning mist"), ("backlight", "Backlight")])]   # plugin 1.5, Lightroom Classic 16
 
 
 def panes():
@@ -67,7 +68,8 @@ def panes():
                 + note("See and search these in Library › Metadata › MWP wildlife."))
     steps = [("Neutral color", "Set white balance"), ("Light", "Balance the light"), ("The animal", "Subject · Pop"),
              ("The sky", "Sky · Darken"), ("The background", "Background · Darken"), ("A look", "Go to Looks")]
-    expedition = ('<div class="lw-steps">' + "".join(f'<span class="lw-step">{i}  {esc(t)}</span>{btn(b)}' for i, (t, b) in enumerate(steps, 1)) + "</div>"
+    expedition = (row('<span class="lw-txt">Before step 1</span>', btn("Denoise"), btn("Remove reflections"))   # plugin 1.5
+                  + '<div class="lw-steps">' + "".join(f'<span class="lw-step">{i}  {esc(t)}</span>{btn(b)}' for i, (t, b) in enumerate(steps, 1)) + "</div>"
                   + note("Top to bottom. Skip what the photo does not need. Hover a step for its tip."))
     cats = "".join(f'<option{" selected" if k == 0 else ""}>{esc(c)}</option>' for k, (c, _) in enumerate(LOOKS))
     tiles = "".join(f'<span class="lw-look" data-cat="{esc(c)}"{"" if c == "Classic" else " hidden"}><img src="/assets/pages/img/lrc/look_{key}.png" alt="" width="80" height="50" loading="lazy">{btn(t, "sm")}</span>'
@@ -75,7 +77,7 @@ def panes():
     looks = (row(f'<select class="lw-menu lw-select" data-lrc-cat aria-label="Look category">{cats}</select>', slider("", 80, 0, 100, wide=True))
              + f'<div class="lw-looks">{tiles}</div>'
              + row(btn("Remove look"), menu("My looks"), btn("Apply"), btn("Save…")))
-    edit = (grid([radio(t, t == "Subject") for t in ("Subject", "Sky", "Background", "People", "Whole photo")], 3)
+    edit = (grid([radio(t, t == "Subject") for t in ("Subject", "Sky", "Background", "People", "Depth", "Whole photo")], 3)
             + grid([btn(t) for t in ("Pop", "Brighten", "Darken", "Warm", "Cool", "Glow", "Soften", "Sharpen")], 4)
             + row(slider("Strength", 60, 0, 100, wide=True))
             + row(btn("Undo last effect"), note("Denoise first. Masks made before Denoise: Masks panel › Update."))
