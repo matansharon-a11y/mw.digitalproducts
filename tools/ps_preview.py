@@ -37,8 +37,8 @@ def btn(t, effect=False):
 
 
 COLORS = [("Reds", "#e2483d"), ("Yellows", "#e8c22c"), ("Greens", "#43a85a"), ("Cyans", "#3cb6c8"), ("Blues", "#3d6fe0"), ("Magentas", "#c74fc0")]
-EFFECTS = ["Pop", "Brighten", "Darken", "Warm", "Cool", "Glow", "Blur", "Sharpen"]
-TOUCHES = ["Dodge & Burn", "Vignette", "Stamp", "Camera Raw"]
+EFFECTS = ["Pop", "Brighten", "Darken", "Warm", "Cool", "Glow", "Blur", "Sharpen", "Clarity", "Dehaze"]   # last two: panel 2.3, Photoshop 2027
+TOUCHES = ["Dodge & Burn", "Vignette", "Stamp", "Camera Raw", "Grain", "Compare"]   # last two: panel 2.3, Photoshop 2027
 # Prepare, Style and Export: what each tab holds, from the page's "What's inside" cards
 TABS = {
     "Prepare": ["Crop around the animal", "Straighten", "Find and erase dust", "Denoise", "Neutral color in one tap"],
