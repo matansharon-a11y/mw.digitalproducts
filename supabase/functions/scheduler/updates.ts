@@ -20,6 +20,57 @@ const NAMES: Record<string, [string, string]> = {
   "mwp-field-guides": ["MWP Field Guides", "מדריכי השטח של MWP"],
 };
 
+// What is new in a version, shown in its update email. Keyed "<slug>@<version>"; a version without an entry gets the
+// plain email. Trusted text written here (it may hold <b>), approved by Matan (plugin 1.5.0: 12 Nov 2026).
+type News = { lead: string; title: string; items: string[]; after: string[] };
+const WHATS_NEW: Record<string, { en: News; he: News }> = {
+  "mwp-lightroom-plugin@1.5.0": {
+    en: {
+      lead: "Lightroom Classic 16 arrived this month with new tools, and version 1.5 of the plugin puts them one click away.",
+      title: "New in 1.5",
+      items: [
+        "<b>Glow looks.</b> A new Glow category in Looks: Soft glow, Morning mist and Backlight, built on Lightroom's new Glow. Strength and Remove look work as with every look. Lightroom Classic 16.",
+        "<b>Edit by distance.</b> A new Depth target in Edit. Lightroom masks the photo by distance, and you choose near or far in the Masks panel. Lightroom Classic 16.",
+        "<b>Denoise from the panel.</b> One button in Expedition starts Lightroom's Denoise before step 1. Raw files, Lightroom Classic 15.3 or newer.",
+        "<b>Remove reflections.</b> For photos taken through hide glass or a vehicle window. Raw files, Lightroom Classic 15.3 or newer.",
+        "<b>Glow on the whole photo.</b> The Glow effect in Edit now uses Lightroom's own Glow on Lightroom Classic 16.",
+        "<b>Looks that answer back.</b> If Lightroom does not apply a look, the panel now tells you why.",
+        "<b>My looks keeps Glow.</b> Saved looks now include it.",
+      ],
+      after: [
+        "On Lightroom Classic 13, 14 and 15 the plugin works as before. New buttons appear only where your Lightroom supports them.",
+        "To update: replace the old &quot;MWP-Panel.lrplugin&quot; folder with the new one, then in Lightroom choose File › Plug-in Manager › Reload Plug-in.",
+      ],
+    },
+    he: {
+      lead: "לייטרום קלאסיק 16 יצא החודש עם כלים חדשים, וגרסה 1.5 של התוסף שמה אותם במרחק לחיצה אחת.",
+      title: "מה חדש ב-1.5",
+      items: [
+        "<b>לוקים של Glow.</b> קטגוריה חדשה ב-Looks: Soft glow, Morning mist ו-Backlight, על בסיס ה-Glow החדש של לייטרום. Strength ו-Remove look עובדים כמו בכל לוק. לייטרום קלאסיק 16.",
+        "<b>עריכה לפי מרחק.</b> יעד חדש ב-Edit בשם Depth. לייטרום יוצר מסכה לפי מרחק, ואתם בוחרים קרוב או רחוק בחלונית המסכות. לייטרום קלאסיק 16.",
+        "<b>Denoise מתוך הפאנל.</b> כפתור אחד ב-Expedition מפעיל את ה-Denoise של לייטרום לפני שלב 1. קובצי RAW, לייטרום קלאסיק 15.3 ומעלה.",
+        "<b>הסרת השתקפויות.</b> לתמונות שצולמו דרך זכוכית של מסתור או חלון של רכב. קובצי RAW, לייטרום קלאסיק 15.3 ומעלה.",
+        "<b>Glow על כל התמונה.</b> האפקט Glow ב-Edit משתמש עכשיו ב-Glow של לייטרום עצמו, בלייטרום קלאסיק 16.",
+        "<b>לוקים שמסבירים את עצמם.</b> אם לייטרום לא החיל לוק, הפאנל כותב עכשיו למה.",
+        "<b>My looks שומר גם Glow.</b> לוקים שמורים כוללים אותו.",
+      ],
+      after: [
+        "בלייטרום קלאסיק 13, 14 ו-15 התוסף עובד כמו קודם. כפתורים חדשים מופיעים רק במקום שבו הלייטרום שלכם תומך בהם.",
+        "כדי לעדכן: מחליפים את התיקייה הישנה &quot;MWP-Panel.lrplugin&quot; בחדשה, ואז בלייטרום בוחרים File › Plug-in Manager › Reload Plug-in.",
+      ],
+    },
+  },
+};
+
+function news(lang: "en" | "he", slug: string, version: string) {
+  const n = WHATS_NEW[`${slug}@${version.trim()}`]?.[lang];
+  if (!n) return { lead: "", list: "" };
+  return {
+    lead: `<p>${n.lead}</p>`,
+    list: `<p><b>${n.title}</b></p><ul>${n.items.map((i) => `<li>${i}</li>`).join("")}</ul>${n.after.map((a) => `<p>${a}</p>`).join("")}`,
+  };
+}
+
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 const first = (name: string) => esc(name.trim().split(/\s+/)[0] || "");
 
@@ -32,13 +83,14 @@ function wrap(lang: "en" | "he", inner: string) {
 export function updateEmail(lang: "en" | "he", name: string, slug: string, fallback: string, version: string) {
   const [en, he] = NAMES[slug] ?? [fallback, fallback];
   const v = esc(version);
+  const nw = news(lang, slug, version);
   if (lang === "he") {
     const hi = first(name) ? `היי ${first(name)},` : "היי,";
     return {
       subject: `גרסה חדשה של ${he}`,
       html: wrap("he", `<p>${hi}</p>
-<p>יצאה גרסה חדשה של ${esc(he)}: גרסה ${v}.</p>
-<p>כמו כל העדכונים, היא בחינם. נכנסים ל<a href="${ACCOUNT}?lang=he">הורדות שלי</a> עם המייל הזה ומורידים אותה משם.</p>
+${nw.lead}<p>יצאה גרסה חדשה של ${esc(he)}: גרסה ${v}.</p>
+${nw.list}<p>כמו כל העדכונים, היא בחינם. נכנסים ל<a href="${ACCOUNT}?lang=he">הורדות שלי</a> עם המייל הזה ומורידים אותה משם.</p>
 <p>שאלות? אנחנו כאן: <a href="${SUPPORT}?lang=he">עזרה ותמיכה</a>.</p>
 <p>מתן | MW Photo Tours</p>`),
     };
@@ -47,8 +99,8 @@ export function updateEmail(lang: "en" | "he", name: string, slug: string, fallb
   return {
     subject: `A new version of ${en} is ready`,
     html: wrap("en", `<p>${first(name) ? `Hi ${first(name)},` : "Hi,"}</p>
-<p>${esc(cap)} has a new version: ${v}.</p>
-<p>Like every update, it's free. Sign in to <a href="${ACCOUNT}">My downloads</a> with this email and download it there.</p>
+${nw.lead}<p>${esc(cap)} has a new version: ${v}.</p>
+${nw.list}<p>Like every update, it's free. Sign in to <a href="${ACCOUNT}">My downloads</a> with this email and download it there.</p>
 <p>Questions? We're here: <a href="${SUPPORT}">Help and support</a>.</p>
 <p>Matan | MW Photo Tours</p>`),
   };
