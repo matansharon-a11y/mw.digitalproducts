@@ -183,7 +183,7 @@
     "en": [
       {
         "q": "What exactly do I get?",
-        "a": "All four guides, to read online in English and Hebrew. Each guide has one-page lessons with a photo, a drawing and a short explanation, plus tools and diagrams, a cheat sheet, drills and a checklist. They open on any computer, tablet or phone."
+        "a": "All four guides, in English or Hebrew: you choose one language. Each guide has one-page lessons with a photo, a drawing and a short explanation, plus tools and diagrams, a cheat sheet, drills and a checklist. They open on any computer, tablet or phone."
       },
       {
         "q": "Who are the guides for?",
@@ -191,7 +191,7 @@
       },
       {
         "q": "Can I read them on my iPad or phone?",
-        "a": "Yes. You read the guides online in your browser, on any device: Mac, Windows, iPad, iPhone and Android, with full screen and zoom. Your account opens them on up to 2 devices at a time, and you can swap a device in My downloads."
+        "a": "Yes. The guides are PDFs, so they open on any device: Mac, Windows, iPad, iPhone and Android, in any PDF reader."
       },
       {
         "q": "Do I need a particular camera or gear?",
@@ -203,21 +203,21 @@
       },
       {
         "q": "Can I buy just one guide?",
-        "a": "Yes. Each guide is also sold on its own, to read online in English and Hebrew. All four together cost less than buying them one by one. If you already have all four, they're all in My downloads."
+        "a": "Yes. Each guide is also sold on its own, in the language you choose, as your own personal copy. All four together cost less than buying them one by one. If you already have all four, they're all in My downloads."
       },
       {
-        "q": "How do I read the guides?",
-        "a": "Right after payment they're in My downloads, in your MWP account: click Read online. They're read online only, with your name on every page, and there's no file to download."
+        "q": "How do I get the files?",
+        "a": "Your purchased files will be available in the My downloads section."
       },
       {
-        "q": "What is the refund policy, and how can I use the guides?",
-        "a": "If the guides don't work for you, write to support within 14 days of purchase. We'll help, and if we can't, we'll refund you. The guides are for your own use, on up to 2 of your own devices: please don't share your account or pass the guides on. The full terms are on our Terms page."
+        "q": "What is the refund policy, and how can I use the files?",
+        "a": "If the guides don't work for you, write to support within 14 days of purchase. We'll help, and if we can't, we'll refund you. The files are for your own use, on up to 2 of your own devices: please don't share, resell or give them away. The full terms are on our Terms page."
       }
     ],
     "he": [
       {
         "q": "מה בדיוק מקבלים?",
-        "a": "ארבעת המדריכים, לקריאה אונליין בעברית ובאנגלית. בכל מדריך שיעורים של עמוד אחד עם תמונה, שרטוט והסבר קצר, ובנוסף כלים ודיאגרמות, דף סיכום, תרגילים וצ׳קליסט. נפתחים בכל מחשב, טאבלט או טלפון."
+        "a": "ארבעת המדריכים, בעברית או באנגלית: בוחרים שפה אחת. בכל מדריך שיעורים של עמוד אחד עם תמונה, שרטוט והסבר קצר, ובנוסף כלים ודיאגרמות, דף סיכום, תרגילים וצ׳קליסט. נפתחים בכל מחשב, טאבלט או טלפון."
       },
       {
         "q": "למי המדריכים מתאימים?",
@@ -225,7 +225,7 @@
       },
       {
         "q": "אפשר לקרוא אותם באייפד או בטלפון?",
-        "a": "כן. קוראים את המדריכים אונליין בדפדפן, בכל מכשיר: מק, ווינדוס, אייפד, אייפון ואנדרואיד, עם מסך מלא וזום. החשבון שלכם פותח אותם בעד שני מכשירים בו־זמנית, ואפשר להחליף מכשיר בעמוד ההורדות שלי."
+        "a": "כן. המדריכים הם קובצי PDF, אז הם נפתחים בכל מכשיר: Mac, Windows, iPad, iPhone ואנדרואיד, בכל קורא PDF."
       },
       {
         "q": "צריך מצלמה או ציוד מסוים?",
@@ -237,15 +237,15 @@
       },
       {
         "q": "אפשר לקנות מדריך אחד?",
-        "a": "כן. כל מדריך נמכר גם בנפרד, לקריאה אונליין בעברית ובאנגלית. ארבעתם יחד עולים פחות מאשר לקנות אותם אחד אחד. אם כל הארבעה כבר אצלכם, כולם מחכים בעמוד ההורדות שלי."
+        "a": "כן. כל מדריך נמכר גם בנפרד, בשפה שבוחרים, כעותק אישי שלכם. ארבעתם יחד עולים פחות מאשר לקנות אותם אחד אחד. אם כל הארבעה כבר אצלכם, כולם מחכים בעמוד ההורדות שלי."
       },
       {
-        "q": "איך קוראים את המדריכים?",
-        "a": "מיד אחרי התשלום הם מחכים בעמוד ההורדות שלי, בחשבון MWP שלכם: לוחצים על קריאה אונליין. הקריאה אונליין בלבד, עם השם שלכם על כל עמוד, ואין קובץ להורדה."
+        "q": "איך מקבלים את הקבצים?",
+        "a": "הקבצים שקניתם יחכו לכם בעמוד ההורדות שלי."
       },
       {
-        "q": "מה מדיניות ההחזרים והשימוש במדריכים?",
-        "a": "אם המדריכים לא מתאימים לכם, כתבו לתמיכה תוך 14 יום מהרכישה. נעזור, ואם לא נצליח, נחזיר לכם את הכסף. המדריכים לשימוש שלכם בלבד, בעד 2 מכשירים שלכם: אין לשתף את החשבון או להעביר את המדריכים הלאה. התנאים המלאים בעמוד התנאים."
+        "q": "מה מדיניות ההחזרים והשימוש בקבצים?",
+        "a": "אם המדריכים לא מתאימים לכם, כתבו לתמיכה תוך 14 יום מהרכישה. נעזור, ואם לא נצליח, נחזיר לכם את הכסף. הקבצים לשימוש שלכם בלבד, בעד 2 מכשירים שלכם: אין לשתף, למכור או להעביר אותם. התנאים המלאים בעמוד התנאים."
       }
     ]
   },

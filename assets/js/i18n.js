@@ -959,7 +959,7 @@ const HE = {
   "Drag the handle to compare.": "גררו את הידית כדי להשוות.",
   "Shoot with the guides.": "קונים יחד,",
   "Finish with the tools.": "משלמים פחות.",
-  "MWP Field Guides teach what happens before the click: composition, colour, light and planning, in 4 PDF guides in English or Hebrew. The presets and the Panel carry it on into the edit, in the same look.": "מדריכי השטח של MWP מלמדים מה קורה לפני הקליק: קומפוזיציה, צבע, אור ותכנון, ב-4 מדריכים לקריאה אונליין, בעברית או באנגלית. הפריסטים והתוסף ממשיכים מאותה נקודה אל העריכה, באותו מראה.",
+  "MWP Field Guides teach what happens before the click: composition, colour, light and planning, in 4 PDF guides in English or Hebrew. The presets and the Panel carry it on into the edit, in the same look.": "מדריכי השטח של MWP מלמדים מה קורה לפני הקליק: קומפוזיציה, צבע, אור ותכנון, ב-4 מדריכי PDF בעברית או באנגלית. הפריסטים והתוסף ממשיכים מאותה נקודה אל העריכה, באותו מראה.",
   "Edit in Lightroom": "עורכים בלייטרום",
   "Learn it in the field": "לומדים בשטח",
   "All 4 PDF guides, 137 lessons": "כל 4 המדריכים, 137 שיעורים",

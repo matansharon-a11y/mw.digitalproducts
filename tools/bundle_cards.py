@@ -25,7 +25,7 @@ ITEMS = {
            '<path d="m12 3.5 8.5 4.5-8.5 4.5L3.5 8z"/><path d="m3.5 12 8.5 4.5 8.5-4.5M3.5 16l8.5 4.5 8.5-4.5"/>'),
     "pr": ("MWP Presets", "50 presets and 33 LUTs",
            '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v8.5l7.4 4.2M12 12l-7.4 4.2"/>'),
-    "fg": ("MWP Field Guides", "4 guides, 137 lessons",
+    "fg": ("MWP Field Guides", "4 PDF guides, 137 lessons",
            '<path d="M12 6.5c-2-1.6-5-2-8.5-1.6v13c3.5-.4 6.5 0 8.5 1.6 2-1.6 5-2 8.5-1.6v-13C17 4.5 14 4.9 12 6.5Z"/><path d="M12 6.5v13"/>'),
 }
 ALT = {"lr": "Lightroom Classic plugin window on a laptop", "ps": "MWP Photoshop Plugin Panel in Photoshop",

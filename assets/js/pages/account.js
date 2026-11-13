@@ -20,7 +20,7 @@ const COVERS = {
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"], // lioness: face
   "mwp-field-guides-sample": ["assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122-1200.webp", "50% 40%"],   // as in the pop-up
 };
-const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin panel", guide: "Online field guides", bundle: "Bundle" };
+const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin panel", guide: "PDF field guides", bundle: "Bundle" };
 const SLUG_TAGS = { "mwp-lightroom-plugin": "Lightroom Classic plugin",   // a plugin that isn't the Photoshop panel
                     "mwp-field-guides-sample": "Free sample" };            // the sign-up gift (gift.js)
 const SAMPLE = "mwp-field-guides-sample";

@@ -19,7 +19,7 @@ const COVERS = {
   "mwp-panel": ["assets/pages/img/8f730b9bb76b93ca707cae719a309479.jpg", "50% 40%"],
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"],
 };
-const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin", guide: "Online field guides" };
+const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin", guide: "PDF field guides" };
 const DL = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
 
 function show(id) { ["t-out", "t-no", "t-in"].forEach((x) => { $(x).hidden = x !== id; }); }
