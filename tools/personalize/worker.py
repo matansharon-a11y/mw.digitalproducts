@@ -265,6 +265,8 @@ def guide_views():
         gv = p.get("guide_views"); gv = (gv[0] if isinstance(gv, list) and gv else gv) or {}
         # done already: this version, with each guide's language known (English or Hebrew pages)
         if not pf.get("path") or (gv.get("version") == pf["version"] and all("lang" in g and g.get("titled") and g.get("hd") and "key" in g for g in gv.get("guides") or [{}])):
+            keys = ", ".join(f"{g.get('key')}/{g.get('lang')}" for g in gv.get("guides") or [])
+            print(f"Guides to read online: {p['slug']} {gv.get('version')} up to date ({keys})", flush=True)
             continue
         print(f"Rendering {p['slug']} {pf['version']} for reading online", flush=True)
         old = gv.get("version") if gv.get("version") != pf["version"] else None   # same version: pages are replaced in place
