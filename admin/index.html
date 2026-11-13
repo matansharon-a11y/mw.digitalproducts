@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="admin.css">
+  <!-- A reload with a saved sign-in shows "Opening the admin…" from the first frame, never the sign-in form (Jeinna,
+       13 Nov 2026: the form flashed for a few seconds while admin.js loaded). admin.js takes the class off when there's
+       no session after all, or when something needs the form (wrong account, server error). -->
+  <script>try{if(Object.keys(localStorage).some(function(k){return /^sb-.+-auth-token$/.test(k)}))document.documentElement.classList.add("admin-resume")}catch(e){}</script>
 </head>
 <body class="admin">
 

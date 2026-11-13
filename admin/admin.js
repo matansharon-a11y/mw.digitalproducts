@@ -23,6 +23,7 @@ async function boot() {
   if (!IS_CONFIGURED) {
     $("#gate-msg").textContent = "Add the Supabase URL and anon key in assets/js/config.js first.";
     $("#gate-form").hidden = true;
+    document.documentElement.classList.remove("admin-resume");
     return;
   }
   // A reload keeps you signed in (Jeinna, 7 Nov 2026): while the saved session is checked the page says so (the sign-in
@@ -36,6 +37,7 @@ async function boot() {
     $("#gate-msg").textContent = "Couldn't reach the server. Please reload the page.";
   } finally {
     gate.classList.remove("is-checking");
+    document.documentElement.classList.remove("admin-resume");   // set by index.html when a session was saved
   }
 }
 
