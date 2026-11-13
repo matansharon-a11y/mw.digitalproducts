@@ -42,6 +42,7 @@ import { compat } from "./compat.ts";
 import { morning, morningList, morningResult, morningSend } from "./morning.ts";
 import { lsCustomerCountry } from "../_shared/lscountry.ts";
 import { checkins } from "./checkin.ts";
+import { payoutReminder } from "./payout_reminder.ts";
 
 const SITE = Deno.env.get("SITE_URL") ?? "https://shop.mw.photography";
 const UUID_RE = /^[0-9a-f-]{36}$/i;
@@ -101,7 +102,8 @@ Deno.serve(async (req) => {
       case "applications": return reply(await applications(db, SELF));
       case "customer_added": return reply(await customerAdded(db, String(body.customer_id ?? "")));
       case "compat": return reply(await compat(db, body.manual === true, (purpose) => emailHook(db, purpose)));
-      case "checkins": return reply(await checkins(db, (purpose) => emailHook(db, purpose)));
+      case "payout_reminder": return reply(await payoutReminder(db, (purpose) => emailHook(db, purpose)));
+    case "checkins": return reply(await checkins(db, (purpose) => emailHook(db, purpose)));
       case "morning_send": return reply(await morningSend(db, String(body.id ?? "")));
       case "morning": return reply(await morning(db, UUID_RE.test(String(body.order_id ?? "")) ? String(body.order_id) : ""));
       case "update_emails": return reply(await updateEmails(db, String(body.notice_id ?? "")));
