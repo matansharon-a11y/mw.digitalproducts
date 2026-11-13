@@ -113,6 +113,8 @@ def personal_copies():
         if lang == "wait":   # a Field Guides buyer who hasn't chosen English or Hebrew yet
             continue
         want = f"{pf['version']}:{lang}" if lang else pf["version"]
+        if products[e["product_id"]].get("category") == "guide":   # the large watermark (14 Nov 2026): every guide copy is remade once
+            want += ":wm"
         if mine.get("version") != want and e.get("customers", {}).get("email"):
             todo.append((e, pf, mine.get("path"), lang, want))
     print(f"{len(ents)} entitlements, {len(todo)} personal copies to make", flush=True)
@@ -135,7 +137,8 @@ def personal_copies():
                     src = bases[key]
                 out = os.path.join(tmp, "out.zip")
                 c = e["customers"]
-                personalize(src, out, (c.get("name") or "").strip(), c["email"].strip(), licence_id(e["id"]))
+                personalize(src, out, (c.get("name") or "").strip(), c["email"].strip(), licence_id(e["id"]),
+                            big_mark=products[e["product_id"]].get("category") == "guide")
                 stem, ext = os.path.splitext(os.path.basename(pf["path"]))
                 if guide:   # a single guide's copy is named after it, not after the set it was cut from
                     stem = f"MWP-Field-Guide-{guide.capitalize()}"

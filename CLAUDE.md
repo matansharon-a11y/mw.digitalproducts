@@ -108,6 +108,7 @@ shop.mw.photography. A static site on GitHub Pages, with Supabase, Make.com and 
 
 ## Personal copies (Presets and Field Guides)
 - Each buyer and beta member downloads their own marked copy: their name, email and licence ID on every PDF page, and in a comment inside every .xmp and .cube file (`tools/personalize/personalize.py`).
+- **Field Guides: a large watermark too (Matan, 14 Nov 2026, after copies were passed on):** across the middle of every guide page, faint grey on the diagonal: "Licensed to <name>" / "<email> · MWP-<licence> · Not for sharing" (`watermark()` in personalize.py, `big_mark` for `category = guide`). Copies made before carry `:wm` missing from their `personal_files.version`, so the worker remade every guide copy once.
 - The "Personal copies" workflow (`.github/workflows/personalize.yml`, `tools/personalize/worker.py`) makes missing or outdated copies into `presets/personal/<entitlement>/` and records them in `personal_files`. Until a copy exists, `get-download` answers 202 "preparing" and My downloads waits for it.
 - It runs instantly when the `PERSONALIZE_TOKEN` secret is set (a GitHub token that can trigger this repo's workflows), otherwise hourly. Uploading a new version of a product file makes everyone's copy again.
 - MWP Panel isn't stamped; its licence sign-in protects it.
