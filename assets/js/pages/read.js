@@ -1,5 +1,5 @@
 // Read online: the MWP Field Guides, page by page (shop.mw.photography/read/).
-// Ambassadors can only read the guides here; buyers can too. The pages come from the guide-view function
+// Buyers since 14 Nov 2026 and ambassadors can only read the guides here, on up to 2 devices; earlier buyers can too. The pages come from the guide-view function
 // as private links that last 10 minutes, drawn on a canvas. No download, no print.
 // The full-screen reader (openReader) shows a sharper copy of each page, with zoom.
 import { initChrome } from "../lib/ui.js";
@@ -439,6 +439,12 @@ document.addEventListener("keydown", (e) => {
     await load();
     render();
   } catch (err) {
+    if (err.status === 409) {   // already open on 2 devices (guide-view)
+      message(`<p>${esc(T("Your Field Guides are already open on 2 devices. To read on this one, remove one of them in My downloads.",
+        "המדריכים שלכם כבר פתוחים בשני מכשירים. כדי לקרוא במכשיר הזה, הסירו אחד מהם בעמוד ההורדות שלי."))}</p>
+        <a class="btn" href="/account/#reading-devices">${esc(T("Manage your devices", "ניהול המכשירים"))}</a>`);
+      return;
+    }
     message(`<p>${esc(err.message)}</p><a class="btn" href="/account/">${esc(T("Go to My downloads", "להורדות שלי"))}</a>`);
   }
 })();

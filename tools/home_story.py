@@ -9,12 +9,12 @@ CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4
 ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 
 CHAPTERS = [
-    dict(step="Shoot", step_he="צילום", tag="PDF field guides", name="Field Guides", slug="mwp-field-guides", dev="mac win tablet phone", href="field-guides/",
+    dict(step="Shoot", step_he="צילום", tag="Online field guides", name="Field Guides", slug="mwp-field-guides", dev="mac win tablet phone", href="field-guides/",
          img="5275cc7bcd4fb7560d8f7163592e3122.jpg", pos="56% 55%", alt="Mountains at dusk, photographed by Matan Wild",
          title="Know what to aim for, before you press the shutter",
          body=["137 one-page lessons on composition, colour, light and planning, for beginners and experienced photographers alike. Each one is a real photo from the field, with a drawing that shows why it works.",
                "Every guide ends with drills, a checklist and a cheat sheet for your next shoot."],
-         points=["4 PDF guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
+         points=["4 guides, 137 lessons", "Composition, colour, light and planning", "English or Hebrew"],
          cta="See the Field Guides", box="0cf44582c4078749d18156eec10c90d3.jpg", gk="FIELD GUIDES · PDF", sub="4 guides · 229 pages"),
     dict(step="Sort", step_he="מיון", tag="Lightroom Classic plugin", name="Lightroom Classic Plugin", slug="mwp-presets", dev="mac win", href="presets/#plugin",
          img="86b95f1970bb30f72735d73708d9c095.jpg", pos="80% 45%", alt="A photographer behind a long lens in the mountains, photographed by Matan Wild",

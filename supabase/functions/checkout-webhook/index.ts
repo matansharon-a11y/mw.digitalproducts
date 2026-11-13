@@ -167,8 +167,12 @@ async function handlePaid(
     .upsert({ order_id: order.id, product_id: product.id, price_cents: a.subtotal }, { onConflict: "order_id,product_id" });
   if (iErr) throw iErr;
 
+  // The Field Guides are read online only from 14 Nov 2026 (Matan: bought PDFs were passed on). online_only for any
+  // guide product (the set or a single guide), whether bought on its own or in a bundle.
+  const { data: guideRows } = await db.from("products").select("id").eq("category", "guide");
+  const GUIDE_IDS = new Set((guideRows ?? []).map((g: { id: string }) => g.id));
   const { error: eErr } = await db.from("entitlements").upsert(
-    { customer_id: customer.id, product_id: product.id, order_id: order.id, revoked_at: null, view_only: false },
+    { customer_id: customer.id, product_id: product.id, order_id: order.id, revoked_at: null, view_only: false, online_only: GUIDE_IDS.has(product.id) },
     { onConflict: "customer_id,product_id" });
   if (eErr) throw eErr;
 
@@ -186,7 +190,7 @@ async function handlePaid(
       // the program never takes back what they paid for; read-only guides become a download.
       if (owned && owned.order_id && !owned.revoked_at && !owned.view_only) continue;
       const { error: bErr } = await db.from("entitlements").upsert(
-        { customer_id: customer.id, product_id: part.id, order_id: order.id, revoked_at: null, view_only: false },
+        { customer_id: customer.id, product_id: part.id, order_id: order.id, revoked_at: null, view_only: false, online_only: GUIDE_IDS.has(part.id) },
         { onConflict: "customer_id,product_id" });
       if (bErr) throw bErr;
     }

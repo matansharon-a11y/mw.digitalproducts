@@ -102,7 +102,7 @@ def personal_copies():
         print("No Presets or Field Guides files yet."); return 0
 
     ents = rest("entitlements", select="id,product_id,guide_lang,customers(name,email),personal_files(path,version)",
-                revoked_at="is.null", view_only="is.false", product_id=f"in.({','.join(products)})")
+                revoked_at="is.null", view_only="is.false", online_only="is.false", product_id=f"in.({','.join(products)})")
     todo = []
     for e in ents:
         pf = products[e["product_id"]]["product_files"]
@@ -256,7 +256,7 @@ def guide_views():
     The pages are the plain guides; the reader draws each person's name, email and licence ID over them."""
     import re, zipfile
     import pymupdf
-    # the set only: single guides are cut from the same pack, and nobody reads them online
+    # the set only: single guides are cut from the same pack; their buyers read their own guide from the set's pages
     products = rest("products", select="id,slug,product_files(path,version),guide_views(version,guides)", category="eq.guide",
                     guide_key="is.null")
     failed = 0
@@ -264,7 +264,7 @@ def guide_views():
         pf = p.get("product_files"); pf = (pf[0] if isinstance(pf, list) and pf else pf) or {}
         gv = p.get("guide_views"); gv = (gv[0] if isinstance(gv, list) and gv else gv) or {}
         # done already: this version, with each guide's language known (English or Hebrew pages)
-        if not pf.get("path") or (gv.get("version") == pf["version"] and all("lang" in g and g.get("titled") and g.get("hd") for g in gv.get("guides") or [{}])):
+        if not pf.get("path") or (gv.get("version") == pf["version"] and all("lang" in g and g.get("titled") and g.get("hd") and "key" in g for g in gv.get("guides") or [{}])):
             continue
         print(f"Rendering {p['slug']} {pf['version']} for reading online", flush=True)
         old = gv.get("version") if gv.get("version") != pf["version"] else None   # same version: pages are replaced in place
@@ -303,7 +303,9 @@ def guide_views():
                     with ThreadPoolExecutor(max_workers=12) as pool:
                         list(pool.map(lambda f: upload(f[0], f[1], "image/jpeg", "guide-pages"), files))
                     lang = guide_lang(name, doc)
-                    guides.append({"title": guide_title(doc, lang) or title, "lang": lang, "titled": True, "hd": True, "pages": pages})
+                    # key: which of the four guides it is, so a single guide's buyer reads only that one (14 Nov 2026)
+                    guides.append({"title": guide_title(doc, lang) or title, "lang": lang, "key": which_guide(name, doc, lang),
+                                   "titled": True, "hd": True, "pages": pages})
                     print(f"  {title} ({guides[-1]['lang']}): {len(pages)} pages", flush=True)
             S.post(f"{URL}/rest/v1/guide_views", params={"on_conflict": "product_id"},
                    headers={"content-type": "application/json", "prefer": "resolution=merge-duplicates"},

@@ -40,10 +40,11 @@ Deno.serve(async (req) => {
   if (!product) return fail(req, "Unknown product.", 404);
 
   const { data: ent } = await db.from("entitlements")
-    .select("id, revoked_at, view_only, guide_lang").eq("customer_id", customer.id).eq("product_id", product.id).maybeSingle();
+    .select("id, revoked_at, view_only, online_only, guide_lang").eq("customer_id", customer.id).eq("product_id", product.id).maybeSingle();
   if (!ent) return fail(req, "This pack isn't in your library.", 403);
   if (ent.revoked_at) return fail(req, "Access to this pack was removed after a refund.", 403);
   // Ambassadors read the Field Guides online (guide-view); their copy can't be downloaded.
+  if (ent.online_only) return fail(req, "The Field Guides are read online. Open them with Read online in My downloads.", 403);
   if (ent.view_only) return fail(req, "In the Ambassador Program the Field Guides are read online. Open them with Read online in My downloads.", 403);
 
   // Field Guides come in one language, chosen once in My downloads ('both' = bought before the choice existed).

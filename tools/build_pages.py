@@ -232,14 +232,14 @@ PRODUCTS = [
          line="50 presets from Matan Wild's own edits, for desktop and phone.",
          works="Lightroom · Lightroom Classic · Mobile · Camera Raw",
          alone="No plugin needed.", cta="Add MWP Presets to cart", more="Details"),
-    dict(key="guides", href="field-guides/", slug="mwp-field-guides", type="PDF field guides", name="Field Guides",
+    dict(key="guides", href="field-guides/", slug="mwp-field-guides", type="Online field guides", name="Field Guides",
          line="Know what to aim for before you press the shutter.",
-         works="4 PDF guides · English or Hebrew",
+         works="4 guides to read online · English or Hebrew",
          cta="Add to cart", more="See the guides"),
 ]
 # The comparison: one row per question a buyer asks, one column per product (in PRODUCTS' order)
 COMPARE = [
-    ("What it is", ["A plugin: a window of tools inside Lightroom Classic", "A plugin: a window of tools inside Photoshop", "Presets and LUTs: a finished look in one click", "PDF guides: lessons for the shoot itself"]),
+    ("What it is", ["A plugin: a window of tools inside Lightroom Classic", "A plugin: a window of tools inside Photoshop", "Presets and LUTs: a finished look in one click", "Online guides: lessons for the shoot itself"]),
     ("Works in", ["Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Any PDF reader: computer, tablet or phone"]),
     ("Works on", [devices("mac win"), devices("mac win"), devices("mac win tablet phone"), devices("mac win tablet phone")]),   # icons only (Jeinna, 4 Nov 2026)
     ("What you get", ["The plugin, with MWP Presets included; built-in help, video tutorials", "The plugin, a 21-page User Manual, an Installation Guide", "50 presets, 50 mobile files, 33 LUTs", "4 guides, 137 lessons, in English or Hebrew"]),
@@ -277,7 +277,7 @@ def _itemlist():
 
 
 page("shop.html", "Compare Lightroom Presets, Plugins &amp; Guides · MWP Shop",
- "Compare four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and PDF photography guides.",
+ "Compare four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin panel, Lightroom presets and photography guides to read online.",
  f"""  <section class="page-hero sp-hero">
     <div class="container">
       <p class="kick">The MWP shop</p>
@@ -568,6 +568,7 @@ page("account.html", "My downloads · MWP",
       <div id="signed-in" class="stack-lg" hidden>
         <div class="library" id="library" aria-live="polite"></div>
         <div class="devices-box" id="devices" hidden></div>
+        <div class="devices-box" id="reading-devices" hidden></div>
         <section class="terms-box" id="terms-box" hidden>
           <div><h2 class="h3">Your Ambassador Program terms</h2>
           <p class="meta">The signed copy of the terms you accepted, as a PDF.</p></div>

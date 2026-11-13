@@ -1,6 +1,6 @@
 // My downloads: magic-link sign-in, then the customer's library with secure download buttons.
 import { initChrome, toast } from "../lib/ui.js";
-import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, myExtras, myOrders, requestDownload, signedTerms, sendFeedback, panelDevices, removePanelDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
+import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, myExtras, myOrders, requestDownload, signedTerms, sendFeedback, panelDevices, removePanelDevice, guideDevices, removeGuideDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
 import { EMAIL_RE, setBusy, setStatus } from "./shared-forms.js";
 import { countLabel } from "../lib/catalog.js";
 
@@ -20,7 +20,7 @@ const COVERS = {
   "mwp-field-guides": ["assets/pages/img/0cf44582c4078749d18156eec10c90d3.jpg", "62% 30%"], // lioness: face
   "mwp-field-guides-sample": ["assets/pages/img/5275cc7bcd4fb7560d8f7163592e3122-1200.webp", "50% 40%"],   // as in the pop-up
 };
-const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin panel", guide: "PDF field guides", bundle: "Bundle" };
+const TAGS = { preset: "Lightroom presets", plugin: "Photoshop plugin panel", guide: "Online field guides", bundle: "Bundle" };
 const SLUG_TAGS = { "mwp-lightroom-plugin": "Lightroom Classic plugin",   // a plugin that isn't the Photoshop panel
                     "mwp-field-guides-sample": "Free sample" };            // the sign-up gift (gift.js)
 const SAMPLE = "mwp-field-guides-sample";
@@ -76,7 +76,7 @@ function libraryHTML(items, extras = { files: [], videos: [] }) {
       <p class="meta">Bought with a different email? Sign out and use that one, or <a class="link" href="/support/">contact support</a> with your order number.</p>
     </div>`;
   }
-  return items.map(({ granted_at, view_only: viewOnly, guide_lang: lang, products: p }, i) => {
+  return items.map(({ granted_at, view_only: viewOnly, online_only: onlineOnly, guide_lang: lang, products: p }, i) => {
     const [img, pos] = p.cover_path ? [mediaUrl(p.cover_path, { width: 600 }), "50% 40%"] : (COVERS[p.slug] || []);
     const count = countLabel(p);
     const files = extras.files.filter((x) => x.slug === p.slug);
@@ -90,7 +90,7 @@ function libraryHTML(items, extras = { files: [], videos: [] }) {
         <h3 class="nm" data-no-i18n>${esc(p.name)}${p.name_emphasis ? ` <span class="grad">${esc(p.name_emphasis)}</span>` : ""}</h3>
         <div class="chips"><span>Version ${esc(p.version)}</span>${count ? `<span>${esc(count)}</span>` : ""}<span>Added ${shortDate(granted_at)}</span>${LANGS[lang] ? `<span>${LANGS[lang]}</span>` : ""}</div>
       </div>
-      ${viewOnly
+      ${viewOnly || onlineOnly
         ? `<a class="dl" href="/read/">${READ_ICON}<span>Read online</span></a>`
         : p.category === "guide" && !lang
         ? `<div class="lang-pick"><p class="meta">Choose your language. Your copy comes in that language.</p>
@@ -122,6 +122,28 @@ function devicesHTML({ devices, max }) {
     <p class="meta">Your licence is personal: Panel works when you sign in to it with this email. You can use it on up to ${max} computers at a time. Changed computer? Remove the old one here.</p>
     ${devices.length ? `<ul class="device-list">${rows}</ul>` : `<p class="meta">No computers yet. Open MWP Photoshop Plugin Panel in Photoshop and sign in with this email.</p>`}
   </section>`;
+}
+
+// The Field Guides online (Matan, 14 Nov 2026): up to 2 devices per person; the reader registers each one, and here
+// the buyer frees one up when they change phone or computer.
+function readingDevicesHTML({ devices, max }) {
+  const rows = devices.map((d) => `
+    <li class="device">
+      <div><strong>${esc(d.device_name || "Device")}</strong>
+      <p class="meta">Last used ${shortDate(d.last_seen_at)}</p></div>
+      <button class="btn btn--ghost btn--sm" type="button" data-remove-reading="${esc(d.device_id)}">Remove</button>
+    </li>`).join("");
+  return `<section class="devices stack" aria-labelledby="reading-devices-h">
+    <h2 class="h3" id="reading-devices-h">Your Field Guides on your devices</h2>
+    <p class="meta">You read your Field Guides online, on up to ${max} devices at a time. Changed phone or computer? Remove the old one here.</p>
+    ${devices.length ? `<ul class="device-list">${rows}</ul>` : `<p class="meta">No devices yet. Open your guides with Read online, and that device is added.</p>`}
+  </section>`;
+}
+async function showReadingDevices() {
+  const box = document.getElementById("reading-devices");
+  if (!box) return;
+  try { box.innerHTML = readingDevicesHTML(await guideDevices()); box.hidden = false; if (location.hash === "#reading-devices") box.scrollIntoView(); }
+  catch { box.hidden = true; }
 }
 
 async function showDevices() {
@@ -202,6 +224,7 @@ async function showLibrary(user) {
     library.innerHTML = libraryHTML(items, extras);
     forgetOwned(items);
     if (items.some((i) => PANEL_SLUGS.includes(i.products?.slug))) showDevices();
+    if (items.some((i) => (i.view_only || i.online_only) && i.products?.category === "guide" && i.products.slug !== SAMPLE)) showReadingDevices();
     showSignedTerms();
     showOrders();
     // ambassadors and testers (their Field Guides are read online) can send feedback to the team
@@ -297,6 +320,19 @@ document.getElementById("terms-dl")?.addEventListener("click", async (e) => {
     else toast(he() ? "העותק החתום שלכם עוד בהכנה. נסו שוב בעוד כמה דקות." : "Your signed copy is still being made. Please try again in a few minutes.", { timeout: 8000 });
   } catch (err) { toast(err.message, { type: "error", timeout: 7000 }); }
   finally { setBusy(btn, false); }
+});
+
+document.addEventListener("click", async (e) => {
+  const rm = e.target.closest("[data-remove-reading]");
+  if (!rm) return;
+  setBusy(rm, true, "Removing…");
+  try {
+    document.getElementById("reading-devices").innerHTML = readingDevicesHTML(await removeGuideDevice(rm.dataset.removeReading));
+    toast("Device removed. You can now read your Field Guides on another one.");
+  } catch (err) {
+    toast(err.message, { type: "error", timeout: 7000 });
+    setBusy(rm, false);
+  }
 });
 
 document.addEventListener("click", async (e) => {

@@ -39,8 +39,8 @@ const BLOCKS: Record<Part, { en: [string, string]; he: [string, string] }> = {
     he: ["הפריסטים של MWP", "בחבילה יש מדריך התקנה עם עמוד לכל תוכנה, וגם 50 קובצי DNG ללייטרום בטלפון או בטאבלט. רוב ההתקנות לוקחות כמה דקות."],
   },
   guides: {
-    en: ["MWP Field Guides", "PDF guides that open on any device: computer, iPad or phone. Nothing to install."],
-    he: ["מדריכי השטח של MWP", "מדריכי PDF שנפתחים בכל מכשיר: מחשב, אייפד או טלפון. אין מה להתקין."],
+    en: ["MWP Field Guides", "Read them online with Read online in My downloads, on any device: computer, iPad or phone, up to 2 devices at a time. Nothing to install."],
+    he: ["מדריכי השטח של MWP", "קוראים אותם אונליין, בכפתור קריאה אונליין בעמוד ההורדות שלי, בכל מכשיר: מחשב, אייפד או טלפון, בעד שני מכשירים בו־זמנית. אין מה להתקין."],
   },
 };
 const T = {
@@ -49,7 +49,7 @@ const T = {
         steps_h: "Getting started",
         steps: [
           "Open My downloads and sign in with the email you used at checkout.",
-          "Click Download. Your copy is made just for you, so if it says it's being prepared, give it a few minutes.",
+          "Click Download (for the Field Guides: Read online). A download is made just for you, so if it says it's being prepared, give it a few minutes.",
           "Install it with the steps below. The download has its own install guide too.",
         ],
         your: "How to install", btn: "Open My downloads",
@@ -62,7 +62,7 @@ const T = {
         steps_h: "איך מתחילים",
         steps: [
           "נכנסים לעמוד ההורדות שלי ומתחברים עם המייל שאיתו קניתם.",
-          "לוחצים על הורדה. העותק שלכם מוכן במיוחד בשבילכם, אז אם כתוב שהוא בהכנה, תנו לזה כמה דקות.",
+          "לוחצים על הורדה (במדריכי השטח: קריאה אונליין). ההורדה מוכנת במיוחד בשבילכם, אז אם כתוב שהיא בהכנה, תנו לזה כמה דקות.",
           "מתקינים לפי ההסבר כאן למטה. גם בתוך ההורדה יש מדריך התקנה.",
         ],
         your: "איך מתקינים", btn: "לעמוד ההורדות שלי",

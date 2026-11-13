@@ -190,7 +190,7 @@ export async function myLibrary() {
   if (!ids.length) return [];
   const { data, error } = await db
     .from("entitlements")
-    .select("id, granted_at, revoked_at, view_only, guide_lang, products(slug, name, name_emphasis, category, cover_path, version, item_count)")
+    .select("id, granted_at, revoked_at, view_only, online_only, guide_lang, products(slug, name, name_emphasis, category, cover_path, version, item_count)")
     .in("customer_id", ids)
     .is("revoked_at", null)
     .order("granted_at", { ascending: false });
@@ -250,7 +250,24 @@ export const betaStatus = () => callFunction("beta", { action: "status" });
 export const signedTerms = (receipt) => callFunction("beta", { action: "signed_terms", ...(receipt ? { receipt } : {}) }, { auth: !receipt });
 // The buyer's checkout, made by the shop in English (Lemon Squeezy has no Hebrew and showed Hebrew browsers Bulgarian): { url }
 export const createCheckout = (o) => callFunction("checkout", o, { auth: true });
-export const guideView = () => callFunction("guide-view", {}, { auth: true });
+// The Field Guides online. Each browser has its own device id (kept on this device), so the reader can hold a person
+// to 2 devices (guide-view; Matan, 14 Nov 2026). The name only helps them recognise it in My downloads.
+function readerDevice() {
+  let id = "";
+  try { id = localStorage.getItem("mwp_reader_device") || ""; } catch { /* blocked */ }
+  if (!/^[A-Za-z0-9-]{8,80}$/.test(id)) {
+    id = crypto.randomUUID();
+    try { localStorage.setItem("mwp_reader_device", id); } catch { /* blocked: this visit only */ }
+  }
+  const ua = navigator.userAgent;
+  const os = /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? "iPad" : /iPhone/.test(ua) ? "iPhone"
+    : /Android/.test(ua) ? "Android" : /Mac/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : /Linux/.test(ua) ? "Linux" : "Device";
+  const br = /Edg\//.test(ua) ? "Edge" : /Firefox\//.test(ua) ? "Firefox" : /Chrome\//.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : "";
+  return { device_id: id, device_name: br ? `${os} · ${br}` : os };
+}
+export const guideView = () => callFunction("guide-view", readerDevice(), { auth: true });
+export const guideDevices = () => callFunction("guide-view", { action: "devices" }, { auth: true });
+export const removeGuideDevice = (device_id) => callFunction("guide-view", { action: "remove", device_id }, { auth: true });
 export const testerLink = (email, lang) => callFunction("tester", { action: "link", email, lang });
 export const testerJoin = (form) => callFunction("tester", { action: "join", ...form });
 export const testerMe = () => callFunction("tester", { action: "me" }, { auth: true });
