@@ -1,4 +1,4 @@
-// The free Field Guides sample pop-up (Matan, 25 Oct 2026): full name, email and phone → a sign-in link by email →
+// The free Field Guides sample pop-up (Matan, 25 Oct 2026): first and last name, email and phone (all required) → a sign-in link by email →
 // their account opens on My downloads with the sample inside (the database gives it once the email is confirmed:
 // grant_free_sample, migration 20261025090001). Loaded by nav.js on the shop's public pages.
 //
@@ -48,7 +48,10 @@ function show() {
         <p class="gift__sub">${T("Composition, light, colour and planning, from Matan Wild's four guides. We'll email you a link: it opens your free account with the guide inside.",
           "קומפוזיציה, אור, צבע ותכנון, מתוך ארבעת המדריכים של מתן וויילד. נשלח לכם קישור במייל: הוא פותח את החשבון החינמי שלכם, והמדריך מחכה בפנים.")}</p>
         <form class="gift__form" novalidate>
-          <label><span>${T("Full name", "שם מלא")}</span><input name="name" autocomplete="name" required maxlength="120"></label>
+          <div class="gift__names">
+            <label><span>${T("First name", "שם פרטי")}</span><input name="first" autocomplete="given-name" required maxlength="60"></label>
+            <label><span>${T("Last name", "שם משפחה")}</span><input name="last" autocomplete="family-name" required maxlength="60"></label>
+          </div>
           <label><span>${T("Email", "מייל")}</span><input name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" dir="ltr"></label>
           <label><span>${T("Phone", "טלפון")}</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="40" dir="ltr" placeholder="${he() ? "+972 50 123 4567" : "+1 555 123 4567"}"></label>
           <input class="gift__hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -81,7 +84,7 @@ function show() {
   document.addEventListener("keydown", onKey);
   wrap.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", close));
   setTimeout(() => wrap.classList.add("is-on"), 20);   // not requestAnimationFrame: it waits while the tab is in the background
-  setTimeout(() => card.querySelector('input[name="name"]').focus({ preventScroll: true }), 250);
+  setTimeout(() => card.querySelector('input[name="first"]').focus({ preventScroll: true }), 250);
 
   const form = card.querySelector("form"), msg = card.querySelector(".gift__msg"), btn = card.querySelector(".gift__btn");
   form.addEventListener("submit", async (e) => {
@@ -89,7 +92,10 @@ function show() {
     const d = Object.fromEntries(new FormData(form));
     if (d.website) return;   // a bot filled the hidden field
     const bad = (t) => { msg.className = "gift__msg err"; msg.textContent = t; };
-    if ((d.name || "").trim().length < 2) return bad(T("Please enter your full name.", "נא למלא שם מלא."));
+    // first and last name, both required (Jeinna, 14 Nov 2026), saved together as the person's name
+    if ((d.first || "").trim().length < 2) return bad(T("Please enter your first name.", "נא למלא שם פרטי."));
+    if ((d.last || "").trim().length < 2) return bad(T("Please enter your last name.", "נא למלא שם משפחה."));
+    d.name = `${d.first.trim()} ${d.last.trim()}`;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((d.email || "").trim())) return bad(T("Please enter a valid email.", "נא למלא מייל תקין."));
     if ((d.phone || "").replace(/\D/g, "").length < 7) return bad(T("Please enter a valid phone number.", "נא למלא מספר טלפון תקין."));
     // the guide comes with joining the mailing list (Matan, 25 Oct 2026): no tick, no guide
