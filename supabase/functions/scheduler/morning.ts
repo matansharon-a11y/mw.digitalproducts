@@ -282,10 +282,18 @@ type PayoutRow = { date?: string; sale?: string; order_id?: string; net_cents?: 
 async function payoutDoc(db: Db, d: { payout_date: string; payout_rows: PayoutRow[] }) {
   const rows = (Array.isArray(d.payout_rows) ? d.payout_rows : []).slice(0, 5000);
   const ids = [...new Set(rows.map((r) => String(r.order_id ?? "")).filter((x) => /^\d+$/.test(x)))];
-  const { data: ours } = ids.length
-    ? await db.from("orders").select("checkout_order_id, vat_rate, country, customers(country)").in("checkout_order_id", ids)
-    : { data: [] };
-  const byId = new Map((ours ?? []).map((o: { checkout_order_id: string }) => [o.checkout_order_id, o]));
+  // The CSV's "Order #…" can be Lemon Squeezy's order id or its order number (16 Nov 2026: the 15 Nov payout's lines
+  // matched nothing by id, so every sale counted as abroad and the 18% never showed): match either.
+  const cols = "checkout_order_id, order_number, vat_rate, country, customers(country)";
+  const [{ data: byLsId }, { data: byNumber }] = ids.length
+    ? await Promise.all([
+        db.from("orders").select(cols).in("checkout_order_id", ids),
+        db.from("orders").select(cols).in("order_number", ids),
+      ])
+    : [{ data: [] }, { data: [] }];
+  const byId = new Map<string, unknown>();
+  for (const o of (byNumber ?? []) as { order_number: string }[]) byId.set(String(o.order_number), o);
+  for (const o of (byLsId ?? []) as { checkout_order_id: string }[]) byId.set(String(o.checkout_order_id), o);   // the id wins
   const key = Deno.env.get("LEMONSQUEEZY_API_KEY") ?? "";
   let il = 0, abroad = 0;
   const unmatched: string[] = [], israeli: string[] = [];
