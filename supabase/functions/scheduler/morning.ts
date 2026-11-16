@@ -284,22 +284,26 @@ async function payoutDoc(db: Db, d: { payout_date: string; payout_rows: PayoutRo
   const ids = [...new Set(rows.map((r) => String(r.order_id ?? "")).filter((x) => /^\d+$/.test(x)))];
   // The CSV's "Order #…" can be Lemon Squeezy's order id or its order number (16 Nov 2026: the 15 Nov payout's lines
   // matched nothing by id, so every sale counted as abroad and the 18% never showed): match either.
+  // Live orders only: Lemon Squeezy's test-mode orders reuse the same order numbers (16 Nov 2026: test copies of
+  // #5026372 and #5026373, without VAT, put those two Israeli sales under abroad).
   const cols = "checkout_order_id, order_number, vat_rate, country, customers(country)";
   const [{ data: byLsId }, { data: byNumber }] = ids.length
     ? await Promise.all([
-        db.from("orders").select(cols).in("checkout_order_id", ids),
-        db.from("orders").select(cols).in("order_number", ids),
+        db.from("orders").select(cols).eq("test_mode", false).in("checkout_order_id", ids),
+        db.from("orders").select(cols).eq("test_mode", false).in("order_number", ids),
       ])
     : [{ data: [] }, { data: [] }];
   const byId = new Map<string, unknown>();
   for (const o of (byNumber ?? []) as { order_number: string }[]) byId.set(String(o.order_number), o);
   for (const o of (byLsId ?? []) as { checkout_order_id: string }[]) byId.set(String(o.checkout_order_id), o);   // the id wins
   const key = Deno.env.get("LEMONSQUEEZY_API_KEY") ?? "";
-  let il = 0, abroad = 0;
+  let il = 0, abroad = 0, fees = 0;
   const unmatched: string[] = [], israeli: string[] = [];
   for (const r of rows) {
     const cents = Math.round(Number(r.net_cents) || 0);
     const id = String(r.order_id ?? "");
+    // a line that isn't a sale (Lemon Squeezy's "Payout fee"): counted with the payout's main group below
+    if (!/^\d+$/.test(id)) { fees += cents; continue; }
     // deno-lint-ignore no-explicit-any
     const o: any = byId.get(id);
     let isIL = false;
@@ -320,6 +324,11 @@ async function payoutDoc(db: Db, d: { payout_date: string; payout_rows: PayoutRo
     }
     if (isIL) { il += cents; israeli.push(id); } else abroad += cents;
   }
+  // Fees go with the bigger group; a group left below zero (a refund of a sale from an earlier payout, or a small
+  // refunded sale plus its fee) is folded into the other, so the invoice never carries a negative line.
+  if (il >= abroad) il += fees; else abroad += fees;
+  if (abroad < 0 && il > 0) { il += abroad; abroad = 0; }
+  if (il < 0 && abroad > 0) { abroad += il; il = 0; }
   const total = il + abroad;
   if (total <= 0) throw new Error("This payout has nothing to invoice (its total is zero or less).");
   if (il < 0 || abroad < 0) throw new Error("Refunds are larger than the sales in one group: issue this payout from Morning by hand.");
@@ -337,7 +346,7 @@ async function payoutDoc(db: Db, d: { payout_date: string; payout_rows: PayoutRo
     payment: [{ type: 4, price: total / 100, currency: "USD", date }],
     remarks: `התשלום של למון סקוויזי (Merchant of Record) מ-${dateHe}: ${rows.length} שורות. הסכומים הם נטו אחרי עמלות למון סקוויזי והחזרים. לקוחות בישראל: מע״מ 18% כלול. לקוחות בחו״ל: פטור (0%).`,
   };
-  const summary = { lines: rows.length, il_cents: il, abroad_cents: abroad, vat_cents: vat, total_cents: total, israeli_orders: israeli, unmatched };
+  const summary = { lines: rows.length, il_cents: il, abroad_cents: abroad, vat_cents: vat, total_cents: total, fees_cents: fees, israeli_orders: israeli, unmatched };
   return { payload, summary };
 }
 

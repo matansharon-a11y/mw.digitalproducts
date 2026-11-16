@@ -148,8 +148,8 @@ ok(((await morning(db)) as Row).skipped === "off", "off: nothing runs");
 
 // ---- 7. a payout invoice to Lemon Squeezy: Israeli buyers 18% included, abroad 0%, unknown lines listed (8 Nov 2026)
 // p1 is found by its order number (the payout CSV's "Order #…"), p2 by its Lemon Squeezy order id (16 Nov 2026)
-T.orders.push({ id: "p1", checkout_order_id: "5026372", order_number: "41", vat_rate: 0.18, country: "IL", customers: { country: "IL" } },
-              { id: "p2", checkout_order_id: "9002", vat_rate: 0, country: "US", customers: { country: "US" } });
+T.orders.push({ id: "p1", checkout_order_id: "5026372", order_number: "41", vat_rate: 0.18, test_mode: false, country: "IL", customers: { country: "IL" } },
+              { id: "p2", checkout_order_id: "9002", vat_rate: 0, test_mode: false, country: "US", customers: { country: "US" } });
 const pay = { id: "99999999-9999-9999-9999-999999999999", kind: "payout", status: "waiting", action: "preview", payout_date: "2026-11-01",
   payout_rows: [{ sale: "Order #41", order_id: "41", net_cents: 5761 }, { sale: "Order #9002", order_id: "9002", net_cents: 1504 },
                 { sale: "Refund - Order #9002", order_id: "9002", net_cents: -200 }, { sale: "Order #7777", order_id: "7777", net_cents: 1000 }], attempts: 0 };
@@ -163,6 +163,25 @@ ok(pl.type === 320 && pl.client.name === "Lemon Squeezy, LLC" && pl.client.email
 ok(pl.income.length === 2 && pl.income[0].vatType === 1 && pl.income[0].price === 57.61 && pl.income[1].vatType === 2 && pl.income[1].price === 23.04, `payout: Israel 57.61 (VAT incl.) and abroad 23.04 at 0% (${JSON.stringify(pl.income.map((i: any) => [i.price, i.vatType]))})`);
 ok(sm.vat_cents === 879 && sm.total_cents === 8065 && sm.unmatched.length === 1 && sm.israeli_orders[0] === "41", `payout: VAT $8.79, total $80.65, 1 unknown line (${JSON.stringify(sm)})`);
 ok(pl.payment[0].type === 4 && pl.payment[0].price === 80.65 && pl.payment[0].date === "2026-11-01", "payout: one bank transfer for the payout, on its date");
+
+// ---- 7b. the real 15 Nov 2026 payout: order numbers, test-mode copies with the same numbers, a payout fee, and the
+// admin's own refunded sale (no VAT). Every buyer is Israeli: one line, 18% included, nothing abroad, nothing unknown.
+const real = [["5026371", 2332, 0], ["5026372", 6307, 0.18], ["5026373", 10114, 0.18], ["5026374", 12665, 0.18], ["5026375", 12665, 0.18],
+  ["5026376", 9486, 0.18], ["5026377", 5511, 0.18], ["5026378", 12461, 0.18], ["5026379", 12665, 0.18], ["50263710", 12665, 0.18]] as const;
+real.forEach(([n, , v], i) => T.orders.push({ id: `r${i}`, checkout_order_id: String(9940000 + i), order_number: n, vat_rate: v, test_mode: false, country: null, customers: { country: null } }));
+T.orders.push({ id: "t1", checkout_order_id: "8000001", order_number: "5026372", vat_rate: 0, test_mode: true, customers: { country: "US" } },
+              { id: "t2", checkout_order_id: "8000002", order_number: "5026373", vat_rate: 0, test_mode: true, customers: { country: "US" } });
+const pay2 = { id: "77777777-7777-7777-7777-777777777777", kind: "payout", status: "waiting", action: "preview", payout_date: "2026-11-15", attempts: 0,
+  payout_rows: [...real.map(([n, c]) => ({ sale: `Order #${n}`, order_id: n, net_cents: c })),
+                { sale: "Refund - Order #5026371", order_id: "5026371", net_cents: -2549 }, { sale: "Payout fee", net_cents: -943 }] };
+T.morning_documents.push(pay2);
+await morningSend(db, pay2.id);
+// deno-lint-ignore no-explicit-any
+const p2 = T.morning_documents.find((d) => d.id === pay2.id)! as any;
+ok(p2.payload.income.length === 1 && p2.payload.income[0].vatType === 1 && p2.payload.income[0].price === 933.79,
+  `real payout: one Israeli line of $933.79 (${JSON.stringify(p2.payload.income.map((i: any) => [i.price, i.vatType]))})`);
+ok(p2.summary.abroad_cents === 0 && p2.summary.unmatched.length === 0 && p2.summary.vat_cents === 14244 && p2.payload.payment[0].price === 933.79,
+  `real payout: nothing abroad, nothing unknown, VAT $142.44 (${JSON.stringify(p2.summary)})`);
 
 // ---- 8. a waiting credit note goes out with the next run, even with per-buyer documents off, and cancels the original
 T.morning_settings[0].mode = "off";
