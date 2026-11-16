@@ -1244,7 +1244,7 @@ function renderDocsPanel() {
     const busy = mdocs.some((d) => d.status === "sending");
     const acts = r.status !== "paid" || both || busy ? "" : `<div class="row dacts">
       ${!mdocs.some((d) => d.status === "preview") ? `<button class="btn btn--sm btn--ghost" type="button" data-morning="preview">Make a preview</button>` : ""}
-      <button class="btn btn--sm" type="button" data-morning="create">${issued.length ? "Issue the work order" : "Issue in Morning"}</button></div>`;
+      ${issueBtn(`data-morning="create"`, issued.length ? "Issue the work order" : "Issue in Morning")}</div>`;
     const refund = r.status !== "paid" && issued.some((d) => d.kind === "invoice_receipt") ? `<p class="mfail">Refunded: cancel the invoice-receipt in Morning with a credit note.</p>` : "";
     morning = `<ul class="dlist">${row("invoice_receipt")}${row("work_order")}</ul>${refund}${acts}`;
   }
@@ -1593,6 +1593,15 @@ boot();
 
 
 // ---- Sales → Morning invoices (8 Nov 2026): one invoice-receipt to Lemon Squeezy per payout, and the earlier
+// Issuing in Morning is paused (Jeinna, 16 Nov 2026: "gray that out, we will be considering it in the future"):
+// every Issue button shows greyed out and does nothing; previews still work. Set to true to bring them back.
+const MORNING_ISSUE_ON = false;
+function issueBtn(attrs, label) {
+  return MORNING_ISSUE_ON
+    ? `<button class="btn btn--sm" type="button" ${attrs}>${label}</button>`
+    : `<button class="btn btn--sm" type="button" disabled aria-disabled="true" title="Issuing in Morning is paused for now">${label}</button>`;
+}
+
 // per-buyer documents with their credit notes
 let morningRows = [];
 const MSTATUS = { waiting: "Waiting", sending: "Sending…", preview: "Preview (not issued)", issued: "Issued", failed: "Failed" };
@@ -1665,7 +1674,7 @@ function previewOrPdf(d) {
 }
 function sendBtns(d) {
   if (!d || d.status === "issued" || d.status === "sending" || d.status === "waiting") return "";
-  const issue = d.status === "preview" ? `<button class="btn btn--sm" type="button" data-msend="${d.id}" data-act="create">${d.kind === "credit_note" ? "Issue the credit note" : "Issue in Morning"}</button>` : "";
+  const issue = d.status === "preview" ? issueBtn(`data-msend="${d.id}" data-act="create"`, d.kind === "credit_note" ? "Issue the credit note" : "Issue in Morning") : "";
   return `${issue}<button class="btn btn--sm btn--ghost" type="button" data-msend="${d.id}" data-act="preview">${d.status === "failed" ? "Try again" : "Preview again"}</button>`;
 }
 async function loadMorning() {
