@@ -178,7 +178,7 @@ $("#mfa-enroll").addEventListener("submit", async (e) => {
 $("#admin-signout").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
 
 // ---------------------------------------------------------------- navigation
-const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, morning: loadMorning, customers: loadCustomers, signups: loadSignups, ambassadors: loadAmbassadors, testers: loadTesters, support: loadTickets, security: loadSecurity };
+const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, morning: loadMorning, customers: loadCustomers, signups: loadSignups, ambassadors: loadAmbassadors, testers: loadTesters, affiliates: loadAffiliates, support: loadTickets, security: loadSecurity };
 
 // ---------------------------------------------------------------- navigation (6 Nov 2026)
 // Six sections in the sidebar; a section with more than one view shows tabs above it. Every view has its own address
@@ -188,7 +188,7 @@ const GROUPS = {
   overview: { label: "Overview", tabs: [["overview", "Overview"]] },
   sales: { label: "Sales", tabs: [["orders", "Orders"], ["finance", "Finances"], ["morning", "Morning invoices"]] },
   products: { label: "Products", tabs: [["products", "Catalogue"], ["compat", "Compatibility"]] },
-  people: { label: "People", tabs: [["customers", "Customers"], ["signups", "Sign-ups"], ["ambassadors", "Ambassadors"], ["testers", "Testers"]] },
+  people: { label: "People", tabs: [["customers", "Customers"], ["signups", "Sign-ups"], ["ambassadors", "Ambassadors"], ["testers", "Testers"], ["affiliates", "Affiliates"]] },
   support: { label: "Support", tabs: [["support", "Tickets"]] },
   settings: { label: "Settings", tabs: [["security", "Two-step sign-in"]] },
 };
@@ -1540,6 +1540,184 @@ $("#tst-table").addEventListener("click", async (e) => {
   if (error) { toast(error.message, { type: "error", timeout: 7000 }); setBusy(btn, false); return; }
   toast("Removed. Their free access is gone, and monday is updated.");
   loadTesters();
+});
+
+// ---------------------------------------------------------------- affiliates (MWP Affiliate Program, 18 Nov 2026)
+// The affiliate function makes invitations, codes and endings (it needs the Lemon Squeezy key); the numbers come from
+// admin_affiliates() and friends in the database.
+async function affiliateFn(body) {
+  const { data } = await supabase.auth.getSession();
+  if (!data.session) throw new Error("Please sign in again.");
+  const res = await fetch(`${CONFIG.SUPABASE_URL}/functions/v1/affiliate`, {
+    method: "POST",
+    headers: { "content-type": "application/json", apikey: CONFIG.SUPABASE_ANON_KEY, authorization: `Bearer ${data.session.access_token}` },
+    body: JSON.stringify(body),
+  });
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(out.error || `Request failed (${res.status})`);
+  return out;
+}
+const affUsd = (c) => money(c || 0, "USD");
+const AFF_STATUS = { invited: "Invited", active: "Active", ended: "Ended" };
+// The invitation email, for Matan to send from his own address (draft: Matan approves the wording)
+function inviteText(r, link) {
+  const first = String(r.name || "").split(/\s+/)[0];
+  if (r.lang === "he") return `נושא: הזמנה לתוכנית השותפים של MWP
+
+היי ${first},
+
+אני רוצה להזמין אותך לתוכנית השותפים של MWP, שמתחילה בינואר 2027.
+תקבל/י גישה חינם לכל הכלים של MWP, כולל כל עדכון, וקוד אישי, ${r.code}: ‏10% הנחה לעוקבים שלך ו־10% מכל מכירה שהוא מביא.
+
+כל הפרטים נמצאים בעמוד האישי שלך, ושם אפשר להצטרף בלחיצה אחת:
+${link}
+
+הקישור אישי ותקף ל־60 יום. שאלות? פשוט להשיב למייל הזה.
+
+מתן`;
+  return `Subject: You're invited: the MWP Affiliate Program
+
+Hi ${first},
+
+I'd love to invite you to the MWP Affiliate Program, starting in January 2027.
+You'll get every MWP tool free, with every update, and your own code, ${r.code}: 10% off for your followers, and 10% of every sale it brings.
+
+Everything is on your personal page, where you can join with one click:
+${link}
+
+The link is personal and works for 60 days. Questions? Just reply to this email.
+
+Matan`;
+}
+function showInvite(r, link) {
+  const box = $("#aff-made");
+  box.innerHTML = `<p><strong>Invitation for ${esc(r.name)}</strong> · code <strong>${esc(r.code)}</strong></p>
+    <div class="row"><input class="input input--sm aff-link-in" readonly value="${esc(link)}"><button class="btn btn--sm btn--ghost" type="button" data-aff-copy="link">Copy link</button></div>
+    <p class="meta">Email for Matan to send (a draft: Matan checks the wording):</p>
+    <textarea class="input aff-mail" readonly rows="12" dir="${r.lang === "he" ? "rtl" : "ltr"}">${esc(inviteText(r, link))}</textarea>
+    <div class="row"><button class="btn btn--sm btn--ghost" type="button" data-aff-copy="mail">Copy email</button><button class="btn btn--sm btn--ghost" type="button" data-aff-close>Close</button></div>`;
+  box.hidden = false;
+  box.scrollIntoView({ block: "nearest" });
+}
+const affCols = [
+  { label: "Name", value: (r) => r.name, html: (r) => `${esc(r.name)}${r.instagram ? `<div class="meta">@${esc(r.instagram)}</div>` : ""}` },
+  { label: "Email", value: (r) => r.email },
+  { label: "Code", value: (r) => r.code, html: (r) => `<strong>${esc(r.code)}</strong>${r.status === "active" && !r.has_code ? `<div class="mfail">Not in Lemon Squeezy yet</div>` : ""}` },
+  { label: "Status", value: (r) => AFF_STATUS[r.status],
+    html: (r) => `<span class="status status--amb-${r.status === "active" ? "active" : "ended"}">${AFF_STATUS[r.status]}</span><div class="meta">${
+      r.status === "invited" ? `Invited ${esc(shortDate(r.invited_at))}` : r.status === "active" ? `${esc(shortDate(r.starts_on))} to ${esc(shortDate(r.ends_on))}` : `Ended ${esc(shortDate(r.ended_at))}`}</div>` },
+  { label: "Sales", num: true, value: (r) => r.sales },
+  { label: "On hold", num: true, value: (r) => affUsd(r.on_hold_cents) },
+  { label: "Ready", num: true, value: (r) => affUsd(r.ready_cents) },
+  { label: "Paid", num: true, value: (r) => affUsd(r.paid_cents) },
+  { label: "", value: () => "", html: (r) => [
+      r.sales ? `<button class="btn btn--sm btn--ghost" type="button" data-aff-sales="${esc(r.id)}">Sales</button>` : "",
+      r.status === "invited" ? `<button class="btn btn--sm btn--ghost" type="button" data-aff-relink="${esc(r.id)}">New link</button>` : "",
+      r.status === "active" && !r.has_code ? `<button class="btn btn--sm btn--ghost" type="button" data-aff-code="${esc(r.id)}">Make code</button>` : "",
+      r.status !== "ended" ? `<button class="btn btn--sm btn--ghost" type="button" data-aff-end="${esc(r.id)}">End</button>` : "",
+    ].join(" ") },
+];
+let affRows = [];
+async function loadAffiliates() {
+  const [{ data, error }, due, paid] = await Promise.all([
+    supabase.rpc("admin_affiliates"), supabase.rpc("admin_affiliate_payouts_due"), supabase.rpc("admin_affiliate_payments")]);
+  check(error);
+  affRows = data || [];
+  $("#aff-count").textContent = `${affRows.filter((r) => r.status === "active").length} active · ${affRows.filter((r) => r.status === "invited").length} invited`;
+  $("#aff-table").innerHTML = tableHTML(affCols, affRows);
+  $("#aff-due").innerHTML = tableHTML([
+    { label: "Name", value: (r) => r.name },
+    { label: "Code", value: (r) => r.code },
+    { label: "Ready", num: true, value: (r) => affUsd(r.ready_cents) },
+    { label: "Sales", num: true, value: (r) => r.sales },
+    { label: "Due", value: (r) => (r.due ? "Yes" : "Not yet (under $100)") },
+    { label: "", value: () => "", html: (r) => `<button class="btn btn--sm${r.due ? "" : " btn--ghost"}" type="button" data-aff-pay="${esc(r.affiliate_id)}" data-amount="${r.ready_cents}">Record payment</button>` },
+  ], due.data || []);
+  $("#aff-paid").innerHTML = tableHTML([
+    { label: "Date", value: (r) => shortDate(r.paid_at) },
+    { label: "Name", value: (r) => r.name },
+    { label: "Code", value: (r) => r.code },
+    { label: "Amount", num: true, value: (r) => affUsd(r.amount_cents) },
+    { label: "Method", value: (r) => r.method || "" },
+    { label: "Note", value: (r) => r.note || "" },
+  ], paid.data || []);
+}
+$("#aff-form").elements.namedItem("name").addEventListener("input", (e) => {   // suggests MWP + first name + 10 while the code is empty
+  const f = e.currentTarget.form, code = f.elements.code;
+  if (code.dataset.typed) return;
+  const first = (e.currentTarget.value.trim().split(/\s+/)[0] || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  code.value = first ? `MWP${first}10` : "";
+});
+$("#aff-form").elements.code.addEventListener("input", (e) => { e.currentTarget.dataset.typed = "1"; });
+$("#aff-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.currentTarget, btn = f.querySelector("button");
+  const body = Object.fromEntries(new FormData(f));
+  setBusy(btn, true);
+  try {
+    const out = await affiliateFn({ action: "invite", ...body });
+    showInvite({ ...body, code: out.code }, out.link);
+    f.reset(); delete f.elements.code.dataset.typed;
+    loadAffiliates();
+  } catch (err) { toast(err.message, { type: "error", timeout: 8000 }); }
+  setBusy(btn, false);
+});
+$("#aff-made").addEventListener("click", async (e) => {
+  if (e.target.closest("[data-aff-close]")) { $("#aff-made").hidden = true; return; }
+  const b = e.target.closest("[data-aff-copy]");
+  if (!b) return;
+  const v = b.dataset.affCopy === "link" ? $("#aff-made .aff-link-in").value : $("#aff-made .aff-mail").value;
+  try { await navigator.clipboard.writeText(v); toast("Copied."); } catch { toast("Couldn't copy: select it and copy by hand.", { type: "error" }); }
+});
+$("[data-panel='affiliates']").addEventListener("click", async (e) => {
+  const sales = e.target.closest("[data-aff-sales]"), relink = e.target.closest("[data-aff-relink]"),
+    code = e.target.closest("[data-aff-code]"), end = e.target.closest("[data-aff-end]"), pay = e.target.closest("[data-aff-pay]");
+  if (sales) {
+    const r = affRows.find((x) => x.id === sales.dataset.affSales);
+    const { data, error } = await supabase.rpc("admin_affiliate_sales", { p_affiliate: r.id });
+    if (error) { toast(error.message, { type: "error" }); return; }
+    const STATE = { on_hold: "On hold", ready: "Ready", paid: "Paid", void: "Refunded (doesn't count)" };
+    const box = $("#aff-sales");
+    box.innerHTML = `<h2 class="h3 aff-h2">Sales by ${esc(r.name)} (${esc(r.code)})</h2><div class="table-wrap"><table class="table">${tableHTML([
+      { label: "Order", value: (x) => x.order_number || "" },
+      { label: "Date", value: (x) => shortDate(x.ordered_at) },
+      { label: "Product", value: (x) => x.product || "" },
+      { label: "Buyer", value: (x) => x.buyer || "" },
+      { label: "Via", value: (x) => (x.via === "code" ? "Code" : "Link") },
+      { label: "Paid", num: true, value: (x) => affUsd(x.base_cents) },
+      { label: "Earning", num: true, value: (x) => affUsd(x.amount_cents) },
+      { label: "State", value: (x) => `${STATE[x.state] || x.state}${x.state === "on_hold" ? ` until ${shortDate(x.available_at)}` : ""}${x.void_reason && x.state !== "void" ? ` · ${x.void_reason}` : ""}` },
+    ], data || [])}</table></div>`;
+    box.hidden = false;
+    box.scrollIntoView({ block: "nearest" });
+    return;
+  }
+  try {
+    if (relink) {
+      const r = affRows.find((x) => x.id === relink.dataset.affRelink);
+      if (!window.confirm(`Make a new invitation link for ${r.name}? The old link stops working.`)) return;
+      const out = await affiliateFn({ action: "relink", id: r.id });
+      showInvite(r, out.link);
+    } else if (code) {
+      setBusy(code, true);
+      await affiliateFn({ action: "make_code", id: code.dataset.affCode });
+      toast("The code is made in Lemon Squeezy.");
+    } else if (end) {
+      const r = affRows.find((x) => x.id === end.dataset.affEnd);
+      const reason = window.prompt(`End ${r.name}'s agreement?\n\nTheir code stops working, and their free tools are taken back (anything they bought stays). Anything they've earned is still paid.\n\nReason (for the record):`, "Agreement ended");
+      if (reason === null) return;
+      const out = await affiliateFn({ action: "end", id: r.id, reason });
+      toast(["Ended.", ...(out.notes || [])].join(" "), { timeout: 8000 });
+    } else if (pay) {
+      const r = affRows.find((x) => x.id === pay.dataset.affPay) || {};
+      const method = window.prompt(`Record a payment of ${affUsd(Number(pay.dataset.amount))} to ${r.name || "this affiliate"}?\n\nOnly after Matan approved it and the money was sent. How was it paid (PayPal, bank …)?`, "PayPal");
+      if (method === null) return;
+      const { data, error } = await supabase.rpc("admin_affiliate_record_payout", { p_affiliate: pay.dataset.affPay, p_method: method, p_note: "" });
+      if (error) throw new Error(error.message);
+      toast(`Recorded: ${affUsd(data)} paid.`);
+    } else return;
+    loadAffiliates();
+  } catch (err) { toast(err.message, { type: "error", timeout: 8000 }); }
 });
 
 // ---------------------------------------------------------------- support

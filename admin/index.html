@@ -391,6 +391,30 @@
       <div class="table-wrap"><table class="table" id="tst-table"></table></div>
     </section>
 
+    <!-- Affiliates (MWP Affiliate Program, Matan, 18 Nov 2026) -->
+    <section data-panel="affiliates" hidden>
+      <header class="admin-head">
+        <h1 class="h3">Affiliates <span class="meta" id="aff-count"></span></h1>
+      </header>
+      <p class="meta amb-help">Invite-only. Make an invitation here, then Matan sends the personal link from his own email (the text below is ready to copy). Joining takes one click on that page: they get every MWP tool free (the Field Guides to read online), and their code is made in Lemon Squeezy: 10% off every product, from 1 January 2027 for one year. Sales count 14 days after the order; refunds don't count. Their own purchases never count.</p>
+      <form class="aff-invite" id="aff-form" autocomplete="off">
+        <input class="input input--sm" name="name" placeholder="Full name" required>
+        <input class="input input--sm" name="email" type="email" placeholder="Email" required>
+        <input class="input input--sm" name="instagram" placeholder="Instagram (optional)">
+        <select class="input input--sm" name="lang"><option value="en">English</option><option value="he">Hebrew</option></select>
+        <input class="input input--sm" name="code" placeholder="Code, e.g. MWPKELVIN10" autocapitalize="characters" spellcheck="false">
+        <button class="btn btn--sm" type="submit">Make invitation</button>
+      </form>
+      <div class="aff-made" id="aff-made" hidden></div>
+      <div class="table-wrap"><table class="table" id="aff-table"></table></div>
+      <div id="aff-sales" hidden></div>
+      <h2 class="h3 aff-h2">Payouts</h2>
+      <p class="meta amb-help">Who is owed what today. Due: ready earnings of $100 or more, or any balance once an agreement has ended. After Matan approves and the payment is made (PayPal or bank), record it here: every ready sale in it is marked paid.</p>
+      <div class="table-wrap"><table class="table" id="aff-due"></table></div>
+      <h2 class="h3 aff-h2">Payments made</h2>
+      <div class="table-wrap"><table class="table" id="aff-paid"></table></div>
+    </section>
+
     <!-- Support -->
     <section data-panel="support" hidden>
       <header class="admin-head">

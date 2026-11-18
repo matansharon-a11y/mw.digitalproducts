@@ -32,6 +32,7 @@ Deno.serve(async (req) => {
   const discount = String(body.discount_code ?? "");
   const source = String(body.source ?? "").slice(0, 64);
   const vat = body.vat === "il" ? "il" : "";
+  const ref = String(body.ref ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 32);   // an affiliate's link
 
   const { data: product } = await db.from("products").select("checkout_variant_id").eq("slug", slug).maybeSingle();
   const variant = String(product?.checkout_variant_id ?? "");
@@ -40,6 +41,7 @@ Deno.serve(async (req) => {
   const custom: Record<string, string> = { user_id: user.id };
   if (source) custom.source = source;
   if (vat) custom.vat = vat;
+  if (ref) custom.ref = ref;
   const payload = {
     data: {
       type: "checkouts",

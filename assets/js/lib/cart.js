@@ -1,4 +1,4 @@
-import { saleFor, salePrice } from "./sale.js";
+import { initReferral, offerFor, offerPrice, refCode } from "./referral.js";
 import { isIsraeli, isIsraeliPhone } from "./vat.js";
 // Header icons (account menu + cart) and the cart drawer. Works on every shop page; its imports are the sale (sale.js) and Israeli VAT (vat.js).
 // Icons show no text; the label appears only on hover, keyboard focus, or when tapped/clicked.
@@ -155,11 +155,12 @@ function money(cents, cur) {
 // 2026). So in Hebrew every row also shows the dollar amount charged, and the total says it plainly. The same
 // switch is in prices.js and tools/bake_prices.py.
 const SHOW_ILS = false;   // dollars everywhere, Hebrew pages too (Jeinna, 10 Nov 2026)
-// November Sale (sale.js): rows and totals use the sale price; the original is struck through beside it.
-const usdOf = (i) => salePrice(i.price_cents, i.slug, i.currency);
-const ilsOf = (i) => salePrice(i.price_ils_cents, i.slug, "ILS");
+// A sale (sale.js) or an affiliate's code (referral.js): rows and totals use the lower price; the original is struck
+// through beside it.
+const usdOf = (i) => offerPrice(i.price_cents, i.slug, i.currency);
+const ilsOf = (i) => offerPrice(i.price_ils_cents, i.slug, "ILS");
 function priceOf(i) {
-  const was = (c, cur) => (saleFor(i.slug) && c != null ? `<s class="sale-was">${money(c, cur)}</s> ` : "");
+  const was = (c, cur) => (offerFor(i.slug) && c != null ? `<s class="sale-was">${money(c, cur)}</s> ` : "");
   if (!(SHOW_ILS && he() && i.price_ils_cents != null)) return was(i.price_cents, i.currency) + money(usdOf(i), i.currency);
   return `${was(i.price_ils_cents, "ILS")}${money(ilsOf(i), "ILS")}<span class="usd">בקופה: ${money(usdOf(i), i.currency)}</span>`;
 }
@@ -222,7 +223,10 @@ function render() {
   const charge = ils && list.every((i) => i.price_cents != null)
     ? `<p class="cart-note cart-usd">המחירים כוללים מע״מ (18%) ומוצגים בשקלים. התשלום בקופה הוא בדולרים: ${money(usdTotal, list[0].currency)} בסך הכול.</p>`
     : isIsraeli() && known ? `<p class="cart-note cart-usd">${T("Prices include 18% Israeli VAT.", "המחירים בדולרים וכוללים מע״מ (18%).")}</p>` : "";
-  foot.innerHTML = `${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}${ready.length ? SAFE() : ""}`;
+  // an affiliate's code at work: say so, so the buyer sees why the price dropped
+  const aff = list.map((i) => offerFor(i.slug)).find((o) => o?.affiliate);
+  const affLine = aff ? `<p class="cart-note cart-code">${T(`Code <b data-no-i18n>${esc(aff.code)}</b>: ${aff.pct}% off`, `קוד <b data-no-i18n>${esc(aff.code)}</b>: ${aff.pct}% הנחה`)}</p>` : "";
+  foot.innerHTML = `${affLine}${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}${ready.length ? SAFE() : ""}`;
 }
 
 // ---------------------------------------------------------------- add to cart from the home and sales pages
@@ -400,10 +404,13 @@ async function goToCheckout(link) {
   let utm = null;
   try { utm = sessionStorage.getItem("utm_source") || new URLSearchParams(location.search).get("utm_source"); } catch { /* blocked */ }
   if (utm) url.searchParams.set("checkout[custom][source]", utm.slice(0, 64));
-  // November Sale: the product's Lemon Squeezy discount code, so checkout charges the price the cart showed
+  // A sale or an affiliate's code: its Lemon Squeezy discount code, so checkout charges the price the cart showed.
+  // The affiliate's link goes along as "ref" either way (checkout-webhook credits the sale to them).
   const slug = link.dataset.slug || items().find((i) => i.checkout_url && new URL(i.checkout_url, location.href).pathname === url.pathname)?.slug;
-  const sale = saleFor(slug);
+  const sale = offerFor(slug);
   if (sale) url.searchParams.set("checkout[discount_code]", sale.code);
+  const ref = refCode();
+  if (ref) url.searchParams.set("checkout[custom][ref]", ref);
   // Lemon Squeezy's Pay button in the shop's gold (Jeinna, 5 Nov 2026): a deeper gold, so its white text stays
   // readable (5:1 contrast; the site's bright gold #F4AF56 would be 1.9:1)
   url.searchParams.set("button_color", "#9A6418");
@@ -420,7 +427,7 @@ async function goToCheckout(link) {
   let go = url.toString();
   if (slug) {
     try {
-      const made = await api.createCheckout({ slug, discount_code: sale?.code || "", source: utm || "", vat: isIsraeli() ? "il" : "" });
+      const made = await api.createCheckout({ slug, discount_code: sale?.code || "", source: utm || "", ref, vat: isIsraeli() ? "il" : "" });
       const u = new URL(made?.url || "");
       if (u.protocol === "https:" && (/(^|\.)lemonsqueezy\.com$/.test(u.hostname) || u.hostname === "checkout.mw.photography")) go = u.toString();
     } catch { /* the plain link */ }
@@ -598,6 +605,7 @@ export function initCart() {
   // My downloads takes what the buyer now owns out of the saved cart (account.js), then tells the cart here
   window.addEventListener("mwp-cart-changed", () => { memory = null; refresh(); });
   refresh();
+  initReferral(refresh);   // an affiliate's ?code= link: remembered for 30 days, 10% off in the cart
   // The ☰ menu's "Your account": who is signed in, and Sign out; else Sign in (the header has no account icon since
   // 25 Oct 2026). Only someone with a saved sign-in loads the account code.
   (async () => {

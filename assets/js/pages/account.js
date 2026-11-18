@@ -1,6 +1,6 @@
 // My downloads: magic-link sign-in, then the customer's library with secure download buttons.
 import { initChrome, toast } from "../lib/ui.js";
-import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, myExtras, myOrders, requestDownload, signedTerms, sendFeedback, panelDevices, removePanelDevice, guideDevices, removeGuideDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
+import { supabase, currentUser, sendMagicLink, signOut, signInWithPassword, signUpWithPassword, sendPasswordReset, updatePassword, myProfile, saveMyProfile, myLibrary, myExtras, myOrders, requestDownload, signedTerms, sendFeedback, myAffiliate, panelDevices, removePanelDevice, guideDevices, removeGuideDevice, mediaUrl, esc, shortDate } from "../lib/api.js";
 import { EMAIL_RE, setBusy, setStatus } from "./shared-forms.js";
 import { countLabel } from "../lib/catalog.js";
 
@@ -153,6 +153,70 @@ async function showDevices() {
   catch { box.hidden = true; }
 }
 
+// ---------------------------------------------------------------- The MWP Affiliate Program (Matan, 18 Nov 2026)
+// Only for affiliates: their code and share link, their earnings (on hold for the 14-day refund period, ready, paid),
+// their latest sales (date, product, earning: never the buyer) and the kit. Numbers from my_affiliate().
+const SHOP = "https://shop.mw.photography";
+const usd = (c) => `$${(Number(c || 0) / 100).toFixed(2)}`;
+const longDate = (iso) => new Date(String(iso).length === 10 ? `${iso}T12:00:00Z` : iso)
+  .toLocaleDateString(he() ? "he-IL" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
+const COPY_IC = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>';
+function affiliateHTML(a) {
+  const link = `${SHOP}/?code=${a.code}`;
+  const today = new Date().toISOString().slice(0, 10);
+  const status = a.status === "ended"
+    ? T("Your agreement has ended. Anything you've earned is still paid.", "ההסכם שלכם הסתיים. כל מה שהרווחתם עדיין ישולם.")
+    : a.starts_on > today
+      ? T(`Your code starts working on ${longDate(a.starts_on)}.`, `הקוד שלכם יתחיל לעבוד ב־${longDate(a.starts_on)}.`)
+      : T(`Active until ${longDate(a.ends_on)}.`, `פעיל עד ${longDate(a.ends_on)}.`);
+  const toGo = Math.max(0, 10000 - Number(a.ready_cents || 0));
+  const pct = Math.min(100, Math.round(Number(a.ready_cents || 0) / 100));
+  const STATE = { on_hold: T("On hold", "בהמתנה"), ready: T("Ready", "מוכן לתשלום"), paid: T("Paid", "שולם"), void: T("Refunded", "הוחזר") };
+  const rows = (a.recent || []).map((r) => `<li class="aff-sale">
+      <span class="aff-d">${esc(shortDate(r.date))}</span>
+      <span class="aff-p">${esc(r.product || "")}</span>
+      <span class="aff-a">${usd(r.amount_cents)}</span>
+      <span class="aff-s aff-s--${esc(r.state)}">${STATE[r.state] || ""}${r.state === "on_hold" ? ` · ${esc(shortDate(r.available_at))}` : ""}</span>
+    </li>`).join("");
+  const label = T("Every post needs the Paid partnership label, and tag @mw_phototours.", "כל פוסט צריך את התווית ״שותפות בתשלום״ ותיוג של ‎@mw_phototours.");
+  return `<div><h2 class="h3" id="aff-h">${T("Your affiliate program", "תוכנית השותפים שלכם")}</h2>
+    <p class="meta">${status}</p></div>
+    ${a.status === "ended" ? "" : `<div class="aff-share">
+      <div class="aff-box"><p class="aff-l">${T("Your code", "הקוד שלכם")}</p><p class="aff-code" dir="ltr">${esc(a.code)}</p>
+        <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(a.code)}">${COPY_IC}${T("Copy code", "העתקת הקוד")}</button></div>
+      <div class="aff-box"><p class="aff-l">${T("Your link", "הקישור שלכם")}</p><p class="aff-link" dir="ltr">${esc(link.replace("https://", ""))}</p>
+        <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(link)}">${COPY_IC}${T("Copy link", "העתקת הקישור")}</button></div>
+    </div>
+    <p class="meta">${T("Your followers get 10% off with the code, or through the link (it applies the code for them for 30 days). You earn 10% of what they pay.",
+      "העוקבים שלכם מקבלים 10% הנחה עם הקוד, או דרך הקישור (הוא מפעיל את הקוד בשבילם למשך 30 יום). אתם מרוויחים 10% ממה שהם משלמים.")}</p>`}
+    <div class="aff-tiles">
+      <div class="aff-tile"><b>${usd(a.on_hold_cents)}</b><span>${T("On hold", "בהמתנה")}</span><small>${T("Sales in their 14-day refund period", "מכירות בתוך 14 ימי ההחזר")}</small></div>
+      <div class="aff-tile"><b>${usd(a.ready_cents)}</b><span>${T("Ready", "מוכן לתשלום")}</span><small>${toGo && a.status !== "ended" ? T(`${usd(toGo)} to go until $100`, `עוד ${usd(toGo)} עד 100$`) : T("Paid around the 15th", "ישולם בסביבות ה־15")}</small></div>
+      <div class="aff-tile"><b>${usd(a.paid_cents)}</b><span>${T("Paid so far", "שולם עד היום")}</span><small>${T(`${a.sales} sales`, `${a.sales} מכירות`)}</small></div>
+    </div>
+    <div class="aff-bar" role="img" aria-label="${pct}%"><span style="width:${pct}%"></span></div>
+    ${rows ? `<h3 class="aff-sub">${T("Latest sales", "מכירות אחרונות")}</h3><ul class="aff-sales">${rows}</ul>` : `<p class="meta">${T("Your sales will appear here.", "המכירות שלכם יופיעו כאן.")}</p>`}
+    <p class="aff-kit"><a class="link" href="/assets/affiliates/introducing-mwp.pdf" target="_blank" rel="noopener">${T("Introducing MWP: how to present the tools", "היכרות עם MWP: איך להציג את הכלים")}</a>
+      · <a class="link" href="/assets/affiliates/mwp-affiliate-program.pdf" target="_blank" rel="noopener">${T("The program", "התוכנית")}</a></p>
+    <p class="meta">${label}</p>`;
+}
+async function showAffiliate() {
+  const box = document.getElementById("affiliate");
+  if (!box) return;
+  let a = null;
+  try { a = await myAffiliate(); } catch { /* not an affiliate, or offline */ }
+  if (!a?.code) { box.hidden = true; return; }
+  box.setAttribute("data-no-i18n", "");
+  box.innerHTML = affiliateHTML(a);
+  box.hidden = false;
+  if (location.hash === "#affiliate") box.scrollIntoView();
+}
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("#affiliate [data-copy]");
+  if (!b) return;
+  try { await navigator.clipboard.writeText(b.dataset.copy); toast(T("Copied", "הועתק")); } catch { /* blocked */ }
+});
+
 // thank-you.js notes the time of a checkout; My downloads waits for that order for a few minutes after it
 function justBought() {
   try { return Date.now() - Number(sessionStorage.getItem("mwp_just_bought") || 0) < 15 * 60 * 1000; } catch { return false; }
@@ -227,6 +291,7 @@ async function showLibrary(user) {
     if (items.some((i) => (i.view_only || i.online_only) && i.products?.category === "guide" && i.products.slug !== SAMPLE)) showReadingDevices();
     showSignedTerms();
     showOrders();
+    showAffiliate();
     // ambassadors and testers (their Field Guides are read online) can send feedback to the team
     document.getElementById("feedback").hidden = !items.some((i) => i.view_only);
     // ambassadors and testers didn't pay: no "Instant download after payment" bar for them
@@ -552,9 +617,10 @@ document.getElementById("sign-out")?.addEventListener("click", async () => {
 const preset = params.get("email");
 if (preset && EMAIL_RE.test(preset)) emails.forEach((i) => { i.value = preset; });
 if (next && /checkout|cart=1/.test(next)) document.getElementById("auth-why").hidden = false;
-// From the Ambassador page, after accepting the terms (?from=ambassador): their name, and a note that the account
-// must use the email they applied with (their tools are tied to it).
-if (params.get("from") === "ambassador") {
+// From the Ambassador page, after accepting the terms (?from=ambassador), or the Affiliate Program's invitation page
+// (?from=affiliate): their name, and a note that the account must use that email (their tools are tied to it).
+const fromProgram = params.get("from");
+if (fromProgram === "ambassador" || fromProgram === "affiliate") {
   const nm = (params.get("name") || "").trim().slice(0, 80);
   const [first, ...rest] = nm.split(/\s+/);
   const f1 = document.getElementById("su-first"), f2 = document.getElementById("su-last");
@@ -563,7 +629,12 @@ if (params.get("from") === "ambassador") {
   for (const view of signedOut.querySelectorAll('[data-view="signup"], [data-view="signin"]')) {
     const note = document.createElement("p");
     note.className = "auth-note auth-amb";
-    note.textContent = view.dataset.view === "signup"
+    note.textContent = fromProgram === "affiliate" ? (view.dataset.view === "signup"
+      ? T("Welcome to the MWP Affiliate Program. Create your account with the email your invitation came to, confirm it from the email we send, and your tools, code and earnings will be here.",
+          "ברוכים הבאים לתוכנית השותפים של MWP. פתחו חשבון עם המייל שאליו הגיעה ההזמנה, אשרו אותו מהמייל שנשלח אליכם, והכלים, הקוד והרווחים שלכם יחכו כאן.")
+      : T("Welcome to the MWP Affiliate Program. Sign in with the email your invitation came to, and your tools, code and earnings will be here.",
+          "ברוכים הבאים לתוכנית השותפים של MWP. התחברו עם המייל שאליו הגיעה ההזמנה, והכלים, הקוד והרווחים שלכם יחכו כאן."))
+      : view.dataset.view === "signup"
       ? T("Welcome to the Ambassador Program. Create your account with the email you applied with, confirm it from the email we send, and your tools will be here.",
           "ברוכים הבאים לתוכנית השגרירים. פתחו חשבון עם המייל שאיתו נרשמתם, אשרו אותו מהמייל שנשלח אליכם, והכלים שלכם יחכו כאן.")
       : T("Welcome to the Ambassador Program. Sign in with the email you applied with, and your tools will be here.",

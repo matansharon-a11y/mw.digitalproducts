@@ -246,6 +246,15 @@ export const betaApply = (form) => callFunction("beta", { action: "apply", ...fo
 export const betaAcceptInfo = (token) => callFunction("beta", { action: "accept_info", token });
 export const betaAccept = (token, lang) => callFunction("beta", { action: "accept", token, agree: true, lang });
 export const betaStatus = () => callFunction("beta", { action: "status" });
+// The MWP Affiliate Program (supabase/functions/affiliate; the affiliate's own numbers come from my_affiliate())
+export const affiliateInviteInfo = (token) => callFunction("affiliate", { action: "invite_info", token });
+export const affiliateAccept = (token, lang) => callFunction("affiliate", { action: "accept", token, agree: true, lang });
+export const affiliateAdmin = (action, o = {}) => callFunction("affiliate", { action, ...o }, { auth: true });
+export async function myAffiliate() {
+  const { data, error } = await supabase.rpc("my_affiliate");
+  if (error) throw new ApiError(error.message);
+  return data || null;
+}
 // The ambassador's signed-terms PDF: { url } when ready, { preparing } while it's being made (202).
 export const signedTerms = (receipt) => callFunction("beta", { action: "signed_terms", ...(receipt ? { receipt } : {}) }, { auth: !receipt });
 // The buyer's checkout, made by the shop in English (Lemon Squeezy has no Hebrew and showed Hebrew browsers Bulgarian): { url }

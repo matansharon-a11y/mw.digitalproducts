@@ -9,6 +9,7 @@
 // repeat delivery of the same event returns 200 without doing anything twice.
 // ============================================================================
 import { lsCustomerCountry } from "../_shared/lscountry.ts";
+import { providerOrderCode, recordAffiliateSale, voidAffiliateSale } from "../_shared/affiliates.ts";
 import { requestPersonalCopies, admin, hmacHex, notifyMake, plain, safeEqual } from "../_shared/http.ts";
 
 // The signing secrets are made by "Connect Lemon Squeezy" (tools/connect_lemonsqueezy.py), one for the test-mode
@@ -147,6 +148,16 @@ async function handlePaid(
   }, { onConflict: "checkout_order_id" }).select("id").single();
   if (oErr) throw oErr;
 
+  // The MWP Affiliate Program: the discount code paid with (Lemon Squeezy's order notice only carries the amount, so
+  // it's asked for), and the affiliate link the visit came with (the cart's custom "ref"). Safe to run again.
+  const usedCode = (a.discount_total ?? 0) > 0 ? await providerOrderCode(orderId) : null;
+  if (usedCode) await db.from("orders").update({ discount_code: usedCode }).eq("id", order.id);
+  const earned = await recordAffiliateSale(db, {
+    orderId: order.id, customerId: customer.id, buyerEmail: email, totalCents: a.total, currency: a.currency,
+    orderedAt: a.created_at ?? new Date().toISOString(), code: usedCode, ref: custom.ref, testMode,
+  });
+  if (earned) console.log(`order ${orderId}: affiliate ${earned.affiliate} earns ${earned.amount_cents}`);
+
   // Paid for something the shop doesn't know (a variant the connect script hasn't linked, or a product bought from
   // the Lemon Squeezy storefront): keep the order and raise it in monday, instead of failing until the retries stop.
   if (!product) {
@@ -238,6 +249,7 @@ async function handleRefund(
     const { error: rErr } = await db.from("entitlements")
       .update({ revoked_at: new Date().toISOString() }).eq("order_id", order.id);
     if (rErr) throw rErr;
+    await voidAffiliateSale(db, order.id);   // a refunded sale earns the affiliate nothing
   }
 
   const { data: customer } = await db.from("customers").select("email").eq("id", order.customer_id).single();
