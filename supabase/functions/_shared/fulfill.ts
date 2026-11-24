@@ -1,6 +1,6 @@
 // ============================================================================
-// Fulfilment, the same for every payment provider (24 Nov 2026, getting ready for Creem). A provider's webhook
-// (checkout-webhook for Lemon Squeezy, creem-webhook for Creem) checks the signature, turns its payload into a
+// Fulfilment, the same for every payment provider (24 Nov 2026, getting ready for Dodo Payments). A provider's webhook
+// (checkout-webhook for Lemon Squeezy, dodo-webhook for Dodo Payments) checks the signature, turns its payload into a
 // PaidOrder or a refund, and calls these. Everything after that is the shop's own: the customer, the order, the
 // downloads (bundles unlock their parts), the affiliate's sale, the personal copies and monday.
 // Safe to run again for the same order (a provider's retry).
@@ -11,12 +11,12 @@ import { admin, notifyMake, plain, requestPersonalCopies } from "./http.ts";
 type Db = ReturnType<typeof admin>;
 const ALLOW_TEST_ORDERS = Deno.env.get("ALLOW_TEST_ORDERS") === "true";
 
-export type Provider = "lemonsqueezy" | "creem";
+export type Provider = "lemonsqueezy" | "dodo";
 
 export type PaidOrder = {
   provider: Provider;
-  providerOrderId: string;          // orders.checkout_order_id (unique per provider; Creem's ids start "ord_")
-  orderNumber: string;              // what people see (Lemon Squeezy's order number; Creem's order id)
+  providerOrderId: string;          // orders.checkout_order_id (Dodo's payment ids start "pay_")
+  orderNumber: string;              // what people see (Lemon Squeezy's order number; Dodo's payment id)
   email: string;                    // the email paid with
   name: string;
   country: string | null;           // the buyer's billing country (2 letters), when the provider gives it
@@ -25,7 +25,7 @@ export type PaidOrder = {
   createdAt: string;
   receiptUrl: string | null;        // only Lemon Squeezy has a receipt page link (the database checks its address)
   testMode: boolean;
-  product: { column: "checkout_variant_id" | "creem_product_id" | "creem_test_product_id"; value: string; label: string };
+  products: { column: "checkout_variant_id" | "dodo_product_id" | "dodo_test_product_id"; value: string; label: string }[];   // Dodo: a whole cart
   custom: Record<string, string>;   // what the cart sent: user_id, source, vat, ref
   usedCode: string | null;          // the discount code paid with
 };
@@ -66,9 +66,15 @@ export async function fulfillPaid(db: Db, o: PaidOrder): Promise<void> {
   const { data: known } = await db.from("orders").select("status").eq("checkout_order_id", o.providerOrderId).maybeSingle();
   if (known?.status === "refunded") { console.warn(`order ${o.providerOrderId} is refunded: paid notice ignored`); return; }
 
-  const { data: product, error: pErr } = await db.from("products")
-    .select("id, name, name_emphasis, slug").eq(o.product.column, o.product.value).maybeSingle();
-  if (pErr) throw pErr;
+  type Product = { id: string; name: string; name_emphasis: string | null; slug: string; price_cents: number };
+  const found: Product[] = [];
+  const unmatched: PaidOrder["products"] = [];
+  for (const want of o.products) {
+    const { data: product, error: pErr } = await db.from("products")
+      .select("id, name, name_emphasis, slug, price_cents").eq(want.column, want.value).maybeSingle();
+    if (pErr) throw pErr;
+    if (product) found.push(product as Product); else unmatched.push(want);
+  }
 
   // the customer's own name (My details) is kept; the checkout name only fills an empty one
   const { data: customer, error: cErr } = await db.from("customers")
@@ -109,47 +115,51 @@ export async function fulfillPaid(db: Db, o: PaidOrder): Promise<void> {
   if (earned) console.log(`order ${o.providerOrderId}: affiliate ${earned.affiliate} earns ${earned.amount_cents}`);
 
   // Paid for something the shop doesn't know (a product not linked yet): keep the order and raise it in monday,
-  // instead of failing until the retries stop.
-  if (!product) {
-    console.error(`order ${o.providerOrderId}: no product for ${o.product.column} ${o.product.value}`);
+  // instead of failing until the retries stop. What the shop does know is still delivered.
+  if (unmatched.length) {
+    console.error(`order ${o.providerOrderId}: no product for ${unmatched.map((u) => `${u.column} ${u.value}`).join(", ")}`);
     await notifyMake("MAKE_ORDER_WEBHOOK", {
       type: "order", order_id: order.id, checkout_order_id: o.providerOrderId, order_number: o.orderNumber,
       order_date: o.createdAt.slice(0, 10), test_mode: o.testMode,
       status_label: "Not delivered", email, name: plain(o.name),
-      product: plain(`UNMATCHED: ${o.product.label} (${o.product.value})`),
+      product: plain(`UNMATCHED: ${unmatched.map((u) => `${u.label} (${u.value})`).join(", ")}`),
       product_slug: "", subtotal: o.subtotalCents / 100, discount: o.discountCents / 100, tax: o.taxCents / 100,
       total: o.totalCents / 100, currency: o.currency, receipt_url: o.receiptUrl, source: plain(o.custom.source),
       repeat_customer: false, downloads_url: "",
     });
-    return;
+    if (!found.length) return;
   }
 
-  const { error: iErr } = await db.from("order_items")
-    .upsert({ order_id: order.id, product_id: product.id, price_cents: o.subtotalCents }, { onConflict: "order_id,product_id" });
-  if (iErr) throw iErr;
+  for (const product of found) {
+    // one product: what was paid for it; several (a Dodo cart): each at its catalogue price
+    const price = found.length === 1 ? o.subtotalCents : product.price_cents;
+    const { error: iErr } = await db.from("order_items")
+      .upsert({ order_id: order.id, product_id: product.id, price_cents: price }, { onConflict: "order_id,product_id" });
+    if (iErr) throw iErr;
 
-  const { error: eErr } = await db.from("entitlements").upsert(
-    { customer_id: customer.id, product_id: product.id, order_id: order.id, revoked_at: null, view_only: false },
-    { onConflict: "customer_id,product_id" });
-  if (eErr) throw eErr;
+    const { error: eErr } = await db.from("entitlements").upsert(
+      { customer_id: customer.id, product_id: product.id, order_id: order.id, revoked_at: null, view_only: false },
+      { onConflict: "customer_id,product_id" });
+    if (eErr) throw eErr;
 
-  // A bundle also unlocks each product in it, so My downloads shows them as separate downloads and only one file per
-  // product is ever uploaded. A product the buyer already owns keeps its own order, so refunding the bundle never
-  // takes away something bought separately.
-  const parts = BUNDLES[product.slug] ?? [];
-  if (parts.length) {
-    const { data: partRows, error: ppErr } = await db.from("products").select("id, slug").in("slug", parts);
-    if (ppErr) throw ppErr;
-    for (const part of partRows ?? []) {
-      const { data: owned } = await db.from("entitlements").select("id, order_id, revoked_at, view_only")
-        .eq("customer_id", customer.id).eq("product_id", part.id).maybeSingle();
-      // bought before: it keeps its own order. Free access (ambassador / tester / affiliate) becomes paid access, so
-      // ending the program never takes back what they paid for; read-only guides become a download.
-      if (owned && owned.order_id && !owned.revoked_at && !owned.view_only) continue;
-      const { error: bErr } = await db.from("entitlements").upsert(
-        { customer_id: customer.id, product_id: part.id, order_id: order.id, revoked_at: null, view_only: false },
-        { onConflict: "customer_id,product_id" });
-      if (bErr) throw bErr;
+    // A bundle also unlocks each product in it, so My downloads shows them as separate downloads and only one file
+    // per product is ever uploaded. A product the buyer already owns keeps its own order, so refunding the bundle
+    // never takes away something bought separately.
+    const parts = BUNDLES[product.slug] ?? [];
+    if (parts.length) {
+      const { data: partRows, error: ppErr } = await db.from("products").select("id, slug").in("slug", parts);
+      if (ppErr) throw ppErr;
+      for (const part of partRows ?? []) {
+        const { data: owned } = await db.from("entitlements").select("id, order_id, revoked_at, view_only")
+          .eq("customer_id", customer.id).eq("product_id", part.id).maybeSingle();
+        // bought before: it keeps its own order. Free access (ambassador / tester / affiliate) becomes paid access, so
+        // ending the program never takes back what they paid for; read-only guides become a download.
+        if (owned && owned.order_id && !owned.revoked_at && !owned.view_only) continue;
+        const { error: bErr } = await db.from("entitlements").upsert(
+          { customer_id: customer.id, product_id: part.id, order_id: order.id, revoked_at: null, view_only: false },
+          { onConflict: "customer_id,product_id" });
+        if (bErr) throw bErr;
+      }
     }
   }
 
@@ -168,8 +178,8 @@ export async function fulfillPaid(db: Db, o: PaidOrder): Promise<void> {
     status_label: o.testMode ? "Test order" : "Paid",
     email,
     name: plain(o.name),
-    product: plain([product.name, product.name_emphasis].filter(Boolean).join(" ")),
-    product_slug: product.slug,
+    product: plain(found.map((p) => [p.name, p.name_emphasis].filter(Boolean).join(" ")).join(", ")),
+    product_slug: found.map((p) => p.slug).join(","),
     subtotal: o.subtotalCents / 100,
     discount: o.discountCents / 100,
     tax: o.taxCents / 100,

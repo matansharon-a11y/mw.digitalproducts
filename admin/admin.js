@@ -178,7 +178,7 @@ $("#mfa-enroll").addEventListener("submit", async (e) => {
 $("#admin-signout").addEventListener("click", async () => { await supabase.auth.signOut(); location.reload(); });
 
 // ---------------------------------------------------------------- navigation
-const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, morning: loadMorning, customers: loadCustomers, signups: loadSignups, ambassadors: loadAmbassadors, testers: loadTesters, affiliates: loadAffiliates, support: loadTickets, security: loadSecurity };
+const loaders = { overview: loadOverview, products: loadProducts, compat: loadCompat, orders: loadOrders, finance: loadFinance, morning: loadMorning, customers: loadCustomers, signups: loadSignups, ambassadors: loadAmbassadors, testers: loadTesters, affiliates: loadAffiliates, payments: loadPayments, support: loadTickets, security: loadSecurity };
 
 // ---------------------------------------------------------------- navigation (6 Nov 2026)
 // Six sections in the sidebar; a section with more than one view shows tabs above it. Every view has its own address
@@ -190,7 +190,7 @@ const GROUPS = {
   products: { label: "Products", tabs: [["products", "Catalogue"], ["compat", "Compatibility"]] },
   people: { label: "People", tabs: [["customers", "Customers"], ["signups", "Sign-ups"], ["ambassadors", "Ambassadors"], ["testers", "Testers"], ["affiliates", "Affiliates"]] },
   support: { label: "Support", tabs: [["support", "Tickets"]] },
-  settings: { label: "Settings", tabs: [["security", "Two-step sign-in"]] },
+  settings: { label: "Settings", tabs: [["security", "Two-step sign-in"], ["payments", "Payments"]] },
 };
 const groupOf = (tab) => (tab === "editor" ? "products" : Object.keys(GROUPS).find((g) => GROUPS[g].tabs.some(([t]) => t === tab)));
 const isView = (tab) => tab === "editor" || !!groupOf(tab);
@@ -1602,7 +1602,7 @@ function showInvite(r, link) {
 const affCols = [
   { label: "Name", value: (r) => r.name, html: (r) => `${esc(r.name)}${r.instagram ? `<div class="meta">@${esc(r.instagram)}</div>` : ""}` },
   { label: "Email", value: (r) => r.email },
-  { label: "Code", value: (r) => r.code, html: (r) => `<strong>${esc(r.code)}</strong>${r.status === "active" && !r.has_code ? `<div class="mfail">Not in Lemon Squeezy yet</div>` : ""}` },
+  { label: "Code", value: (r) => r.code, html: (r) => `<strong>${esc(r.code)}</strong>${r.status === "active" && !r.has_code ? `<div class="mfail">Code not made at the payment provider yet</div>` : ""}` },
   { label: "Status", value: (r) => AFF_STATUS[r.status],
     html: (r) => `<span class="status status--amb-${r.status === "active" ? "active" : "ended"}">${AFF_STATUS[r.status]}</span><div class="meta">${
       r.status === "invited" ? `Invited ${esc(shortDate(r.invited_at))}` : r.status === "active" ? `${esc(shortDate(r.starts_on))} to ${esc(shortDate(r.ends_on))}` : `Ended ${esc(shortDate(r.ended_at))}`}</div>` },
@@ -1701,7 +1701,7 @@ $("[data-panel='affiliates']").addEventListener("click", async (e) => {
     } else if (code) {
       setBusy(code, true);
       await affiliateFn({ action: "make_code", id: code.dataset.affCode });
-      toast("The code is made in Lemon Squeezy.");
+      toast("The code is made at the payment provider.");
     } else if (end) {
       const r = affRows.find((x) => x.id === end.dataset.affEnd);
       const reason = window.prompt(`End ${r.name}'s agreement?\n\nTheir code stops working, and their free tools are taken back (anything they bought stays). Anything they've earned is still paid.\n\nReason (for the record):`, "Agreement ended");
@@ -1718,6 +1718,32 @@ $("[data-panel='affiliates']").addEventListener("click", async (e) => {
     } else return;
     loadAffiliates();
   } catch (err) { toast(err.message, { type: "error", timeout: 8000 }); }
+});
+
+// ---------------------------------------------------------------- payments: which provider takes payments (24 Nov 2026)
+// Lemon Squeezy until Dodo Payments approves the store and "Connect Dodo" has made the products there.
+const PROVIDER_NAME = { lemonsqueezy: "Lemon Squeezy", dodo: "Dodo Payments" };
+async function loadPayments() {
+  const { data, error } = await supabase.from("checkout_provider").select("provider").maybeSingle();
+  check(error);
+  const now = data?.provider || "lemonsqueezy", other = now === "dodo" ? "lemonsqueezy" : "dodo";
+  $("#pay-now").textContent = PROVIDER_NAME[now];
+  const btn = $("#pay-switch");
+  btn.textContent = `Switch to ${PROVIDER_NAME[other]}`;
+  btn.dataset.to = other;
+}
+$("#pay-switch").addEventListener("click", async (e) => {
+  const to = e.currentTarget.dataset.to;
+  const msg = to === "dodo"
+    ? "Switch checkout to Dodo Payments?\n\nFrom now on every new checkout is a Dodo checkout (one payment for the whole cart, in Hebrew or English). Orders already paid through Lemon Squeezy stay as they are. Do this only after Dodo approved the store, \"Connect Dodo\" ran and a test purchase worked."
+    : "Switch checkout back to Lemon Squeezy?\n\nEvery new checkout goes to Lemon Squeezy again (until it closes on 31 March 2027).";
+  if (!window.confirm(msg)) return;
+  setBusy(e.currentTarget, true);
+  const { error } = await supabase.rpc("admin_set_checkout_provider", { p_provider: to });
+  setBusy(e.currentTarget, false);
+  if (error) { toast(error.message, { type: "error", timeout: 9000 }); return; }
+  toast(`New checkouts now go to ${PROVIDER_NAME[to]}.`);
+  loadPayments();
 });
 
 // ---------------------------------------------------------------- support

@@ -53,16 +53,18 @@ export async function recordAffiliateSale(db: any, o: {
   code?: string | null; ref?: string | null; testMode?: boolean;
 }): Promise<{ affiliate: string; amount_cents: number } | null> {
   if (o.testMode) return null;   // test orders never earn
-  const code = cleanCode(o.code), ref = cleanCode(o.ref);
-  if (!code && !ref) return null;
-  const wanted = [...new Set([code, ref].filter(Boolean))];
+  // `code` can list several (Dodo stacks codes: "NOVEMBER15,MWPKELVIN10"): the affiliate's one is picked below
+  const codes = String(o.code ?? "").split(",").map(cleanCode).filter(Boolean), ref = cleanCode(o.ref);
+  if (!codes.length && !ref) return null;
+  const wanted = [...new Set([...codes, ref].filter(Boolean))];
   const { data: rows } = await db.from("affiliates")
     .select("id, code, email, customer_id, rate, status, starts_on, ended_at").in("code", wanted).neq("status", "invited");
   const byCode = new Map(((rows ?? []) as Affiliate[]).map((a) => [a.code, a]));
   // the code typed or applied at checkout wins over the link the visit came from
+  const code = codes.find((c) => byCode.has(c)) ?? "";
   const a = (code && byCode.get(code)) || (ref && byCode.get(ref));
   if (!a) return null;
-  const via = code && byCode.get(code) ? "code" : "link";
+  const via = code ? "code" : "link";
   const at = new Date(o.orderedAt);
   if (a.starts_on && day(at) < a.starts_on) return null;                 // before their agreement began
   if (a.ended_at && at.getTime() > Date.parse(a.ended_at)) return null;   // after it ended
@@ -144,8 +146,41 @@ async function lemon(path: string, init: RequestInit = {}) {
 }
 const STORE = () => Deno.env.get("LEMONSQUEEZY_STORE_ID") || "502637";
 
-// Make the affiliate's code in Lemon Squeezy: 10% off every product, from their start date to their end date.
-export async function createProviderCode(a: { name: string; code: string; starts_on: string; ends_on: string }) {
+// Make the affiliate's code at the provider that takes payments now (shop_settings): 10% off every product, from
+// their start date to their end date. Returns what to keep in affiliates.provider_codes under that provider's name.
+// deno-lint-ignore no-explicit-any
+export async function createProviderCode(db: any, a: { name: string; code: string; starts_on: string; ends_on: string }) {
+  const { data: setting } = await db.from("shop_settings").select("value").eq("key", "checkout_provider").maybeSingle();
+  return setting?.value === "dodo" ? createDodoCode(a) : createLemonCode(a);
+}
+
+// ---- Dodo Payments: POST /discounts (percent in basis points: 1000 = 10%; no product limit = every product)
+const DODO = () => {
+  const key = Deno.env.get("DODO_API_KEY") ?? "";
+  if (!key) throw new Error("The Dodo key isn't set on the server.");
+  return { key, base: key.startsWith("dodo_test_") ? "https://test.dodopayments.com" : "https://live.dodopayments.com" };
+};
+export async function createDodoCode(a: { name: string; code: string; starts_on: string; ends_on: string }) {
+  const { key, base } = DODO();
+  const res = await fetch(`${base}/discounts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+    body: JSON.stringify({ type: "percentage", amount: DISCOUNT_PCT * 100, code: a.code, name: `Affiliate: ${a.name}`.slice(0, 100),
+      starts_at: `${a.starts_on}T00:00:00Z`, expires_at: `${a.ends_on}T00:00:00Z` }),
+    signal: AbortSignal.timeout(20000),
+  });
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok) throw Object.assign(new Error(`Dodo: ${out?.message || out?.error || `answered ${res.status}`}`), { status: res.status });
+  return { provider: "dodo", id: String(out.discount_id), test_mode: key.startsWith("dodo_test_"), reused: false };
+}
+export async function deleteDodoCode(id: string): Promise<void> {
+  const { key, base } = DODO();
+  const res = await fetch(`${base}/discounts/${encodeURIComponent(id)}`, { method: "DELETE", headers: { Authorization: `Bearer ${key}` }, signal: AbortSignal.timeout(20000) });
+  if (!res.ok && res.status !== 404) throw new Error(`Dodo: answered ${res.status}`);
+}
+
+// ---- Lemon Squeezy
+async function createLemonCode(a: { name: string; code: string; starts_on: string; ends_on: string }) {
   const store = await lemon(`/stores/${STORE()}`);
   const test = store?.meta?.test_mode === true;
   // an existing code with the same name (made before, in this mode) is reused

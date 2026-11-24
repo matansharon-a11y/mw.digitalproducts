@@ -17,7 +17,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 import { admin, clientIp, cors, EMAIL_RE, fail, json, requestPersonalCopies, sha256Hex } from "../_shared/http.ts";
 import {
-  agreementDates, CODE_RE, cleanCode, createProviderCode, deleteProviderCode, DISCOUNT_PCT, grantAffiliateTools,
+  agreementDates, CODE_RE, cleanCode, createProviderCode, deleteDodoCode, deleteProviderCode, DISCOUNT_PCT, grantAffiliateTools,
   revokeAffiliateTools, suggestCode, TERMS_VERSION,
 } from "../_shared/affiliates.ts";
 
@@ -107,8 +107,8 @@ async function accept(req: Request, db: Db, body: Record<string, unknown>) {
 
   // Their code in Lemon Squeezy. If it fails, they're in anyway: the admin shows "Code missing" with a button.
   try {
-    const made = await createProviderCode({ name: a.name, code: a.code, ...dates });
-    await db.from("affiliates").update({ provider_codes: { ...(a.provider_codes ?? {}), lemonsqueezy: made } }).eq("id", a.id);
+    const made = await createProviderCode(db, { name: a.name, code: a.code, ...dates });
+    await db.from("affiliates").update({ provider_codes: { ...(a.provider_codes ?? {}), [made.provider]: made } }).eq("id", a.id);
   } catch (err) {
     console.error("affiliate code", a.code, err);
   }
@@ -150,8 +150,8 @@ async function makeCode(req: Request, db: Db, body: Record<string, unknown>) {
   const { data: a } = await db.from("affiliates").select("id, name, code, status, starts_on, ends_on, provider_codes").eq("id", String(body.id ?? "")).maybeSingle();
   if (!a || a.status !== "active") return fail(req, "Only an active affiliate has a code.", 409);
   try {
-    const made = await createProviderCode({ name: a.name, code: a.code, starts_on: a.starts_on, ends_on: a.ends_on });
-    await db.from("affiliates").update({ provider_codes: { ...(a.provider_codes ?? {}), lemonsqueezy: made } }).eq("id", a.id);
+    const made = await createProviderCode(db, { name: a.name, code: a.code, starts_on: a.starts_on, ends_on: a.ends_on });
+    await db.from("affiliates").update({ provider_codes: { ...(a.provider_codes ?? {}), [made.provider]: made } }).eq("id", a.id);
     return json(req, { ok: true });
   } catch (err) {
     return fail(req, (err as Error).message, 502);
@@ -175,6 +175,11 @@ async function end(req: Request, db: Db, body: Record<string, unknown>) {
   if (lsId) {
     try { await deleteProviderCode(String(lsId)); }
     catch (err) { console.error(err); notes.push("Their code couldn't be deleted in Lemon Squeezy: delete it there by hand."); }
+  }
+  const dodoId = a.provider_codes?.dodo?.id;
+  if (dodoId) {
+    try { await deleteDodoCode(String(dodoId)); }
+    catch (err) { console.error(err); notes.push("Their code couldn't be deleted at Dodo Payments: delete it there by hand."); }
   }
   return json(req, { ok: true, notes });
 }

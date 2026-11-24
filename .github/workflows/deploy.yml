@@ -139,16 +139,24 @@ jobs:
           # the hourly missed-orders check (scheduler "reconcile") reads the store's orders with it
           LEMONSQUEEZY_API_KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
           LEMONSQUEEZY_STORE_ID: ${{ vars.LEMONSQUEEZY_STORE_ID || '502637' }}
+          # Dodo Payments (getting ready, 24 Nov 2026): the checkout function, the affiliate codes and the webhook
+          DODO_API_KEY: ${{ secrets.DODO_API_KEY }}
+          DODO_API_KEY_TEST: ${{ secrets.DODO_API_KEY_TEST }}
+          DODO_WEBHOOK_SECRET: ${{ secrets.DODO_WEBHOOK_SECRET }}
+          DODO_WEBHOOK_SECRET_TEST: ${{ secrets.DODO_WEBHOOK_SECRET_TEST }}
         run: |
           args=()
           for name in SITE_URL DOWNLOAD_DAILY_LIMIT CHECKOUT_WEBHOOK_SECRET MAKE_SHARED_SECRET IP_HASH_SALT \
                       MAKE_ORDER_WEBHOOK MAKE_SUPPORT_WEBHOOK MAKE_SUBSCRIBE_WEBHOOK MAKE_WEBHOOK_URL \
-                      PERSONALIZE_TOKEN PERSONALIZE_REPO LEMONSQUEEZY_API_KEY LEMONSQUEEZY_STORE_ID; do
+                      PERSONALIZE_TOKEN PERSONALIZE_REPO LEMONSQUEEZY_API_KEY LEMONSQUEEZY_STORE_ID \
+                      DODO_API_KEY DODO_API_KEY_TEST DODO_WEBHOOK_SECRET DODO_WEBHOOK_SECRET_TEST; do
             value="${!name}"
             if [ -n "$value" ]; then args+=("$name=$value"); continue; fi
             case "$name" in
               # Optional: orders, support and sign-ups use MAKE_WEBHOOK_URL when these aren't set.
               MAKE_ORDER_WEBHOOK|MAKE_SUPPORT_WEBHOOK|MAKE_SUBSCRIBE_WEBHOOK) ;;
+              # Optional until the move to Dodo Payments
+              DODO_API_KEY|DODO_API_KEY_TEST|DODO_WEBHOOK_SECRET|DODO_WEBHOOK_SECRET_TEST) ;;
               # Without these, nothing reaches Make.com, so nothing reaches monday.com.
               MAKE_WEBHOOK_URL|MAKE_SHARED_SECRET)
                 echo "::warning title=monday.com sync::$name is not set, so shop events won't reach Make.com and monday.com. Add it under Settings > Secrets and variables > Actions." ;;

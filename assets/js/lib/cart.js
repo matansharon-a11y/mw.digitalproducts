@@ -1,4 +1,5 @@
-import { initReferral, offerFor, offerPrice, refCode } from "./referral.js";
+import { initReferral, offerFor, offersFor, offerPrice, refCode } from "./referral.js";
+import { isDodo, loadProvider } from "./provider.js";
 import { isIsraeli, isIsraeliPhone } from "./vat.js";
 // Header icons (account menu + cart) and the cart drawer. Works on every shop page; its imports are the sale (sale.js) and Israeli VAT (vat.js).
 // Icons show no text; the label appears only on hover, keyboard focus, or when tapped/clicked.
@@ -175,11 +176,22 @@ const PAY_BADGES = '<span class="paybadges ui-en" role="img" aria-label="Visa, M
   + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="900" font-style="italic"><tspan fill="#003087">Pay</tspan><tspan fill="#009CDE">Pal</tspan></text></svg>'
   + '</span>';
 const LOCK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+// With Dodo Payments (after the switch): its name, and the ways its checkout takes payment (cards, Apple Pay, Google Pay;
+// no PayPal). Draft wording for Matan's OK, like the Lemon Squeezy one.
+const DODO_BADGES = '<span class="paybadges ui-en" role="img" aria-label="Visa, Mastercard, Apple Pay, Google Pay">'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="900" font-style="italic" fill="#1A1F71">VISA</text></svg>'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><circle cx="16" cy="13" r="7" fill="#EB001B"/><circle cx="24" cy="13" r="7" fill="#F79E1B"/><path d="M20 7.3a7 7 0 0 1 0 11.4 7 7 0 0 1 0-11.4z" fill="#FF5F00"/></svg>'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#000"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="8.5" font-weight="700" fill="#fff">Apple Pay</text></svg>'
+  + '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="#3C4043">G Pay</text></svg>'
+  + '</span>';
 const SAFE = () => `<div class="cart-safe" data-no-i18n>
     <p class="cs-h">${LOCK}<span>${T("Secure checkout", "תשלום מאובטח")}</span></p>
-    <p class="cs-t">${T("You'll pay on the encrypted checkout of Lemon Squeezy, our official payment partner, so your card details are protected.",
-      "התשלום מתבצע בעמוד התשלום המוצפן של למון סקוויזי, שותף התשלומים הרשמי שלנו, כך שפרטי הכרטיס שלכם מוגנים.")}</p>
-    ${PAY_BADGES}
+    <p class="cs-t">${isDodo()
+      ? T("You'll pay on the encrypted checkout of Dodo Payments, our official payment partner, so your card details are protected.",
+          "התשלום מתבצע בעמוד התשלום המוצפן של דודו פיימנטס, שותף התשלומים הרשמי שלנו, כך שפרטי הכרטיס שלכם מוגנים.")
+      : T("You'll pay on the encrypted checkout of Lemon Squeezy, our official payment partner, so your card details are protected.",
+          "התשלום מתבצע בעמוד התשלום המוצפן של למון סקוויזי, שותף התשלומים הרשמי שלנו, כך שפרטי הכרטיס שלכם מוגנים.")}</p>
+    ${isDodo() ? DODO_BADGES : PAY_BADGES}
     <a class="cs-more" href="/support/#secure-checkout">${T("How your payment is protected", "איך התשלום שלכם מוגן")}</a>
   </div>`;
 
@@ -198,7 +210,7 @@ function render() {
     return;
   }
   foot.hidden = false;
-  const several = list.length > 1;
+  const several = list.length > 1 && !isDodo();   // Dodo: the whole cart is one payment
   body.innerHTML = top + list.map((i) => `<div class="cart-row">
       ${i.image ? `<img src="${esc(i.image)}" alt="">` : `<span class="cart-ph"></span>`}
       <div><div class="nm" data-no-i18n>${esc(i.name)}</div><div class="pr">${priceOf(i)}</div></div>
@@ -213,6 +225,8 @@ function render() {
   if (!ready.length) {
     go = `<a class="cart-go" aria-disabled="true">${T("Checkout", "לתשלום")}</a>`;
     note = T("Checkout opens at launch.", "התשלום ייפתח בהשקה.");
+  } else if (isDodo()) {
+    go = `<a class="cart-go" data-checkout data-all href="#checkout">${T("Checkout", "לתשלום")}</a>`;
   } else if (!several) {
     go = `<a class="cart-go" data-checkout data-slug="${esc(ready[0].slug)}" href="${esc(ready[0].checkout_url)}">${T("Checkout", "לתשלום")}</a>`;
   } else {
@@ -224,8 +238,8 @@ function render() {
     ? `<p class="cart-note cart-usd">המחירים כוללים מע״מ (18%) ומוצגים בשקלים. התשלום בקופה הוא בדולרים: ${money(usdTotal, list[0].currency)} בסך הכול.</p>`
     : isIsraeli() && known ? `<p class="cart-note cart-usd">${T("Prices include 18% Israeli VAT.", "המחירים בדולרים וכוללים מע״מ (18%).")}</p>` : "";
   // an affiliate's code at work: say so, so the buyer sees why the price dropped
-  const aff = list.map((i) => offerFor(i.slug)).find((o) => o?.affiliate);
-  const affLine = aff ? `<p class="cart-note cart-code">${T(`Code <b data-no-i18n>${esc(aff.code)}</b>: ${aff.pct}% off`, `קוד <b data-no-i18n>${esc(aff.code)}</b>: ${aff.pct}% הנחה`)}</p>` : "";
+  const aff = list.flatMap((i) => offersFor(i.slug)).find((o) => o?.affiliate);
+  const affLine = aff ? `<p class="cart-note cart-code">${T(`Code <b data-no-i18n>${esc(aff.code)}</b>: ${aff.pct}% off`, `קוד <bdi dir="ltr" data-no-i18n><b>${esc(aff.code)}</b></bdi>: \u200f${aff.pct}% הנחה`)}</p>` : "";
   foot.innerHTML = `${affLine}${known ? `<div class="cart-total"><span>${T("Total", "סה״כ")}</span><span>${money(total, cur)}</span></div>` : ""}${charge}${go}${note ? `<p class="cart-note">${note}</p>` : ""}${ready.length ? SAFE() : ""}`;
 }
 
@@ -382,6 +396,26 @@ function nameStep(link, prof) {
   });
 }
 
+// Dodo Payments (after the switch, 24 Nov 2026): one payment for everything in the cart, every discount code that
+// applies (the sale's and an affiliate's stack), the page in the site's language. The checkout function makes it with
+// the account's email and id; if that fails there's no other link to fall back to.
+async function dodoCheckout(api, prof) {
+  const list = items().filter((i) => i.slug);
+  if (!list.length) return;
+  const codes = [...new Set(list.flatMap((i) => offersFor(i.slug).map((o) => o.code)))];
+  let utm = null;
+  try { utm = sessionStorage.getItem("utm_source") || new URLSearchParams(location.search).get("utm_source"); } catch { /* blocked */ }
+  try { if (isIsraeliPhone(prof?.phone)) localStorage.setItem("mwp_il", "1"); } catch { /* blocked */ }
+  try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
+  try {
+    const made = await api.createCheckout({ slugs: list.map((i) => i.slug), discount_codes: codes, source: utm || "",
+      ref: refCode(), vat: isIsraeli() ? "il" : "", lang: he() ? "he" : "en" });
+    const u = new URL(made?.url || "");
+    if (u.protocol === "https:" && /(^|\.)dodopayments\.com$/.test(u.hostname)) { location.href = u.toString(); return; }
+  } catch { /* below */ }
+  alert(T("Checkout isn't available right now. Please try again in a minute, or contact support.", "התשלום לא זמין כרגע. נסו שוב בעוד דקה, או פנו לתמיכה."));
+}
+
 async function goToCheckout(link) {
   const { api, user } = await accountUser();
   if (!user) { showGate(); return; }
@@ -393,6 +427,7 @@ async function goToCheckout(link) {
     nameStep(link, prof);
     return;
   }
+  if (isDodo()) { await dodoCheckout(api, prof); return; }
   // Checkout uses the account's email, and carries the account's id: the purchase lands in this account even if
   // they type another email at checkout (checkout-webhook). The visit's utm_source goes along for the reports.
   const url = new URL(link.href, location.href);
@@ -424,20 +459,14 @@ async function goToCheckout(link) {
   // browser, so a browser set to Hebrew got it in Bulgarian. The shop makes the checkout with English fixed (the
   // checkout function, Lemon Squeezy's checkout_options.locale), with the same email, account, sale code and VAT
   // mark. If that fails, the plain link above still works.
-  // Creem (from the switch, 24 Nov 2026): the checkout function makes a Creem checkout instead; if that fails it answers
-  // 424 and there's no Lemon Squeezy link to fall back to.
   let go = url.toString();
   if (slug) {
     try {
       const made = await api.createCheckout({ slug, discount_code: sale?.code || "", source: utm || "", ref, vat: isIsraeli() ? "il" : "" });
       const u = new URL(made?.url || "");
-      if (u.protocol === "https:" && (/(^|\.)lemonsqueezy\.com$/.test(u.hostname) || /(^|\.)creem\.io$/.test(u.hostname) || u.hostname === "checkout.mw.photography")) go = u.toString();
-    } catch (err) {
-      if (err?.status === 424) { alert(T("Checkout isn't available right now. Please try again in a minute, or contact support.", "התשלום לא זמין כרגע. נסו שוב בעוד דקה, או פנו לתמיכה.")); return; }
-      /* the plain link */
-    }
+      if (u.protocol === "https:" && (/(^|\.)lemonsqueezy\.com$/.test(u.hostname) || u.hostname === "checkout.mw.photography")) go = u.toString();
+    } catch { /* the plain link */ }
   }
-  if (/(^|\.)creem\.io$/.test(new URL(go).hostname)) { location.href = go; return; }   // Creem: its own page, no overlay
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(go);
   else location.href = go;
 }
@@ -612,6 +641,7 @@ export function initCart() {
   window.addEventListener("mwp-cart-changed", () => { memory = null; refresh(); });
   refresh();
   initReferral(refresh);   // an affiliate's ?code= link: remembered for 30 days, 10% off in the cart
+  loadProvider(refresh);   // Lemon Squeezy, or Dodo Payments after the switch (one payment for the whole cart)
   // The ☰ menu's "Your account": who is signed in, and Sign out; else Sign in (the header has no account icon since
   // 25 Oct 2026). Only someone with a saved sign-in loads the account code.
   (async () => {

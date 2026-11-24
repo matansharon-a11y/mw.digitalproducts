@@ -5,6 +5,7 @@
 // buyer gets whichever discount is bigger, and the affiliate still earns from the sale through the link.
 import { saleFor } from "./sale.js";
 import { CONFIG } from "../config.js";
+import { isDodo } from "./provider.js";
 
 const KEY = "mwp_ref";
 const DAYS = 30;
@@ -35,20 +36,24 @@ function refDiscount() {
   return { pct: r.pct || 10, code: r.code, affiliate: true };
 }
 
-// The discount the cart and checkout use for one product: the sale's or the affiliate's, whichever is bigger
-export function offerFor(slug) {
+// The discounts the cart and checkout use for one product. Lemon Squeezy takes one code: the sale's or the
+// affiliate's, whichever is bigger. Dodo Payments stacks codes (Matan: the affiliate code combines with other
+// discounts): the sale first, then the affiliate's 10% off what's left.
+export function offersFor(slug) {
   const sale = saleFor(slug), ref = refDiscount();
-  if (!ref) return sale;
-  if (!sale) return ref;
-  return ref.pct > sale.pct ? ref : sale;
+  if (!sale || !ref) return [sale || ref].filter(Boolean);
+  if (isDodo()) return [sale, ref];
+  return [ref.pct > sale.pct ? ref : sale];
 }
+export const offerFor = (slug) => offersFor(slug)[0] || null;
 
-// A price after that discount: dollars to the cent (as checkout charges), shekels to the whole shekel
+// A price after those discounts: dollars to the cent (as checkout charges), shekels to the whole shekel
 export function offerPrice(cents, slug, cur) {
-  const o = offerFor(slug);
-  if (!o || cents == null) return cents;
-  const v = cents * (100 - o.pct) / 100;
-  return cur === "ILS" ? Math.round(v / 100) * 100 : Math.round(v);
+  const list = offersFor(slug);
+  if (!list.length || cents == null) return cents;
+  let v = cents;
+  for (const o of list) v = Math.round(v * (100 - o.pct) / 100);
+  return cur === "ILS" ? Math.round(v / 100) * 100 : v;
 }
 
 // Checks a code with the shop (is it an affiliate's, and from when), at most every few hours

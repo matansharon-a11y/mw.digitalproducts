@@ -1,0 +1,47 @@
+# Connect Dodo: run by hand (Actions > Connect Dodo > Run workflow), once Dodo Payments has approved the store.
+# Makes every product the shop sells at Dodo (and the active affiliates' codes) and writes their Dodo ids into the
+# shop. Safe to run again: what's already there is left. Checkout stays on Lemon Squeezy until the admin's switch.
+# Needs the DODO_API_KEY secret (Dodo > Developer > API keys; a dodo_test_ key works on Dodo's test catalogue).
+name: Connect Dodo
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Write to Dodo and the shop (untick for a dry run that only reports)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  SUPABASE_PROJECT_REF: tkkpxsyioetzexgbmbqy
+
+jobs:
+  connect:
+    name: Connect Dodo
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359  # v3.0.1
+        with:
+          version: 2.120.0
+
+      - name: Get the database key
+        run: |
+          KEY=$(supabase projects api-keys --project-ref "$SUPABASE_PROJECT_REF" -o json | jq -r '.[] | select(.name=="service_role") | .api_key')
+          [ -n "$KEY" ] || { echo "::error::Couldn't read the service key (is SUPABASE_ACCESS_TOKEN set?)"; exit 1; }
+          echo "::add-mask::$KEY"
+          echo "SUPABASE_SERVICE_KEY=$KEY" >> "$GITHUB_ENV"
+          echo "SUPABASE_URL=https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_ENV"
+
+      - name: Connect
+        env:
+          DODO_API_KEY: ${{ secrets.DODO_API_KEY }}
+          APPLY: ${{ inputs.apply }}
+        run: python3 tools/connect_dodo.py

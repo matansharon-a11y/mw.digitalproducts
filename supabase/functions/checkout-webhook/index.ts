@@ -82,7 +82,7 @@ Deno.serve(async (req) => {
   }
 });
 
-// Lemon Squeezy's order → the shop's own fulfilment (_shared/fulfill.ts, shared with Creem since 24 Nov 2026)
+// Lemon Squeezy's order → the shop's own fulfilment (_shared/fulfill.ts, shared with Dodo Payments since 24 Nov 2026)
 async function handlePaid(
   db: ReturnType<typeof admin>, orderId: string, a: LsOrder["data"]["attributes"], custom: Record<string, string>, testMode: boolean,
 ) {
@@ -98,8 +98,8 @@ async function handlePaid(
     createdAt: a.created_at ?? new Date().toISOString(),
     receiptUrl: receiptUrl(a.urls?.receipt),
     testMode,
-    product: { column: "checkout_variant_id", value: String(a.first_order_item.variant_id),
-               label: `${a.first_order_item.product_name} (variant ${a.first_order_item.variant_id})` },
+    products: [{ column: "checkout_variant_id", value: String(a.first_order_item.variant_id),
+                 label: `${a.first_order_item.product_name} (variant ${a.first_order_item.variant_id})` }],
     custom,
     // its order notice only carries the discount's amount, so the code is asked for
     usedCode: (a.discount_total ?? 0) > 0 ? await providerOrderCode(orderId) : null,
