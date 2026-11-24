@@ -424,14 +424,20 @@ async function goToCheckout(link) {
   // browser, so a browser set to Hebrew got it in Bulgarian. The shop makes the checkout with English fixed (the
   // checkout function, Lemon Squeezy's checkout_options.locale), with the same email, account, sale code and VAT
   // mark. If that fails, the plain link above still works.
+  // Creem (from the switch, 24 Nov 2026): the checkout function makes a Creem checkout instead; if that fails it answers
+  // 424 and there's no Lemon Squeezy link to fall back to.
   let go = url.toString();
   if (slug) {
     try {
       const made = await api.createCheckout({ slug, discount_code: sale?.code || "", source: utm || "", ref, vat: isIsraeli() ? "il" : "" });
       const u = new URL(made?.url || "");
-      if (u.protocol === "https:" && (/(^|\.)lemonsqueezy\.com$/.test(u.hostname) || u.hostname === "checkout.mw.photography")) go = u.toString();
-    } catch { /* the plain link */ }
+      if (u.protocol === "https:" && (/(^|\.)lemonsqueezy\.com$/.test(u.hostname) || /(^|\.)creem\.io$/.test(u.hostname) || u.hostname === "checkout.mw.photography")) go = u.toString();
+    } catch (err) {
+      if (err?.status === 424) { alert(T("Checkout isn't available right now. Please try again in a minute, or contact support.", "התשלום לא זמין כרגע. נסו שוב בעוד דקה, או פנו לתמיכה.")); return; }
+      /* the plain link */
+    }
   }
+  if (/(^|\.)creem\.io$/.test(new URL(go).hostname)) { location.href = go; return; }   // Creem: its own page, no overlay
   if (window.LemonSqueezy?.Url?.Open) window.LemonSqueezy.Url.Open(go);
   else location.href = go;
 }

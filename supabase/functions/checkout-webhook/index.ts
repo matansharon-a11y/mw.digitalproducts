@@ -9,14 +9,14 @@
 // repeat delivery of the same event returns 200 without doing anything twice.
 // ============================================================================
 import { lsCustomerCountry } from "../_shared/lscountry.ts";
-import { providerOrderCode, recordAffiliateSale, voidAffiliateSale } from "../_shared/affiliates.ts";
-import { requestPersonalCopies, admin, hmacHex, notifyMake, plain, safeEqual } from "../_shared/http.ts";
+import { providerOrderCode } from "../_shared/affiliates.ts";
+import { fulfillPaid, fulfillRefund } from "../_shared/fulfill.ts";
+import { admin, hmacHex, safeEqual } from "../_shared/http.ts";
 
 // The signing secrets are made by "Connect Lemon Squeezy" (tools/connect_lemonsqueezy.py), one for the test-mode
 // webhook and one for the live one, and set here directly: no one ever types them. A request signed with either is
 // accepted; test orders are then told apart by their test_mode flag.
 const SECRETS = [Deno.env.get("LS_WEBHOOK_SECRET_LIVE"), Deno.env.get("LS_WEBHOOK_SECRET_TEST")].filter((s): s is string => !!s);
-const ALLOW_TEST_ORDERS = Deno.env.get("ALLOW_TEST_ORDERS") === "true";
 
 type LsOrder = {
   meta: { event_name: string; test_mode?: boolean; custom_data?: Record<string, string> };
@@ -82,182 +82,35 @@ Deno.serve(async (req) => {
   }
 });
 
-// Bundle slug -> the products it unlocks (slugs as set in the admin). The Lightroom Classic plugin comes with MWP Presets
-// included; MWP Presets alone is just the presets (Jeinna, 25 Oct 2026, reversing 23 Oct). Every bundle with the
-// plugin includes the presets too.
-const BUNDLES: Record<string, string[]> = {
-  "mwp-lightroom-plugin": ["mwp-presets"],
-  "presets-field-guides": ["mwp-lightroom-plugin", "mwp-presets", "mwp-field-guides"],
-  "presets-panel": ["mwp-lightroom-plugin", "mwp-presets", "mwp-panel"],
-  "field-guides-panel": ["mwp-field-guides", "mwp-panel"],
-  "full-set": ["mwp-lightroom-plugin", "mwp-presets", "mwp-panel", "mwp-field-guides"],
-};
-
+// Lemon Squeezy's order → the shop's own fulfilment (_shared/fulfill.ts, shared with Creem since 24 Nov 2026)
 async function handlePaid(
   db: ReturnType<typeof admin>, orderId: string, a: LsOrder["data"]["attributes"], custom: Record<string, string>, testMode: boolean,
 ) {
-  // The purchase belongs to the account that started the checkout (cart.js sends its user id), even when the buyer
-  // typed another email at checkout; otherwise to the email they paid with.
-  let email = a.user_email.trim().toLowerCase();
-  if (/^[0-9a-f-]{36}$/i.test(custom.user_id ?? "")) {
-    const { data: u } = await db.auth.admin.getUserById(custom.user_id);
-    const accountEmail = u?.user?.email_confirmed_at ? u.user.email?.trim().toLowerCase() : "";
-    if (accountEmail) email = accountEmail;
-  }
-
-  if (testMode && !ALLOW_TEST_ORDERS) {
-    const { data: isAdmin } = await db.from("admin_allowlist").select("email").eq("email", email).maybeSingle();
-    if (!isAdmin) { console.warn(`test-mode order ${orderId} from ${email}: nothing unlocked`); return; }
-  }
-
-  // an old "paid" notice sent again (Lemon Squeezy's resend) never reopens a refunded order
-  const { data: known } = await db.from("orders").select("status").eq("checkout_order_id", orderId).maybeSingle();
-  if (known?.status === "refunded") { console.warn(`order ${orderId} is refunded: paid notice ignored`); return; }
-
-  const { data: product, error: pErr } = await db.from("products")
-    .select("id, name, name_emphasis, slug")
-    .eq("checkout_variant_id", String(a.first_order_item.variant_id)).maybeSingle();
-  if (pErr) throw pErr;
-
-  // the customer's own name (My details) is kept; the checkout name only fills an empty one
-  const { data: customer, error: cErr } = await db.from("customers")
-    .upsert({ email }, { onConflict: "email" })
-    .select("id, email, name, created_at, phone, country").single();
-  if (cErr) throw cErr;
-  if (!customer.name && a.user_name) await db.from("customers").update({ name: a.user_name }).eq("id", customer.id);
-  // the billing country the buyer gave at checkout (Lemon Squeezy's customer record); fills an empty profile country
-  const country = await lsCustomerCountry(a.customer_id);
-  if (country && !customer.country) await db.from("customers").update({ country }).eq("id", customer.id);
-
-  const { data: order, error: oErr } = await db.from("orders").upsert({
-    checkout_order_id: orderId,
-    order_number: String(a.order_number),
-    customer_id: customer.id,
-    subtotal_cents: a.subtotal,
-    tax_cents: a.tax,
-    total_cents: a.total,
+  await fulfillPaid(db, {
+    provider: "lemonsqueezy",
+    providerOrderId: orderId,
+    orderNumber: String(a.order_number),
+    email: a.user_email,
+    name: a.user_name,
+    country: await lsCustomerCountry(a.customer_id),   // the billing country (Lemon Squeezy's customer record)
+    subtotalCents: a.subtotal, taxCents: a.tax, totalCents: a.total, discountCents: a.discount_total ?? 0,
     currency: a.currency,
-    status: "paid",
-    test_mode: testMode,
-    source: custom.source?.slice(0, 64) ?? null,
-    // Israeli VAT (their price includes 18%): the cart marks an Israeli visitor's checkout (custom vat = "il"), or the
-    // account's phone is Israeli (+972 / 0…), or the billing country or My details country is Israel
-    vat_rate: custom.vat === "il" || isIsraeliPhone(customer.phone) || country === "IL" || String(customer.country ?? "").toUpperCase() === "IL" ? 0.18 : 0,
-    ...(country ? { country } : {}),
-    receipt_url: receiptUrl(a.urls?.receipt),   // shown in My downloads → Order history
-  }, { onConflict: "checkout_order_id" }).select("id").single();
-  if (oErr) throw oErr;
-
-  // The MWP Affiliate Program: the discount code paid with (Lemon Squeezy's order notice only carries the amount, so
-  // it's asked for), and the affiliate link the visit came with (the cart's custom "ref"). Safe to run again.
-  const usedCode = (a.discount_total ?? 0) > 0 ? await providerOrderCode(orderId) : null;
-  if (usedCode) await db.from("orders").update({ discount_code: usedCode }).eq("id", order.id);
-  const earned = await recordAffiliateSale(db, {
-    orderId: order.id, customerId: customer.id, buyerEmail: email, totalCents: a.total, currency: a.currency,
-    orderedAt: a.created_at ?? new Date().toISOString(), code: usedCode, ref: custom.ref, testMode,
-  });
-  if (earned) console.log(`order ${orderId}: affiliate ${earned.affiliate} earns ${earned.amount_cents}`);
-
-  // Paid for something the shop doesn't know (a variant the connect script hasn't linked, or a product bought from
-  // the Lemon Squeezy storefront): keep the order and raise it in monday, instead of failing until the retries stop.
-  if (!product) {
-    console.error(`order ${orderId}: no product for variant ${a.first_order_item.variant_id}`);
-    await notifyMake("MAKE_ORDER_WEBHOOK", {
-      type: "order", order_id: order.id, checkout_order_id: orderId, order_number: String(a.order_number),
-      order_date: (a.created_at ?? new Date().toISOString()).slice(0, 10), test_mode: testMode,
-      status_label: "Not delivered", email, name: plain(a.user_name),
-      product: plain(`UNMATCHED: ${a.first_order_item.product_name} (variant ${a.first_order_item.variant_id})`),
-      product_slug: "", subtotal: a.subtotal / 100, discount: (a.discount_total ?? 0) / 100, tax: a.tax / 100,
-      total: a.total / 100, currency: a.currency, receipt_url: a.urls?.receipt ?? null, source: plain(custom.source),
-      repeat_customer: false, downloads_url: "",
-    });
-    return;
-  }
-
-  const { error: iErr } = await db.from("order_items")
-    .upsert({ order_id: order.id, product_id: product.id, price_cents: a.subtotal }, { onConflict: "order_id,product_id" });
-  if (iErr) throw iErr;
-
-  const { error: eErr } = await db.from("entitlements").upsert(
-    { customer_id: customer.id, product_id: product.id, order_id: order.id, revoked_at: null, view_only: false },
-    { onConflict: "customer_id,product_id" });
-  if (eErr) throw eErr;
-
-  // A bundle also unlocks each product in it, so My downloads shows them as separate downloads and
-  // only one file per product is ever uploaded. A product the buyer already owns keeps its own order,
-  // so refunding the bundle never takes away something bought separately.
-  const parts = BUNDLES[product.slug] ?? [];
-  if (parts.length) {
-    const { data: partRows, error: ppErr } = await db.from("products").select("id, slug").in("slug", parts);
-    if (ppErr) throw ppErr;
-    for (const part of partRows ?? []) {
-      const { data: owned } = await db.from("entitlements").select("id, order_id, revoked_at, view_only")
-        .eq("customer_id", customer.id).eq("product_id", part.id).maybeSingle();
-      // bought before: it keeps its own order. Free access (ambassador / tester) becomes paid access, so ending
-      // the program never takes back what they paid for; read-only guides become a download.
-      if (owned && owned.order_id && !owned.revoked_at && !owned.view_only) continue;
-      const { error: bErr } = await db.from("entitlements").upsert(
-        { customer_id: customer.id, product_id: part.id, order_id: order.id, revoked_at: null, view_only: false },
-        { onConflict: "customer_id,product_id" });
-      if (bErr) throw bErr;
-    }
-  }
-
-  await requestPersonalCopies();   // start making their marked copies right away
-
-  const { count } = await db.from("orders").select("id", { count: "exact", head: true })
-    .eq("customer_id", customer.id).eq("status", "paid");
-
-  await notifyMake("MAKE_ORDER_WEBHOOK", {
-    type: "order",
-    order_id: order.id,
-    checkout_order_id: orderId,
-    order_number: String(a.order_number),
-    order_date: (a.created_at ?? new Date().toISOString()).slice(0, 10),
-    test_mode: testMode,
-    status_label: testMode ? "Test order" : "Paid",
-    email,
-    name: plain(a.user_name),
-    product: plain([product.name, product.name_emphasis].filter(Boolean).join(" ")),
-    product_slug: product.slug,
-    subtotal: a.subtotal / 100,
-    discount: (a.discount_total ?? 0) / 100,
-    tax: a.tax / 100,
-    total: a.total / 100,
-    currency: a.currency,
-    receipt_url: a.urls?.receipt ?? null,
-    source: plain(custom.source),
-    repeat_customer: (count ?? 1) > 1,
-    downloads_url: `${Deno.env.get("SITE_URL")}/account/?email=${encodeURIComponent(email)}`,
+    createdAt: a.created_at ?? new Date().toISOString(),
+    receiptUrl: receiptUrl(a.urls?.receipt),
+    testMode,
+    product: { column: "checkout_variant_id", value: String(a.first_order_item.variant_id),
+               label: `${a.first_order_item.product_name} (variant ${a.first_order_item.variant_id})` },
+    custom,
+    // its order notice only carries the discount's amount, so the code is asked for
+    usedCode: (a.discount_total ?? 0) > 0 ? await providerOrderCode(orderId) : null,
   });
 }
 
-// A full refund revokes access; a partial refund (a goodwill partial credit) keeps it.
 async function handleRefund(
   db: ReturnType<typeof admin>, orderId: string, full: boolean, a: LsOrder["data"]["attributes"], testMode: boolean,
 ) {
-  const { data: order, error } = await db.from("orders")
-    .update({ status: full ? "refunded" : "partially_refunded", refunded_at: new Date().toISOString() })
-    .eq("checkout_order_id", orderId).select("id, order_number, customer_id").maybeSingle();
-  if (error) throw error;
-  if (!order) {
-    if (testMode) return;   // a test order that unlocked nothing
-    throw new Error(`refund for unknown order ${orderId}`); // retried until the order exists
-  }
-
-  if (full) {
-    const { error: rErr } = await db.from("entitlements")
-      .update({ revoked_at: new Date().toISOString() }).eq("order_id", order.id);
-    if (rErr) throw rErr;
-    await voidAffiliateSale(db, order.id);   // a refunded sale earns the affiliate nothing
-  }
-
-  const { data: customer } = await db.from("customers").select("email").eq("id", order.customer_id).single();
-  await notifyMake("MAKE_ORDER_WEBHOOK", {
-    type: full ? "refund" : "partial_refund", order_id: order.id, checkout_order_id: orderId,
-    order_number: order.order_number, email: customer?.email, test_mode: testMode,
-    refunded_amount: (a.refunded_amount ?? (full ? a.total : 0)) / 100, currency: a.currency,
-  });
+  await fulfillRefund(db, { providerOrderId: orderId, full, testMode, currency: a.currency,
+    refundedCents: a.refunded_amount ?? (full ? a.total : 0) });
 }
 
 // Lemon Squeezy's receipt link, kept only when it's an https link on lemonsqueezy.com (the database checks the same).
@@ -268,8 +121,4 @@ function receiptUrl(u?: string | null): string | null {
   } catch { return null; }
 }
 
-// An Israeli phone number: +972 / 00972 / 972…, or a local number starting with 0 (05x-xxxxxxx, 0x-xxxxxxx)
-export function isIsraeliPhone(phone: unknown): boolean {
-  const d = String(phone ?? "").replace(/[\s().-]/g, "");
-  return /^(\+|00)?972\d{8,9}$/.test(d) || /^0\d{8,9}$/.test(d);
-}
+export { isIsraeliPhone } from "../_shared/fulfill.ts";

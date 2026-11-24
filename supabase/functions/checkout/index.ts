@@ -34,6 +34,10 @@ Deno.serve(async (req) => {
   const vat = body.vat === "il" ? "il" : "";
   const ref = String(body.ref ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 32);   // an affiliate's link
 
+  // Which provider takes payments now (shop_settings; admin → Settings, set to Creem once Creem approves the store)
+  const { data: setting } = await db.from("shop_settings").select("value").eq("key", "checkout_provider").maybeSingle();
+  if (setting?.value === "creem") return creemCheckout(req, db, { slug, discount, source, vat, ref, user });
+
   const { data: product } = await db.from("products").select("checkout_variant_id").eq("slug", slug).maybeSingle();
   const variant = String(product?.checkout_variant_id ?? "");
   if (!/^\d+$/.test(variant)) return fail(req, "Unknown product.", 404);
@@ -74,3 +78,51 @@ Deno.serve(async (req) => {
     return fail(req, "Checkout isn't available right now.", 502);
   }
 });
+
+// ---------------------------------------------------------------- Creem (from the switch; 24 Nov 2026)
+// POST /v1/checkouts (Creem's API: x-api-key; test keys use test-api.creem.io and Creem's separate test catalogue).
+// Creem's checkout page picks its language from the browser and has no Hebrew, so a Hebrew browser gets English.
+// On failure this answers 424: the cart then says checkout isn't available, and never falls back to a Lemon Squeezy link.
+async function creemCheckout(req: Request, db: ReturnType<typeof admin>, o: {
+  slug: string; discount: string; source: string; vat: string; ref: string; user: { id: string; email?: string };
+}) {
+  const key = Deno.env.get("CREEM_API_KEY") ?? "";
+  if (!key) return fail(req, "Checkout isn't available right now.", 424);
+  const test = key.startsWith("creem_test_");
+  const base = test ? "https://test-api.creem.io" : "https://api.creem.io";
+  const { data: product } = await db.from("products").select("creem_product_id, creem_test_product_id").eq("slug", o.slug).maybeSingle();
+  const productId = String((test ? product?.creem_test_product_id : product?.creem_product_id) ?? "");
+  if (!productId) return fail(req, "Checkout isn't available right now.", 424);
+  const metadata: Record<string, string> = { user_id: o.user.id };
+  if (o.source) metadata.source = o.source;
+  if (o.vat) metadata.vat = o.vat;
+  if (o.ref) metadata.ref = o.ref;
+  const site = (Deno.env.get("SITE_URL") || "https://shop.mw.photography").replace(/\/$/, "");
+  const body = {
+    product_id: productId,
+    request_id: crypto.randomUUID(),
+    units: 1,
+    customer: { email: o.user.email },
+    metadata,
+    success_url: `${site}/thank-you/`,
+    ...(/^[A-Z0-9]{3,32}$/.test(o.discount) ? { discount_code: o.discount } : {}),
+  };
+  try {
+    const res = await fetch(`${base}/v1/checkouts`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json", "x-api-key": key },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(10000),
+    });
+    const out = await res.json().catch(() => null);
+    const url = String(out?.checkout_url ?? "");
+    if (!res.ok || !/^https:\/\//.test(url)) {
+      console.error("creem checkout failed", res.status, JSON.stringify(out).slice(0, 400));
+      return fail(req, "Checkout isn't available right now.", 424);
+    }
+    return json(req, { url, provider: "creem" });
+  } catch (err) {
+    console.error("creem checkout error", err);
+    return fail(req, "Checkout isn't available right now.", 424);
+  }
+}
