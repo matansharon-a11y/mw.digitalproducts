@@ -93,6 +93,95 @@ const WHATS_NEW: Record<string, { en: News; he: News }> = {
       ],
     },
   },
+  // Plugin 1.7.1 and panel 2.5.1 (Matan, 25 Nov 2026: "fix and send"). Owners had 1.5.0 and 2.3.x, so each lists all since then.
+  "mwp-lightroom-plugin@1.7.1": {
+    en: {
+      lead: "Version 1.7 is the biggest update of the plugin so far. A new Clean tab, a real eye tool, masks that add up, and Undo for every step.",
+      title: "New in 1.7",
+      items: [
+        "<b>Clean tab.</b> Lightroom's AI Denoise, with an amount slider, and Remove reflections, in their own tab before any mask.",
+        "<b>The eye, done properly.</b> A new Eye section in Edit: drag a small circle over the eye, paint it, or use your own mask. The eye recipe goes into that mask only, with Strength, four live sliders and 1:1 zoom.",
+        "<b>Warm fur on the animal only.</b> Two live sliders, Warmth and Detail, on a Select Subject mask. Fifty is a clear, natural warmth.",
+        "<b>Masks add up.</b> Click the same effect again and a second mask goes on top. Strength and Undo work on the newest.",
+        "<b>This edit.</b> Save the whole edit, masks included, as a preset in My looks, or copy it to the other selected photos. You choose the parts.",
+        "<b>Undo, Redo and Reset photo</b> for every panel step, bottom right. The Expedition tab has its own Strength slider for the last step.",
+        "<b>Cull, your way.</b> Rename the MWP marks and give them your own labels and stars. Plain labels and stars are one click each, and marks go on the active photo only unless you switch on All selected photos. ▶ and ◀ walk the bursts in shooting order, even after a restart.",
+        "<b>Color fixes are switches.</b> Calm greens, Deeper sky and the rest go on at the Fix strength and come out with a second click, without touching your own HSL.",
+        "<b>More in Edit.</b> Lightroom's Texture, Clarity, Dehaze, Vignette and Grain as live sliders, and Sky sliders that go both ways.",
+        "<b>Golden is amber, not pink.</b> The Golden look was retuned.",
+      ],
+      after: [
+        "Removed: the Depth target (Lightroom never made its mask), the B&amp;W look, and Bright eyes (the Eye section replaces it).",
+        "To update: replace the old &quot;MWP-Panel.lrplugin&quot; folder with the new one, then in Lightroom choose File › Plug-in Manager › Reload Plug-in.",
+        "The new tutorial, every tab in five minutes: https://youtu.be/E_puh4ZblBU (also in My downloads).",
+      ],
+    },
+    he: {
+      lead: "גרסה 1.7 היא העדכון הגדול ביותר של התוסף עד היום. לשונית Clean חדשה, כלי אמיתי לעין, מסכות שמצטברות, ו-Undo לכל פעולה.",
+      title: "מה חדש ב-1.7",
+      items: [
+        "<b>לשונית Clean.</b> ה-AI Denoise של לייטרום, עם סליידר עוצמה, ו-Remove reflections, בלשונית משלהם, לפני כל מסכה.",
+        "<b>העין, כמו שצריך.</b> אזור Eye חדש ב-Edit: גוררים עיגול קטן מעל העין, מציירים עליה במכחול, או משתמשים במסכה שלכם. המתכון לעין נכנס רק למסכה הזאת, עם Strength, ארבעה סליידרים חיים וזום 1:1.",
+        "<b>Warm fur רק על החיה.</b> שני סליידרים חיים, Warmth ו-Detail, על מסכת Select Subject. ב-50 מקבלים חמימות ברורה וטבעית.",
+        "<b>מסכות שמצטברות.</b> לחיצה נוספת על אותו אפקט מוסיפה מסכה שנייה מעל הראשונה. Strength ו-Undo פועלים על החדשה.",
+        "<b>This edit.</b> שומרים את כל העריכה, כולל המסכות, כפריסט ב-My looks, או מעתיקים אותה לתמונות המסומנות. אתם בוחרים אילו חלקים.",
+        "<b>Undo, Redo ו-Reset photo</b> לכל פעולה בפאנל, בפינה הימנית התחתונה. ללשונית Expedition יש סליידר Strength משלה לשלב האחרון.",
+        "<b>מיון בדרך שלכם.</b> משנים את השמות של MWP marks ומגדירים לכל אחד תווית צבע וכוכבים. תוויות וכוכבים רגילים בלחיצה אחת, והסימון נכנס רק לתמונה הפעילה, אלא אם מפעילים את All selected photos. ▶ ו-◀ עוברים בין הרצפים לפי סדר הצילום, גם אחרי הפעלה מחדש.",
+        "<b>תיקוני הצבע הם מתגים.</b> Calm greens, Deeper sky והשאר נכנסים בעוצמת התיקון ויוצאים בלחיצה שנייה, בלי לגעת ב-HSL שלכם.",
+        "<b>עוד ב-Edit.</b> ה-Texture, Clarity, Dehaze, Vignette ו-Grain של לייטרום כסליידרים חיים, וסליידרים לשמיים לשני הכיוונים.",
+        "<b>Golden בגוון ענבר, לא ורוד.</b> הלוק Golden כוונן מחדש.",
+      ],
+      after: [
+        "הוסרו: Depth (לייטרום אף פעם לא יצר את המסכה שלו), הלוק B&amp;W ו-Bright eyes (אזור Eye מחליף אותו).",
+        "כדי לעדכן: מחליפים את התיקייה הישנה &quot;MWP-Panel.lrplugin&quot; בחדשה, ואז בלייטרום בוחרים File › Plug-in Manager › Reload Plug-in.",
+        "ההדרכה החדשה, כל הלשוניות בחמש דקות: https://youtu.be/E_puh4ZblBU (גם בעמוד ההורדות שלי).",
+      ],
+    },
+  },
+  "mwp-panel@2.5.1": {
+    en: {
+      lead: "Version 2.5 gives the panel a new layout: five tabs, Edit in three steps, and a toolbar that stays on every tab. Plus everything 2.4 added.",
+      title: "New in 2.5",
+      items: [
+        "<b>Five tabs.</b> Prepare, Edit, Tools, Style, Export. Edit is three steps, top to bottom: the area, the effect, how strong. No scrolling.",
+        "<b>Tools tab.</b> Dodge &amp; Burn, Vignette, Fur clean-up (smooth a patch without losing a hair), Show clipping, color layers (Selective color, Photo filter, Gradient map) and five slots for your own Photoshop actions.",
+        "<b>The bar on every tab.</b> Group, Duplicate, Mask, Merge down, Invert, Deselect, Undo, Redo, Before / After, Stamp, Clip and Load mask, always in the same place.",
+        "<b>Point.</b> Click one spot on the photo and its color and light become the area, like a control point.",
+        "<b>Retouch.</b> Detail, Structure, Lux, Noise and Fringe, each on the area you choose. Blend modes, Fade, and mask tools: Soften edge, Grow, Shrink, Refine.",
+        "<b>Eyes in one step, and Again.</b> Draw a circle around the eye and tap Eyes. Again repeats your last effect on the next area you pick.",
+        "<b>Your edits.</b> Every edit in one list in the header: hide it, adjust it or remove it.",
+        "<b>Looks on your own photo.</b> Each look button shows your photo with that look. Golden is amber now, not pink.",
+        "<b>Export per platform.</b> Instagram, Web, Print, Print TIFF and Custom, each with its own settings. Remove location keeps the GPS position out of every export. All open photos, Save layered PSD, and a text watermark that works in Hebrew.",
+        "<b>Help line.</b> The line under the tabs says what the button under your mouse does. Plus Keep golden-hour warmth under Auto neutral, and Back up / Restore for your looks, watermarks and actions.",
+      ],
+      after: [
+        "The User Manual and the Installation Guide in the download are updated for 2.5.",
+        "To update: double-click the new .ccx file and let Creative Cloud install it over the old one, then restart Photoshop. Your licence stays as it is.",
+        "The new tutorial, every tab in five minutes: https://youtu.be/lqFfFqDMNh8 (also in My downloads, and in the panel's Help).",
+      ],
+    },
+    he: {
+      lead: "בגרסה 2.5 הפאנל מקבל מבנה חדש: חמש לשוניות, עריכה בשלושה שלבים, וסרגל כלים שנשאר בכל לשונית. ועוד כל מה שנוסף ב-2.4.",
+      title: "מה חדש ב-2.5",
+      items: [
+        "<b>חמש לשוניות.</b> Prepare, Edit, Tools, Style, Export. העריכה היא שלושה שלבים, מלמעלה למטה: האזור, האפקט, והעוצמה. בלי לגלול.",
+        "<b>לשונית Tools.</b> Dodge &amp; Burn, Vignette, Fur clean-up (מחליקים אזור בלי לאבד אף שערה), Show clipping, שכבות צבע (Selective color, Photo filter, Gradient map) וחמישה מקומות לפעולות (Actions) שלכם בפוטושופ.",
+        "<b>הסרגל בכל לשונית.</b> Group, Duplicate, Mask, Merge down, Invert, Deselect, Undo, Redo, Before / After, Stamp, Clip ו-Load mask, תמיד באותו מקום.",
+        "<b>Point.</b> לוחצים על נקודה אחת בתמונה, והצבע והאור סביבה הופכים לאזור העריכה, כמו Control point.",
+        "<b>ריטוש.</b> Detail, Structure, Lux, Noise ו-Fringe, כל אחד על האזור שבחרתם. מצבי מיזוג, Fade, וכלי מסכה: Soften edge, Grow, Shrink, Refine.",
+        "<b>עיניים בצעד אחד, ו-Again.</b> מציירים עיגול סביב העין ולוחצים Eyes. Again חוזר על האפקט האחרון באזור הבא שתבחרו.",
+        "<b>Your edits.</b> כל העריכות ברשימה אחת בראש הפאנל: מסתירים, מכווננים או מוחקים.",
+        "<b>לוקים על התמונה שלכם.</b> כל כפתור לוק מראה את התמונה שלכם עם הלוק. Golden עכשיו בגוון ענבר, לא ורוד.",
+        "<b>ייצוא לכל פלטפורמה.</b> Instagram, Web, Print, Print TIFF ו-Custom, כל אחד עם ההגדרות שלו. Remove location מוציא את מיקום ה-GPS מכל ייצוא. All open photos, Save layered PSD, וסימן מים מטקסט שעובד גם בעברית.",
+        "<b>שורת עזרה.</b> השורה מתחת ללשוניות אומרת מה עושה הכפתור שמתחת לעכבר. ועוד: Keep golden-hour warmth מתחת ל-Auto neutral, ו-Back up / Restore ללוקים, לסימני המים ולפעולות שלכם.",
+      ],
+      after: [
+        "המדריך למשתמש ומדריך ההתקנה שבהורדה עודכנו לגרסה 2.5.",
+        "כדי לעדכן: לוחצים פעמיים על קובץ ה-ccx החדש ונותנים ל-Creative Cloud להתקין אותו מעל הישן, ואז מפעילים מחדש את פוטושופ. הרישיון נשאר כמו שהוא.",
+        "ההדרכה החדשה, כל הלשוניות בחמש דקות: https://youtu.be/lqFfFqDMNh8 (גם בעמוד ההורדות שלי ובעזרה של הפאנל).",
+      ],
+    },
+  },
 };
 
 // The email's look (Jeinna, 13 Nov 2026: "make it html", then "no photos, boring"): in the November newsletter's style

@@ -20,14 +20,14 @@ from brand import devices
 def sections(p, c, u, lang, h, esc, img, gallery, lrc_window, CHECK, ARROW, price=None, plug=None):
     k = c["m"]
     g = plug
-    keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
+    keys = ["cull", "organize", "clean", "looks", "guided", "edit", "color", "export"]   # the plugin's tab ids, in its order
     # each picture once on the page: the mockups use photos the page shows nowhere else (the ibex is the slider's)
 
     # ---------------------------------------------------------------- the two mockups (real material only)
     sets_list = "".join(f'<li{" class=on" if t == "Light & Scene" else ""}>{esc(t)}</li>' for t in ("Signature", "Light & Scene", "Mono", "Adaptive", "Tools"))
-    tabs = "".join(f'<b{" class=on" if t == "Looks" else ""}>{t}</b>' for t in ("Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"))
+    tabs = "".join(f'<b{" class=on" if t == "Looks" else ""}>{t}</b>' for t in ("Cull", "Organize", "Clean", "Looks", "Expedition", "Edit", "Color", "Export"))
     looks = "".join(f'<span><img src="/assets/pages/img/lrc/look_{x}.png" alt="" loading="lazy"><i>{t}</i></span>'
-                    for x, t in (("bw", "B&W"), ("moody", "Moody"), ("golden", "Golden"), ("bluehour", "Blue hour")))
+                    for x, t in (("moody", "Moody"), ("matte", "Matte"), ("golden", "Golden"), ("bluehour", "Blue hour")))
     mock = {
         "presets": f'''<div class="mk mk-lap" lang="en" dir="ltr" data-no-i18n><div class="mk-lid"><div class="mk-scr"><div class="mk-lr">
 <aside><p>Presets</p><ul>{sets_list}</ul></aside>

@@ -144,10 +144,11 @@ P["presets"] = dict(
                ("Tools", "Exposure, fur detail, vignette and grain.", "Tiger walking out of the forest")],
         lrc=[("Cull", "Turn a day of bursts into a short list. Nothing is ever deleted."),
              ("Organize", "Trips, a collection per day, and 51,471 species for your keywords."),
-             ("Expedition", "The edit I teach on my expeditions, one step at a time."),
+             ("Clean", "Lightroom's AI Denoise and Remove reflections, before any mask."),
              ("Looks", "A finished mood with a strength slider, and looks of your own."),
-             ("Edit", "Subject, sky, background or people: pick an effect, set the strength."),
-             ("Color", "Hue, saturation and luminance per colour, and ready fixes like Warm fur."),
+             ("Expedition", "The edit I teach on my expeditions, one step at a time."),
+             ("Edit", "Subject, sky, background or people: pick an effect, set the strength. A real eye tool and Warm fur."),
+             ("Color", "Hue, saturation and luminance per colour, and one-click fixes like Calm greens."),
              ("Export", "Instagram, web and print sizes, your watermark, and a competition check.")],
         lrc_note="Interactive preview of the real tabs and buttons · Lightroom Classic 13 or newer, Mac and Windows",
         feat_kick="12 adaptive presets", feat_h=["Every photo differs.", "So do they."],
@@ -167,7 +168,7 @@ P["presets"] = dict(
         final_kick="MWP for Lightroom", final_h=["The plugin,", "presets included."],
         final_lead="The presets and the plugin together, one price. Free updates, kept in your account.",
         plan=("Lightroom Presets", "50 presets and 33 LUTs", ["50 Lightroom presets, desktop and mobile", "33 LUTs for photo and video", "Video tutorials and an install guide"], "Get the presets"),
-        plan2=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from sorting to sharing", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
+        plan2=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Eight tabs, from sorting to sharing", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
     ),
     he=dict(
         name="MWP ללייטרום", name_html='MWP <span class="grad">ללייטרום</span>',
@@ -216,10 +217,11 @@ P["presets"] = dict(
                ("כלים", "חשיפה, פרטי פרווה, וינייט וגרעין.", "נמר יוצא מהיער")],
         lrc=[("מיון", "מסננים יום שלם של צילומים לרשימה קצרה. שום תמונה לא נמחקת."),
              ("ארגון", "אוסף לכל טיול ולכל יום, ומאגר של 51,471 מינים לתיוג."),
-             ("משלחת", "תהליך העריכה שאני מלמד במסעות, צעד אחרי צעד."),
+             ("ניקוי", "ה-AI Denoise של לייטרום והסרת השתקפויות, לפני כל מסכה."),
              ("לוקים", "לוקים מוכנים עם בקרת עוצמה, ואפשר לשמור לוקים משלכם."),
-             ("עריכה", "נושא, שמיים, רקע או אנשים: בוחרים אפקט וקובעים עוצמה."),
-             ("צבע", "גוון, רוויה ובהירות לכל צבע, ותיקונים מוכנים כמו פרווה חמה."),
+             ("משלחת", "תהליך העריכה שאני מלמד במסעות, צעד אחרי צעד."),
+             ("עריכה", "נושא, שמיים, רקע או אנשים: בוחרים אפקט וקובעים עוצמה. ויש כלי אמיתי לעין ופרווה חמה."),
+             ("צבע", "גוון, רוויה ובהירות לכל צבע, ותיקונים בלחיצה אחת כמו Calm greens."),
              ("ייצוא", "ייצוא בגדלים לאינסטגרם, לאתר ולהדפסה, עם סימן המים שלכם ובדיקה לפני תחרות.")],
         lrc_note="תצוגה מקדימה של הלשוניות והכפתורים האמיתיים, באנגלית כמו בתוסף · לייטרום קלאסיק 13 ומעלה, Mac / Windows",
         feat_kick="12 פריסטים אדפטיביים", feat_h=["כל תמונה שונה.", "וכך גם הם."],
@@ -239,7 +241,7 @@ P["presets"] = dict(
         final_kick="MWP ללייטרום", final_h=["התוסף,", "עם הפריסטים."],
         final_lead="הפריסטים והתוסף יחד, במחיר אחד. עדכונים בחינם, והכול נשמר בחשבון שלכם.",
         plan=("פריסטים ללייטרום", "50 פריסטים ו־33 קובצי LUT", ["50 פריסטים ללייטרום, למחשב ולנייד", "33 קובצי LUT לתמונות ולווידאו", "סרטוני הדרכה ומדריך התקנה"], "לרכישת הפריסטים"),
-        plan2=("התוסף ללייטרום קלאסיק", "תוסף ללייטרום קלאסיק", ["שבע לשוניות: ממיון ועד ייצוא", "לייטרום קלאסיק 13 ומעלה, Mac / Windows", "עזרה מובנית וסרטוני הדרכה"], "לרכישת התוסף"),
+        plan2=("התוסף ללייטרום קלאסיק", "תוסף ללייטרום קלאסיק", ["שמונה לשוניות: ממיון ועד ייצוא", "לייטרום קלאסיק 13 ומעלה, Mac / Windows", "עזרה מובנית וסרטוני הדרכה"], "לרכישת התוסף"),
     ),
 )
 
@@ -264,12 +266,13 @@ P["panel"] = dict(
         proof_label="From RAW to final", proof_kick="From RAW to final", proof_h=["The subject brighter.", "The sky calmer."],
         proof_lead="Choose the subject or the sky, then an effect. The plugin builds the mask and puts each edit on its own layer.",
         pairs=["Subject · Pop", "Background · Darken"],
-        inside_kick="What's inside", inside_h=["Four tabs,", "in the order you edit."],
+        inside_kick="What's inside", inside_h=["Five tabs,", "in the order you edit."],
         inside_lead="From the first crop to the Instagram copy, without leaving the plugin.",
         cards=[("Prepare", "Crop around the subject, straighten, find and erase dust, denoise. Neutral colour in one click.", "Iceberg under storm light"),
-               ("Edit", "Subject, eye, sky, background, lights, darks or any color. 8 effects. Paint them in or out.", "Red fox looking at the camera"),
+               ("Edit", "Subject, eye, sky, background, a point, lights, darks or any color. 9 effects and 5 retouch tools. Paint them in or out.", "Red fox looking at the camera"),
+               ("Tools", "Dodge & Burn, vignette, fur clean-up, color layers and five slots for your own actions.", "Red fox looking at the camera"),
                ("Style", "11 looks from golden to blue hour to B&W. Sun glow, sunbeams, rim light, spotlight.", "Lion walking, black and white"),
-               ("Export", "Your own watermark. Instagram, web and print copies in one step. Apply your edit to a whole series.", "Two elephants at sunset")],
+               ("Export", "Settings per platform and your own watermark. Remove location. Apply your edit to a whole series.", "Two elephants at sunset")],
         feat_kick="Built to be safe", feat_h=["No way", "to ruin it."],
         feat_lead="Subject, Sky and Background use Photoshop's own AI. Hold a button to see the area in red before you edit.",
         feat_points=["<strong>Every edit on its own layer.</strong> All edits sit in one MWP group. Your photo underneath stays locked.",
@@ -299,12 +302,13 @@ P["panel"] = dict(
         proof_label="מ-RAW לתמונה הסופית", proof_kick="מ-RAW לתמונה הסופית", proof_h=["מבליטים את הנושא,", "מרגיעים את השמיים."],
         proof_lead="בוחרים נושא או שמיים, ואז אפקט. התוסף בונה את המסכה ושם כל עריכה בשכבה נפרדת.",
         pairs=["נושא · הבלטה", "רקע · הכהיה"],
-        inside_kick="מה יש בפנים", inside_h=["ארבע לשוניות,", "לפי סדר העריכה."],
+        inside_kick="מה יש בפנים", inside_h=["חמש לשוניות,", "לפי סדר העריכה."],
         inside_lead="מהחיתוך הראשון ועד הקובץ לאינסטגרם, בלי לצאת מהתוסף.",
         cards=[("הכנה", "חיתוך סביב הנושא, יישור, ניקוי כתמי אבק והפחתת רעש. איזון צבע בלחיצה אחת.", "קרחון באור סערה"),
-               ("עריכה", "נושא, עין, שמיים, רקע, אזורים בהירים או כהים, או צבע מסוים. 8 אפקטים, ומכחול להוסיף או להוריד אותם.", "שועל אדום מביט במצלמה"),
+               ("עריכה", "נושא, עין, שמיים, רקע, נקודה, אזורים בהירים או כהים, או צבע מסוים. 9 אפקטים ו-5 כלי ריטוש, ומכחול להוסיף או להוריד אותם.", "שועל אדום מביט במצלמה"),
+               ("כלים", "Dodge & Burn, וינייט, ניקוי פרווה, שכבות צבע וחמישה מקומות לפעולות שלכם.", "שועל אדום מביט במצלמה"),
                ("סגנון", "11 לוקים, מזהוב ועד שעה כחולה ושחור-לבן. זוהר שמש, קרני אור, תאורת קצה וזרקור.", "אריה הולך, בשחור-לבן"),
-               ("ייצוא", "סימן מים משלכם, קבצים לאינסטגרם, לאתר ולהדפסה בבת אחת, והעתקת העריכה לסדרה שלמה.", "שני פילים בשקיעה")],
+               ("ייצוא", "הגדרות לכל פלטפורמה וסימן מים משלכם. הסרת מיקום. והעתקת העריכה לסדרה שלמה.", "שני פילים בשקיעה")],
         feat_kick="בלי סיכון", feat_h=["אי אפשר", "להרוס את התמונה."],
         feat_lead="הבחירה של הנושא, השמיים והרקע נעשית עם ה-AI של פוטושופ. לחיצה ארוכה על כפתור צובעת את האזור באדום, כדי שתראו מה ייערך.",
         feat_points=["<strong>כל עריכה בשכבה משלה.</strong> כל העריכות מרוכזות בקבוצה אחת של MWP, והתמונה שמתחת נשארת נעולה.",
@@ -419,15 +423,15 @@ P["lightroom-classic"] = dict(
         lrc_cap="Interactive preview of the real plugin · click a tab",
         cta="Get the plugin",
         facts=["Lightroom Classic 13+", "Mac and Windows", "No presets needed"],
-        inside_kick="Look inside", inside_h=["Seven tabs,", "one window."],
+        inside_kick="Look inside", inside_h=["Eight tabs,", "one window."],
         inside_lead="These are the plugin's real tabs and buttons. Click a tab to open it.",
         lrc=P["presets"]["en"]["lrc"],
         lrc_note="Interactive preview of the real tabs and buttons · Lightroom Classic 13 or newer, Mac and Windows",
         flow_kick="How it fits your shoot", flow_h=["Sort it. Edit it.", "Share it."],
         flow_lead="The tabs follow the order of a real day in the field, from a full card to a finished post.",
         phases=[("Sort the shoot", "Hundreds of frames down to the few worth editing.", [0, 1]),
-                ("Edit the photo", "The subject, the sky and the colour, one tab at a time.", [2, 3, 4, 5]),
-                ("Share it", "The right size for each place, with your watermark.", [6])],
+                ("Edit the photo", "Clean it, then the subject, the sky and the colour, one tab at a time.", [2, 3, 4, 5, 6]),
+                ("Share it", "The right size for each place, with your watermark.", [7])],
         get=dict(kick="MWP Presets included", h=["Works on its own.", "Presets included."],
                  lead="It has its own looks inside, and MWP Presets come with it.",
                  points=["Everything it does is ordinary Lightroom settings, masks and collections. Nothing is locked in.",
@@ -444,7 +448,7 @@ P["lightroom-classic"] = dict(
         spec_note="Needs Lightroom Classic 13 or newer on Mac or Windows. Not for Lightroom (the cloud app), Lightroom Mobile or Photoshop.",
         final_kick="Lightroom Classic Plugin", final_h=["Your whole shoot,", "in one window."],
         final_lead="The plugin with built-in help, video tutorials and free updates. Or in the full set, with MWP Presets, MWP Photoshop Plugin Panel and the Field Guides.",
-        plan=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Seven tabs, from sorting to sharing", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
+        plan=("Lightroom Classic Plugin", "A plugin for Lightroom Classic", ["Eight tabs, from sorting to sharing", "Lightroom Classic 13 or newer, Mac and Windows", "Built-in help and video tutorials"], "Get the plugin"),
         plan2=("The full set", "From the shot to the share", ["The Lightroom Classic plugin", "MWP Photoshop Plugin Panel", "MWP Presets: 50 presets and 33 LUTs", "MWP Field Guides: 4 PDF guides, 137 lessons"], "Get the full set"),
         bar=[("inside", "Look inside"), ("workflow", "How it works"), ("get", "Works on its own"), ("faq", "FAQs")],
     ),
@@ -458,15 +462,15 @@ P["lightroom-classic"] = dict(
         lrc_cap="תצוגה מקדימה של התוסף האמיתי · לחצו על לשונית",
         cta="לרכישת התוסף",
         facts=["לייטרום קלאסיק 13 ומעלה", "Mac / Windows", "לא צריך פריסטים"],
-        inside_kick="הצצה פנימה", inside_h=["שבע לשוניות,", "חלון אחד."],
+        inside_kick="הצצה פנימה", inside_h=["שמונה לשוניות,", "חלון אחד."],
         inside_lead="אלה הלשוניות והכפתורים האמיתיים של התוסף. לחצו על לשונית כדי לפתוח אותה.",
         lrc=P["presets"]["he"]["lrc"],
         lrc_note="תצוגה מקדימה של הלשוניות והכפתורים האמיתיים, באנגלית כמו בתוסף · לייטרום קלאסיק 13 ומעלה, Mac / Windows",
         flow_kick="איך זה משתלב בצילום", flow_h=["ממיינים. עורכים.", "משתפים."],
         flow_lead="הלשוניות בנויות לפי סדר של יום אמיתי בשטח, מהמיון הראשון ועד הפוסט.",
         phases=[("ממיינים", "מאות פריימים, עד המעטים ששווה לערוך.", [0, 1]),
-                ("עורכים", "הנושא, השמיים והצבע, לשונית אחר לשונית.", [2, 3, 4, 5]),
-                ("משתפים", "הגודל הנכון לכל מקום, עם סימן המים שלכם.", [6])],
+                ("עורכים", "מנקים, ואז הנושא, השמיים והצבע, לשונית אחר לשונית.", [2, 3, 4, 5, 6]),
+                ("משתפים", "הגודל הנכון לכל מקום, עם סימן המים שלכם.", [7])],
         get=dict(kick="הפריסטים של MWP כלולים", h=["עובד לבד.", "הפריסטים כלולים."],
                  lead="יש בו לוקים משלו, והפריסטים של MWP מגיעים איתו.",
                  points=["כל מה שהוא עושה הוא הגדרות, מסכות ואוספים רגילים של לייטרום. שום דבר לא נעול.",
@@ -483,7 +487,7 @@ P["lightroom-classic"] = dict(
         spec_note="דורש לייטרום קלאסיק 13 ומעלה, ב-Mac או ב-Windows. לא ללייטרום (גרסת הענן), ללייטרום מובייל או לפוטושופ.",
         final_kick="התוסף ללייטרום קלאסיק", final_h=["כל הצילום,", "בחלון אחד."],
         final_lead="התוסף עם עזרה מובנית, סרטוני הדרכה ועדכונים בחינם. או בסט המלא, עם הפריסטים, התוספים ומדריכי השטח של MWP.",
-        plan=("התוסף ללייטרום קלאסיק", "תוסף ללייטרום קלאסיק", ["שבע לשוניות: ממיון ועד ייצוא", "לייטרום קלאסיק 13 ומעלה, Mac / Windows", "עזרה מובנית וסרטוני הדרכה"], "לרכישת התוסף"),
+        plan=("התוסף ללייטרום קלאסיק", "תוסף ללייטרום קלאסיק", ["שמונה לשוניות: ממיון ועד ייצוא", "לייטרום קלאסיק 13 ומעלה, Mac / Windows", "עזרה מובנית וסרטוני הדרכה"], "לרכישת התוסף"),
         plan2=("הסט המלא", "מהצילום ועד הפרסום", ["התוסף ללייטרום קלאסיק", "התוסף לפוטושופ של MWP", "הפריסטים של MWP: ‏50 פריסטים ו-33 קובצי LUT", "מדריכי השטח של MWP: ‏4 מדריכים, 137 שיעורים"], "לסט המלא"),
         bar=[("inside", "הצצה פנימה"), ("workflow", "איך זה עובד"), ("get", "עובד לבד"), ("faq", "שאלות נפוצות")],
     ),
@@ -614,7 +618,7 @@ def page(folder, lang):
     if p.get("ps_show"):   # MWP Photoshop Plugin Panel: Photoshop as one centred showcase, like the Lightroom Classic one
         ba, fa, areas, tall = p["ps_photo"]
         descs = "".join(f'<p data-pw-desc="{esc(t2)}"{"" if k == 1 else " hidden"}><span class="n">0{k + 1}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
-                        for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Style", "Export"))))
+                        for k, ((t, d, alt), t2) in enumerate(zip(c["cards"], ("Prepare", "Edit", "Tools", "Style", "Export"))))
         parts.append(f'''<section class="sec tint" id="{inside_id}">
     <div class="wrap">
     <div class="head c" data-r><p class="kick">{esc(c["inside_kick"])}</p>{h(c["inside_h"])}{lead}</div>
@@ -636,7 +640,7 @@ def page(folder, lang):
 
     # a second app (MWP Panel in Lightroom Classic): the tabs as a numbered list, no photos
     if "lrc_kick" in c:   # (the presets keep the tab list for the plugin page, without this section)
-        keys = ["cull", "organize", "guided", "looks", "edit", "color", "export"]   # the plugin's tab ids, in its order
+        keys = ["cull", "organize", "clean", "looks", "guided", "edit", "color", "export"]   # the plugin's tab ids, in its order
         # under the window, one line for the tab that's open (the window's own tabs switch it)
         descs = "".join(f'<p data-lrc-desc="{keys[k]}"{"" if keys[k] == "looks" else " hidden"}><span class="n">{k + 1:02d}</span><b>{esc(t)}</b><span>{esc(d)}</span></p>'
                         for k, (t, d) in enumerate(c["lrc"]))

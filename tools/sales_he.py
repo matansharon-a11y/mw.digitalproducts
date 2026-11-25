@@ -19,7 +19,7 @@ EXACT = {
     "PRESETS": "פריסטים", "לייטרום PRESETS": "פריסטים ללייטרום", "FIELD GUIDES": "מדריכי שטח", "פוטושופ PLUGIN": "פלאגין לפוטושופ",
     "Presets": "פריסטים", "Panel": "פאנל", "Field Guides": "מדריכי שטח",
     "50 presets · 12 adaptive · 33 LUTs": "50 פריסטים · 12 אדפטיביים · 33 קובצי LUT",
-    "8 effects · 11 looks · 4 lights": "8 אפקטים · 11 לוקים · 4 תאורות",
+    "9 effects · 11 looks · 4 lights": "9 אפקטים · 11 לוקים · 4 תאורות",
     "Light and Scene · Blue Hour": "אור וסצנה · שעה כחולה", "Light and Scene · Macro Ground": "אור וסצנה · קרקע במאקרו",
     "Light and Scene": "אור וסצנה", "Blue Hour": "שעה כחולה", "Macro Ground": "קרקע במאקרו",
     "Signature": "חתימה", "Light & Scene": "אור וסצנה", "Mono": "מונו", "Adaptive": "אדפטיבי", "Tools": "כלים",

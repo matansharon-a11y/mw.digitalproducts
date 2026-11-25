@@ -36,44 +36,50 @@ def btn(t, effect=False):
     return f'<button type="button" class="pw-btn"{f' data-pw-effect="{esc(t)}"' if effect else ""}>{esc(t)}</button>'
 
 
-COLORS = [("Reds", "#e2483d"), ("Yellows", "#e8c22c"), ("Greens", "#43a85a"), ("Cyans", "#3cb6c8"), ("Blues", "#3d6fe0"), ("Magentas", "#c74fc0")]
-EFFECTS = ["Pop", "Brighten", "Darken", "Warm", "Cool", "Glow", "Blur", "Sharpen", "Clarity", "Dehaze"]   # last two: panel 2.3, Photoshop 2027
-TOUCHES = ["Dodge & Burn", "Vignette", "Stamp", "Camera Raw", "Grain", "Compare"]   # last two: panel 2.3, Photoshop 2027
-# Prepare, Style and Export: what each tab holds, from the page's "What's inside" cards
+EFFECTS = ["Pop", "Brighten", "Darken", "Warm", "Cool", "Glow", "Blur", "Sharpen", "Eyes"]   # panel 2.5: nine in three columns
+RETOUCH = "Detail, Structure, Lux, Noise, Fringe"   # under "Retouch ▾" (and Clarity, Dehaze on Photoshop 2027)
+# Prepare, Tools, Style and Export: what each tab holds (panel 2.5, LAYOUT-SPEC-2.5)
 TABS = {
-    "Prepare": ["Crop around the animal", "Straighten", "Find and erase dust", "Denoise", "Neutral color in one tap"],
-    "Style": ["11 looks, from golden to blue hour to B&W", "Sun glow", "Sunbeams", "Rim light", "Spotlight"],
-    "Export": ["Your own watermark", "Instagram, web and print copies", "Apply your edit to a whole series"],
+    "Prepare": ["Crop around the animal: 4:5, 1:1, 9:16, 3:2, free", "Straighten", "Find dust and Erase", "Denoise",
+                "Auto neutral, with Keep golden-hour warmth", "Vibrance, saturation, temperature and tint"],
+    "Tools": ["Touches: Dodge & Burn, Vignette, Fur clean-up, Show clipping, Camera Raw",
+              "Color layers: Selective color, Photo filter, Gradient map", "My actions: five slots for your own Photoshop actions"],
+    "Style": ["11 looks, each shown on your own photo", "Save your own look", "Painted light: Sun glow, Sunbeam, Rim light, Spotlight"],
+    "Export": ["Instagram, Web, Print, Print TIFF, Custom, each with its own settings", "Your watermark, text or logo, Hebrew included",
+               "Remove location", "Apply the same edits to more photos"],
 }
+BAR_TOP = ["Group", "Duplicate", "Mask", "Merge down", "Invert", "Deselect"]   # the bar on every tab (panel 2.5)
+BAR_LOW = ["Stamp", "Clip", "Load mask"]
 CHECK = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
 
 
 def window(logo):
+    """Panel 2.5: five tabs; Edit in three banded steps (area, effect on the area, adjust); the bar on every tab."""
     tabs = "".join(f'<button type="button" role="tab" data-pw-tab="{t}" aria-selected="{str(t == "Edit").lower()}"{" class=on" if t == "Edit" else ""}>{t}</button>'
-                   for t in ("Prepare", "Edit", "Style", "Export"))
+                   for t in ("Prepare", "Edit", "Tools", "Style", "Export"))
     edit = (
-        '<p class="pw-h">1 · What to edit</p>'
-        f'<div class="pw-chips">{"".join(chip(t, t == "Subject") for t in ("Subject", "Eye", "Sky", "Background", "Lights", "Darks", "Pick"))}</div>'
-        '<p class="pw-hint">Hold a chip to preview its mask.</p>'
-        '<p class="pw-h">Colors</p>'
-        f'<div class="pw-chips">{"".join(chip(t, dot=c) for t, c in COLORS)}</div>'
-        '<div class="pw-select">More tones · Brightest to Darkest<span>▾</span></div>'
-        '<p class="pw-h">2 · Effect</p>'
-        f'<div class="pw-grid">{"".join(btn(e, effect=True) for e in EFFECTS)}</div>'
-        '<div class="pw-card"><div class="pw-card-top"><span data-pw-now>No edit yet</span><span>–</span></div>'
+        '<p class="pw-h pw-band">1 · Area</p>'
+        f'<div class="pw-chips">{"".join(chip(t, t == "Subject") for t in ("Subject", "Eye", "Sky", "Background"))}</div>'
+        '<div class="pw-select">More · lights, darks, the six colors, Pick, Point<span>▾</span></div>'
+        '<p class="pw-hint">Hold an area to see it in red.</p>'
+        '<p class="pw-h pw-band">2 · Effect<span class="pw-again">Again ↻</span></p>'
+        f'<div class="pw-grid pw-g3">{"".join(btn(e, effect=True) for e in EFFECTS)}</div>'
+        f'<div class="pw-select">Retouch · {RETOUCH}<span>▾</span></div>'
+        '<p class="pw-h pw-band">3 · Adjust</p>'
+        '<div class="pw-card"><div class="pw-card-top"><span data-pw-now>No edit yet</span><span>Fade</span></div>'
         '<input class="pw-range" type="range" min="0" max="100" value="0" aria-label="Strength" disabled>'
         '<div class="pw-paint"><button type="button" class="pw-pill">+ Paint in</button><button type="button" class="pw-pill">− Paint out</button></div></div>'
-        '<p class="pw-hint">Every button is one step. Ctrl+Z (Cmd+Z) undoes it.</p>'
-        '<p class="pw-h">Touches</p>'
-        f'<div class="pw-grid">{"".join(btn(t) for t in TOUCHES)}</div>'
+        '<p class="pw-hint">Every button is one step. Undo is in the bar below.</p>'
     )
     others = "".join(f'<div class="pw-pane" role="tabpanel" data-pw-pane="{t}" hidden><p class="pw-h">In this tab</p><ul class="pw-list">'
                      + "".join(f"<li>{CHECK}{esc(x)}</li>" for x in items)
                      + '</ul><p class="pw-hint">Every button in it is in the User Manual that comes with the plugin.</p></div>'
                      for t, items in TABS.items())
+    bar = ('<div class="pw-bar2"><div class="pw-bar2-row">' + "".join(f'<span>{esc(t)}</span>' for t in BAR_TOP) + '</div>'
+           '<div class="pw-bar2-row">' + "".join(icon(k) for k in ("undo", "redo", "ba")) + "".join(f'<span>{esc(t)}</span>' for t in BAR_LOW) + '</div></div>')
     return (f'<div class="pw" lang="en" dir="ltr" data-no-i18n data-pw aria-label="MWP in Photoshop (preview)">'
             f'<div class="pw-top"><span class="pw-logo"><img src="{logo}" alt="" width="22" height="23"></span><b>MW PHOTO TOURS</b>'
-            f'<span class="pw-icons">{"".join(icon(k) for k in ("undo", "redo", "ba", "help", "reset"))}</span></div>'
+            f'<span class="pw-icons"><span class="pw-ed" title="Your edits">▤<b data-pw-count>0</b></span>{"".join(icon(k) for k in ("help", "reset"))}</span></div>'
             f'<div class="pw-tabs" role="tablist">{tabs}</div>'
             f'<div class="pw-scroll"><div class="pw-pane" role="tabpanel" data-pw-pane="Edit">{edit}</div>{others}</div>'
-            f'<div class="pw-foot">Your edits · <b data-pw-count>0</b><span>▲</span></div></div>')
+            f'{bar}</div>')

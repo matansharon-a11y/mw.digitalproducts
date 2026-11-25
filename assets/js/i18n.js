@@ -131,10 +131,10 @@ const HE = {
   "11 looks and 4 light effects": "11 לוקים ו־4 אפקטי אור",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
   "From sorting to sharing": "מהמיון ועד הפרסום",
-  "Seven tabs, from sorting to sharing": "שבע לשוניות: ממיון ועד ייצוא",
+  "Eight tabs, from sorting to sharing": "שמונה לשוניות: ממיון ועד ייצוא",
   "From sorting to sharing": "מהמיון ועד הפרסום",
-  "Seven tabs, from sorting to sharing": "שבע לשוניות: ממיון ועד ייצוא",
-  "Seven tabs, from sorting to sharing": "שבע לשוניות: ממיון ועד ייצוא",
+  "Eight tabs, from sorting to sharing": "שמונה לשוניות: ממיון ועד ייצוא",
+  "Eight tabs, from sorting to sharing": "שמונה לשוניות: ממיון ועד ייצוא",
   "Sort, keyword, edit and export a whole shoot in one window.": "מיון, תיוג, עריכה וייצוא של צילום שלם, בחלון אחד.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
   "(version 13 or newer) that sorts, organises, edits and exports a whole shoot. MWP Presets are included with it.": "שפיתחתי (לייטרום קלאסיק 13 ומעלה) ממיין, מארגן, עורך ומייצא צילומים שלמים, מהמיון ועד הפרסום. הפריסטים של MWP כלולים בו.",
@@ -924,7 +924,7 @@ const HE = {
   "English and Hebrew · Mac and Windows · Download right after payment": "עברית ואנגלית · Mac ו-Windows · הורדה מיד אחרי התשלום",
   "The MWP collection": "הקולקציה של MWP",
   "50 presets · 33 LUTs": "50 פריסטים · 33 קובצי LUT",
-  "8 effects · 11 looks": "8 אפקטים · 11 מראות",
+  "9 effects · 11 looks": "9 אפקטים · 11 מראות",
   "4 guides · 229 pages": "4 מדריכים · 229 עמודים",
   "In numbers": "במספרים",
   "LUTs for video": "קובצי LUT לווידאו",

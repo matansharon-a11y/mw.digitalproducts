@@ -172,6 +172,7 @@ const PW_EFFECT = {
   Sharpen: { filter: "contrast(1.25) brightness(1.04)" },
   Clarity: { filter: "contrast(1.22) saturate(1.06)" },
   Dehaze: { filter: "contrast(1.16) saturate(1.22) brightness(.95)" },
+  Eyes: { filter: "brightness(1.25) contrast(1.2) saturate(1.1)" },   // panel 2.5
 };
 
 // an area is a CSS gradient or a mask image (url(…), the photo's own cut-out, stretched over the photo)

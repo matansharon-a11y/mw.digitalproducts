@@ -43,7 +43,7 @@ BUNDLES = [
      {"ps": (3, 20, 68, 1), "fg": (47, 6, 51, 2)}),
 ]
 
-LOOKS = [("bw", "B&amp;W"), ("moody", "Moody"), ("golden", "Golden"), ("bluehour", "Blue hour")]
+LOOKS = [("golden", "Golden"), ("moody", "Moody"), ("bluehour", "Blue hour"), ("matte", "Matte")]   # plugin 1.7.1: no B&W
 
 
 def _device(key, pos):
@@ -52,7 +52,7 @@ def _device(key, pos):
     if key == "lr":
         looks = "".join(f'<figure{" class=on" if i == 2 else ""}><img src="/assets/pages/img/lrc/look_{k}.png" alt="" width="80" height="50" loading="lazy"><figcaption>{t}</figcaption></figure>'
                         for i, (k, t) in enumerate(LOOKS))
-        tabs = "".join(f'<span{" class=on" if t == "Looks" else ""}>{t}</span>' for t in ("Cull", "Organize", "Looks", "Edit", "Color", "Export"))
+        tabs = "".join(f'<span{" class=on" if t == "Looks" else ""}>{t}</span>' for t in ("Cull", "Organize", "Clean", "Looks", "Expedition", "Edit", "Color", "Export"))
         return (f'<div class="dv dv-lap" {st}><div class="lap-lid"><div class="lap-scr">'
                 f'<img class="dv-bg" src="{IMG}lr.webp" alt="" width="900" height="563" loading="lazy">'
                 f'<div class="lp-win"><p class="lp-bar"><i></i><i></i><i></i><span>MWP · Lightroom Classic</span></p>'

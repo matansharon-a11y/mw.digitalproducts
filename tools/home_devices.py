@@ -2,7 +2,7 @@
 - Shoot: the four Field Guides as printed hardcover books (covers from the Field Guides page) that fan out.
 - Edit: a laptop, straight on, in a Lightroom-style layout (preset groups from the Presets page) where the
   RAW turns into Matan's finished frame as you scroll.
-- Sort: a laptop with the Lightroom Classic plugin's window (MWP Panel): click Looks, click B&W, the look wipes across.
+- Sort: a laptop with the Lightroom Classic plugin's window (MWP Panel): click Looks, click Golden, the look wipes across.
 - Finish: a desktop monitor, straight on, in a Photoshop-style layout with the real MWP Panel docked,
   applying Subject · Pop.
 Calm, centred, symmetric compositions; everything moves with the story's scroll-linked transition."""
@@ -72,14 +72,14 @@ def edit():
 </div>"""
 
 LP_TABS = ["Cull", "Organize", "Expedition", "Looks", "Edit", "Color", "Export"]
-LP_LOOKS = [("bw", "B&amp;W"), ("moody", "Moody"), ("golden", "Golden"), ("bluehour", "Blue hour"), ("matte", "Matte"), ("clean", "Clean")]
+LP_LOOKS = [("golden", "Golden"), ("moody", "Moody"), ("bluehour", "Blue hour"), ("matte", "Matte"), ("clean", "Clean"), ("rich", "Rich color")]
 LP_PHOTO = "86b95f1970bb30f72735d73708d9c095"
 
 
 def sort():
-    """The Lightroom Classic plugin: its window over the photo; Looks, then B&W, then the look wipes across."""
+    """The Lightroom Classic plugin: its window over the photo; Looks, then Golden, then the look wipes across."""
     tabs = "".join(f'<span class="lp-tab{" on" if t == "Looks" else ""}">{t}{"<i class=\"st-ring lp-ring\"></i>" if t == "Looks" else ""}</span>' for t in LP_TABS)
-    looks = "".join(f'<span class="lp-look"><img src="{IMG}lrc/look_{k}.png" alt="">{n}{"<i class=\"st-ring lp-ring\"></i>" if k == "bw" else ""}</span>' for k, n in LP_LOOKS)
+    looks = "".join(f'<span class="lp-look"><img src="{IMG}lrc/look_{k}.png" alt="">{n}{"<i class=\"st-ring lp-ring\"></i>" if k == "golden" else ""}</span>' for k, n in LP_LOOKS)
     return f"""<div class="st-dev st-dev-sort" data-i="1">
 <div class="st-lap">
 <div class="st-lap-scr"><div class="st-app lpc ui-en">
@@ -257,7 +257,7 @@ CSS = """
 .lp-top i{width:6px;height:6px;border-radius:50%;background:#555}
 .lp-top span{flex:1;text-align:center;font-size:7px;color:#cfcfcf;margin-right:22px}
 .lp-canvas{margin:5%;box-shadow:0 4px 18px rgba(0,0,0,.5)}
-.lp-bw{filter:grayscale(1) contrast(1.15) brightness(.95)}
+.lp-bw{filter:sepia(.32) saturate(1.3) hue-rotate(-6deg) brightness(1.05) contrast(1.05)}
 .lp-side{display:flex;flex-direction:column;gap:8px;padding:8px 7px;background:#262626;border-left:1px solid #111;min-width:0}
 .lp-tabs{display:flex;flex-wrap:wrap;gap:3px}
 .lp-tab{position:relative;padding:2px 4px;border-radius:3px;background:#2f2f2f;font-size:6px;color:#9a9a9a}
