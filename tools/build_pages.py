@@ -242,7 +242,7 @@ COMPARE = [
     ("What it is", ["A plugin: a window of tools inside Lightroom Classic", "A plugin: a window of tools inside Photoshop", "Presets and LUTs: a finished look in one click", "PDF guides: lessons for the shoot itself"]),
     ("Works in", ["Lightroom Classic 13 or newer", "Photoshop 2023 or newer", "Lightroom, Lightroom Classic, Lightroom Mobile, Camera Raw; LUTs in Photoshop and video editors", "Any PDF reader: computer, tablet or phone"]),
     ("Works on", [devices("mac win"), devices("mac win"), devices("mac win tablet phone"), devices("mac win tablet phone")]),   # icons only (Jeinna, 4 Nov 2026)
-    ("What you get", ["The plugin, with MWP Presets included; built-in help, video tutorials", "The plugin, a 21-page User Manual, an Installation Guide", "50 presets, 50 mobile files, 33 LUTs", "4 guides, 137 lessons, in English or Hebrew"]),
+    ("What you get", ["The plugin, with MWP Presets included; built-in help, video tutorials", "The plugin, an 11-page User Manual, an Installation Guide", "50 presets, 50 mobile files, 33 LUTs", "4 guides, 137 lessons, in English or Hebrew"]),
     ("How you buy it", ["On its own, with MWP Presets included, or in a bundle", "On its own, or in a bundle", "On its own, or included with the plugin and in bundles", "All four, one guide at a time, or in a bundle" if SINGLE_GUIDES_LIVE else "On its own, or in a bundle"]),
 ]
 

@@ -118,7 +118,7 @@ const HE = {
   "The presets and the Lightroom plugin come as one purchase. Save more with a bundle.": "התוסף ללייטרום והפריסטים נמכרים יחד. בחבילה חוסכים עוד.",
   "The Lightroom plugin comes with the presets included. Save more with a bundle.": "התוסף ללייטרום מגיע עם הפריסטים. בחבילה חוסכים עוד.",
   "A plugin: a window of tools inside Photoshop": "תוסף: חלון כלים בתוך פוטושופ",
-  "The plugin, a 21-page User Manual, an Installation Guide": "התוסף, מדריך למשתמש של 21 עמודים, מדריך התקנה",
+  "The plugin, an 11-page User Manual, an Installation Guide": "התוסף, מדריך למשתמש של 11 עמודים, מדריך התקנה",
   "On its own, or in the full set": "בנפרד, או בחבילה",
   "Four tools by photographer Matan Wild: a Lightroom Classic plugin, a Photoshop plugin, Lightroom presets and LUTs, and PDF photography guides. Compare them, or save with a bundle.": "ארבעה כלים מאת הצלם מתן שרון: תוסף ללייטרום קלאסיק, תוסף לפוטושופ, פריסטים ללייטרום וקובצי LUT, ומדריכי צילום. השוו ביניהם, או חסכו עם חבילה.",
   // English copy pass, 24 Oct 2026: new English lines keep the approved Hebrew
@@ -1083,7 +1083,7 @@ const HE = {
   "want to come home with better photos": "רוצים לחזור הביתה עם תמונות טובות יותר",
   "50 presets, 50 mobile files, 33 LUTs": "50 פריסטים, 50 קבצים לנייד, 33 קובצי LUT",
   "The plugin, built-in help, video tutorials": "התוסף, עזרה מובנית, סרטוני הדרכה",
-  "The panel, a 21-page User Manual, an Installation Guide": "התוסף, מדריך למשתמש של 21 עמודים, מדריך התקנה",
+  "The panel, an 11-page User Manual, an Installation Guide": "התוסף, מדריך למשתמש של 11 עמודים, מדריך התקנה",
   "4 guides, 137 lessons, in English or Hebrew": "4 מדריכים, 137 שיעורים, באנגלית או בעברית",
   "Price": "מחיר",
   "Every bundle with MWP Presets includes the Lightroom Classic plugin.": "כל חבילה עם הפריסטים של MWP כוללת את התוסף ללייטרום קלאסיק.",
