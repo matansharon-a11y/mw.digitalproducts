@@ -1,7 +1,8 @@
 # Connect Dodo: run by hand (Actions > Connect Dodo > Run workflow), once Dodo Payments has approved the store.
 # Makes every product the shop sells at Dodo (and the active affiliates' codes) and writes their Dodo ids into the
 # shop. Safe to run again: what's already there is left. Checkout stays on Lemon Squeezy until the admin's switch.
-# Needs the DODO_API_KEY secret (Dodo > Developer > API keys; a dodo_test_ key works on Dodo's test catalogue).
+# Needs only the DODO_API_KEY secret (Dodo > Developer > API keys; a dodo_test_ key works on Dodo's test catalogue).
+# It also makes Dodo's webhook for the shop and stores its signing secret in Supabase (tools/dodo_webhook.py).
 name: Connect Dodo
 
 on:
@@ -39,6 +40,15 @@ jobs:
           echo "::add-mask::$KEY"
           echo "SUPABASE_SERVICE_KEY=$KEY" >> "$GITHUB_ENV"
           echo "SUPABASE_URL=https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_ENV"
+
+      - name: Webhook (made through Dodo's API; its secret goes straight to Supabase)
+        if: inputs.apply
+        env:
+          DODO_API_KEY: ${{ secrets.DODO_API_KEY }}
+        run: |
+          python3 tools/dodo_webhook.py
+          supabase secrets set "DODO_API_KEY=$DODO_API_KEY" "$WEBHOOK_SECRET_NAME=$WEBHOOK_SECRET_VALUE" --project-ref "$SUPABASE_PROJECT_REF" > /dev/null
+          echo "Stored in Supabase: DODO_API_KEY and $WEBHOOK_SECRET_NAME"
 
       - name: Connect
         env:

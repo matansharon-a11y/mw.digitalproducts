@@ -6,13 +6,23 @@ import { CONFIG } from "../config.js";
 const KEY = "mwp_provider";
 const TTL = 10 * 60 * 1000;
 let now = "lemonsqueezy";
+// The admin's preview of Dodo before the switch: ?pay=dodo (this tab only; ?pay=off ends it). The checkout function
+// honours it only for the admin's account, so anyone else who tries it still pays through Lemon Squeezy.
+let preview = false;
+try {
+  const q = new URLSearchParams(location.search).get("pay");
+  if (q === "dodo") sessionStorage.setItem("mwp_pay_preview", "dodo");
+  if (q === "off") sessionStorage.removeItem("mwp_pay_preview");
+  preview = sessionStorage.getItem("mwp_pay_preview") === "dodo";
+} catch { /* blocked */ }
+export const isPreview = () => preview;
 try {
   const c = JSON.parse(sessionStorage.getItem(KEY) || "null");
   if (c?.p) now = c.p;
 } catch { /* blocked */ }
 
-export const provider = () => now;
-export const isDodo = () => now === "dodo";
+export const provider = () => (preview ? "dodo" : now);
+export const isDodo = () => preview || now === "dodo";
 
 // Asks the shop (at most every 10 minutes); calls onChange when the answer differs from what the page assumed
 export async function loadProvider(onChange) {

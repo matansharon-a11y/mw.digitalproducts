@@ -33,6 +33,12 @@ Deno.serve(async (req) => {
   // Which provider takes payments now (shop_settings; set to Dodo once Dodo approves the store)
   const { data: setting } = await db.from("shop_settings").select("value").eq("key", "checkout_provider").maybeSingle();
   if (setting?.value === "dodo") return dodoCheckout(req, db, body, { source, vat, ref, user });
+  // Preview before the switch (Jeinna, 26 Nov 2026): the admin alone can try Dodo's checkout with ?pay=dodo on any page
+  // (cart.js sends provider "dodo"); everyone else stays on Lemon Squeezy. Test orders unlock nothing except for the admin.
+  if (body.provider === "dodo") {
+    const { data: adm } = await db.from("admin_allowlist").select("email").eq("email", user.email.toLowerCase()).maybeSingle();
+    if (adm) return dodoCheckout(req, db, body, { source, vat, ref, user });
+  }
 
   // Lemon Squeezy: one product per checkout
   if (!key) return fail(req, "Checkout isn't set up.", 503);

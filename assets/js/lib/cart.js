@@ -409,7 +409,7 @@ async function dodoCheckout(api, prof) {
   try { sessionStorage.setItem("mwp_checkout_at", String(Date.now())); } catch { /* blocked */ }   // My downloads waits for what's new
   try {
     const made = await api.createCheckout({ slugs: list.map((i) => i.slug), discount_codes: codes, source: utm || "",
-      ref: refCode(), vat: isIsraeli() ? "il" : "", lang: he() ? "he" : "en" });
+      ref: refCode(), vat: isIsraeli() ? "il" : "", lang: he() ? "he" : "en", provider: "dodo" });
     const u = new URL(made?.url || "");
     if (u.protocol === "https:" && /(^|\.)dodopayments\.com$/.test(u.hostname)) { location.href = u.toString(); return; }
   } catch { /* below */ }
