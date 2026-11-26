@@ -9,7 +9,7 @@ initChrome();
 // in the last two hours. A visit from a bookmark or a search result shouldn't make My downloads wait.
 try {
   const from = document.referrer ? new URL(document.referrer).hostname : "";
-  const fromCheckout = /(^|\.)lemonsqueezy\.com$/.test(from) || from === "checkout.mw.photography";
+  const fromCheckout = /(^|\.)(lemonsqueezy|dodopayments)\.com$/.test(from) || from === "checkout.mw.photography";
   const wentToCheckout = Date.now() - Number(sessionStorage.getItem("mwp_checkout_at") || 0) < 2 * 3600 * 1000;
   if (fromCheckout || wentToCheckout) sessionStorage.setItem("mwp_just_bought", String(Date.now()));
 } catch { /* blocked */ }
