@@ -45,7 +45,7 @@ const BLOCKS: Record<Part, { en: [string, string]; he: [string, string] }> = {
 };
 const T = {
   en: { subject: (p: string) => `Download and install: ${p}`, hi: (n: string) => (n ? `Hi ${n},` : "Hi,"),
-        lead: (p: string) => `Thank you for buying ${p}! Your payment receipt from Lemon Squeezy is in a separate email. This one is your guide to downloading and installing: your files are waiting in My downloads.`,
+        lead: (p: string) => `Thank you for buying ${p}! Your payment receipt from Dodo Payments is in a separate email. This one is your guide to downloading and installing: your files are waiting in My downloads.`,
         steps_h: "Getting started",
         steps: [
           "Open My downloads and sign in with the email you used at checkout.",
@@ -58,7 +58,7 @@ const T = {
         share: `Made a photo you love with it? We'd love to see it: tag <a href="${INSTAGRAM}" style="color:${GOLD}">@mw_phototours</a>.`,
         sign: "Matan | MW Photo Tours", foot: "You're getting this email because you bought from the MWP Shop." },
   he: { subject: (p: string) => `הורדה והתקנה: ${p}`, hi: (n: string) => (n ? `היי ${n},` : "היי,"),
-        lead: (p: string) => `תודה שקניתם את ${p}! את הקבלה על התשלום שלחה לכם למון סקוויזי במייל נפרד. המייל הזה הוא המדריך שלכם להורדה ולהתקנה: הקבצים מחכים לכם בעמוד ההורדות שלי.`,
+        lead: (p: string) => `תודה שקניתם את ${p}! את הקבלה על התשלום שלחה לכם דודו פיימנטס במייל נפרד. המייל הזה הוא המדריך שלכם להורדה ולהתקנה: הקבצים מחכים לכם בעמוד ההורדות שלי.`,
         steps_h: "איך מתחילים",
         steps: [
           "נכנסים לעמוד ההורדות שלי ומתחברים עם המייל שאיתו קניתם.",

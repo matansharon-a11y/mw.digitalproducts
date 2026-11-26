@@ -134,7 +134,7 @@ async function load() {
           <button class="btn btn--ghost btn--block" type="button" id="add-to-cart">Add to cart</button>
           <ul class="assure">
             <li>${ICONS.download}Download right after payment</li>
-            <li>${ICONS.lock}Secure card checkout by Lemon Squeezy</li>
+            <li>${ICONS.lock}Secure checkout by Dodo Payments</li>
             <li>${ICONS.refresh}Free updates to this product</li>
           </ul>
           ${p.includes.length ? `<ul class="checklist" data-no-i18n>${p.includes.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : ""}

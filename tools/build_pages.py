@@ -3,7 +3,7 @@ import json, re, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reviews_section import section as reviews_section
 import bundle_cards
-from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC, devices, PAY_BADGES
+from brand import FONTS, NAV_CSS, SITE_CSS, site_links, menu_button, site_footer, BRAND, ICONS, LANG_GUARD, launch_block, SINGLE_GUIDES_LIVE, NAGISHNA_SRC, devices, PAY_BADGES, DODO_BADGES
 ROOT = sys.argv[1]
 SITE = "https://shop.mw.photography"
 
@@ -160,7 +160,7 @@ page("index.html",
     <div class="container">
       <div class="trust">
         <div class="trust__item">{ICON['download']}<p><b>Instant download</b><span>Your files are ready the moment you pay.</span></p></div>
-        <div class="trust__item">{ICON['lock']}<p><b>Secure checkout</b><span>Card or PayPal, on Lemon Squeezy's encrypted checkout.</span></p></div>
+        <div class="trust__item">{ICON['lock']}<p><b>Secure checkout</b><span>Card, Apple Pay or Google Pay, on the encrypted checkout of Dodo Payments.</span></p></div>
         <div class="trust__item">{ICON['refresh']}<p><b>Free updates</b><span>New versions land in your downloads at no cost.</span></p></div>
         <div class="trust__item">{ICON['chat']}<p><b>Real support</b><span>A person replies within one business day.</span></p></div>
       </div>
@@ -608,7 +608,7 @@ page("account.html", "My downloads · MWP",
         </section>
         <section class="details-box" id="orders" aria-labelledby="orders-h" hidden>
           <div><h2 class="h3" id="orders-h">Order history</h2>
-          <p class="meta">Everything you've bought with this account. Your receipts come by email from Lemon Squeezy.</p></div>
+          <p class="meta">Everything you've bought with this account. Your receipts come by email from Dodo Payments (from Lemon Squeezy for orders before the switch date).</p></div>
           <div class="orders" id="orders-list"></div>
         </section>
         <section class="details-box" id="details" aria-labelledby="details-h">
@@ -752,25 +752,25 @@ page("support.html", "Help with downloads, installing and refunds · MWP",
         <span class="safe-ic">{ICON['shield']}</span>
         <p class="kick">Secure checkout</p>
         <h2 id="safe-h" class="safe-h">Your payment is safe.</h2>
-        <p class="lead">Every purchase is paid on the secure checkout of Lemon Squeezy, our official payment partner.</p>
-        {PAY_BADGES}
+        <p class="lead">Every purchase is paid on the secure checkout of Dodo Payments, our official payment partner.</p>
+        {DODO_BADGES}
       </div>
       <ul class="safe-grid">
-        <li>{ICON['shield']}<h3>Paid through Lemon Squeezy</h3><p>Lemon Squeezy is the merchant of record for every order: it takes the payment, emails your receipt and handles the tax. It has been part of Stripe since 2024.</p></li>
-        <li>{ICON['card']}<h3>Your card details stay protected</h3><p>You enter your card details only on Lemon Squeezy's secure checkout page. It's built to PCI DSS, the security standard for card payments.</p></li>
+        <li>{ICON['shield']}<h3>Paid through Dodo Payments</h3><p>Dodo Payments is the merchant of record for every order: it takes the payment, emails your receipt and handles the tax.</p></li>
+        <li>{ICON['card']}<h3>Your card details stay protected</h3><p>You enter your card details only on Dodo Payments' secure checkout page, never on our site.</p></li>
         <li>{ICON['lock']}<h3>An encrypted connection</h3><p>The checkout opens over a secure https connection, with the padlock in your browser's address bar.</p></li>
-        <li>{ICON['eye']}<h3>Fraud screening</h3><p>Lemon Squeezy checks payments for fraud as they happen.</p></li>
-        <li>{ICON['receipt']}<h3>A receipt for every order</h3><p>Your receipt comes by email, and every order in your Order history has a Receipt link.</p></li>
+        <li>{ICON['eye']}<h3>Pay in your own currency</h3><p>Checkout shows the price in your local currency, and you can switch back to US dollars.</p></li>
+        <li>{ICON['receipt']}<h3>A receipt for every order</h3><p>Your receipt comes by email from Dodo Payments.</p></li>
         <li>{ICON['refresh']}<h3>Help or a refund within 14 days</h3><p>If a product doesn't work for you, write to us within 14 days. We'll help you get it working, and if we can't, we'll refund you.</p></li>
       </ul>
       <h3 class="safe-sub">How checkout works</h3>
       <ol class="safe-steps">
         <li><b>1</b><span>Add what you want to your cart.</span></li>
         <li><b>2</b><span>Sign in, or create your free account, so your files stay in one place.</span></li>
-        <li><b>3</b><span>Pay on Lemon Squeezy's secure page, by card or PayPal.</span></li>
+        <li><b>3</b><span>Pay on Dodo Payments' secure page, by card, Apple Pay or Google Pay.</span></li>
         <li><b>4</b><span>Download straight away in My downloads.</span></li>
       </ol>
-      <p class="safe-more"><a class="link" href="https://www.lemonsqueezy.com/reporting/merchant-of-record" target="_blank" rel="noopener">About Lemon Squeezy</a><span aria-hidden="true">·</span><a class="link" href="/legal/#terms">Terms of sale</a><span aria-hidden="true">·</span><a class="link" href="https://wa.me/972537432878" target="_blank" rel="noopener">Questions before you buy? WhatsApp us</a></p>
+      <p class="safe-more"><a class="link" href="https://dodopayments.com" target="_blank" rel="noopener">About Dodo Payments</a><span aria-hidden="true">·</span><a class="link" href="/legal/#terms">Terms of sale</a><span aria-hidden="true">·</span><a class="link" href="https://wa.me/972537432878" target="_blank" rel="noopener">Questions before you buy? WhatsApp us</a></p>
     </div>
   </section>""", "support.js")
 
@@ -820,7 +820,7 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
       <p>Our products are digital files delivered instantly. If a product doesn't work for you, write to <a href="/support/?topic=refund">support</a> within 14 days of purchase. We'll help you get it working, and if we can't, we'll refund you. Refunded orders lose access to the files.</p>
 
       <h2 id="terms">Terms of sale</h2>
-      <p>Orders are processed by our online reseller, Lemon Squeezy, which is the merchant of record and handles payment, invoicing and sales tax. Prices are shown in the currency listed on each product page. You'll receive a receipt by email after every purchase.</p>
+      <p>Orders are processed by our online reseller, Dodo Payments, which is the merchant of record and handles payment, invoicing and sales tax. Orders placed before the switch date were processed by Lemon Squeezy. Prices are shown in the currency listed on each product page. You'll receive a receipt by email after every purchase.</p>
       <p>Products you buy include free updates to that product. We may add, change or retire products at any time; anything you've already bought stays in your downloads.</p>
 
       <h2 id="privacy">Privacy</h2>
@@ -830,7 +830,7 @@ page("legal.html", "Terms, licence, refunds and privacy · MWP",
       <p><strong>Downloads and computers.</strong> Each pack can be downloaded up to 5 times a day. MWP Photoshop Plugin Panel works on up to 2 computers; for each one we keep a computer ID, its name and system (for example "Dana-MacBook (Mac)") and when it was last used. You can see and remove computers in My downloads. For downloads and activations we keep a scrambled form of your IP address, never the address itself.</p>
       <p><strong>Support.</strong> When you contact support we keep your name, email and message so we can answer you.</p>
       <p>We use your email to deliver your files, answer support requests and, if you agreed, send occasional news and new releases. You can unsubscribe from any email. The site uses no advertising or analytics trackers; your browser only remembers your language, your cart and your sign-in.</p>
-      <p>Our service providers: Supabase (database, sign-in and file storage), Lemon Squeezy (checkout), Resend (account emails), Mailchimp (newsletters), Make.com and monday.com (order and support handling). To see, correct or delete your data, write to support.</p>
+      <p>Our service providers: Supabase (database, sign-in and file storage), Dodo Payments (checkout; Lemon Squeezy for orders before the switch date), Resend (account emails), Mailchimp (newsletters), Make.com and monday.com (order and support handling). To see, correct or delete your data, write to support.</p>
       </div>
     </div>
   </section>""", "static.js")

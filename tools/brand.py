@@ -314,6 +314,15 @@ PAY_BADGES = ('<span class="paybadges ui-en" role="img" aria-label="Visa, Master
     '</span>')
 
 
+# Dodo Payments' methods (switch day): card, Apple Pay, Google Pay; no PayPal. The same badges as DODO_BADGES in cart.js.
+DODO_BADGES = ('<span class="paybadges ui-en" role="img" aria-label="Visa, Mastercard, Apple Pay, Google Pay">'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="900" font-style="italic" fill="#1A1F71">VISA</text></svg>'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><circle cx="16" cy="13" r="7" fill="#EB001B"/><circle cx="24" cy="13" r="7" fill="#F79E1B"/><path d="M20 7.3a7 7 0 0 1 0 11.4 7 7 0 0 1 0-11.4z" fill="#FF5F00"/></svg>'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#000"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="8.5" font-weight="700" fill="#fff">Apple Pay</text></svg>'
+    '<svg viewBox="0 0 40 26" aria-hidden="true"><rect width="40" height="26" rx="4" fill="#fff"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="#3C4043">G Pay</text></svg>'
+    '</span>')
+
+
 # Photos with a smaller WebP copy next to the JPEG (same name, .webp): the home and sales pages use the WebP.
 WEBP = ["1a2e3ed3f44db1f671babb09a599b29f", "8cb56471dbe5940badc7a93cad5c8bf1", "5275cc7bcd4fb7560d8f7163592e3122",
         "d5f6d2a7c84cc3346ef45e4922528351", "ce73f34a054f9959d99fd850c1df9ce5", "6d84bcea4206fe4c622103d7d3aea920"]
