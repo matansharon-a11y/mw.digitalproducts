@@ -757,9 +757,9 @@ page("support.html", "Help with downloads, installing and refunds · MWP",
       </div>
       <ul class="safe-grid">
         <li>{ICON['shield']}<h3>Paid through Dodo Payments</h3><p>Dodo Payments is the merchant of record for every order: it takes the payment, emails your receipt and handles the tax.</p></li>
-        <li>{ICON['card']}<h3>Your card details stay protected</h3><p>You enter your card details only on Dodo Payments' secure checkout page, never on our site.</p></li>
+        <li>{ICON['card']}<h3>Your card details stay protected</h3><p>You enter your card details only on Dodo Payments' secure checkout page. It's built to PCI DSS, the security standard for card payments.</p></li>
         <li>{ICON['lock']}<h3>An encrypted connection</h3><p>The checkout opens over a secure https connection, with the padlock in your browser's address bar.</p></li>
-        <li>{ICON['eye']}<h3>Pay in your own currency</h3><p>Checkout shows the price in your local currency, and you can switch back to US dollars.</p></li>
+        <li>{ICON['eye']}<h3>Fraud screening</h3><p>Dodo Payments checks payments for fraud as they happen.</p></li>
         <li>{ICON['receipt']}<h3>A receipt for every order</h3><p>Your receipt comes by email from Dodo Payments.</p></li>
         <li>{ICON['refresh']}<h3>Help or a refund within 14 days</h3><p>If a product doesn't work for you, write to us within 14 days. We'll help you get it working, and if we can't, we'll refund you.</p></li>
       </ul>
