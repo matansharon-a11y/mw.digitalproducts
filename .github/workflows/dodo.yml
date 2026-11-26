@@ -47,8 +47,11 @@ jobs:
           DODO_API_KEY: ${{ secrets.DODO_API_KEY }}
         run: |
           python3 tools/dodo_webhook.py
-          supabase secrets set "DODO_API_KEY=$DODO_API_KEY" "$WEBHOOK_SECRET_NAME=$WEBHOOK_SECRET_VALUE" --project-ref "$SUPABASE_PROJECT_REF" > /dev/null
-          echo "Stored in Supabase: DODO_API_KEY and $WEBHOOK_SECRET_NAME"
+          { read -r name; read -r value; } < "$RUNNER_TEMP/dodo_whsec"
+          rm -f "$RUNNER_TEMP/dodo_whsec"
+          [ -n "$name" ] && [ -n "$value" ] || { echo "::error::No webhook secret to store"; exit 1; }
+          supabase secrets set "DODO_API_KEY=$DODO_API_KEY" "$name=$value" --project-ref "$SUPABASE_PROJECT_REF" > /dev/null
+          echo "Stored in Supabase: DODO_API_KEY and $name"
 
       - name: Connect
         env:

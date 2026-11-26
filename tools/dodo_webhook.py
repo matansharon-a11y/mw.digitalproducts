@@ -1,5 +1,5 @@
 """Connect Dodo, step 1 (Jeinna, 26 Nov 2026: leave the least work by hand): makes Dodo's webhook for the shop through
-Dodo's API, or finds the one already there, and writes its signing secret to $GITHUB_ENV as DODO_WEBHOOK_SECRET (live
+Dodo's API, or finds the one already there, and writes its signing secret to $RUNNER_TEMP/dodo_whsec as DODO_WEBHOOK_SECRET (live
 key) or DODO_WEBHOOK_SECRET_TEST (a dodo_test_ key), for the workflow to store in Supabase. The secret is never printed.
 API: POST /webhooks {url, filter_types}, GET /webhooks, GET /webhooks/{id}/secret (docs.dodopayments.com)."""
 import json, os, urllib.request
@@ -43,6 +43,7 @@ if not secret.startswith("whsec_"):
     raise SystemExit("::error::Dodo returned no signing secret")
 name = "DODO_WEBHOOK_SECRET_TEST" if TEST else "DODO_WEBHOOK_SECRET"
 print(f"::add-mask::{secret}")
-with open(os.environ["GITHUB_ENV"], "a") as f:
-    f.write(f"WEBHOOK_SECRET_NAME={name}\nWEBHOOK_SECRET_VALUE={secret}\n")
+# read by the same workflow step (values put in $GITHUB_ENV only reach the steps after it)
+with open(os.path.join(os.environ.get("RUNNER_TEMP", "/tmp"), "dodo_whsec"), "w") as f:
+    f.write(f"{name}\n{secret}\n")
 print(f"Signing secret read; it goes to Supabase as {name}")
