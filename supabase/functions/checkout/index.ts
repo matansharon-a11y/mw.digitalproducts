@@ -118,6 +118,9 @@ async function dodoCheckout(req: Request, db: ReturnType<typeof admin>, body: Re
   const lang = body.lang === "he" ? "he" : "en";
   const payload = {
     product_cart: ids.map((product_id) => ({ product_id, quantity: 1 })),
+    // Dollars, as on every page (Jeinna, 10 Nov 2026). The real off switch is Dodo > Settings > Pricing > Adaptive
+    // Currency (off): the test on 26 Nov 2026 charged pesos; Dodo ignores billing_currency while it is off.
+    billing_currency: "USD",
     customer: { email: o.user.email, ...(o.user.user_metadata?.name ? { name: String(o.user.user_metadata.name).slice(0, 100) } : {}) },
     ...(codes.length ? { discount_codes: codes } : {}),
     metadata,
