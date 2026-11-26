@@ -24,3 +24,21 @@ for o in orders:
     owned = sorted(e["products"]["slug"] for e in ents if not e.get("revoked_at"))
     print(f"- {o['created_at'][:19]} · #{o['order_number']} · {o['status']} · {'TEST' if o['test_mode'] else 'LIVE'} · "
           f"{o['total_cents'] / 100:.2f} {o['currency']} · codes {o.get('discount_code') or '-'}\n  items: {items}\n  this buyer can download: {', '.join(owned) or '(nothing)'}")
+
+# What Dodo itself says about each payment: what the buyer paid (their currency) and what is settled in dollars
+key = os.environ.get("DODO_API_KEY", "")
+if key:
+    base = "https://test.dodopayments.com" if key.startswith("dodo_test_") else "https://live.dodopayments.com"
+    print("\n## At Dodo")
+    for o in orders:
+        pid = o["order_number"]
+        try:
+            req = urllib.request.Request(f"{base}/payments/{pid}", headers={"Authorization": f"Bearer {key}"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                p = json.loads(r.read())
+            keep = {k: p.get(k) for k in ("total_amount", "tax", "currency", "settlement_amount", "settlement_tax", "settlement_currency", "status")}
+            keep["discounts"] = [{k: d.get(k) for k in ("discount_id", "code", "amount", "type", "restricted_to") if isinstance(d, dict)} for d in (p.get("discounts") or [])]
+            keep["product_cart"] = [{k: c.get(k) for k in ("product_id", "quantity", "amount", "price")} for c in (p.get("product_cart") or [])]
+            print(f"- {pid}: {json.dumps(keep)}")
+        except Exception as e:
+            print(f"- {pid}: could not read ({type(e).__name__})")

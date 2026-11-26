@@ -33,4 +33,6 @@ jobs:
           echo "SUPABASE_URL=https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_ENV"
 
       - name: Check
+        env:
+          DODO_API_KEY: ${{ secrets.DODO_API_KEY }}
         run: python3 tools/dodo_check.py
