@@ -25,7 +25,11 @@ const text = (body: string, status = 200) => new Response(body, { status });
 type Any = any;
 
 const API = (mode: "live" | "test") => (mode === "test" ? "https://test.dodopayments.com" : "https://live.dodopayments.com");
-const KEY = (mode: "live" | "test") => Deno.env.get(mode === "test" ? "DODO_API_KEY_TEST" : "DODO_API_KEY") ?? "";
+// The key for each mode: DODO_API_KEY holds the test key (dodo_test_…) until the live one replaces it
+const KEY = (mode: "live" | "test") => {
+  const main = Deno.env.get("DODO_API_KEY") ?? "", test = Deno.env.get("DODO_API_KEY_TEST") ?? "";
+  return mode === "test" ? (test || (main.startsWith("dodo_test_") ? main : "")) : (main.startsWith("dodo_test_") ? "" : main);
+};
 
 // The codes a payment used: what the cart sent (metadata "codes") and what Dodo lists (a code typed at checkout)
 async function codesOf(p: Any, mode: "live" | "test"): Promise<string[]> {
@@ -68,7 +72,13 @@ Deno.serve(async (req) => {
     if (event === "payment.succeeded") {
       const meta: Record<string, string> = {};
       for (const [k, v] of Object.entries(data.metadata ?? {})) meta[k] = String(v ?? "");
-      const total = Math.round(Number(data.total_amount) || 0), tax = Math.round(Number(data.tax) || 0);
+      // Adaptive Currency stays on (Jeinna, 26 Nov 2026): the buyer pays in their own currency, and Dodo's
+      // settlement_amount is the sale in dollars at the shop's price (test: PHP 1126.51 paid, settlement 1699 USD).
+      // The shop records the dollars, so Finances, affiliates and the payout invoice all count in USD.
+      const usd = String(data.settlement_currency ?? "").toUpperCase() === "USD" && Number.isFinite(Number(data.settlement_amount));
+      const total = Math.round(Number(usd ? data.settlement_amount : data.total_amount) || 0);
+      const tax = Math.round(Number(usd ? data.settlement_tax : data.tax) || 0);
+      const currency = usd ? "USD" : String(data.currency ?? "USD").toUpperCase();
       const column = testMode ? "dodo_test_product_id" : "dodo_product_id";
       const cart: Any[] = Array.isArray(data.product_cart) ? data.product_cart : [];
       await fulfillPaid(db, {
@@ -79,7 +89,7 @@ Deno.serve(async (req) => {
         name: String(data.customer?.name ?? ""),
         country: /^[A-Za-z]{2}$/.test(String(data.billing?.country ?? "")) ? String(data.billing.country) : null,
         subtotalCents: total - tax, taxCents: tax, totalCents: total, discountCents: 0,
-        currency: String(data.currency ?? "USD").toUpperCase(),
+        currency,
         createdAt: String(data.created_at ?? body.timestamp ?? new Date().toISOString()),
         receiptUrl: null,   // Dodo's invoice is fetched with the API key (GET /invoices/payments/{id}), not a public link
         testMode,
@@ -89,11 +99,26 @@ Deno.serve(async (req) => {
       });
     } else if (event === "refund.succeeded") {
       const { data: o } = await db.from("orders").select("total_cents").eq("checkout_order_id", String(data.payment_id)).maybeSingle();
-      const amount = Math.round(Number(data.amount) || 0);
+      let amount = Math.round(Number(data.amount) || 0);
+      let currency = String(data.currency ?? "USD").toUpperCase();
+      // A refund comes in the currency the buyer paid: turn it into dollars at the payment's own rate
+      // (settlement_amount / total_amount from Dodo), so it matches the order recorded in dollars
+      if (currency !== "USD" && KEY(mode)) {
+        try {
+          const res = await fetch(`${API(mode)}/payments/${encodeURIComponent(String(data.payment_id))}`,
+            { headers: { Authorization: `Bearer ${KEY(mode)}` }, signal: AbortSignal.timeout(8000) });
+          const pay = await res.json().catch(() => ({}));
+          const paid = Number(pay?.total_amount), settled = Number(pay?.settlement_amount);
+          if (String(pay?.settlement_currency ?? "").toUpperCase() === "USD" && paid > 0 && settled >= 0) {
+            amount = Math.round(amount * settled / paid);
+            currency = "USD";
+          }
+        } catch (err) { console.error("dodo payment lookup for refund", err); }
+      }
       const full = data.is_partial === false || (data.is_partial == null && o && amount >= o.total_cents);
       await fulfillRefund(db, {
         providerOrderId: String(data.payment_id), full: Boolean(full), refundedCents: amount,
-        currency: String(data.currency ?? "USD").toUpperCase(), testMode,
+        currency, testMode,
       });
     } else if (event === "dispute.opened") {
       const paymentId = String(data.payment_id ?? "");
