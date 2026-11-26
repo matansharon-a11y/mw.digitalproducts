@@ -4,13 +4,16 @@
    POST /products, a one-time price in USD at the shop's own price, tax included in the price, tax category
    digital_products, the shop's slug in its metadata. Its Dodo id goes into products.dodo_product_id (live key) or
    dodo_test_product_id (a dodo_test_ key: Dodo's separate test catalogue). A product that already has an id is left.
-2. Every active affiliate gets their code at Dodo (10% off every product, their agreement's dates), kept in
+2. The sale's codes (assets/js/lib/sale.js, as Connect Lemon Squeezy makes them), each limited to its products and the
+   sale's dates, while the sale hasn't ended: the cart sends them with every Dodo checkout, and Dodo refuses a code it
+   doesn't know (26 Nov 2026).
+3. Every active affiliate gets their code at Dodo (10% off every product, their agreement's dates), kept in
    affiliates.provider_codes.dodo. A code already made is left.
 Nothing is switched: checkout stays on Lemon Squeezy until the admin's switch (admin_set_checkout_provider) says Dodo.
 Prices are never changed here; to change one, change it in the admin and at Dodo.
-The webhook is set in Dodo's dashboard (see CLAUDE.md), and its secret goes in the DODO_WEBHOOK_SECRET GitHub secret.
+The webhook is made by tools/dodo_webhook.py in the step before this one.
 """
-import json, os, sys, urllib.error, urllib.parse, urllib.request
+import datetime, json, os, re, sys, urllib.error, urllib.parse, urllib.request
 
 KEY = os.environ.get("DODO_API_KEY", "")
 DB = os.environ.get("SUPABASE_URL", "")
@@ -47,6 +50,39 @@ def db(path, method="GET", body=None):
     return call(f"{DB}/rest/v1/{path}", method, body, h)
 
 
+def sale():
+    """The sale as the site has it (assets/js/lib/sale.js): dates, the main rate and code, and the special ones."""
+    js = open(os.path.join(os.path.dirname(__file__), "..", "assets", "js", "lib", "sale.js"), encoding="utf-8").read()
+    get = lambda pat: re.search(pat, js).group(1)
+    special = {m.group(1): (int(m.group(2)), m.group(3)) for m in re.finditer(r'"([a-z0-9-]+)": \{ pct: (\d+), code: "([A-Z0-9]+)" \}', js)}
+    return get(r'start: "([^"]+)"'), get(r'end: "([^"]+)"'), int(get(r'pct: (\d+), code:')), get(r'pct: \d+, code: "([A-Z0-9]+)"'), special
+
+
+def sale_codes(products):
+    start, end, pct, code, special = sale()
+    if datetime.datetime.fromisoformat(end.replace("Z", "+00:00")) <= datetime.datetime.now(datetime.timezone.utc):
+        say(f"\n**Sale codes**: the sale ended {end[:10]}, none made.")
+        return
+    ids = {p["slug"]: p.get(COL) for p in products if p.get(COL) and p["slug"] != "mwp-field-guides-sample"}
+    groups = [(code, pct, [i for s_, i in ids.items() if s_ not in special])]
+    groups += [(c, p_, [i for s_, i in ids.items() if s_ == sl]) for sl, (p_, c) in special.items()]
+    listed = dodo("/discounts?page_size=100") or {}
+    have = {d.get("code") for d in (listed.get("items") or listed.get("data") or [])}
+    say(f"\n**Sale codes** ({start[:10]} to {end[:10]}):")
+    for c, p_, pids in groups:
+        if not pids:
+            say(f"- {c} ({p_}%): no matching products at Dodo yet, not made.")
+        elif c in have:
+            say(f"- {c} ({p_}%): already at Dodo.")
+        elif not APPLY:
+            say(f"- {c} ({p_}%): would be made for {len(pids)} products.")
+        else:
+            dodo("/discounts", "POST", {"type": "percentage", "amount": p_ * 100, "code": c, "name": f"November Sale {p_}%",
+                                        "restricted_to": pids, "expires_at": end,
+                                        **({"starts_at": start} if datetime.datetime.fromisoformat(start) > datetime.datetime.now(datetime.timezone.utc) else {})})
+            say(f"- {c} ({p_}%): made, for {len(pids)} product{'' if len(pids) == 1 else 's'}.")
+
+
 def main():
     missing = [n for n, v in (("DODO_API_KEY", KEY), ("SUPABASE_URL", DB), ("SUPABASE_SERVICE_KEY", SERVICE)) if not v]
     if missing:
@@ -80,6 +116,8 @@ def main():
             raise SystemExit(f"::error::Dodo didn't return a product id for {name}.")
         db(f"products?id=eq.{p['id']}", "PATCH", {COL: pid})
         say(f"- {name}: made at ${p['price_cents'] / 100:.2f} ({pid}).")
+
+    sale_codes(db("products?select=slug,dodo_product_id,dodo_test_product_id"))
 
     affiliates = db("affiliates?select=id,name,code,starts_on,ends_on,provider_codes&status=eq.active")
     say(f"\n**Affiliate codes** ({len(affiliates)} active):")
