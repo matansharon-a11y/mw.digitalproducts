@@ -42,3 +42,18 @@ if key:
             print(f"- {pid}: {json.dumps(keep)}")
         except Exception as e:
             print(f"- {pid}: could not read ({type(e).__name__})")
+
+# The hourly missed-orders check reads these two lists: show that Dodo answers them (counts and statuses only)
+if key:
+    import datetime, urllib.parse
+    since = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=3)).isoformat()
+    print("\n## Lists the missed-orders check reads")
+    for path in ("/payments", "/refunds"):
+        try:
+            q = urllib.parse.urlencode({"created_at_gte": since, "page_size": 100, "page_number": 0})
+            with urllib.request.urlopen(urllib.request.Request(f"{base}{path}?{q}", headers={"Authorization": f"Bearer {key}"}), timeout=30) as r:
+                j = json.loads(r.read())
+            items = j.get("items") if isinstance(j.get("items"), list) else j.get("data") or []
+            print(f"- {path}: {len(items)} in 3 days, keys {sorted(j.keys())}, statuses {sorted({str(i.get('status')) for i in items})}, item fields {sorted(items[0].keys())[:30] if items else '-'}")
+        except Exception as e:
+            print(f"- {path}: failed ({e})")

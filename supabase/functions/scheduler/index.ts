@@ -34,6 +34,7 @@
 //                        Orders, status "Not delivered"): the safety net under the webhook, which Lemon Squeezy
 //                        retries only 3 times.
 // ============================================================================
+import { reconcileDodo } from "./reconcile_dodo.ts";
 import { admin, notifyMake, plain, requestPersonalCopies } from "../_shared/http.ts";
 import { mondayPhone, parsePhone } from "../_shared/phone.ts";
 import { applications, applicationsCallback } from "./applications.ts";
@@ -92,7 +93,14 @@ Deno.serve(async (req) => {
       case "product": return reply(await product(db, String(body.id ?? "")));
       case "approvals": return reply(await approvals(db));
       case "weekly_summary": return reply(await weeklySummary(db));
-      case "reconcile": return reply(await reconcile(db));
+      case "reconcile": {
+        // Lemon Squeezy (until its last orders and refunds are behind us) and Dodo, each on its own: one failing never hides the other
+        const [ls, dodo] = await Promise.all([
+          reconcile(db).catch((err) => ({ error: String(err) })),
+          reconcileDodo(db, notifyMake).catch((err) => ({ error: String(err) })),
+        ]);
+        return reply({ lemonsqueezy: ls, dodo });
+      }
       case "month_close": return reply(await monthClose(db));
       case "account": return reply(await account(db, String(body.user_id ?? "")));
       case "lead": return reply(await lead(db, String(body.email ?? "")));
