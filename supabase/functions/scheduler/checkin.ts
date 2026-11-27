@@ -72,7 +72,11 @@ const T = {
         sign: "מתן | MW Photo Tours", foot: "קיבלתם את המייל הזה כי קניתם בחנות של MWP." },
 };
 
-export function checkinEmail(lang: "en" | "he", name: string, product: string, parts: Part[]) {
+// Israeli buyers (orders.vat_rate 0.18): one line that the price includes the VAT (Jeinna, 27 Nov 2026;
+// the same wording as the site's price notes). Dodo's own receipt is the tax document.
+const VAT_LINE = { en: "The price you paid includes 18% Israeli VAT.", he: "המחיר ששילמתם כולל מע״מ (18%)." };
+
+export function checkinEmail(lang: "en" | "he", name: string, product: string, parts: Part[], israeli = false) {
   const t = T[lang], rtl = lang === "he";
   const dir = rtl ? "rtl" : "ltr", align = rtl ? "right" : "left";
   const font = rtl ? "Heebo, Arial, sans-serif" : "'Google Sans', Arial, sans-serif";
@@ -89,7 +93,7 @@ export function checkinEmail(lang: "en" | "he", name: string, product: string, p
 <tr><td style="background:${DARK};padding:22px 24px;text-align:center"><span style="font-family:Arial,sans-serif;font-weight:700;letter-spacing:.18em;color:#F4AF56;font-size:14px" dir="ltr">MWP</span></td></tr>
 <tr><td style="padding:28px 24px 8px">
 <p style="margin:0 0 14px">${t.hi(first)}</p>
-<p style="margin:0 0 20px">${t.lead(`<b>${esc(product)}</b>`)}</p>
+<p style="margin:0 0 ${israeli ? 8 : 20}px">${t.lead(`<b>${esc(product)}</b>`)}</p>${israeli ? `\n<p style="margin:0 0 20px;color:${MUTED};font-size:14px">${VAT_LINE[lang]}</p>` : ""}
 <p style="margin:0 0 20px;text-align:center"><a href="${ACCOUNT}${rtl ? "?lang=he" : ""}" style="display:inline-block;padding:13px 26px;border-radius:24px;background:${GOLD};color:#fff;text-decoration:none;font-weight:700">${t.btn}</a></p>
 <p style="margin:0 0 8px;font-weight:700">${t.steps_h}</p>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px">${steps}</table>
@@ -141,7 +145,7 @@ export async function checkinEmails(db: Db, ids: string[]) {
     const { data: marked } = await db.from("orders").update({ checkin_sent_at: new Date().toISOString() })
       .eq("id", o.id).is("checkin_sent_at", null).select("id");
     if (!marked?.length) continue;
-    const m = checkinEmail(he ? "he" : "en", o.customers.name ?? "", name, parts);
+    const m = checkinEmail(he ? "he" : "en", o.customers.name ?? "", name, parts, Number(o.vat_rate) > 0);
     out.push({ email: o.customers.email, subject: m.subject, body_html: m.html });
   }
   return out;
